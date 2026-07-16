@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大災變 — 夏日時光 · 抹茶的檔案室</title>
+<meta name="description" content="夏天死掉的那一年。冰封台灣，永晝廢土。">
+
+<meta property="og:title" content="大災變 · THE GREAT FREEZE">
+<meta property="og:description" content="夏天死掉的那一年。整整十年了。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://r2.uploads.tw/2026/06/1p9CFhiu2R.webp">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:    #2E9BD6;
+  --blue-dk: #1A3A5A;
+  --blue-md: #3A5A72;
+  --yellow:  #F5D02F;
+  --paper:   #FBFAF3;
+  --grid:    #D8E6F0;
+  --muted:   #5A7A92;
+  --orange:  #E6642A;
+  --ice:     #8BC3E5;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  color:var(--blue-dk);
+  font-family:'Noto Sans TC',system-ui,sans-serif;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ===========================================
+   簽名元素：永晝天空
+   固定在最底層，隨捲動從永晝白 → 黃昏 → 夜
+   讀者往下滑 = 往那個「第一個夜晚」前進
+   =========================================== */
+#sky{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  background:var(--paper);
+}
+
+/* 方格紙：疊在天空上，會隨天色變淡 */
+#grid{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px;
+  pointer-events:none;
+}
+
+/* 那顆不會落下的太陽 */
+#sun{
+  position:fixed;
+  top:8vh;
+  right:8vw;
+  width:clamp(60px,9vw,110px);
+  height:clamp(60px,9vw,110px);
+  border-radius:50%;
+  background:var(--yellow);
+  box-shadow:0 0 0 4px var(--blue-dk), 0 0 60px 20px rgba(245,208,47,.45);
+  z-index:-2;
+  pointer-events:none;
+  will-change:transform,opacity;
+}
+
+/* 雪：只在天暗下來後才看得見 */
+#snow{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+#snow.on{opacity:.75}
+
+.wrap{
+  max-width:820px;
+  margin:0 auto;
+  padding:0 22px 100px;
+  position:relative;
+}
+
+/* ---------- 返回 ---------- */
+.back{
+  display:inline-block;
+  margin:26px 0 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.12em;
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.back:hover,.back:focus-visible{color:var(--blue);border-bottom-color:var(--yellow)}
+
+/* ---------- 座標抬頭 ---------- */
+.coord{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:22px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:.1em;
+  color:var(--muted);
+  line-height:1.9;
+}
+.coord b{color:var(--blue);font-weight:700}
+.coord .right{text-align:right}
+
+/* ---------- HERO ---------- */
+.hero{
+  margin-top:16px;
+  position:relative;
+  border:4px solid var(--blue-dk);
+  box-shadow:8px 8px 0 rgba(26,58,90,.5);
+  overflow:hidden;
+}
+
+.hero img{
+  display:block;
+  width:100%;
+  height:clamp(340px,58vh,480px);
+  object-fit:cover;
+}
+
+.hero .veil{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    rgba(10,23,29,.5) 0%,
+    rgba(10,23,29,.12) 42%,
+    rgba(10,23,29,.62) 100%);
+}
+
+.hero .center{
+  position:absolute;
+  top:50%;left:0;right:0;
+  transform:translateY(-50%);
+  text-align:center;
+  padding:0 14px;
+}
+
+.hero .kicker{
+  font-family:'Oswald',sans-serif;
+  font-weight:500;
+  font-size:clamp(12px,2.6vw,20px);
+  letter-spacing:.36em;
+  color:var(--paper);
+  text-shadow:1px 1px 4px rgba(0,0,0,.85);
+  opacity:0;
+  animation:fade-in .6s ease .2s forwards;
+}
+
+.hero h1{
+  font-size:clamp(62px,16vw,138px);
+  font-weight:900;
+  line-height:.9;
+  letter-spacing:.04em;
+  font-style:italic;
+  color:var(--paper);
+  margin:6px 0 18px;
+  text-shadow:
+    3px 3px 0 #0A171D, -2px -2px 0 #0A171D,
+    2px -2px 0 #0A171D, -2px 2px 0 #0A171D,
+    8px 8px 0 rgba(46,155,214,.65);
+  opacity:0;
+  animation:freeze-in .8s cubic-bezier(.15,1.1,.3,1) .35s forwards;
+}
+
+.hero .sub{
+  font-size:clamp(12px,2.4vw,18px);
+  font-weight:700;
+  letter-spacing:.3em;
+  color:var(--ice);
+  text-shadow:2px 2px 0 #0A171D,-1px -1px 0 #0A171D,1px -1px 0 #0A171D,-1px 1px 0 #0A171D;
+  opacity:0;
+  animation:fade-in .6s ease .85s forwards;
+}
+
+@keyframes fade-in{to{opacity:1}}
+@keyframes freeze-in{
+  0%{opacity:0;transform:translateX(60px) skewX(-12deg)}
+  100%{opacity:1;transform:translateX(0) skewX(0)}
+}
+
+/* ---------- 內文 ---------- */
+.lead{
+  font-size:14.5px;
+  color:#23373D;
+  margin-top:22px;
+}
+.lead b{color:#06324F}
+
+.punch{
+  text-align:center;
+  font-size:clamp(17px,3.6vw,26px);
+  font-weight:900;
+  letter-spacing:.12em;
+  margin:30px 0 4px;
+  color:var(--blue-dk);
+}
+
+/* ---------- 十年計數 ---------- */
+.decade{
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:10px;
+  margin:26px 0;
+  font-family:'Oswald',sans-serif;
+}
+.decade .num{
+  font-size:clamp(56px,13vw,110px);
+  font-weight:700;
+  line-height:1;
+  color:var(--blue);
+  text-shadow:4px 4px 0 var(--yellow);
+}
+.decade .unit{
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.2em;
+  color:var(--blue-dk);
+}
+
+/* ---------- 分隔 ---------- */
+.rule{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:44px 0 18px;
+}
+.rule .bar{flex:1;height:3px;background:var(--blue-dk)}
+.rule h2{
+  font-size:clamp(15px,3vw,20px);
+  font-weight:900;
+  letter-spacing:.15em;
+  white-space:nowrap;
+}
+
+.rule-thin{
+  display:flex;align-items:center;gap:10px;margin:36px 0 14px;
+}
+.rule-thin span{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.2em;color:var(--muted);
+}
+.rule-thin .bar{flex:1;height:1px;background:#C7D8E4}
+
+/* ---------- 情報袋 ---------- */
+.intel{
+  border:3px solid var(--blue-dk);
+  box-shadow:5px 5px 0 var(--yellow);
+  background:rgba(251,250,243,.88);
+  padding:18px 20px;
+}
+.intel p + p{margin-top:10px}
+.intel p{font-size:13.5px;color:#23373D}
+
+/* ---------- 剖面圖 ---------- */
+.section-cut{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.cut-img{
+  position:relative;
+  flex:0 0 auto;
+  width:min(290px,100%);
+  margin:0 auto;
+  border:3px solid var(--blue-dk);
+  box-shadow:5px 5px 0 rgba(26,58,90,.5);
+  background:#FBF6EA;
+  align-self:flex-start;
+}
+.cut-img img{display:block;width:100%;height:auto}
+
+.pin{
+  position:absolute;
+  left:0;
+  background:rgba(10,23,29,.85);
+  padding:2px 8px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.05em;
+  color:var(--ice);
+  white-space:nowrap;
+}
+.pin.top{background:#003F47;color:var(--paper)}
+.pin.bottom{background:var(--orange);color:#0A171D}
+
+.cut-list{flex:1;min-width:240px;font-size:12.5px;color:var(--blue-md);line-height:1.75}
+.cut-list .row{display:flex;gap:10px;padding:5px 0}
+.cut-list .k{font-weight:900;flex-shrink:0;color:var(--blue);min-width:44px}
+.cut-list .k.gold{color:#C98A3A}
+
+/* ---------- 信 ---------- */
+.letter{
+  background-image:url('https://free-paper-texture.com/p/p0096/p0096_m.jpg');
+  background-size:cover;
+  background-position:center;
+  background-color:#EFE9D8;
+  border:1px solid #C7BBA0;
+  box-shadow:6px 6px 0 rgba(26,58,90,.4);
+  padding:26px 26px 22px;
+}
+.letter p{font-size:13.5px;color:#2A2A24;line-height:2}
+.letter p + p{margin-top:13px}
+.letter .sign{
+  text-align:right;
+  font-style:italic;
+  font-size:13px;
+  color:#5A6B70;
+  margin-top:18px;
+}
+
+/* ---------- FAQ ---------- */
+.faq{display:flex;flex-direction:column;gap:14px}
+
+details.q{
+  border:3px solid var(--blue-dk);
+  box-shadow:5px 5px 0 var(--yellow);
+  background:rgba(251,250,243,.9);
+  overflow:hidden;
+}
+
+details.q summary{
+  list-style:none;
+  cursor:pointer;
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  font-size:14.5px;
+  color:var(--blue-dk);
+  transition:background .2s;
+}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary:hover{background:rgba(245,208,47,.22)}
+details.q summary:focus-visible{outline:2.5px solid var(--blue);outline-offset:-4px}
+
+details.q summary .qm{
+  font-family:'Oswald',sans-serif;
+  font-size:21px;
+  color:var(--yellow);
+  text-shadow:1px 1px 0 var(--blue-dk);
+  flex-shrink:0;
+}
+details.q summary .caret{
+  margin-left:auto;
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;
+  color:var(--blue);
+  transition:transform .25s ease;
+}
+details.q[open] summary .caret{transform:rotate(45deg)}
+
+details.q .a{
+  padding:0 16px 15px 44px;
+  font-size:13px;
+  color:var(--blue-md);
+}
+details.q .a b{color:var(--blue)}
+.mark{
+  background:linear-gradient(transparent 60%,var(--yellow) 60%);
+  transition:background .4s ease,color .4s ease,padding .4s ease;
+}
+
+/* ---------- 通往角色頁 ---------- */
+.crew-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  border:4px solid var(--blue-dk);
+  box-shadow:8px 8px 0 var(--yellow);
+  background:rgba(251,250,243,.9);
+  padding:22px 24px;
+  text-decoration:none;
+  color:inherit;
+  transition:transform .25s cubic-bezier(.2,.9,.3,1),box-shadow .25s;
+}
+.crew-cta:hover,.crew-cta:focus-visible{
+  transform:translate(-3px,-4px);
+  box-shadow:11px 12px 0 var(--yellow);
+}
+.crew-cta:focus-visible{outline:2.5px solid var(--blue);outline-offset:4px}
+.crew-cta .t{font-size:clamp(19px,4vw,27px);font-weight:900;letter-spacing:.06em}
+.crew-cta .d{font-size:12px;color:var(--muted);margin-top:2px}
+.crew-cta .go{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  letter-spacing:.16em;
+  color:var(--paper);
+  background:var(--blue);
+  padding:6px 18px;
+  white-space:nowrap;
+}
+
+/* ---------- 頁尾 ---------- */
+footer{
+  margin-top:56px;
+  padding-top:18px;
+  border-top:2px solid var(--blue-dk);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.1em;
+  color:var(--muted);
+}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--blue)}
+
+/* ---------- 天暗下來時：文字跟著亮起來 ---------- */
+body,.lead,.punch,.cut-list,.rule h2,.rule .bar,.intel,details.q,.crew-cta,.decade .unit,footer{
+  transition:background-color .4s ease,color .4s ease,border-color .4s ease;
+}
+
+body.dark{color:#DCE9F2}
+body.dark .lead,body.dark .punch,body.dark .cut-list{color:#C3D7E5}
+body.dark .lead b{color:var(--ice)}
+body.dark .rule h2,body.dark .decade .unit{color:#DCE9F2}
+body.dark .rule .bar{background:#5A7A92}
+body.dark .intel,body.dark details.q,body.dark .crew-cta{background:rgba(12,28,44,.85)}
+body.dark .intel p,body.dark details.q .a{color:#B6CCDC}
+
+/* 夜間：螢光筆改成實心黃塊 + 深色字，才讀得出來 */
+body.dark .mark{
+  background:var(--yellow);
+  color:#0A1728;
+  font-weight:700;
+  padding:1px 4px;
+}
+/* 夜間：藍色粗體在深藍底上會糊掉，換成冰藍 */
+body.dark details.q .a b{color:var(--ice)}
+body.dark details.q summary,body.dark .crew-cta .t{color:#DCE9F2}
+body.dark footer{border-top-color:#5A7A92}
+
+@media (max-width:640px){
+  .hero h1{letter-spacing:.02em}
+  #sun{top:6vh;right:6vw}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important;animation:none !important}
+  .hero .kicker,.hero h1,.hero .sub{opacity:1}
+  #snow{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="sky"></div>
+<div id="grid"></div>
+<div id="sun"></div>
+<canvas id="snow"></canvas>
+
+<div class="wrap">
+
+<a class="back" href="index.html">← 回檔案室</a>
+
+<div class="coord">
+  <div>
+    追夏小隊<br>
+    FROZEN SUMMER PROJECT<br>
+    TAIWAN · YEAR 10
+  </div>
+  <div class="right">
+    <b>23.4500° N, 121.4900° E</b><br>
+    北回歸線塔 · 花蓮<br>
+    ★ 永晝 · 冰封廢土
+  </div>
+</div>
+
+<div class="hero">
+  <img src="https://r2.uploads.tw/2026/06/1p9CFhiu2R.webp" alt="冰封的台灣">
+  <div class="veil"></div>
+  <div class="center">
+    <div class="kicker">THE GREAT FREEZE</div>
+    <h1>大災變</h1>
+    <div class="sub">夏天死掉的那一年</div>
+  </div>
+</div>
+
+<p class="lead">人類想幫發燒的地球退燒，往天上撒了一整套反射陣列，結果手一抖，地軸歪了。台灣<b>一夜之間冰封</b>，夏天再沒回來過。太陽二十四小時掛在天上，熱度全被擋在外面，整座島成了一具不用插電的天然冷凍庫。多數人早就認命，把永冬當成日子在過——覺得還在等夏天的，都是神經病。</p>
+
+<div class="decade">
+  <span class="num" id="counter">0</span>
+  <span class="unit">年了</span>
+</div>
+
+<p class="punch">而你，被交付了一件事。</p>
+
+<div class="rule-thin"><div class="bar"></div><span>情報袋裡</span><div class="bar"></div></div>
+
+<div class="intel">
+  <p>三天前，一個自稱「從夏天還沒死掉的那條時間線來的」傢伙攔住了你。他看起來疲憊得像沒睡過十年，話沒說幾句，把一袋東西塞進你手裡就消失了——一張標到花蓮某座塔底下的地圖、幾組看不懂的座標，還有一封信。</p>
+  <p>全世界都放棄夏天了。而你的口袋裡，現在裝著唯一一條把它找回來的線索。</p>
+</div>
+
+<div class="rule">
+  <div class="bar"></div>
+  <h2>情報 · 地下設施剖面</h2>
+  <div class="bar"></div>
+</div>
+
+<div class="section-cut">
+  <div class="cut-img">
+    <img src="https://r2.uploads.tw/2026/06/j36AB8jDKk.webp" alt="地下設施剖面圖">
+    <div class="pin top" style="top:1%">北回歸線塔</div>
+    <div class="pin" style="top:26%">偽裝避難所層</div>
+    <div class="pin" style="top:48%">機房 · 閘門層</div>
+    <div class="pin" style="top:64%">樁基結構層</div>
+    <div class="pin bottom" style="bottom:3%">地面校正節點</div>
+  </div>
+  <div class="cut-list">
+    <div class="row"><span class="k">塔</span><span>地表的地標。半埋在雪裡，看起來只是座廢棄的觀測塔。</span></div>
+    <div class="row"><span class="k">避難所</span><span>給放棄夏天的人看的表象——上下舖、壞掉的發電機、配給架。十年前的官方避難所，看起來什麼都沒有。</span></div>
+    <div class="row"><span class="k">機房</span><span>要靠座標才找得到的隱藏層。伺服器、控制台，還有一道得用校正參數才打得開的密封閘門。</span></div>
+    <div class="row"><span class="k">樁基</span><span>支撐整座設施的結構，纜線從這裡往下、通向最底。</span></div>
+    <div class="row"><span class="k gold">節點</span><span>最深處的地面校正節點。跟天上那套反射陣列連著線——啟動它，夏天就有機會回來。</span></div>
+  </div>
+</div>
+
+<div class="rule">
+  <div class="bar"></div>
+  <h2>給收下這封信的人</h2>
+  <div class="bar"></div>
+</div>
+
+<div class="letter">
+  <p>我沒有時間解釋我是誰，你也不必相信。只要知道一件事就好：在我來的那條路上，夏天還活著。</p>
+  <p>為什麼把這袋東西交給你？我也回答不了。能走到你面前，我只剩這一次機會，沒得挑。所以，就是你了。</p>
+  <p>地圖上那座塔，在花蓮北回歸線塔的後山。塔底下埋著一座地下設施——表面是廢棄避難所，往下走才是真的東西。照座標找到入口，下到最底層，那裡有一個地面校正節點，是當年讓這座島凍住的系統，唯一還能從地面碰到的開關。</p>
+  <p>啟動它，把被擾動的參數重新校正回去。我把序列和參數都夾在這袋情報裡了，照著做就行。一個人做不完，那道閘門需要懂天候的人才解得開——找個看得懂那些讀數的人，你會需要他。</p>
+  <p>最後一件事：成不成，不會馬上知道。等到天空第一次暗下來、降下這十年的第一個夜晚——那就是它開始運作的信號。在那之前，撐住。</p>
+  <p>要不要去，是你的事。我只是把夏天的位置，交到還願意相信的人手上。</p>
+  <p class="sign">——一個來不及看到夏天的人</p>
+</div>
+
+<div class="rule">
+  <div class="bar"></div>
+  <h2>這個世界，到底怎麼了</h2>
+  <div class="bar"></div>
+</div>
+
+<div class="faq">
+
+  <details class="q">
+    <summary><span class="qm">Q</span>這裡是廢土嗎？<span class="caret">+</span></summary>
+    <div class="a"><b>是，但沒死透。</b>有掠奪者、有凍死的風險、中央政府早就垮了——這些都很廢土。但這座島沒有一片死寂：靠著還在運轉的太陽能，<span class="mark">每座城市都還有活人聚落</span>，能補給、能交易、能聽八卦。簡單說，危險歸危險，但日子還過得下去。</div>
+  </details>
+
+  <details class="q">
+    <summary><span class="qm">Q</span>那大家都吃什麼？<span class="caret">+</span></summary>
+    <div class="a">大災變那天，整座島在一夜之間凍成冰棒——<span class="mark">連貨架上的食物也一起凍進了時間裡。</span>於是廢墟裡挖得到過期八年卻還能吃的乖乖、孔雀餅乾、養樂多、黑松沙士，是末日難得的天賜。不夠的部分，就靠打獵和聚落交易補。</div>
+  </details>
+
+  <details class="q">
+    <summary><span class="qm">Q</span>人都去哪了？<span class="caret">+</span></summary>
+    <div class="a">十年下來，多數人早就認命，把永冬當成日子在過，<span class="mark">聚在靠太陽能撐著的生存聚落裡苟活。</span>也有人往傳聞中的官方避難所（像台北）去碰運氣。至於還相信夏天會回來、還在外面跑的——那種人，全世界都當他們是神經病。</div>
+  </details>
+
+  <details class="q">
+    <summary><span class="qm">Q</span>北回歸線塔在哪？<span class="caret">+</span></summary>
+    <div class="a">在<b>花蓮</b>。塔的後山底下，埋著一個地面校正節點——<span class="mark">那是這趟旅程的終點，也是把夏天找回來的唯一一把鑰匙。</span>從台南出發，得繞過整條南迴、穿過台東，才到得了。</div>
+  </details>
+
+  <details class="q">
+    <summary><span class="qm">Q</span>冰天雪地裡，還有地方能喘口氣嗎？<span class="caret">+</span></summary>
+    <div class="a">有，而且是末日裡最珍貴的小確幸。<br><b>♨ 溫泉地熱</b>：像台東知本，地熱在冰原裡冒著煙，能泡進熱水、暫時忘記冷，是旅人少數的奢侈。<br><b>🏪 還營業的店</b>：偶爾會遇到靠太陽能硬撐、招牌還亮著的便利商店或柑仔店，老闆是還沒放棄日子的怪人，能買到熱食、挖到冰封零食。<br><b>🏘 生存聚落</b>：有市集、有八卦、龍蛇雜處，是補給和聽消息的地方。</div>
+  </details>
+
+</div>
+
+<div class="rule">
+  <div class="bar"></div>
+  <h2>而在這座島的某處</h2>
+  <div class="bar"></div>
+</div>
+
+<a class="crew-cta" href="frozen-summer-crew.html">
+  <div>
+    <div class="t">也有人同樣渴望著夏天</div>
+    <div class="d">五個瘋子 · 一台雪地車 · 一隻會打獵的白貓</div>
+  </div>
+  <span class="go">認識他們 →</span>
+</a>
+
+<footer>
+  <span>© 2026 MATCHA · 追夏 STUDIO</span>
+  <a href="index.html">抹茶的檔案室</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var sky  = document.getElementById('sky');
+  var grid = document.getElementById('grid');
+  var sun  = document.getElementById('sun');
+  var snowC= document.getElementById('snow');
+  var body = document.body;
+
+  /* --- 天空色階：永晝白 → 黃昏 → 夜 → 深夜 --- */
+  var stops = [
+    {p:0.00, c:[251,250,243]},
+    {p:0.45, c:[214,232,242]},
+    {p:0.68, c:[232,164,102]},
+    {p:0.84, c:[ 62, 82,120]},
+    {p:1.00, c:[ 10, 23, 40]}
+  ];
+
+  function lerp(a,b,t){return a+(b-a)*t}
+  function skyAt(p){
+    for(var i=0;i<stops.length-1;i++){
+      var s=stops[i], e=stops[i+1];
+      if(p>=s.p && p<=e.p){
+        var t=(p-s.p)/(e.p-s.p);
+        return [
+          Math.round(lerp(s.c[0],e.c[0],t)),
+          Math.round(lerp(s.c[1],e.c[1],t)),
+          Math.round(lerp(s.c[2],e.c[2],t))
+        ];
+      }
+    }
+    return stops[stops.length-1].c;
+  }
+
+  var ticking=false;
+  function onScroll(){
+    if(ticking) return;
+    ticking=true;
+    requestAnimationFrame(function(){
+      var max = document.body.scrollHeight - window.innerHeight;
+      var p = max>0 ? Math.min(1, Math.max(0, window.scrollY/max)) : 0;
+
+      var c = skyAt(p);
+      sky.style.backgroundColor = 'rgb('+c[0]+','+c[1]+','+c[2]+')';
+
+      grid.style.opacity = String(Math.max(0, 1 - p*1.5));
+
+      var drop = Math.max(0, (p-0.42)/0.42);
+      sun.style.transform = 'translateY('+(drop*62)+'vh) scale('+(1-drop*0.25)+')';
+      sun.style.opacity   = String(Math.max(0, 1-drop*1.15));
+
+      if(p>0.72){ body.classList.add('dark'); snowC.classList.add('on'); }
+      else      { body.classList.remove('dark'); snowC.classList.remove('on'); }
+
+      ticking=false;
+    });
+  }
+
+  /* --- 十年計數 --- */
+  var counter = document.getElementById('counter');
+  if(counter && 'IntersectionObserver' in window){
+    var cio = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        if(reduce){ counter.textContent='10'; return; }
+        var n=0;
+        var tick=setInterval(function(){
+          n++; counter.textContent=n;
+          if(n>=10) clearInterval(tick);
+        },90);
+      });
+    },{threshold:.6});
+    cio.observe(counter);
+  }
+
+  /* --- 雪 --- */
+  if(!reduce){
+    var ctx = snowC.getContext('2d');
+    var flakes=[], W=0, H=0;
+
+    function resize(){
+      W = snowC.width  = window.innerWidth;
+      H = snowC.height = window.innerHeight;
+      var count = Math.round(W/14);
+      flakes = [];
+      for(var i=0;i<count;i++){
+        flakes.push({
+          x:Math.random()*W,
+          y:Math.random()*H,
+          r:Math.random()*1.8+0.6,
+          sp:Math.random()*0.6+0.25,
+          dr:Math.random()*0.5-0.25
+        });
+      }
+    }
+    resize();
+    window.addEventListener('resize',resize);
+
+    (function draw(){
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle='rgba(255,255,255,.85)';
+      for(var i=0;i<flakes.length;i++){
+        var f=flakes[i];
+        ctx.beginPath();
+        ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+        ctx.fill();
+        f.y += f.sp; f.x += f.dr;
+        if(f.y>H){ f.y=-4; f.x=Math.random()*W; }
+        if(f.x>W) f.x=0;
+        if(f.x<0) f.x=W;
+      }
+      requestAnimationFrame(draw);
+    })();
+  }
+
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>

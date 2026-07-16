@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matcha — 角色卡檔案室</title>
+<meta name="description" content="Matcha 的 AI 角色卡作品集">
+
+<!-- 社群分享預覽（貼到 Discord / Twitter 會顯示） -->
+<meta property="og:title" content="Matcha — 角色卡檔案室">
+<meta property="og:description" content="AI 角色卡作品集">
+<meta property="og:type" content="website">
+<!-- <meta property="og:image" content="https://你的網域/img/og.jpg"> -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:      #14211C;   /* 深墨綠 · 主文字 */
+  --paper:    #EDE7D6;   /* 紙黃 · 底 */
+  --paper-hi: #F7F3E6;   /* 亮紙 · 卡面 */
+  --rule:     #B9AF93;   /* 分隔線 */
+  --muted:    #6B7A70;   /* 次要文字 */
+  --tab:      #2F5D4E;   /* 標籤綠 */
+  --stamp:    #B4432C;   /* 印章紅 · 唯一強調色 */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--paper);
+  /* 檔案室的紙紋：極淡的橫線 */
+  background-image:repeating-linear-gradient(
+    to bottom,
+    transparent 0 27px,
+    rgba(185,175,147,.22) 27px 28px
+  );
+  color:var(--ink);
+  font-family:'Noto Sans TC',system-ui,sans-serif;
+  line-height:1.75;
+  padding:0 24px 80px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:880px;margin:0 auto}
+
+/* ---------- 抬頭 ---------- */
+header{
+  padding:72px 0 40px;
+  border-bottom:2px solid var(--ink);
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+}
+
+.sitename{
+  font-family:'Noto Serif TC',serif;
+  font-weight:900;
+  font-size:clamp(38px,7vw,62px);
+  line-height:1;
+  letter-spacing:.02em;
+}
+
+.sitename em{
+  font-style:normal;
+  color:var(--stamp);
+}
+
+.tagline{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:10px;
+  letter-spacing:.04em;
+}
+
+.meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  text-align:right;
+  line-height:1.9;
+  letter-spacing:.05em;
+}
+
+/* ---------- 區塊標題 ---------- */
+.section-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:56px 0 22px;
+}
+
+.section-head h2{
+  font-family:'Noto Serif TC',serif;
+  font-size:19px;
+  font-weight:700;
+  letter-spacing:.14em;
+  white-space:nowrap;
+}
+
+.section-head .count{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.section-head::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--rule);
+}
+
+/* ---------- 索引卡 ---------- */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:22px;
+}
+
+.card{
+  position:relative;
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  background:var(--paper-hi);
+  border:1.5px solid var(--ink);
+  padding:0 0 18px;
+  transition:transform .28s cubic-bezier(.2,.9,.3,1),
+             box-shadow .28s cubic-bezier(.2,.9,.3,1);
+  box-shadow:3px 3px 0 rgba(20,33,28,.18);
+  overflow:hidden;
+}
+
+/* 檔案標籤（頁籤） */
+.card::before{
+  content:attr(data-tab);
+  position:absolute;
+  top:0; right:0;
+  background:var(--tab);
+  color:var(--paper-hi);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  padding:3px 10px;
+  z-index:2;
+}
+
+/* 抽出來的手感 */
+.card:hover,
+.card:focus-visible{
+  transform:translate(-4px,-6px);
+  box-shadow:9px 11px 0 rgba(20,33,28,.28);
+}
+
+.card:focus-visible{outline:2.5px solid var(--stamp);outline-offset:3px}
+
+.card-img{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  display:block;
+  border-bottom:1.5px solid var(--ink);
+  background:var(--rule);
+  filter:grayscale(.35) contrast(1.05);
+  transition:filter .3s ease;
+}
+
+.card:hover .card-img{filter:none}
+
+.card-body{padding:14px 16px 0}
+
+.card h3{
+  font-family:'Noto Serif TC',serif;
+  font-size:22px;
+  font-weight:900;
+  line-height:1.25;
+}
+
+.card .en{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  color:var(--muted);
+  letter-spacing:.14em;
+  display:block;
+  margin-top:2px;
+}
+
+.card p{
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:9px;
+  line-height:1.7;
+}
+
+.card-foot{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.chip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.08em;
+  border:1px solid var(--rule);
+  color:var(--muted);
+  padding:1px 7px;
+}
+
+.chip.nsfw{
+  border-color:var(--stamp);
+  color:var(--stamp);
+  font-weight:700;
+}
+
+/* ---------- 準備中的卡（佔位）---------- */
+.card.wip{
+  border-style:dashed;
+  box-shadow:none;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:220px;
+  pointer-events:none;
+}
+.card.wip::before{content:none}
+.card.wip span{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--rule);
+  letter-spacing:.2em;
+}
+
+/* ---------- 關於 ---------- */
+.about{
+  background:var(--paper-hi);
+  border-left:4px solid var(--tab);
+  padding:24px 26px;
+  font-size:14px;
+}
+.about p + p{margin-top:12px}
+
+.links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--rule);
+}
+
+.links a{
+  color:var(--tab);
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  letter-spacing:.06em;
+  text-decoration:none;
+  border-bottom:1.5px solid transparent;
+  padding-bottom:1px;
+  transition:border-color .2s;
+}
+.links a:hover,.links a:focus-visible{border-bottom-color:var(--stamp)}
+
+/* ---------- 頁尾 ---------- */
+footer{
+  margin-top:70px;
+  padding-top:20px;
+  border-top:2px solid var(--ink);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  color:var(--muted);
+  letter-spacing:.08em;
+}
+
+.stamp{
+  border:2px solid var(--stamp);
+  color:var(--stamp);
+  font-weight:700;
+  padding:4px 12px;
+  transform:rotate(-3deg);
+  font-size:10px;
+  letter-spacing:.16em;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1 class="sitename">抹茶的<em>檔案室</em></h1>
+    <p class="tagline">AI 角色卡 · 世界觀 · 未歸檔的人們</p>
+  </div>
+  <div class="meta">
+    MATCHA / 抹茶<br>
+    TAIWAN · 台灣<br>
+    EST. 2025.11
+  </div>
+</header>
+
+<div class="section-head">
+  <h2>角色檔案</h2>
+  <span class="count">02 / 建檔中</span>
+</div>
+
+<div class="cards">
+
+  <a class="card" href="nick.html" data-tab="BOXER">
+    <img class="card-img" src="https://r2.uploads.tw/2026/06/wrmCCkpjIH.webp" alt="尼克・卡拉漢">
+    <div class="card-body">
+      <h3>尼克・卡拉漢</h3>
+      <span class="en">NICK CALLAHAN</span>
+      <p>格雷森大學拳擊手。愛爾蘭裔美國人，所有的感覺都能翻譯成飢餓或一記重拳。</p>
+      <div class="card-foot">
+        <span class="chip">CAVEDUCK</span>
+        <span class="chip">TINGLE</span>
+        <span class="chip">WHIF</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="card" href="frozen-summer.html" data-tab="WORLD">
+    <img class="card-img" src="https://r2.uploads.tw/2026/06/NDuqee4pvs.webp" alt="夏日時光">
+    <div class="card-body">
+      <h3>夏日時光</h3>
+      <span class="en">FROZEN SUMMER</span>
+      <p>冰封台灣，永晝廢土。五個人一台雪地車，去追一個全世界都當成笑話的傳說。</p>
+      <div class="card-foot">
+        <span class="chip">五人多角</span>
+        <span class="chip">CAVEDUCK</span>
+      </div>
+    </div>
+  </a>
+
+  <div class="card wip"><span>NEXT</span></div>
+
+</div>
+
+<div class="section-head">
+  <h2>關於</h2>
+</div>
+
+<div class="about">
+  <p>我是抹茶，台灣人，做 AI 角色卡。這裡放我自己的角色們——設定、外觀、他們住的世界，還有可以去哪裡遇到他們。</p>
+  <p>各平台限制不一樣，同一個角色在不同地方會長得不太一樣。這個站放的是我心裡的版本。</p>
+  <div class="links">
+    <a href="https://caveduck.io/user/Matcha_" target="_blank" rel="noopener">CaveDuck ↗</a>
+    <a href="#" target="_blank" rel="noopener">Tingle ↗</a>
+    <a href="#" target="_blank" rel="noopener">WHIF ↗</a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 MATCHA · 角色設定與文字為個人創作</span>
+  <span class="stamp">未完成</span>
+</footer>
+
+</div>
+</body>
+</html>

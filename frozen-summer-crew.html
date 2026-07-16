@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>追夏小隊 — 夏日時光 · 抹茶的檔案室</title>
+<meta name="description" content="五個瘋子，一台雪地車，一隻會打獵的白貓。">
+
+<meta property="og:title" content="追夏小隊 · THE SUMMER CHASERS">
+<meta property="og:description" content="五個瘋子，一台雪地車，往東去追一個被全世界當成笑話的傳說。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://r2.uploads.tw/2026/06/NDuqee4pvs.webp">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:    #2E9BD6;
+  --blue-dk: #1A3A5A;
+  --blue-md: #3A5A72;
+  --yellow:  #F5D02F;
+  --paper:   #FBFAF3;
+  --grid:    #D8E6F0;
+  --muted:   #5A7A92;
+  --orange:  #E6642A;
+  --ice:     #8BC3E5;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px;
+  color:var(--blue-dk);
+  font-family:'Noto Sans TC',system-ui,sans-serif;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+.wrap{
+  max-width:900px;
+  margin:0 auto;
+  padding:0 22px 100px;
+}
+
+/* ---------- 返回 ---------- */
+.back{
+  display:inline-block;
+  margin:26px 0 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.12em;
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.back:hover,.back:focus-visible{color:var(--blue);border-bottom-color:var(--yellow)}
+
+/* ---------- 抬頭 ---------- */
+.dots{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+.dots .three{display:flex;gap:5px}
+.dots .three i{width:8px;height:8px;border-radius:50%;display:block}
+.dots .three i:nth-child(1),.dots .three i:nth-child(3){background:var(--blue)}
+.dots .three i:nth-child(2){background:var(--yellow)}
+.dots .tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--blue);
+}
+
+.title-block{text-align:center;margin-top:14px}
+.title-block .eyebrow{
+  font-size:13px;font-weight:700;letter-spacing:.25em;color:var(--blue-dk);
+}
+.title-block h1{
+  font-size:clamp(44px,11vw,84px);
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.02em;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--yellow);
+  margin-top:6px;
+  opacity:0;
+  animation:drop-in .6s cubic-bezier(.2,1.1,.3,1) .1s forwards;
+}
+.title-block .en{
+  display:inline-block;
+  background:var(--yellow);
+  padding:3px 18px;
+  transform:rotate(-1.5deg);
+  margin-top:12px;
+  font-family:'Oswald',sans-serif;
+  font-weight:500;
+  font-size:13px;
+  letter-spacing:.2em;
+  color:var(--blue-dk);
+  opacity:0;
+  animation:fade-in .5s ease .5s forwards;
+}
+@keyframes drop-in{0%{opacity:0;transform:translateY(-22px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{to{opacity:1}}
+
+/* ---------- 團體照 ---------- */
+.group{
+  position:relative;
+  width:min(600px,100%);
+  margin:22px auto 0;
+}
+.group img{display:block;width:100%;height:auto;border:3px solid var(--blue-dk)}
+.group .c{position:absolute;width:58px;height:58px}
+.group .c.tl{top:-8px;left:-8px;border-top:4px solid var(--blue);border-left:4px solid var(--blue)}
+.group .c.br{bottom:-8px;right:-8px;border-bottom:4px solid var(--yellow);border-right:4px solid var(--yellow)}
+
+.blurb{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-top:24px;
+  font-size:14px;
+}
+.blurb .star{font-size:20px;font-weight:900;color:var(--yellow);line-height:1.4;flex-shrink:0}
+
+/* ---------- 區塊標 ---------- */
+.rule{display:flex;align-items:center;gap:12px;margin:44px 0 18px}
+.rule .lbl{
+  background:var(--blue);
+  color:var(--paper);
+  font-weight:900;
+  font-size:15px;
+  letter-spacing:.08em;
+  padding:2px 14px;
+  transform:skewX(-8deg);
+}
+.rule .lbl span{display:inline-block;transform:skewX(8deg)}
+.rule .bar{flex:1;height:2px;background:var(--blue)}
+.rule .en{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.2em;color:var(--muted);
+}
+
+/* ===========================================
+   簽名元素：檔案抽屜
+   五個人各是一個抽屜，一次只開一個。
+   點開才看得到「他為什麼是這樣的人」——
+   這支隊伍的規矩：想知道，得自己伸手去拉。
+   =========================================== */
+.crew{display:flex;flex-direction:column;gap:12px}
+
+.member{
+  border:3px solid var(--blue-dk);
+  box-shadow:5px 5px 0 var(--yellow);
+  background:var(--paper);
+  overflow:hidden;
+  transition:box-shadow .3s ease,transform .3s ease;
+}
+.member[open]{box-shadow:8px 8px 0 var(--yellow);transform:translate(-2px,-2px)}
+
+.member > summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 14px;
+  transition:background .2s;
+}
+.member > summary::-webkit-details-marker{display:none}
+.member > summary:hover{background:rgba(46,155,214,.09)}
+.member > summary:focus-visible{outline:2.5px solid var(--blue);outline-offset:-4px}
+
+.member .no{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.1em;
+  color:var(--paper);
+  background:var(--blue);
+  padding:1px 9px;
+  transform:skewX(-8deg);
+  flex-shrink:0;
+}
+.member .no span{display:inline-block;transform:skewX(8deg)}
+.member.pet .no{background:var(--yellow);color:var(--blue-dk)}
+
+.member .thumb{
+  width:52px;height:52px;
+  object-fit:cover;
+  object-position:top center;
+  border:2px solid var(--blue-dk);
+  flex-shrink:0;
+  background:var(--grid);
+}
+
+.member .who{flex:1;min-width:0}
+.member .zh{font-size:19px;font-weight:900;line-height:1.2}
+.member .vit{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;
+  color:var(--muted);
+  letter-spacing:.05em;
+}
+
+.member .pull{
+  margin-left:auto;
+  flex-shrink:0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+  color:var(--blue);
+  border:1px solid var(--blue);
+  padding:2px 8px;
+  transition:background .2s,color .2s;
+}
+.member > summary:hover .pull{background:var(--blue);color:var(--paper)}
+.member[open] .pull{background:var(--blue);color:var(--paper)}
+.member[open] .pull::after{content:"　關上"}
+.member .pull::after{content:"　拉開"}
+
+/* 抽屜內容 */
+.drawer{
+  display:flex;
+  gap:18px;
+  padding:4px 16px 18px;
+  border-top:2px dashed var(--grid);
+  flex-wrap:wrap;
+}
+
+.drawer .photo{
+  flex:0 0 auto;
+  width:min(230px,100%);
+  margin:14px auto 0;
+  border:3px solid var(--blue-dk);
+  box-shadow:4px 4px 0 rgba(26,58,90,.35);
+  position:relative;
+  align-self:flex-start;
+}
+.drawer .photo img{display:block;width:100%;height:auto}
+.drawer .photo .nm{
+  position:absolute;
+  bottom:6px;right:8px;
+  font-size:22px;font-weight:900;color:var(--paper);
+  text-shadow:2px 2px 0 var(--blue-dk),-1px -1px 0 var(--blue-dk),1px -1px 0 var(--blue-dk),-1px 1px 0 var(--blue-dk);
+  line-height:1;
+}
+
+.drawer .txt{flex:1;min-width:250px;padding-top:14px}
+
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tags b{
+  font-size:10px;font-weight:700;
+  color:var(--blue-dk);
+  background:var(--yellow);
+  padding:1px 8px;
+}
+
+.surface{font-size:12.5px;color:var(--blue-dk);margin-bottom:10px}
+.depth{
+  font-size:11.5px;
+  color:var(--blue-md);
+  border-left:3px solid var(--blue);
+  padding-left:10px;
+}
+
+/* ---------- 車 ---------- */
+.rig{
+  border:3px solid var(--blue-dk);
+  box-shadow:5px 5px 0 var(--yellow);
+  background:var(--paper);
+  padding:16px 18px;
+  font-size:13px;
+  color:var(--blue-md);
+}
+.rig .route{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;
+  color:var(--blue-dk);
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed var(--grid);
+  letter-spacing:.04em;
+}
+.rig .route b{color:var(--blue)}
+
+/* ---------- 回世界觀 ---------- */
+.world-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  border:4px solid var(--blue-dk);
+  box-shadow:8px 8px 0 var(--yellow);
+  background:var(--paper);
+  padding:20px 22px;
+  text-decoration:none;
+  color:inherit;
+  transition:transform .25s cubic-bezier(.2,.9,.3,1),box-shadow .25s;
+}
+.world-cta:hover,.world-cta:focus-visible{
+  transform:translate(-3px,-4px);
+  box-shadow:11px 12px 0 var(--yellow);
+}
+.world-cta:focus-visible{outline:2.5px solid var(--blue);outline-offset:4px}
+.world-cta .t{font-size:clamp(17px,3.6vw,24px);font-weight:900;letter-spacing:.06em}
+.world-cta .d{font-size:12px;color:var(--muted);margin-top:2px}
+.world-cta .go{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;letter-spacing:.16em;
+  color:var(--paper);background:var(--blue);
+  padding:6px 18px;white-space:nowrap;
+}
+
+/* ---------- 頁尾 ---------- */
+footer{
+  margin-top:52px;
+  padding-top:18px;
+  border-top:2px solid var(--blue-dk);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.1em;color:var(--muted);
+}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--blue)}
+
+@media (max-width:560px){
+  .member .thumb{width:44px;height:44px}
+  .member .zh{font-size:17px}
+  .member .pull{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important;animation:none !important}
+  .title-block h1,.title-block .en{opacity:1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="back" href="index.html">← 回檔案室</a>
+
+<div class="dots">
+  <div class="three"><i></i><i></i><i></i></div>
+  <span class="tag">FROZEN SUMMER · CREW</span>
+</div>
+
+<div class="title-block">
+  <div class="eyebrow">五個瘋子 · 一台雪地車</div>
+  <h1>追夏小隊</h1>
+  <div class="en">THE SUMMER CHASERS</div>
+</div>
+
+<div class="group">
+  <div class="c tl"></div>
+  <div class="c br"></div>
+  <img src="https://r2.uploads.tw/2026/06/NDuqee4pvs.webp" alt="追夏小隊全員">
+</div>
+
+<div class="blurb">
+  <span class="star">✦</span>
+  <p>十年前那場大災變，把所有人對夏天的指望都凍熄了。這五個人是少數的例外——他們撐過十年永晝沒死成，湊成一家人，開著一台改裝雪地車，往東去追一個被全世界當成笑話的傳說：夏天，還回得來。</p>
+</div>
+
+<div class="rule">
+  <div class="lbl"><span>隊員檔案</span></div>
+  <div class="bar"></div>
+  <span class="en">PULL TO OPEN</span>
+</div>
+
+<div class="crew">
+
+  <details class="member" name="crew">
+    <summary>
+      <span class="no"><span>01</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/wrmCCkpjIH.webp" alt="">
+      <span class="who">
+        <span class="zh">林海 <small style="font-size:11px;color:#5A7A92;font-weight:400">RIO</small></span>
+        <span class="vit">28 · 男 · 183cm · 開路／打獵／煮飯</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/wrmCCkpjIH.webp" alt="林海">
+        <span class="nm">林海</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#開朗</b><b>#細心</b><b>#讀空氣</b><b>#喜歡撿人</b><b>#來者不拒</b></div>
+        <p class="surface">零下四度還穿著一副「我才不冷」死樣子的男人。藍髮往上撥、笑起來比那顆假太陽還吵。負責衝第一個探路、扛最重的東西、把大家餵飽。</p>
+        <p class="depth">十八歲那年災變跟家人逃難走散，到現在生死不明。他沒崩潰，反而咬定家人只是走散、夏天只是躲起來——這份固執的樂觀撐了他十年，也蓋住沒護住家人的愧疚。看到落單的人就撿，小滿就是他養大的，這支隊伍是他一個一個焊起來的。別被傻笑騙了，他選擇簡單，不是真的笨。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="member" name="crew">
+    <summary>
+      <span class="no"><span>02</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/ntS2KNgvC7.webp" alt="">
+      <span class="who">
+        <span class="zh">沈子澄 <small style="font-size:11px;color:#5A7A92;font-weight:400">NEO</small></span>
+        <span class="vit">34 · 男 · 178cm · 導航／天候</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/ntS2KNgvC7.webp" alt="沈子澄">
+        <span class="nm">沈子澄</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#溫柔</b><b>#斯文</b><b>#深不可測</b><b>#笑著迴避</b><b>#紳士的另一面</b></div>
+        <p class="surface">這年頭唯一還讀得懂這片鬼天氣的人。綠髮、細框眼鏡，安靜到讓人常忘記他在場。講話輕聲細語、體貼周到，溫和得不像話。</p>
+        <p class="depth">前氣象觀測員。災變時家人撤往安全區，他選擇留下守土，活成那種站在外面看、卻不肯下場的人。溫柔底下你永遠挖不到底——那條一年沒回音的頻率，他只在夜裡獨自試著接收。跟隊上路說是因為「你們需要導航」，沒人點破：他只是受不了一個人。問他真心話，他會笑著岔開。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="member" name="crew">
+    <summary>
+      <span class="no"><span>03</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/UHmn7jLO4Z.webp" alt="">
+      <span class="who">
+        <span class="zh">蘇敏雅 <small style="font-size:11px;color:#5A7A92;font-weight:400">MIA</small></span>
+        <span class="vit">37 · 女 · 175cm · 駕駛／維修／走私</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/UHmn7jLO4Z.webp" alt="蘇敏雅">
+        <span class="nm">蘇敏雅</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#御姐</b><b>#黑手</b><b>#嘴賤</b><b>#撩完就跑</b></div>
+        <p class="surface">一身機油味的南部黑手技師，這台雪地車能動全靠她。暗紅高馬尾、眼尾上挑，嘴角叼根沒點的菸。三句兩句在虧人，黑市裡沒有她弄不到的東西。</p>
+        <p class="depth">二十七歲那年失去深愛的人，從此學乖——再也賠不起愛一個人的代價，用撩人和從容把自己整個包起來。撩你撩得開心，真湊近她卻早轉頭走人，只負責讓氣氛好笑，不負責讓你當真。被 Rio 的傻氣纏到半推半就被拖下水，在這群傻子身上找回想護著點什麼的衝動——當然她不認。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="member" name="crew">
+    <summary>
+      <span class="no"><span>04</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/NFAOIVqjmp.webp" alt="">
+      <span class="who">
+        <span class="zh">周柏勳 <small style="font-size:11px;color:#5A7A92;font-weight:400">HALE</small></span>
+        <span class="vit">40 · 男 · 185cm · 開路／打獵／戰鬥</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/NFAOIVqjmp.webp" alt="周柏勳">
+        <span class="nm">周柏勳</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#寡言</b><b>#別扭</b><b>#嘴硬心軟</b><b>#淡淡的笑</b></div>
+        <p class="surface">隊上的肉盾和戰力。銀色亂短髮、黃眼、臉頰一道疤，話少到容易被當成在生氣——其實只是不知道怎麼開口。災變前幹過警備，掠奪者衝來那刻他一句話沒說，先擋在所有人前面。</p>
+        <p class="depth">別扭得要命，溫柔全藏在動作裡。災變路上沒能護住一個依賴他的孩子，那是他最痛的根；十年送走太多人，學到動感情就是準備下一場葬禮。他真心覺得被凍死算了，偏偏那雙手比腦子誠實。全隊最不信夏天，卻一步沒離開。偶爾淡淡笑一下，洩漏藏起來的溫柔。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="member" name="crew">
+    <summary>
+      <span class="no"><span>05</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/OwL3qJifOR.webp" alt="">
+      <span class="who">
+        <span class="zh">陳禾滿 <small style="font-size:11px;color:#5A7A92;font-weight:400">小滿</small></span>
+        <span class="vit">23 · 生理男 · 170cm · 隊伍的眼睛</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/OwL3qJifOR.webp" alt="陳禾滿">
+        <span class="nm">小滿</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#通透</b><b>#天然</b><b>#電波系</b><b>#性知識來自哥哥們</b></div>
+        <p class="surface">奶油色中長髮、青綠眼，中性清秀常被認成女生，他不在意。安靜得像一段被雪蓋住的時間，卻能看見全隊都漏掉的細節——一個腳印、情緒的走向、時間的縫隙。</p>
+        <p class="depth">大災變那年父母罹難，留下一包仙女棒；隔年快餓死時被 Rio 撿回養大。十年永晝加創傷把他的時間感弄壞了，偶爾分不清現在和記憶裡的夏天，會聽見不存在的蟬鳴。但清醒時他比誰都銳利。偷學三個大人怎麼當大人，現學現賣語境全錯。那包仙女棒一直帶著，是父母留下的最後一點夏天。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="member pet" name="crew">
+    <summary>
+      <span class="no"><span>夥伴</span></span>
+      <img class="thumb" src="https://r2.uploads.tw/2026/06/pMCzQqXtjK.webp" alt="">
+      <span class="who">
+        <span class="zh">西瓜</span>
+        <span class="vit">白化症的貓 · 品種不明 · 小滿撿的</span>
+      </span>
+      <span class="pull"></span>
+    </summary>
+    <div class="drawer">
+      <div class="photo">
+        <img src="https://r2.uploads.tw/2026/06/pMCzQqXtjK.webp" alt="西瓜">
+        <span class="nm">西瓜</span>
+      </div>
+      <div class="txt">
+        <div class="tags"><b>#白化貓</b><b>#賣萌</b><b>#狩獵一流</b><b>#小滿的貓</b></div>
+        <p class="surface">全白的毛、紅眼睛、粉鼻子，看起來人畜無害，最愛在雪地裡打滾賣萌。名字是小滿取的。</p>
+        <p class="depth">別被那張萌臉騙了——一進狩獵狀態瞬間切換成安靜又精準，會自己抓雪地裡的小動物，偶爾叼回來上供，警覺性高得能先一步察覺危險，是這支隊伍的隱形戰力。平常黏著小滿，他神遊發作的時候，西瓜就安安靜靜守在他身邊。</p>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+<div class="rule">
+  <div class="lbl"><span>那台車</span></div>
+  <div class="bar"></div>
+  <span class="en">THE RIG</span>
+</div>
+
+<div class="rig">
+  <p>一台改裝雪地車。能動全靠蘇敏雅，能不撞死全靠沈子澄，能不餓死全靠林海，遇到掠奪者能活著全靠周柏勳。小滿負責看見大家都沒看見的東西，西瓜負責抓晚餐。</p>
+  <p class="route">
+    路線 ── 台南 <b>→</b> 南迴 <b>→</b> 台東 <b>→</b> 花蓮<br>
+    終點 ── 北回歸線塔 · 地面校正節點
+  </p>
+</div>
+
+<div class="rule">
+  <div class="lbl"><span>他們在追什麼</span></div>
+  <div class="bar"></div>
+  <span class="en">WHY</span>
+</div>
+
+<a class="world-cta" href="frozen-summer.html">
+  <div>
+    <div class="t">夏天死掉的那一年</div>
+    <div class="d">大災變 · 情報袋 · 那封信 · 這座島到底怎麼了</div>
+  </div>
+  <span class="go">← 回世界觀</span>
+</a>
+
+<footer>
+  <span>© 2026 MATCHA · 追夏 STUDIO</span>
+  <a href="index.html">抹茶的檔案室</a>
+</footer>
+
+</div>
+</body>
+</html>
