@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>角色卡民調</title>
+<meta name="description" content="想參考一下大家的意見～五題大概一分鐘，可以匿名。">
+<meta property="og:title" content="角色卡民調">
+<meta property="og:description" content="想參考一下大家的意見～五題大概一分鐘，可以匿名。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#ECEDE8;--ink:#111;--g:#9BD14B;--g2:#6E9F2A;--white:#fff;--r:22px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:"Noto Sans TC",system-ui,sans-serif;line-height:1.6;min-height:100vh;overflow-x:hidden;
+background-image:radial-gradient(rgba(17,17,17,.07) 1px,transparent 1.2px);background-size:14px 14px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 80px;position:relative}
+
+/* header */
+header{position:relative;text-align:center;padding:64px 0 34px}
+h1{font-weight:900;font-size:clamp(58px,15vw,138px);line-height:1;letter-spacing:.02em;display:inline-block;position:relative;
+text-shadow:4px 4px 0 var(--g),8px 8px 0 var(--ink)}
+.en{font-family:"Rubik Mono One",sans-serif;font-size:clamp(14px,3.4vw,22px);letter-spacing:.18em;margin-top:18px}
+.intro{max-width:520px;margin:20px auto 0;font-size:15px;font-weight:500}
+.tag{display:inline-block;margin-top:16px;background:var(--ink);color:var(--g);font-weight:700;font-size:13px;padding:4px 14px;border-radius:99px;transform:rotate(-2deg)}
+
+/* decor */
+.deco{position:absolute;pointer-events:none;z-index:0}
+.deco svg{display:block;width:100%;height:100%}
+.tw{animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(.7) rotate(20deg)}}
+.fly{animation:fly 6s ease-in-out infinite}
+@keyframes fly{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(10px,-14px) rotate(8deg)}}
+.wing{transform-origin:20px 16px;animation:flap .45s ease-in-out infinite alternate}
+@keyframes flap{to{transform:scaleX(.35)}}
+.sticker{position:absolute;z-index:1;width:64px;height:64px;border-radius:50%;background:var(--g);border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:28px;transform:rotate(12deg);box-shadow:3px 3px 0 var(--ink)}
+
+/* sections */
+.sec{position:relative;z-index:1;background:var(--white);border:3px solid var(--ink);border-radius:var(--r);box-shadow:6px 6px 0 var(--ink);padding:26px 22px 24px;margin-top:30px}
+.sec-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.num{font-family:"Rubik Mono One",sans-serif;background:var(--g);border:3px solid var(--ink);border-radius:99px;padding:2px 12px;font-size:15px;transform:rotate(-4deg)}
+.sec h2{font-size:clamp(20px,4.6vw,26px);font-weight:900;line-height:1.3}
+.hint{font-size:14px;color:#555;margin-top:8px}
+.limit{font-size:12px;font-weight:700;border:2px solid var(--ink);border-radius:99px;padding:0 9px;margin-left:auto;white-space:nowrap}
+
+/* cards */
+.count{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.count span{font-size:13px;font-weight:700;background:var(--paper);border:2px solid var(--ink);border-radius:99px;padding:2px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:14px;margin-top:16px}
+.cd{position:relative;background:none;border:0;text-align:center;padding:0;-webkit-tap-highlight-color:transparent}
+.cd .pic{display:block;position:relative;aspect-ratio:616/900;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--paper);transition:transform .18s,box-shadow .18s}
+.cd img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9)}
+.cd .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;font-weight:900;color:#bbb}
+.cd .nm{display:block;font-size:13px;font-weight:700;margin-top:6px;line-height:1.35}
+.cd:hover .pic{transform:translateY(-3px)}
+.cd .st{position:absolute;top:-8px;right:-8px;z-index:2;width:34px;height:34px;border-radius:50%;border:3px solid var(--ink);display:none;place-items:center;font-size:17px;font-weight:900;background:var(--white)}
+.cd.p .pic{box-shadow:4px 4px 0 var(--g2);border-color:var(--ink)}
+.cd.p .st{display:grid;background:var(--g)}
+.cd.f .pic{box-shadow:5px 5px 0 var(--ink);transform:rotate(-2deg)}
+.cd.f .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(155,209,75,.55))}
+.cd.f .st{display:grid;background:var(--ink);color:var(--g);animation:pop .3s}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.empty{margin-top:16px;padding:20px;border:2px dashed #999;border-radius:14px;color:#666;font-size:14px;text-align:center}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chip{border:2.5px solid var(--ink);background:var(--white);border-radius:99px;padding:7px 16px;font-weight:700;font-size:15px;transition:transform .12s,background .12s}
+.chip:hover{transform:translateY(-2px)}
+.chip.on{background:var(--g);box-shadow:3px 3px 0 var(--ink)}
+
+/* inputs */
+textarea,.inp{width:100%;margin-top:14px;border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;background:var(--paper);font-size:15px;outline:none;resize:vertical}
+textarea{min-height:110px}
+textarea:focus,.inp:focus{background:var(--white);box-shadow:3px 3px 0 var(--g)}
+.nickrow{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.nickrow .inp{margin:0;flex:1;min-width:200px}
+.anon{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;user-select:none;cursor:pointer}
+.anon input{width:18px;height:18px;accent-color:var(--g2)}
+
+/* submit */
+.go{display:block;margin:38px auto 0;position:relative;z-index:1;background:var(--g);border:3px solid var(--ink);border-radius:99px;padding:14px 56px;font-size:22px;font-weight:900;box-shadow:6px 6px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.go:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+.go:disabled{opacity:.6;cursor:wait}
+.note{text-align:center;font-size:13px;color:#666;margin-top:14px}
+
+/* results */
+#done{display:none}
+.thanks{text-align:center;padding:10px 0 4px}
+.thanks h2{font-size:clamp(26px,6vw,38px)}
+.thanks p{margin-top:6px;color:#555}
+.res-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:6px}
+.res-h h3{font-size:19px;font-weight:900}
+.total{font-family:"Rubik Mono One",sans-serif;font-size:13px}
+.rank{margin-top:14px;display:grid;gap:10px}
+.rk{display:grid;grid-template-columns:30px 46px 1fr;gap:10px;align-items:center}
+.rk .no{font-family:"Rubik Mono One",sans-serif;font-size:15px;text-align:center}
+.rk:nth-child(1) .no{color:var(--g2);font-size:19px}
+.rk .av{width:46px;height:56px;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--paper)}
+.rk .av img{width:100%;height:100%;object-fit:cover;display:block}
+.bar-l{display:flex;justify-content:space-between;font-size:14px;font-weight:700;gap:8px}
+.bar-l small{font-weight:500;color:#666;white-space:nowrap}
+.bar{height:14px;border:2.5px solid var(--ink);border-radius:99px;background:var(--paper);overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;background:var(--g);border-right:2.5px solid var(--ink);width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar i.z{border-right:0}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:6px}
+.bl{display:grid;gap:9px;margin-top:12px}
+.again{display:block;margin:28px auto 0;background:var(--white);border:2.5px solid var(--ink);border-radius:99px;padding:8px 26px;font-weight:700;box-shadow:3px 3px 0 var(--ink)}
+.closed{text-align:center;font-weight:900;font-size:20px}
+
+footer{position:relative;z-index:1;margin-top:60px;background:var(--ink);color:var(--paper);border-radius:var(--r);padding:20px;display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-weight:700;font-size:14px}
+footer a{color:var(--g);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);opacity:0;background:var(--ink);color:var(--g);font-weight:700;padding:10px 20px;border-radius:99px;z-index:50;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.preview{position:relative;z-index:1;margin-top:20px;background:#fff6c9;border:2.5px dashed var(--ink);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;text-align:center}
+
+@media (max-width:600px){
+  header{padding-top:46px}
+  .sec{padding:22px 16px 20px;box-shadow:4px 4px 0 var(--ink)}
+  .grid{grid-template-columns:repeat(3,1fr);gap:12px 10px}
+  .cd .nm{font-size:12px}
+  .hm{display:none}
+  .sticker{width:46px;height:46px;font-size:20px;right:4%!important;bottom:auto!important;top:10px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* edit panel */
+#edBtn{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--ink);color:var(--g);border:0;border-radius:99px;padding:10px 18px;font-weight:900;box-shadow:3px 3px 0 var(--g)}
+#ed{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);z-index:70;background:var(--white);border-left:3px solid var(--ink);overflow-y:auto;padding:20px 18px 90px;transform:translateX(105%);transition:transform .25s;font-size:14px}
+#ed.on{transform:none}
+#ed h3{font-size:18px;font-weight:900;margin:22px 0 8px}
+#ed h3:first-of-type{margin-top:0}
+#ed label{display:block;font-weight:700;margin-top:10px}
+#ed .inp{margin-top:4px;padding:8px 10px;font-size:14px;border-radius:10px}
+#ed textarea{min-height:120px;margin-top:4px;font-size:14px;border-radius:10px}
+#ed .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+#ed .b{border:2px solid var(--ink);background:var(--paper);border-radius:99px;padding:6px 14px;font-weight:700}
+#ed .b.main{background:var(--g)}
+#ed .tip{color:#666;font-size:12px;margin-top:4px}
+#ed .x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:24px;font-weight:900}
+.el{display:grid;grid-template-columns:40px 1fr auto;gap:8px;align-items:center;margin-top:8px}
+.el img,.el .e0{width:40px;height:56px;object-fit:cover;border:2px solid var(--ink);border-radius:7px;background:var(--paper)}
+.el .inp{margin:0!important}
+.el.off{opacity:.4}
+.el label{margin:0!important;font-size:12px;white-space:nowrap;display:flex;gap:4px;align-items:center}
+#prog{margin-top:8px;font-weight:700;color:var(--g2)}
+</style>
+</head>
+<body>
+<script data-goatcounter="https://matcha1642.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<div class="wrap">
+  <header>
+    <div class="deco tw" style="left:4%;top:40px;width:34px;height:34px"><svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="#111"/></svg></div>
+    <div class="deco tw" style="right:9%;top:30px;width:26px;height:26px;animation-delay:.8s"><svg viewBox="0 0 24 24"><path d="M12 1l3.2 7 7.6.8-5.7 5.1 1.6 7.5L12 17.6 5.3 21.4l1.6-7.5L1.2 8.8 8.8 8z" fill="#9BD14B" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+    <div class="deco tw hm" style="left:13%;bottom:30px;width:22px;height:22px;animation-delay:1.4s"><svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="none" stroke="#111" stroke-width="1.6"/></svg></div>
+    <div class="deco fly" style="right:3%;top:120px;width:58px;height:46px"><svg viewBox="0 0 40 32"><g class="wing"><path d="M20 16C14 2 2 2 3 10c1 6 9 7 17 6zM20 16c-8 2-15 8-11 12 4 3 9-4 11-12z" fill="#111"/><path d="M20 16C26 2 38 2 37 10c-1 6-9 7-17 6zM20 16c8 2 15 8 11 12-4 3-9-4-11-12z" fill="#111"/></g><rect x="19" y="9" width="2" height="15" rx="1" fill="#111"/></svg></div>
+    <div class="deco fly hm" style="left:6%;top:150px;width:44px;height:36px;animation-delay:-2s"><svg viewBox="0 0 40 32"><g class="wing" style="animation-delay:.2s"><path d="M20 16C14 2 2 2 3 10c1 6 9 7 17 6zM20 16c-8 2-15 8-11 12 4 3 9-4 11-12z" fill="#9BD14B" stroke="#111" stroke-width="1.5"/><path d="M20 16C26 2 38 2 37 10c-1 6-9 7-17 6zM20 16c8 2 15 8 11 12-4 3-9-4-11-12z" fill="#9BD14B" stroke="#111" stroke-width="1.5"/></g><rect x="19" y="9" width="2" height="15" rx="1" fill="#111"/></svg></div>
+    <div class="sticker" style="right:12%;bottom:8px">♡</div>
+    <h1>角色卡民調</h1>
+    <div class="en">CHARACTER POLL</div>
+    <p class="intro">想參考一下大家的意見～五題大概一分鐘，暱稱可以不填。</p>
+    <span class="tag" id="dl"></span>
+  </header>
+
+  <div id="pv" class="preview" style="display:none">預覽模式：還沒接上 Google 試算表，投票只會存在這台電腦。</div>
+
+  <main id="form">
+    <section class="sec" id="s1">
+      <div class="sec-h"><span class="num">01</span><h2>你玩過哪幾張？</h2></div>
+      <p class="hint">點一下是玩過，再點一下變最愛，最愛最多 3 張。沒玩過的不用點。</p>
+      <div class="count"><span id="cP">玩過 0</span><span id="cF">最愛 0 / 3</span></div>
+      <div class="grid" id="grid"></div>
+    </section>
+    <div id="qs"></div>
+    <section class="sec">
+      <div class="sec-h"><span class="num" id="msgNum">05</span><h2>想說的話</h2><span class="limit">選填</span></div>
+      <textarea id="msg" maxlength="500" placeholder="想看的題材、想要的角色，或單純想說的話都可以"></textarea>
+      <div class="nickrow">
+        <input class="inp" id="nick" maxlength="30" placeholder="暱稱（選填，不填就是匿名）">
+        <label class="anon"><input type="checkbox" id="anon">我要匿名</label>
+      </div>
+    </section>
+    <button class="go" id="go">送出！</button>
+    <p class="note">同一台裝置再投一次會蓋掉上一次的答案。</p>
+  </main>
+
+  <main id="done">
+    <section class="sec">
+      <div class="thanks" id="thx"><h2>收到了，謝謝你 ♡</h2><p>會好好參考大家的答案。</p></div>
+      <div id="res"></div>
+      <button class="again" id="again">改我的答案</button>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://matcha1642.neocities.org/ME/">抹茶屋</a>
+    <a href="https://matcha1642.neocities.org/WORD/">世界觀總覽</a>
+    <a href="https://www.threads.net/@hgv1642">Threads @hgv1642</a>
+  </footer>
+</div>
+<div id="toast"></div>
+
+<script id="pollData" type="application/json">{"api":"","deadline":"","showResults":true,"maxFav":3,"cards":[],"qs":[{"key":"form","title":"最想看哪種形式？","max":3,"opts":["單人角色卡","雙人卡","多 NPC 模擬器","大世界觀系列","聯名企劃"]},{"key":"mood","title":"喜歡什麼氛圍？","max":5,"opts":["甜寵","虐心","搞笑","日常","療癒","救贖","病嬌","懸疑解謎","恐怖獵奇","黑暗致鬱","權謀","冒險熱血"]},{"key":"theme","title":"喜歡什麼題材？","max":5,"opts":["獸人","奇幻","古風","現代都市","校園","職場","科幻","賽博龐克","末日","神話","宮廷","哨兵嚮導","演藝圈","靈異","NTR","三角關係","強制愛","年下","師生","契約","替身"]}]}</script>
+
+<script>
+(async function(){
+"use strict";
+/* 先抓原始碼，下載網頁時用 */
+let SRC = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+const EDIT = /[?&]edit\b/.test(location.search);
+if (EDIT && location.protocol.startsWith("http")) {
+  try { const r = await fetch(location.href.split("?")[0], {cache:"no-store"}); if (r.ok) SRC = await r.text(); } catch(e) {}
+}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let D = JSON.parse($("#pollData").textContent);
+const DRAFT = "matchaPollDraft", VOTE = "matchaPollVote", LOCAL = "matchaPollLocal";
+if (EDIT) { try { const d = JSON.parse(localStorage.getItem(DRAFT) || "null"); if (d) D = d; } catch(e) {} }
+
+const toast = (t, ms=2200) => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), ms); };
+const lsGet = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e) { return false; } };
+
+let vid = lsGet("matchaPollVid", null);
+if (!vid) { vid = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)); lsSet("matchaPollVid", vid); }
+
+/* 作答狀態 */
+const A = { st:{}, q:{}, msg:"", nick:"", anon:false };
+function resetQ(){ D.qs.forEach(q => { if (!A.q[q.key]) A.q[q.key] = new Set(); }); }
+resetQ();
+const prev = lsGet(VOTE, null);
+if (prev) {
+  (prev.played || []).forEach(n => { const c = D.cards.find(c => c.name === n); if (c) A.st[c.id] = 1; });
+  (prev.fav || []).forEach(n => { const c = D.cards.find(c => c.name === n); if (c) A.st[c.id] = 2; });
+  D.qs.forEach(q => A.q[q.key] = new Set((prev[q.key] || []).filter(o => q.opts.includes(o))));
+  A.msg = prev.msg || ""; A.nick = prev.nick || ""; A.anon = !prev.nick && !!prev.anon;
+}
+
+const visible = () => D.cards.filter(c => !c.hide);
+const favCount = () => visible().filter(c => A.st[c.id] === 2).length;
+
+function renderCards(){
+  const g = $("#grid"), cs = visible();
+  if (!cs.length) { g.innerHTML = ""; g.insertAdjacentHTML("afterend", ""); if (!$("#noCards")) g.insertAdjacentHTML("beforebegin", `<div class="empty" id="noCards">${EDIT ? "還沒有角色資料，打開右下角編輯面板匯入抹茶屋。" : "角色資料準備中。"}</div>`); return; }
+  $("#noCards")?.remove();
+  g.innerHTML = cs.map(c => {
+    const s = A.st[c.id] || 0;
+    return `<button class="cd ${s===1?"p":s===2?"p f":""}" data-id="${esc(c.id)}" aria-label="${esc(c.name)}" aria-pressed="${s>0}">
+      <span class="st">${s===2?"♥":"✓"}</span>
+      <span class="pic">${c.img ? `<img src="${c.img}" alt="" loading="lazy">` : `<span class="ph">${esc((c.name||"?")[0])}</span>`}</span>
+      <span class="nm">${esc(c.name)}</span></button>`;
+  }).join("");
+  updCount();
+}
+function updCount(){
+  const cs = visible();
+  $("#cP").textContent = "玩過 " + cs.filter(c => A.st[c.id]).length;
+  $("#cF").textContent = `最愛 ${favCount()} / ${D.maxFav}`;
+}
+$("#grid").addEventListener("click", e => {
+  const b = e.target.closest(".cd"); if (!b) return;
+  const id = b.dataset.id; let s = A.st[id] || 0;
+  if (s === 0) s = 1;
+  else if (s === 1) { if (favCount() >= D.maxFav) { toast(`最愛最多 ${D.maxFav} 張喔，先取消一張`); s = 0; } else s = 2; }
+  else s = 0;
+  A.st[id] = s;
+  b.className = "cd" + (s===1 ? " p" : s===2 ? " p f" : "");
+  b.querySelector(".st").textContent = s===2 ? "♥" : "✓";
+  b.setAttribute("aria-pressed", s > 0);
+  updCount();
+});
+
+function renderQs(){
+  $("#qs").innerHTML = D.qs.map((q, i) => `<section class="sec">
+    <div class="sec-h"><span class="num">0${i+2}</span><h2>${esc(q.title)}</h2><span class="limit">最多 ${q.max} 個</span></div>
+    <div class="chips" data-k="${esc(q.key)}">${q.opts.map(o => `<button class="chip ${A.q[q.key].has(o)?"on":""}" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>
+  </section>`).join("");
+  $("#msgNum").textContent = "0" + (D.qs.length + 2);
+}
+$("#qs").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  const k = b.parentElement.dataset.k, q = D.qs.find(q => q.key === k), set = A.q[k], o = b.dataset.o;
+  if (set.has(o)) set.delete(o);
+  else { if (set.size >= q.max) { toast(`這題最多選 ${q.max} 個`); return; } set.add(o); }
+  b.classList.toggle("on", set.has(o));
+});
+
+const nickEl = $("#nick"), anonEl = $("#anon"), msgEl = $("#msg");
+nickEl.value = A.nick; anonEl.checked = A.anon; msgEl.value = A.msg;
+anonEl.addEventListener("change", () => { nickEl.disabled = anonEl.checked; if (anonEl.checked) nickEl.value = ""; });
+nickEl.disabled = anonEl.checked;
+
+function payload(){
+  const cs = visible();
+  const p = {
+    vid,
+    nick: anonEl.checked ? "" : nickEl.value.trim().slice(0, 30),
+    played: cs.filter(c => A.st[c.id]).map(c => c.name),
+    fav: cs.filter(c => A.st[c.id] === 2).map(c => c.name),
+    msg: msgEl.value.trim().slice(0, 500)
+  };
+  D.qs.forEach(q => p[q.key] = [...A.q[q.key]]);
+  return p;
+}
+const hasAnswer = p => p.played.length || p.msg || D.qs.some(q => p[q.key].length);
+
+/* 統計 */
+function aggregate(rows){
+  const out = { total: rows.length, played:{}, fav:{} };
+  D.qs.forEach(q => out[q.key] = {});
+  const add = (o, k) => o[k] = (o[k] || 0) + 1;
+  rows.forEach(r => {
+    (r.played||[]).forEach(n => add(out.played, n));
+    (r.fav||[]).forEach(n => add(out.fav, n));
+    D.qs.forEach(q => (r[q.key]||[]).forEach(n => add(out[q.key], n)));
+  });
+  return out;
+}
+async function getResults(){
+  if (!D.api) { const rows = Object.values(lsGet(LOCAL, {})); return aggregate(rows); }
+  const r = await fetch(D.api + (D.api.includes("?") ? "&" : "?") + "r=" + Date.now());
+  const j = await r.json(); if (!j.ok) throw new Error(j.error || "fail"); return j;
+}
+function bars(obj, opts){
+  const keys = opts || Object.keys(obj);
+  const list = keys.map(k => [k, obj[k] || 0]).sort((a,b) => b[1]-a[1]);
+  const mx = Math.max(1, ...list.map(x => x[1]));
+  return list.map(([k,n]) => `<div><div class="bar-l"><span>${esc(k)}</span><small>${n} 票</small></div><div class="bar"><i class="${n?"":"z"}" data-w="${n/mx*100}"></i></div></div>`).join("");
+}
+async function showDone(voted){
+  $("#form").style.display = "none"; $("#done").style.display = "block";
+  $("#thx").style.display = voted ? "" : "none";
+  $("#again").style.display = closed() ? "none" : "";
+  window.scrollTo({top: $("#done").offsetTop - 20, behavior: "smooth"});
+  const res = $("#res");
+  if (!D.showResults) { res.innerHTML = ""; return; }
+  res.innerHTML = `<p class="note">結果載入中…</p>`;
+  let R;
+  try { R = await getResults(); } catch(e) { res.innerHTML = `<p class="note">結果暫時載不出來，晚點再回來看。</p>`; return; }
+  const byName = {}; D.cards.forEach(c => byName[c.name] = c);
+  const favList = Object.keys({...R.fav, ...R.played}).map(n => [n, R.fav[n]||0, R.played[n]||0])
+    .sort((a,b) => b[1]-a[1] || b[2]-a[2]).slice(0, 10);
+  const mx = Math.max(1, ...favList.map(x => x[1]));
+  res.innerHTML = `
+    <div class="res-h" style="margin-top:22px"><h3>最愛排行</h3><span class="total">${R.total} VOTES</span></div>
+    <div class="rank">${favList.length ? favList.map(([n,f,p],i) => { const c = byName[n];
+      return `<div class="rk"><span class="no">${i+1}</span><span class="av">${c&&c.img?`<img src="${c.img}" alt="">`:""}</span>
+      <div><div class="bar-l"><span>${esc(n)}</span><small>♥ ${f}・玩過 ${p}</small></div><div class="bar"><i class="${f?"":"z"}" data-w="${f/mx*100}"></i></div></div></div>`; }).join("")
+      : `<p class="note">還沒有人投票。</p>`}</div>
+    <div class="groups" style="margin-top:28px">${D.qs.map(q => `<div><div class="res-h"><h3>${esc(q.title.replace(/[？?]$/,""))}</h3></div><div class="bl">${bars(R[q.key]||{}, q.opts)}</div></div>`).join("")}</div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => res.querySelectorAll(".bar i").forEach(i => i.style.width = i.dataset.w + "%")));
+}
+const closed = () => D.deadline && Date.now() > new Date(D.deadline).getTime();
+
+$("#go").addEventListener("click", async () => {
+  if (EDIT) { toast("編輯模式不能投票，拿掉網址的 ?edit 再試"); return; }
+  const p = payload();
+  if (!hasAnswer(p)) { toast("至少回答一題再送出吧"); return; }
+  const btn = $("#go"); btn.disabled = true; btn.textContent = "送出中…";
+  try {
+    if (D.api) {
+      const r = await fetch(D.api, { method:"POST", body: JSON.stringify(p) });
+      const j = await r.json(); if (!j.ok) throw new Error(j.error || "fail");
+    } else { const all = lsGet(LOCAL, {}); all[vid] = p; lsSet(LOCAL, all); }
+    lsSet(VOTE, {...p, anon: anonEl.checked});
+    showDone(true);
+  } catch(e) { toast("送出失敗，等一下再試一次"); }
+  btn.disabled = false; btn.textContent = "送出！";
+});
+$("#again").addEventListener("click", () => { $("#done").style.display = "none"; $("#form").style.display = ""; window.scrollTo({top: $("#s1").offsetTop - 20, behavior:"smooth"}); });
+
+function renderAll(){
+  $("#pv").style.display = D.api ? "none" : "";
+  const dl = $("#dl");
+  if (D.deadline) { const d = new Date(D.deadline); dl.style.display = ""; dl.textContent = closed() ? "投票已結束" : `投到 ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; }
+  else dl.style.display = "none";
+  renderCards(); renderQs();
+}
+renderAll();
+if (!EDIT && closed()) { showDone(false); $("#res").insertAdjacentHTML("beforebegin", `<p class="closed">投票已經結束囉，謝謝大家！</p>`); }
+else if (!EDIT && prev && D.showResults) { /* 投過的人直接看結果，可以再改 */ showDone(false); $("#res").insertAdjacentHTML("beforebegin", `<p class="closed" id="votedTip">你投過囉，這是目前的結果</p>`); }
+
+/* ===== 編輯模式 ===== */
+if (!EDIT) return;
+document.body.insertAdjacentHTML("beforeend", `<button id="edBtn">編輯面板</button>
+<aside id="ed">
+  <button class="x" id="edX" aria-label="關閉">×</button>
+  <h3>1. 接上 Google 試算表</h3>
+  <label>Apps Script 網址（/exec 結尾）<input class="inp" id="eApi" placeholder="https://script.google.com/macros/s/.../exec"></label>
+  <div class="row"><button class="b" id="eTest">測試連線</button></div>
+  <label>截止時間（選填）<input class="inp" id="eDl" type="datetime-local"></label>
+  <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="eShow">投完顯示目前結果</label>
+  <h3>2. 角色資料</h3>
+  <div class="row"><button class="b" id="eFetch">從抹茶屋網站抓</button><button class="b" id="ePick">選抹茶屋 index.html</button></div>
+  <input type="file" id="eFile" accept=".html,.htm" hidden>
+  <p class="tip">會把角色名字和圖縮成小圖存進這頁，名字可以改，不想放的勾掉。</p>
+  <div id="prog"></div>
+  <div id="eList"></div>
+  <h3>3. 題目</h3>
+  <div id="eQs"></div>
+  <label>最愛上限<input class="inp" id="eMaxFav" type="number" min="1" max="10"></label>
+  <h3>4. 存檔</h3>
+  <div class="row"><button class="b main" id="eDown">下載網頁</button><button class="b" id="eClear">清除暫存</button></div>
+  <p class="tip">下載的 index.html 傳到 GitHub 的 poll 資料夾，蓋掉舊檔。編輯中的內容會暫存在這台電腦。</p>
+</aside>`);
+const ed = $("#ed");
+$("#edBtn").onclick = () => ed.classList.toggle("on");
+$("#edX").onclick = () => ed.classList.remove("on");
+const save = () => { if (!lsSet(DRAFT, D)) toast("暫存空間不夠，記得直接下載網頁"); };
+
+$("#eApi").value = D.api; $("#eDl").value = D.deadline; $("#eShow").checked = D.showResults; $("#eMaxFav").value = D.maxFav;
+$("#eApi").oninput = e => { D.api = e.target.value.trim(); save(); renderAll(); };
+$("#eDl").oninput = e => { D.deadline = e.target.value; save(); renderAll(); };
+$("#eShow").onchange = e => { D.showResults = e.target.checked; save(); };
+$("#eMaxFav").oninput = e => { D.maxFav = Math.max(1, +e.target.value || 3); save(); updCount(); };
+$("#eTest").onclick = async () => {
+  if (!D.api) { toast("先貼上網址"); return; }
+  try { const R = await getResults(); toast(`連線成功，目前 ${R.total} 票`); } catch(e) { toast("連不上，確認部署時存取權選「所有人」"); }
+};
+
+function renderEQs(){
+  $("#eQs").innerHTML = D.qs.map((q,i) => `<label>第 ${i+2} 題標題<input class="inp" data-qi="${i}" data-f="title" value="${esc(q.title)}"></label>
+    <label>選項（一行一個）<textarea class="inp" data-qi="${i}" data-f="opts">${esc(q.opts.join("\n"))}</textarea></label>
+    <label>最多選幾個<input class="inp" type="number" min="1" max="20" data-qi="${i}" data-f="max" value="${q.max}"></label>`).join("");
+}
+renderEQs();
+$("#eQs").addEventListener("input", e => {
+  const t = e.target, q = D.qs[t.dataset.qi]; if (!q) return;
+  if (t.dataset.f === "title") q.title = t.value;
+  if (t.dataset.f === "opts") { q.opts = t.value.split("\n").map(s => s.trim()).filter(Boolean); A.q[q.key] = new Set([...A.q[q.key]].filter(o => q.opts.includes(o))); }
+  if (t.dataset.f === "max") q.max = Math.max(1, +t.value || 1);
+  save(); renderQs();
+});
+
+function renderEList(){
+  $("#eList").innerHTML = D.cards.map((c,i) => `<div class="el ${c.hide?"off":""}">${c.img?`<img src="${c.img}" alt="">`:`<span class="e0"></span>`}
+    <input class="inp" data-ci="${i}" value="${esc(c.name)}"><label><input type="checkbox" data-hi="${i}" ${c.hide?"":"checked"}>放</label></div>`).join("");
+}
+renderEList();
+$("#eList").addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset.ci != null) { D.cards[t.dataset.ci].name = t.value.trim() || D.cards[t.dataset.ci].id; }
+  if (t.dataset.hi != null) { D.cards[t.dataset.hi].hide = !t.checked; t.closest(".el").classList.toggle("off", !t.checked); }
+  save(); renderCards();
+});
+
+/* 從抹茶屋原始碼取出 CARDS 陣列 */
+function sliceArray(text, from){
+  let i = text.indexOf("[", from), depth = 0, q = null;
+  if (i < 0) return null;
+  for (let j = i; j < text.length; j++) {
+    const ch = text[j];
+    if (q) { if (ch === "\\") { j++; continue; } if (ch === q) q = null; continue; }
+    if (ch === '"' || ch === "'" || ch === "`") q = ch;
+    else if (ch === "[") depth++;
+    else if (ch === "]") { depth--; if (!depth) return text.slice(i, j + 1); }
+  }
+  return null;
+}
+function parseHome(text){
+  const doc = new DOMParser().parseFromString(text, "text/html");
+  let cards = null;
+  const cs = doc.getElementById("cards");
+  const src = cs ? cs.textContent : text;
+  const at = src.search(/\bCARDS\s*=/);
+  if (at >= 0) { const arr = sliceArray(src, at); if (arr) { try { cards = JSON.parse(arr); } catch(e) { try { cards = new Function("return " + arr)(); } catch(e2) {} } } }
+  let imgs = {};
+  const is = doc.getElementById("imgs"); if (is) { try { imgs = JSON.parse(is.textContent); } catch(e) {} }
+  return { cards: Array.isArray(cards) ? cards : null, imgs };
+}
+const pick = (o, ks) => { for (const k of ks) if (o && typeof o[k] === "string" && o[k].trim()) return o[k].trim(); return ""; };
+function loadMedia(src){
+  return new Promise((res, rej) => {
+    const isVid = /^data:video|\.(mp4|webm)(\?|$)/i.test(src);
+    const t = setTimeout(() => rej("timeout"), 10000);
+    if (isVid) {
+      const v = document.createElement("video"); v.muted = true; v.playsInline = true; v.preload = "auto"; v.crossOrigin = "anonymous";
+      v.onloadeddata = () => { v.currentTime = Math.min(0.6, (v.duration || 1) / 2); };
+      v.onseeked = () => { clearTimeout(t); res({el:v, w:v.videoWidth, h:v.videoHeight}); };
+      v.onerror = () => { clearTimeout(t); rej("vid"); };
+      v.src = src;
+    } else {
+      const im = new Image(); im.crossOrigin = "anonymous";
+      im.onload = () => { clearTimeout(t); res({el:im, w:im.naturalWidth, h:im.naturalHeight}); };
+      im.onerror = () => { clearTimeout(t); rej("img"); };
+      im.src = src;
+    }
+  });
+}
+async function thumb(src){
+  const m = await loadMedia(src);
+  const W = 240, H = 350, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const s = Math.max(W / m.w, H / m.h), dw = m.w * s, dh = m.h * s;
+  cv.getContext("2d").drawImage(m.el, (W - dw) / 2, (H - dh) * 0.25, dw, dh);
+  let out = cv.toDataURL("image/webp", 0.82);
+  if (!out.startsWith("data:image/webp")) out = cv.toDataURL("image/jpeg", 0.85);
+  return out;
+}
+async function importHome(text, base){
+  const { cards, imgs } = parseHome(text);
+  if (!cards || !cards.length) { toast("找不到角色資料，確認選的是抹茶屋的 index.html"); return; }
+  const old = {}; D.cards.forEach(c => old[c.id] = c);
+  const next = [];
+  for (let i = 0; i < cards.length; i++) {
+    const c = cards[i], id = String(c.id || ("card" + i));
+    $("#prog").textContent = `處理圖片 ${i + 1} / ${cards.length}…`;
+    let img = "", raw = imgs[id] || pick(c, ["img","image","pic","src"]);
+    if (raw) { try { img = await thumb(new URL(raw, base || location.href).href); } catch(e) {} }
+    next.push({ id, name: old[id]?.name || pick(c, ["name","title","zh"]) || id, img: img || old[id]?.img || "", hide: !!old[id]?.hide });
+  }
+  D.cards = next; save(); renderEList(); renderCards();
+  const miss = next.filter(c => !c.img).length;
+  $("#prog").textContent = `匯入 ${next.length} 張` + (miss ? `，${miss} 張沒抓到圖` : "，圖都有抓到");
+}
+$("#ePick").onclick = () => $("#eFile").click();
+$("#eFile").onchange = async e => { const f = e.target.files[0]; if (!f) return; $("#prog").textContent = "讀取檔案中…"; await importHome(await f.text(), "https://matcha1642.neocities.org/ME/"); e.target.value = ""; };
+$("#eFetch").onclick = async () => {
+  $("#prog").textContent = "從網站抓取中，檔案比較大要等一下…";
+  try { const r = await fetch("https://matcha1642.neocities.org/ME/"); if (!r.ok) throw 0; await importHome(await r.text(), "https://matcha1642.neocities.org/ME/"); }
+  catch(e) { $("#prog").textContent = ""; toast("網站擋住了，改用「選抹茶屋 index.html」", 3200); }
+};
+$("#eClear").onclick = () => { if (confirm("清掉這台電腦的編輯暫存？已下載的網頁不受影響。")) { localStorage.removeItem(DRAFT); location.reload(); } };
+$("#eDown").onclick = () => {
+  const json = JSON.stringify(D).replace(/</g, "\\u003c");
+  const re = /(<script id="pollData" type="application\/json">)[\s\S]*?(<\/script>)/;
+  if (!re.test(SRC)) { toast("找不到資料區塊，下載失敗"); return; }
+  const html = SRC.replace(re, (m, a, b) => a + json + b);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([html], {type:"text/html"}));
+  a.download = "index.html"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast("下載好了，傳到 GitHub 的 poll 資料夾");
+};
+})();
+</script>
+</body>
+</html>
