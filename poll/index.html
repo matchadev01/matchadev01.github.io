@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>角色卡民調</title>
-<meta name="description" content="想參考一下大家的意見～五題大概一分鐘，可以匿名。">
+<meta name="description" content="想參考一下大家的意見～六題大概一分鐘，可以匿名。">
 <meta property="og:title" content="角色卡民調">
-<meta property="og:description" content="想參考一下大家的意見～五題大概一分鐘，可以匿名。">
+<meta property="og:description" content="想參考一下大家的意見～六題大概一分鐘，可以匿名。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Rubik+Mono+One&display=swap" rel="stylesheet">
@@ -166,7 +166,7 @@ footer a:hover{text-decoration:underline}
     <div class="sticker" style="right:12%;bottom:8px">♡</div>
     <h1>角色卡民調</h1>
     <div class="en">CHARACTER POLL</div>
-    <p class="intro">想參考一下大家的意見～五題大概一分鐘，暱稱可以不填。</p>
+    <p class="intro">想參考一下大家的意見～六題大概一分鐘，暱稱可以不填。</p>
     <span class="tag" id="dl"></span>
   </header>
 
@@ -175,13 +175,19 @@ footer a:hover{text-decoration:underline}
   <main id="form">
     <section class="sec" id="s1">
       <div class="sec-h"><span class="num">01</span><h2>你玩過哪幾張？</h2></div>
-      <p class="hint">點一下是玩過，再點一下變最愛，最愛最多 3 張。沒玩過的不用點。</p>
-      <div class="count"><span id="cP">玩過 0</span><span id="cF">最愛 0 / 3</span></div>
+      <p class="hint">玩過的點一下，沒玩過的不用點。</p>
+      <div class="count"><span id="cP">玩過 0</span></div>
       <div class="grid" id="grid"></div>
+    </section>
+    <section class="sec" id="s2">
+      <div class="sec-h"><span class="num">02</span><h2>最喜歡哪幾張？</h2><span class="limit" id="favLim">最多 3 張</span></div>
+      <p class="hint">從你玩過的卡裡挑。</p>
+      <div class="count"><span id="cF">最愛 0 / 3</span></div>
+      <div class="grid" id="fgrid"></div>
     </section>
     <div id="qs"></div>
     <section class="sec">
-      <div class="sec-h"><span class="num" id="msgNum">05</span><h2>想說的話</h2><span class="limit">選填</span></div>
+      <div class="sec-h"><span class="num" id="msgNum">06</span><h2>想說的話</h2><span class="limit">選填</span></div>
       <textarea id="msg" maxlength="500" placeholder="想看的題材、想要的角色，或單純想說的話都可以"></textarea>
       <div class="nickrow">
         <input class="inp" id="nick" maxlength="30" placeholder="暱稱（選填，不填就是匿名）">
@@ -248,17 +254,22 @@ if (prev) {
 const visible = () => D.cards.filter(c => !c.hide);
 const favCount = () => visible().filter(c => A.st[c.id] === 2).length;
 
-function renderCards(){
-  const g = $("#grid"), cs = visible();
-  if (!cs.length) { g.innerHTML = ""; g.insertAdjacentHTML("afterend", ""); if (!$("#noCards")) g.insertAdjacentHTML("beforebegin", `<div class="empty" id="noCards">${EDIT ? "還沒有角色資料，打開右下角編輯面板匯入抹茶屋。" : "角色資料準備中。"}</div>`); return; }
-  $("#noCards")?.remove();
-  g.innerHTML = cs.map(c => {
-    const s = A.st[c.id] || 0;
-    return `<button class="cd ${s===1?"p":s===2?"p f":""}" data-id="${esc(c.id)}" aria-label="${esc(c.name)}" aria-pressed="${s>0}">
-      <span class="st">${s===2?"♥":"✓"}</span>
+const cardHTML = (c, on, mark) => `<button class="cd ${on ? (mark==="♥" ? "p f" : "p") : ""}" data-id="${esc(c.id)}" aria-label="${esc(c.name)}" aria-pressed="${on}">
+      <span class="st">${mark}</span>
       <span class="pic">${c.img ? `<img src="${c.img}" alt="" loading="lazy">` : `<span class="ph">${esc((c.name||"?")[0])}</span>`}</span>
       <span class="nm">${esc(c.name)}</span></button>`;
-  }).join("");
+function renderCards(){
+  const g = $("#grid"), cs = visible();
+  if (!cs.length) { g.innerHTML = ""; if (!$("#noCards")) g.insertAdjacentHTML("beforebegin", `<div class="empty" id="noCards">${EDIT ? "還沒有角色資料，打開右下角編輯面板匯入抹茶屋。" : "角色資料準備中。"}</div>`); renderFav(); return; }
+  $("#noCards")?.remove();
+  g.innerHTML = cs.map(c => cardHTML(c, (A.st[c.id] || 0) > 0, "✓")).join("");
+  renderFav();
+}
+function renderFav(){
+  const f = $("#fgrid"), cs = visible().filter(c => A.st[c.id]);
+  $("#favLim").textContent = `最多 ${D.maxFav} 張`;
+  f.innerHTML = cs.length ? cs.map(c => cardHTML(c, A.st[c.id] === 2, "♥")).join("")
+    : `<div class="empty" style="grid-column:1/-1;margin:0">先在上一題點你玩過的卡，這裡就會出現。</div>`;
   updCount();
 }
 function updCount(){
@@ -268,23 +279,29 @@ function updCount(){
 }
 $("#grid").addEventListener("click", e => {
   const b = e.target.closest(".cd"); if (!b) return;
-  const id = b.dataset.id; let s = A.st[id] || 0;
-  if (s === 0) s = 1;
-  else if (s === 1) { if (favCount() >= D.maxFav) { toast(`最愛最多 ${D.maxFav} 張喔，先取消一張`); s = 0; } else s = 2; }
-  else s = 0;
-  A.st[id] = s;
-  b.className = "cd" + (s===1 ? " p" : s===2 ? " p f" : "");
-  b.querySelector(".st").textContent = s===2 ? "♥" : "✓";
-  b.setAttribute("aria-pressed", s > 0);
+  const id = b.dataset.id, on = !(A.st[id] > 0);
+  A.st[id] = on ? 1 : 0;
+  b.className = "cd" + (on ? " p" : "");
+  b.setAttribute("aria-pressed", on);
+  renderFav();
+});
+$("#fgrid").addEventListener("click", e => {
+  const b = e.target.closest(".cd"); if (!b) return;
+  const id = b.dataset.id;
+  if (A.st[id] === 2) A.st[id] = 1;
+  else { if (favCount() >= D.maxFav) { toast(`最愛最多 ${D.maxFav} 張喔，先取消一張`); return; } A.st[id] = 2; }
+  const on = A.st[id] === 2;
+  b.className = "cd" + (on ? " p f" : "");
+  b.setAttribute("aria-pressed", on);
   updCount();
 });
 
 function renderQs(){
   $("#qs").innerHTML = D.qs.map((q, i) => `<section class="sec">
-    <div class="sec-h"><span class="num">0${i+2}</span><h2>${esc(q.title)}</h2><span class="limit">最多 ${q.max} 個</span></div>
+    <div class="sec-h"><span class="num">0${i+3}</span><h2>${esc(q.title)}</h2><span class="limit">最多 ${q.max} 個</span></div>
     <div class="chips" data-k="${esc(q.key)}">${q.opts.map(o => o.startsWith("#") ? `<div class="grp">${esc(o.slice(1))}</div>` : `<button class="chip ${A.q[q.key].has(o)?"on":""}" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>
   </section>`).join("");
-  $("#msgNum").textContent = "0" + (D.qs.length + 2);
+  $("#msgNum").textContent = "0" + (D.qs.length + 3);
 }
 $("#qs").addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
@@ -422,14 +439,14 @@ $("#eApi").value = D.api; $("#eDl").value = D.deadline; $("#eShow").checked = D.
 $("#eApi").oninput = e => { D.api = e.target.value.trim(); save(); renderAll(); };
 $("#eDl").oninput = e => { D.deadline = e.target.value; save(); renderAll(); };
 $("#eShow").onchange = e => { D.showResults = e.target.checked; save(); };
-$("#eMaxFav").oninput = e => { D.maxFav = Math.max(1, +e.target.value || 3); save(); updCount(); };
+$("#eMaxFav").oninput = e => { D.maxFav = Math.max(1, +e.target.value || 3); save(); renderFav(); };
 $("#eTest").onclick = async () => {
   if (!D.api) { toast("先貼上網址"); return; }
   try { const R = await getResults(); toast(`連線成功，目前 ${R.total} 票`); } catch(e) { toast("連不上，確認部署時存取權選「所有人」"); }
 };
 
 function renderEQs(){
-  $("#eQs").innerHTML = D.qs.map((q,i) => `<label>第 ${i+2} 題標題<input class="inp" data-qi="${i}" data-f="title" value="${esc(q.title)}"></label>
+  $("#eQs").innerHTML = D.qs.map((q,i) => `<label>第 ${i+3} 題標題<input class="inp" data-qi="${i}" data-f="title" value="${esc(q.title)}"></label>
     <label>選項（一行一個）<textarea class="inp" data-qi="${i}" data-f="opts">${esc(q.opts.join("\n"))}</textarea></label>
     <label>最多選幾個<input class="inp" type="number" min="1" max="20" data-qi="${i}" data-f="max" value="${q.max}"></label>`).join("");
 }
