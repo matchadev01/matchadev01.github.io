@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>角色卡民調</title>
-<meta name="description" content="想參考一下大家的意見～六題大概一分鐘，可以匿名。">
+<meta name="description" content="想參考一下大家的意見～一共六題，大概一分鐘，可以匿名。">
 <meta property="og:title" content="角色卡民調">
-<meta property="og:description" content="想參考一下大家的意見～六題大概一分鐘，可以匿名。">
+<meta property="og:description" content="想參考一下大家的意見～一共六題，大概一分鐘，可以匿名。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Rubik+Mono+One&display=swap" rel="stylesheet">
@@ -166,7 +166,7 @@ footer a:hover{text-decoration:underline}
     <div class="sticker" style="right:12%;bottom:8px">♡</div>
     <h1>角色卡民調</h1>
     <div class="en">CHARACTER POLL</div>
-    <p class="intro">想參考一下大家的意見～六題大概一分鐘，暱稱可以不填。</p>
+    <p class="intro">想參考一下大家的意見～一共六題，大概一分鐘。每題都可以跳過，至少回答一題就能送出。暱稱可以不填，送出後會看到大家目前的結果。</p>
     <span class="tag" id="dl"></span>
   </header>
 
@@ -175,19 +175,20 @@ footer a:hover{text-decoration:underline}
   <main id="form">
     <section class="sec" id="s1">
       <div class="sec-h"><span class="num">01</span><h2>你玩過哪幾張？</h2></div>
-      <p class="hint">玩過的點一下，沒玩過的不用點。</p>
+      <p class="hint">點你玩過的角色卡，右上角會出現 ✓，再點一次可以取消。沒玩過的不用點，一張都沒玩過也可以直接跳過。</p>
       <div class="count"><span id="cP">玩過 0</span></div>
       <div class="grid" id="grid"></div>
     </section>
     <section class="sec" id="s2">
       <div class="sec-h"><span class="num">02</span><h2>最喜歡哪幾張？</h2><span class="limit" id="favLim">最多 3 張</span></div>
-      <p class="hint">從你玩過的卡裡挑。</p>
+      <p class="hint">這裡只會出現上一題勾過的卡。點你最喜歡的，右上角會出現 ♥，最多 3 張，再點一次可以取消。</p>
       <div class="count"><span id="cF">最愛 0 / 3</span></div>
       <div class="grid" id="fgrid"></div>
     </section>
     <div id="qs"></div>
     <section class="sec">
       <div class="sec-h"><span class="num" id="msgNum">06</span><h2>想說的話</h2><span class="limit">選填</span></div>
+      <p class="hint">想看的題材、想要的角色、對卡片的感想都可以寫，不寫也沒關係。暱稱和這裡的留言只有作者看得到，不會出現在結果裡；勾「我要匿名」就不會記名。</p>
       <textarea id="msg" maxlength="500" placeholder="想看的題材、想要的角色，或單純想說的話都可以"></textarea>
       <div class="nickrow">
         <input class="inp" id="nick" maxlength="30" placeholder="暱稱（選填，不填就是匿名）">
@@ -195,7 +196,7 @@ footer a:hover{text-decoration:underline}
       </div>
     </section>
     <button class="go" id="go">送出！</button>
-    <p class="note">同一台裝置再投一次會蓋掉上一次的答案。</p>
+    <p class="note">想改答案的話，用同一台裝置回來再送一次就好，會蓋掉上一次的答案。</p>
   </main>
 
   <main id="done">
@@ -268,6 +269,7 @@ function renderCards(){
 function renderFav(){
   const f = $("#fgrid"), cs = visible().filter(c => A.st[c.id]);
   $("#favLim").textContent = `最多 ${D.maxFav} 張`;
+  const fh = $("#s2 .hint"); if (fh) fh.textContent = `這裡只會出現上一題勾過的卡。點你最喜歡的，右上角會出現 ♥，最多 ${D.maxFav} 張，再點一次可以取消。`;
   f.innerHTML = cs.length ? cs.map(c => cardHTML(c, A.st[c.id] === 2, "♥")).join("")
     : `<div class="empty" style="grid-column:1/-1;margin:0">先在上一題點你玩過的卡，這裡就會出現。</div>`;
   updCount();
@@ -299,6 +301,7 @@ $("#fgrid").addEventListener("click", e => {
 function renderQs(){
   $("#qs").innerHTML = D.qs.map((q, i) => `<section class="sec">
     <div class="sec-h"><span class="num">0${i+3}</span><h2>${esc(q.title)}</h2><span class="limit">最多 ${q.max} 個</span></div>
+    <p class="hint">點標籤可以複選，最多選 ${q.max} 個，再點一次可以取消。</p>
     <div class="chips" data-k="${esc(q.key)}">${q.opts.map(o => o.startsWith("#") ? `<div class="grp">${esc(o.slice(1))}</div>` : `<button class="chip ${A.q[q.key].has(o)?"on":""}" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>
   </section>`).join("");
   $("#msgNum").textContent = "0" + (D.qs.length + 3);
