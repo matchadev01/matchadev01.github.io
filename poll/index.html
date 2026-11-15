@@ -25,9 +25,10 @@ button{cursor:pointer}
 /* header */
 header{position:relative;text-align:center;padding:64px 0 34px}
 .hero-txt{position:relative;z-index:1}
-.hero-img{display:block;width:calc(100% - 28px);max-width:300px;height:auto;max-height:86vh;object-fit:contain;animation:heroFloat 3.2s ease-in-out infinite}
+.hero-img{display:block;width:calc(100% - 70px);max-width:160px;height:auto;max-height:52vh;object-fit:contain;animation:heroFloat 3.2s ease-in-out infinite}
 @keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
-.hero-pic .sticker{right:14px;bottom:14vh}
+.hero-pic .sticker{right:calc(50% - 110px);bottom:calc(50% - 26vh);width:48px;height:48px;font-size:20px}
+body.done .hero-pic{display:none!important}
 .mo2{right:14px!important;top:16vh!important}
 .mo3{right:6px!important;top:26vh!important}
 .mo1{left:6px!important;top:14vh!important}
@@ -132,7 +133,7 @@ footer a:hover{text-decoration:underline}
 
 @media (max-width:1300px){
   .hero-pic{position:relative;top:auto;bottom:auto;right:auto;width:fit-content;margin:0 auto;padding-top:26px;pointer-events:auto}
-  .hero-img{width:auto;height:min(320px,42vh)}
+  .hero-img{width:auto;height:min(230px,32vh)}
   .hero-pic .sticker{right:-14px;bottom:20px}
   header{padding-top:16px}
   header .hd{display:none}
@@ -415,7 +416,7 @@ function bars(obj, opts){
   return list.map(([k,n]) => `<div><div class="bar-l"><span>${esc(k)}</span><small>${n} 票</small></div><div class="bar"><i class="${n?"":"z"}" data-w="${n/mx*100}"></i></div></div>`).join("");
 }
 async function showDone(voted){
-  $("#form").style.display = "none"; $("#done").style.display = "block";
+  $("#form").style.display = "none"; $("#done").style.display = "block"; document.body.classList.add("done");
   $("#thx").style.display = voted ? "" : "none";
   $("#again").style.display = closed() ? "none" : "";
   window.scrollTo(0, Math.max(0, $("#done").offsetTop - 20));
@@ -455,7 +456,7 @@ $("#go").addEventListener("click", async () => {
   } catch(e) { toast("送出失敗，等一下再試一次"); }
   btn.disabled = false; btn.textContent = "送出！";
 });
-$("#again").addEventListener("click", () => { $("#done").style.display = "none"; $("#form").style.display = ""; window.scrollTo({top: $("#s1").offsetTop - 20, behavior:"smooth"}); });
+$("#again").addEventListener("click", () => { document.body.classList.remove("done"); $("#done").style.display = "none"; $("#form").style.display = ""; window.scrollTo({top: $("#s1").offsetTop - 20, behavior:"smooth"}); });
 
 function renderAll(){
   $("#pv").style.display = D.api ? "none" : "";
