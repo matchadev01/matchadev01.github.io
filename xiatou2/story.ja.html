@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>牡丹と蓮｜色恋営業中 ネタバレページ</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000;
+  --ink-2:#0e0912;
+  --paper:#f3eaff;
+  --muted:#a493b4;
+  --dragon:#ff4fa8;
+  --snake:#c4a0ff;
+  --memo:#ffd60a;
+  --line:rgba(243,234,255,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:'Noto Serif TC','Noto Serif JP',serif;font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--memo);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+/* 開頭 */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.stage{position:relative;width:100%;height:min(88vh,860px);min-height:520px;overflow:hidden}
+.h-banner{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 40%}
+.stage::after{content:"";position:absolute;inset:auto 0 0 0;height:42%;background:linear-gradient(180deg,transparent,#000 85%);z-index:5;pointer-events:none}
+.hero-text{position:relative;z-index:7;text-align:center;margin:-170px auto 0;padding:0 20px 64px;max-width:640px}
+.hero h1{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(46px,7vw,84px);letter-spacing:.16em;line-height:1.2;text-shadow:0 0 28px rgba(255,79,168,.55),0 0 2px #fff}
+.hero .sub{margin:10px 0 0;color:#ffc2dc;font-size:15px;letter-spacing:.3em}
+.hero .lede{margin:22px auto 0;max-width:24em;font-size:16px;color:rgba(243,234,255,.86)}
+
+/* 劇透門 */
+.gate{padding-top:56px;padding-bottom:64px;text-align:center}
+.gate p{margin:0 auto;max-width:28em;color:var(--muted)}
+.gate p strong{color:var(--paper);font-weight:600}
+.gate button{margin-top:26px;padding:12px 28px;background:transparent;border:1px solid var(--dragon);color:var(--paper);cursor:pointer;letter-spacing:.08em;transition:background .25s}
+.gate button:hover{background:rgba(255,79,168,.14)}
+body.locked .story{display:none}
+body.open .gate{display:none}
+
+/* 雙線時間軸 */
+.story section{padding-top:72px;padding-bottom:72px;border-bottom:1px solid var(--line)}
+.story h2{margin:0 0 8px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(26px,3.6vw,36px);letter-spacing:.06em}
+.story .intro{margin:0 0 40px;color:var(--muted);max-width:36em}
+
+.heads{display:grid;grid-template-columns:1fr 92px 1fr;margin-bottom:12px}
+.heads div{display:flex;align-items:center;gap:12px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:22px;letter-spacing:.1em}
+.heads img{width:64px;height:auto}
+.heads .b{color:var(--dragon);justify-content:flex-end}
+.heads .r{color:var(--snake)}
+
+.timeline{position:relative}
+.timeline{padding-bottom:6px}
+.timeline::before,.timeline::after{content:"";position:absolute;top:30px;bottom:-12px;width:2px;transform-origin:top}
+.timeline::before{left:calc(50% - 7px);background:var(--dragon);box-shadow:0 0 10px rgba(255,79,168,.6)}
+.timeline::after{left:calc(50% + 5px);background:var(--snake);box-shadow:0 0 10px rgba(196,160,255,.6)}
+body.open .timeline::before,body.open .timeline::after{animation:draw 1.6s ease-out both}
+@keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+.row{display:grid;grid-template-columns:1fr 92px 1fr;align-items:start;margin-bottom:34px}
+.row:last-child{margin-bottom:0}
+.row .age{position:relative;z-index:1;justify-self:center;width:60px;height:60px;border-radius:50%;background:var(--ink);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-weight:900;line-height:1.1}
+.row .age b{font-size:20px}
+.row .age small{font-size:11px;color:var(--muted);font-weight:500}
+.row.key .age{border-color:var(--memo);box-shadow:0 0 0 4px rgba(255,214,10,.12)}
+.row.key .age b{color:var(--memo)}
+.entry{padding-top:6px}
+.entry.b{text-align:right;padding-right:6px}
+.entry.r{padding-left:6px}
+.entry p{margin:0}
+.entry .who{display:none}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 便利商店門口 */
+.story section.meet{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:48px;align-items:center}
+.meet-img{margin:0}
+.meet-img img{width:100%;height:auto;-webkit-mask-image:linear-gradient(180deg,#000 75%,transparent);mask-image:linear-gradient(180deg,#000 75%,transparent)}
+.meet .scene h2{margin-bottom:20px}
+.meet .scene p{margin:0 0 18px;max-width:28em}
+.meet .scene .line-said{font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(22px,2.8vw,28px);line-height:1.6;margin:28px 0}
+.meet .scene .after{font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--snake);margin:0}
+.after-notes{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:12px}
+.after-notes h3{margin:0 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px;color:var(--memo)}
+.after-notes p{margin:0}
+/* 怎麼說、其實 */
+.said{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.said .col-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.said .col-head img{width:76px;height:auto}
+.said .col h3{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:24px;letter-spacing:.08em}
+.said .col.b h3{color:var(--dragon)}
+.said .col.r h3{color:var(--snake)}
+.said details{border-top:1px solid var(--line);padding:14px 0}
+.said details:last-child{border-bottom:1px solid var(--line)}
+.said summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.said summary::-webkit-details-marker{display:none}
+.said summary .q{display:block;font-size:13px;color:var(--muted)}
+.said summary .a{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px}
+.said summary .toggle{font-size:13px;color:var(--muted);white-space:nowrap;padding-top:2px;text-decoration:underline;text-underline-offset:4px}
+.said details[open] .toggle{visibility:hidden}
+.said .truth-text{margin:12px 0 0;padding-left:14px}
+.said .col.b .truth-text{border-left:2px solid var(--dragon)}
+.said .col.r .truth-text{border-left:2px solid var(--snake)}
+.said .truth-text p{margin:0 0 8px}
+.said .tag{display:inline-block;padding:0 8px;border:1px solid var(--memo);color:var(--memo);font-size:12px;font-family:'Noto Serif TC',serif;font-weight:600;vertical-align:2px}
+/* 收著的東西 */
+.things{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.thing{position:relative;padding:20px 18px 16px;background:var(--ink-2);border:1px solid var(--line)}
+.thing::before{content:"";position:absolute;top:0;left:0;width:36px;height:3px}
+.thing.b::before{background:var(--dragon)}
+.thing.r::before{background:var(--snake)}
+.thing.m::before{background:#ffc2dc}
+.thing .ico{position:absolute;top:8px;right:8px;width:58px;height:auto;opacity:.9}
+.thing h3{padding-right:56px;margin:0 0 2px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px}
+.thing .owner{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.thing p{margin:0;font-size:15px}
+
+/* 計分表 */
+.sec-head{position:relative;padding-right:200px}
+.sec-head .glass{position:absolute;right:0;top:-40px;width:190px;height:auto;transform:rotate(8deg)}
+.memo-wrap{display:grid;grid-template-columns:minmax(0,380px) 1fr;gap:36px;align-items:start}
+.memo{background:#1c1c1e;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px 18px 18px;font-family:-apple-system,'PingFang TC','Noto Sans TC',sans-serif;font-size:14px;line-height:1.7}
+.memo .bar{display:flex;justify-content:space-between;color:var(--memo);font-size:14px}
+.memo h3{margin:12px 0 2px;font-size:22px;font-weight:800}
+.memo .meta{font-size:11px;color:rgba(235,235,245,.45)}
+.memo .rule{margin:12px 0 8px;color:rgba(242,242,247,.85)}
+.memo .line{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(235,235,245,.4)}
+.memo .line s{text-decoration-thickness:1px}
+.memo .now{margin-top:8px;padding:9px 11px;border-left:2px solid var(--memo);background:rgba(255,214,10,.08);border-radius:0 8px 8px 0;color:#fff}
+.memo .now span:last-child{color:var(--memo)}
+.plays h3{margin:0 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:19px}
+.plays p{margin:0 0 18px;max-width:30em}
+.plays .note{color:var(--muted);font-size:15px}
+.clues{margin:44px 0 0;padding:0;list-style:none;counter-reset:c;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.clues li{counter-increment:c;padding:18px 18px 16px;border:1px solid var(--line)}
+.clues li::before{content:"線索 " counter(c);display:block;font-family:'Noto Serif JP',serif;font-weight:700;color:var(--memo);font-size:14px;margin-bottom:6px}
+.confront{margin:28px 0 0;color:var(--muted)}
+
+/* 真央 */
+.story section.mao{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:48px;align-items:start}
+.mao-img{margin:0;position:sticky;top:24px}
+.mao-img{isolation:isolate}
+.mao-img .rose{position:absolute;left:-28%;bottom:-6%;width:62%;z-index:2;transform:rotate(-10deg)}
+.mao-img .mao-pic{position:relative;z-index:1;width:100%;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+.mao h2{color:#ffc2dc;margin-bottom:16px}
+.mao-text p{margin:0 0 18px;max-width:32em}
+.mao-text .mao-lead{font-family:'Noto Serif JP',serif;font-weight:700;font-size:20px;color:#ffd6ea}
+.mao .receipt{margin-top:28px;padding:18px 20px;border:1px dashed rgba(255,194,220,.5);color:#ffd6ea}
+
+footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .wrap{padding-left:18px;padding-right:18px}
+  .story section{padding-top:56px;padding-bottom:56px}
+  .stage{height:auto;min-height:0;aspect-ratio:1 / 1}
+  .h-banner{object-position:38% 40%}
+  .hero-text{margin-top:-64px;padding-bottom:48px}
+  .hero .sub{font-size:14px}
+  .hero .lede{font-size:15px}
+  .mao-text .mao-lead{font-size:18px}
+  .heads,.timeline::before,.timeline::after{display:none}
+  .row{grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+  .row .age{order:-1;justify-self:start;flex-direction:row;gap:4px;width:auto;height:auto;padding:4px 14px;border-radius:999px}
+  .row .age small{font-size:12px}
+  .entry.b,.entry.r{text-align:left;padding:0 0 0 14px}
+  .entry.b{border-left:2px solid var(--dragon)}
+  .entry.r{border-left:2px solid var(--snake)}
+  .entry .who{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:14px}
+  .entry.b .who{color:var(--dragon)}
+  .entry.r .who{color:var(--snake)}
+  .story section.meet,.story section.mao{grid-template-columns:1fr;gap:28px}
+  .meet-img{max-width:340px;margin:0 auto}
+  .after-notes,.said,.memo-wrap,.clues{grid-template-columns:1fr}
+  .after-notes{gap:22px;margin-top:4px}
+  .said{gap:40px}
+  .mao-img{position:relative;top:auto;max-width:240px;margin:0 auto}
+  .mao-img .rose{left:-22%;width:58%}
+  .sec-head{padding-right:96px}
+  .sec-head .glass{width:110px;top:-20px;right:-6px}
+  .thing .ico{width:50px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body.open .timeline::before,body.open .timeline::after{animation:none}
+}
+/* 一人一區 */
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding-top:40px;padding-bottom:8px}
+.chips a{color:var(--paper);text-decoration:none;font-size:15px;padding:6px 16px;border:1px solid var(--line);border-radius:999px}
+.chips a:hover,.chips a:focus-visible{border-color:var(--dragon);color:#fff}
+.story.s2 section.person{position:relative;padding:0;margin-top:56px;max-width:none}
+.p-bg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:0}
+.p-bg img{position:absolute;top:0;right:0;width:64%;height:100%;object-fit:cover;object-position:50% 18%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.p-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 34%,rgba(0,0,0,.55) 56%,rgba(0,0,0,.05) 80%)}
+.p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
+.p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
+.p-head h2{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(84px,12vw,160px);line-height:1;letter-spacing:.06em}
+.botan .p-head h2{color:var(--dragon);text-shadow:0 0 40px rgba(255,79,168,.5)}
+.ren .p-head h2{color:var(--snake);text-shadow:0 0 40px rgba(196,160,255,.5)}
+.p-meta{margin:16px 0 0;font-size:15px;letter-spacing:.12em;color:rgba(243,234,255,.85)}
+.p-story{max-width:1180px;margin:0 auto;padding:0 6vw 24vh}
+.ch{max-width:31em;margin:0 0 72px}
+.ch h3{margin:0 0 14px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;letter-spacing:.08em}
+.botan .ch h3{color:#ff8cc6}
+.ren .ch h3{color:#d9c4ff}
+.ch p{margin:0 0 16px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.ch .hit{font-family:'Noto Serif JP',serif;font-weight:700;font-size:19px;color:#fff;margin-top:22px}
+.meet2-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:48px;align-items:start}
+.meet2 h2{margin-bottom:28px}
+.meet2-text p{margin:0 0 16px;max-width:31em}
+.meet2-text .line-said{font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(22px,2.8vw,28px);line-height:1.6;margin:26px 0}
+.meet2-text .after{font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--snake);margin:0 0 26px}
+.s2 .memo-wrap .plays .note{margin-top:4px}
+@media (max-width:720px){
+  .chips{padding-top:28px}
+  .p-bg img{width:100%;-webkit-mask-image:none;mask-image:none;object-position:62% 12%}
+  .ren .p-bg img{object-position:66% 10%}
+  .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+  .p-head{padding:0 20px 10vh}
+  .p-head h2{font-size:96px}
+  .p-meta{font-size:13px;letter-spacing:.06em}
+  .p-story{padding:0 14px 30vh}
+  .ch{margin:0 0 30vh;padding:22px 20px 8px;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
+  .ch:last-child{margin-bottom:0}
+  .ch h3{font-size:20px}
+  .meet2-grid{grid-template-columns:1fr;gap:24px}
+}
+.meetp .p-head h2.h-small{font-size:clamp(54px,7vw,96px);color:#fff;text-shadow:0 0 34px rgba(120,200,255,.55)}
+.meetp .ch h3{color:#9fdcff}
+.maop .p-head h2{color:#ffc2dc;text-shadow:0 0 40px rgba(255,170,210,.6)}
+.maop .ch h3{color:#ffc2dc}
+.ch .said-line{font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;line-height:1.6;color:#fff;margin:22px 0}
+.meetp .p-bg img{width:68%;object-position:50% 50%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%);mask-image:linear-gradient(90deg,transparent 0,#000 14%)}
+.meetp .p-bg::after{background:linear-gradient(90deg,#000 32%,rgba(0,0,0,.55) 44%,rgba(0,0,0,0) 58%)}
+.maop .p-bg img{object-position:52% 25%}
+.maop .p-bg::after{background:linear-gradient(90deg,#000 34%,rgba(0,0,0,.6) 56%,rgba(0,0,0,.12) 80%)}
+@media (max-width:720px){
+  .meetp .p-head h2.h-small{font-size:52px}
+  .meetp .p-bg img{width:100%;object-position:45% 55%;-webkit-mask-image:none;mask-image:none}
+  .meetp .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+  .maop .p-bg img{object-position:56% 22%}
+  .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
+}
+/* langs */
+.langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
+.langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
+.langs a[aria-current]{background:#ff4fa8;border-color:#ff4fa8;color:#fff}
+.langs a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+body,.story h2,.ch h3,.ch .hit,.ch .said-line,.p-head h2,.p-meta,.memo,.plays,.sec-head{font-family:'Noto Serif JP',serif}
+.hero h1{font-family:'Noto Serif JP',serif}
+/* /langs */
+</style>
+</head>
+<body class="locked">
+
+<header class="hero">
+  <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja" aria-current="page">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
+    <div class="stage" aria-hidden="true">
+    <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
+  </div>
+  <div class="hero-text">
+    <h1>龍と蛇</h1>
+    <p class="sub">牡丹と蓮</p>
+    <p class="lede">ふたりとも十六で事件を起こし、二十二で道を変えた。そして歌舞伎町の地下一階で、コンビになった。</p>
+  </div>
+</header>
+
+<div class="gate wrap" id="gate">
+  <p><strong>このページは全部ネタバレです。</strong>ふたりの過去、裏でやっていること、そして真央の秘密まで載っています。開幕をふたつとも遊んでから、答え合わせに来てください。</p>
+  <button type="button" id="open-btn">遊び終わった、開く</button>
+</div>
+
+<main class="story s2">
+
+  <nav class="chips wrap" aria-label="移動">
+    <a href="#botan">牡丹</a><a href="#ren">蓮</a><a href="#meet">出会い</a><a href="#mao">真央</a><a href="#score">スコア表</a>
+  </nav>
+
+  <section class="person botan" id="botan" aria-labelledby="n-botan">
+    <div class="p-bg" aria-hidden="true"><img src="botan_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-botan">牡丹</h2>
+        <p class="p-meta">犬飼誠一郎　29歳　Club MIRAGE No.1</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>小百合</h3>
+          <p>母親は足立区で小さなスナックをやっている。店名は小百合、カウンター七席だけの店だ。彼はそのカウンターの隅で宿題をして、安いウイスキーとおでんの匂いの中で育った。</p>
+          <p>母親がどう笑うか、どう客の手の甲に触れるか、客が帰ろうとした瞬間にどう目を潤ませるか、彼はずっと見ていた。十代のころに気づいた。母親が目を赤くした翌日は、店の売上が少し増えている。常連から借りた金に借用書は書かないし、返したこともない。ひとつの常連グループが来なくなれば、次のグループに乗り換える。</p>
+        </article>
+        <article class="ch">
+          <h3>十六歳</h3>
+          <p>その夜、母親は自分を殴っていた男を包丁で刺した。彼が罪をかぶった。未成年で刑は軽く、少年院に入った。弁護士費用と示談金はすぐに揃った。その金は母親が常連から甘い言葉で引き出したものだった。</p>
+          <p>客に聞かれると、彼は別の話をする。高校の親友の健司がゲーセンで人を怪我させた。健司の家には病気の妹の小雪がいたから、自分が代わりに罪をかぶった。出所の日、迎えには誰も来なかった。この話で彼はたくさん指名を取ってきたし、細部はいつも一致している。</p>
+          <p class="hit">健司なんて人間は、最初からいない。</p>
+        </article>
+        <article class="ch">
+          <h3>組</h3>
+          <p>十七で少年院を出ると、スナックにみかじめ料を取りに来ていた組員が彼を組に連れていった。口がうまく場を読める彼は、取り立てでも二言三言で相手に自分から金を出させ、すぐに組長のそばに置かれた。その数年で、人がどこを怖がり、どこで甘くなるかを見抜けるようになった。まず一番聞きたい言葉を言い、次に一番聞きたくない言葉を言う。</p>
+          <p>首の牡丹は組に入って二年目に、肩から腕の龍は足を洗う前年に彫り上がった。どちらも浅草の七十過ぎの彫師が一針ずつ手彫りしたものだ。龍を彫っていた一年はよく熱を出し、彫師の店の畳に寝転がって、江戸の火消しや侠客の話を聞いていた。体で赤いのは牡丹だけ。色は一か所だけにしておかないと負ける、と彫師は言った。</p>
+        </article>
+        <article class="ch">
+          <h3>一晩の口</h3>
+          <p>二十二で足を洗いたいと言うと、掟は小指だった。その夜、彼は組長の部屋で正座し、テーブルにはもうドスが置かれていた。命乞いはしなかった。酒を注ぎ、煙草に火をつけ、組長の若いころの話、家に帰ってこない娘の話、この数年で組の誰が裏で金をくすねていたかを話した。夜が明けるまで話し続けた。</p>
+          <p>夜明けに組長はドスをしまった。その口は組に置いておくには惜しい、女を騙すほうが金になると言って、今の店を直々に紹介した。店長は彼の襟元の牡丹を見て、その場で源氏名を決めた。</p>
+          <p>小指はちゃんとついている。客の前でひらひら振って、一晩しゃべって買ったんだと笑う。組長は数年前に亡くなった。葬式には行ったが、最後列に十分立っただけで帰った。</p>
+        </article>
+        <article class="ch">
+          <h3>赤ワインと赤飯</h3>
+          <p>入店半年、指名客がとても静かな友達を連れてきた。その子は一晩中、彼の手ばかり見ていた。翌週こっそり誘い出して、その夜のうちに寝た。指名客は店中の前で彼の顔に赤ワインをぶちまけ、二度と来なかった。静かな子のほうは一人で指名しに来るようになり、一年後には太客になった。結婚前に最後に来た日、アルマンドを一本入れて、何も言わずに帰った。その空き瓶は今も控室の棚に置いてある。</p>
+          <p>入店四年目、初めて月間No.1を取った。太客が七段のシャンパンタワーを積んでくれた。閉店後、一人で裏路地の屋台でとんこつを食べ、母親に電話して会社で昇進したと言った。母親は赤飯を炊いて祝うと言った。電話を切って道端で一本吸い終えると、彼は引き返して、その夜友達についてきた子を誘った。</p>
+          <p>あの赤飯を、彼はまだ食べに帰っていない。毎月仕送りをしていて、母親は彼が営業の仕事をしていると思っている。母親の誕生日には花束を送り、カードには誠一郎とだけ書く。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="person ren" id="ren" aria-labelledby="n-ren">
+    <div class="p-bg" aria-hidden="true"><img src="ren_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-ren">蓮</h2>
+        <p class="p-meta">水無瀬灯　25歳　Club MIRAGE No.2</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>ノクターン</h3>
+          <p>狭いリビングには、母親がリサイクルショップから運んできたアップライトピアノがあった。音はいつも少しずれていた。手が大きいから一オクターブ超えの和音も楽に押さえられて、中学では地区のコンクールで賞を取った。先生は、指が重いからゆっくりした曲が一番いいと言った。彼が一番好きだったのはノクターンだ。めったに笑わない母親も、彼が練習しているときだけは台所の入口にもたれて最後まで聴いていた。</p>
+          <p>父親はトラックの運転手で、しらふのときは無口、酔うと殴った。母親を殴り、前に立ちはだかる彼も殴った。そういう夜、彼は妹の鈴のためにピアノを弾き、鈴はピアノ椅子のそばで丸くなって眠った。鈴にはお気に入りの一曲があって、毎回三回弾かせ、一音でも間違えると笑った。</p>
+        </article>
+        <article class="ch">
+          <h3>鈴</h3>
+          <p>鈴は五つ下で、フリルのワンピースとリボンが大好きだった。毎朝髪を結んでとせがまれたが、彼の手は大きすぎて結び目はいつも曲がっていた。それでも鈴はご機嫌で学校に行った。</p>
+          <p>中学からはとにかく食べて体を鍛え、やがて父親より背が高くなった。</p>
+        </article>
+        <article class="ch">
+          <h3>十六歳</h3>
+          <p>あの夜、酔った父親が鈴を部屋から引きずり出した。彼は初めてやり返し、一発で父親の鼻を折り、母親が悲鳴を上げるまで殴り続けた。鈴は泣きながら母親の後ろに隠れた。鈴を抱きしめた母親は、父親を見るのと同じ目で彼を見ていた。</p>
+          <p>その夜から、彼は一度もピアノに触れていない。鈴は彼を見るたびに隠れるようになり、翌年彼が家を出た日、見送りには出てこなかった。</p>
+        </article>
+        <article class="ch">
+          <h3>東京</h3>
+          <p>工事現場、引っ越し、倉庫の夜勤。ネットカフェや知り合いのソファで寝て、一日中しゃべらない日もざらだった。その数年で覚えたことはふたつ。安いものを食べても生きていける。しゃべらなければ誤解もされない。</p>
+          <p>父親がその後どうなったか、彼は聞いたことがない。母親は彼の住所を知らないし、スマホには実家の番号がひとつも入っていない。</p>
+        </article>
+        <article class="ch">
+          <h3>絆創膏</h3>
+          <p>彼の手にはたいてい絆創膏が貼ってある。下にあるのは指の関節の古傷で、十六のあの夜のものもあれば、現場や喧嘩でできたものもある。聞かれても、ぶつけたとしか言わない。店で酔った客が暴れそうになると、真っ先に立ち上がって前に出る。父親に似ていると言われるのは、その場で顔色が変わる数少ない言葉だ。</p>
+          <p>VIPルームには飾り用の白いグランドピアノがある。客に弾いてとせがまれても、いつも弾けないと言い、通りかかっても見向きもしない。でも店でピアノ曲が流れると、指がテーブルの上で勝手に動いている。本人は気づいていない。</p>
+          <p>鈴は今二十歳で、大阪の専門学校に通っている。彼は鈴のSNSのアカウントを知っていて、夜中にたまに覗くが、いいねもフォローもしない。カメラロールに残しているのは子どものころのふたりの写真一枚だけ。写真の鈴は曲がったツインテールで、その朝に彼が結んだものだ。鈴の誕生日には、コンビニでいちごのショートケーキを買って一人で食べる。</p>
+          <p class="hit">兄弟はいるかと聞かれると、長いあいだ黙って、一人、とだけ答える。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="person meetp" id="meet" aria-labelledby="n-meet">
+    <div class="p-bg" aria-hidden="true"><img src="meet_bg.webp" width="1088" height="1920" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-meet" class="h-small">コンビニの前</h2>
+        <p class="p-meta">蓮 22歳　牡丹 26歳　歌舞伎町の裏路地</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>あの冬</h3>
+          <p>現場の親方にクビにされたばかりで、蓮の指の関節からはまだ血が出ていた。歌舞伎町の裏路地のコンビニの前にしゃがんで、唐揚げ弁当を食べていた。</p>
+          <p>仕事帰りの牡丹が通りかかり、隣にしゃがんで煙草に火をつけた。蓮が弁当を食べ終わるのを見届けると、仕事を変える気はないかと聞いた。蓮が答えないので、牡丹は弁当の蓋に店の名前を書いた。</p>
+          <p class="said-line">明日の夜八時においで。<br>来なくてもいいけど。</p>
+          <p class="hit">蓮は翌日、七時半には来ていた。</p>
+        </article>
+        <article class="ch">
+          <h3>それから</h3>
+          <p>弁当の蓋は捨てずに、今も部屋の引き出しにしまってある。あの唐揚げ弁当も今でもよく食べる。スーツを選んだのも、酒の注ぎ方やいつ黙るべきかを教えたのも牡丹だ。源氏名も牡丹がつけた。牡丹には蓮だろう、蓮は泥の中から咲いても綺麗なままだから、と。</p>
+          <p>そのあと牡丹は同じ彫師のところに連れていき、蓮は黒い蛇を彫った。牡丹の龍と対になる蛇だ。</p>
+          <p>出勤初日、蓮は一晩で三言しかしゃべらなかったのに、閉店前に指名が入った。牡丹はそれを才能だと言い、翌日から自分の卓に蓮をつけた。</p>
+          <p>なぜ蓮が牡丹の言うことをこんなに聞くのか、蓮は誰にも話したことがない。牡丹は酔うと、あの夜でかい犬を拾ったと言うことがあって、それを聞くと蓮は牡丹のグラスを取り上げる。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="person maop" id="mao" aria-labelledby="n-mao">
+    <div class="p-bg" aria-hidden="true"><img src="mao_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-mao">真央</h2>
+        <p class="p-meta">西園寺真生　24歳　牡丹の指名客</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>真生</h3>
+          <p>真央は男の子だ。本名は西園寺真生、読みは同じマオ。西園寺家の長男で、跡取りとして育てられ、ピアノと茶道を習った。でも太っていて要領が悪く、テストではいつも従弟に負けた。父親は親戚の前でこの子は西園寺らしくないと言い、中学の同級生には豚坊ちゃんと呼ばれた。</p>
+        </article>
+        <article class="ch">
+          <h3>誕生日会</h3>
+          <p>ある年の誕生日会にクラス全員を呼んだ。みんな来て、ケーキを食べ、お返しをもらって帰った。その夜、誰も彼に話しかけなかった。その日、お金があれば人はいてくれると覚えた。</p>
+          <p>家族写真ではいつも一番端にいて、親戚の陰に半分隠れていて、何枚かは切り取られている。今の彼のスマホには自撮りが何千枚もあって、端にいる写真は一枚もない。</p>
+        </article>
+        <article class="ch">
+          <h3>二十八階</h3>
+          <p>部屋にこもって動画でメイクを覚えた。最初に覚えたのは、喉仏のあたりの影をコンシーラーで消すことだった。高校で痩せて、初めてスカートで外に出た日、かわいいねと言われて、家に帰って一晩中泣いた。</p>
+          <p>父親に知られても、家族は怒鳴らなかった。ただ跡取りを従弟に替えて、家族ごと海外に移り、彼だけを東京の高級マンションの二十八階に残した。毎月初めに大金が振り込まれるが、メッセージ欄はいつも空白だ。</p>
+        </article>
+        <article class="ch">
+          <h3>お嬢さん</h3>
+          <p>二十歳で初めてClub MIRAGEに入ったとき、彼はまだ男の格好で、一番奥の席に座り、一晩で烏龍茶を一杯だけ頼んだ。ほかのホストはみんな、友達の付き添いで来た男の子だと思っていた。閉店間際に牡丹が隣に座って煙草に火をつけ、彼をお嬢さんと呼んで、普段はどんな服を着るのか、何色が好きなのかと聞いた。</p>
+          <p>次に来たとき、彼は初めての地雷系ワンピースを着ていた。牡丹は入口で気づいて、真っ先にかわいいと言った。その日から彼は牡丹しか指名していない。牡丹の優しさがカードで買ったものだとわかっていても、彼は嬉しい。一晩中、誰かが自分を見て、名前を呼んでくれるから。この秘密を牡丹は今も守っていて、蓮もそれにならっている。</p>
+        </article>
+        <article class="ch">
+          <h3>パンケーキ</h3>
+          <p>ある夜、彼は駅の近くで酔っぱらいに絡まれた。通行人はみんな見ているだけで、誰も止まらなかった。あなたは彼の前に立ちはだかり、手を引いて走って、二本先の通りでやっと止まり、お腹すいてないと聞いた。会計のとき、彼はいつもの癖でカードを出してここは私がと言ったが、あなたは割り勘を譲らず、小銭まできっちり数えた。</p>
+          <p>そのレシートを、彼はずっと財布の一番奥にしまっている。しわくちゃになっても捨てない。お金を受け取らずにそばにいてくれたのは、あなたが初めてだった。このことは牡丹にも話していない。</p>
+          <p class="hit">彼はあなたが好きだ。親友という立場の下に隠れていて、自分ではまだ気づいていない。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="score" aria-labelledby="t-score">
+    <div class="sec-head">
+      <h2 id="t-score">スコア表</h2>
+      <p class="intro">表向きは先輩と後輩、店のNo.1とNo.2。裏では、ふたりで点数を競っている。</p>
+      <img class="glass" src="glass.webp" width="832" height="1216" alt="" loading="lazy">
+    </div>
+    <div class="memo-wrap">
+      <div class="memo" aria-label="ふたりの共有メモ">
+        <div class="bar"><span>‹ メモ</span><span>共有</span></div>
+        <h3>MIRAGE ✕ 枝</h3>
+        <div class="meta">牡丹、蓮 と共有</div>
+        <p class="rule">指名客が連れてきた友達を枝と呼ぶ。誰が先に落とすか、どこまでやるか、全部点数になる。</p>
+        <div class="line"><s>☑ 美咲の枝</s><span>牡丹 7・蓮 5</span></div>
+        <div class="line"><s>☑ 結衣の枝</s><span>牡丹 4・蓮 6</span></div>
+        <div class="line now"><span>☐ 真央の枝　あなた</span><span>牡丹 ?・蓮 ?</span></div>
+      </div>
+      <div class="plays">
+        <p>客が連れてきた友達を狙うのは、牡丹がワインをかけられたあの一件で覚えたことだ。友達のほうが客より落としやすいし、バレたらバレたで稼ぎ方がある。</p>
+        <p>点数はふたりのスマホの共有メモにつけていて、枝は常に何人も並行している。急ぎはしない。長引くほど楽しいから。</p>
+        <p class="note">開幕01で蓮がドアを開けて踏み込む場面は、ふたりが打ち合わせた芝居だ。牡丹は見つかったふりをして、あなたに自分のせいだと思わせる。<br>開幕02では、ふたりはまだあなたを品定めしている。</p>
+        <p class="note">正面から問い詰めると、牡丹は笑ってはぐらかすか別の話にすり替え、蓮は黙る。証拠を突きつけられて初めて認めるが、罪悪感はかけらもない。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>色恋営業中｜by Matcha_</footer>
+
+<script>
+(function () {
+  var body = document.body;
+  function open() {
+    body.classList.remove('locked');
+    body.classList.add('open');
+    try { localStorage.setItem('xiatou-story-open', '1'); } catch (e) {}
+  }
+  try { if (localStorage.getItem('xiatou-story-open') === '1') open(); } catch (e) {}
+  document.getElementById('open-btn').addEventListener('click', function () {
+    open();
+    document.getElementById('botan').scrollIntoView();
+  });
+})();
+</script>
+</body>
+</html>

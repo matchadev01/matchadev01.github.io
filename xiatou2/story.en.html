@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Botan & Ren | Open for Romance spoiler page</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000;
+  --ink-2:#0e0912;
+  --paper:#f3eaff;
+  --muted:#a493b4;
+  --dragon:#ff4fa8;
+  --snake:#c4a0ff;
+  --memo:#ffd60a;
+  --line:rgba(243,234,255,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:'Noto Serif TC','Noto Serif JP',serif;font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--memo);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+/* 開頭 */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.stage{position:relative;width:100%;height:min(88vh,860px);min-height:520px;overflow:hidden}
+.h-banner{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 40%}
+.stage::after{content:"";position:absolute;inset:auto 0 0 0;height:42%;background:linear-gradient(180deg,transparent,#000 85%);z-index:5;pointer-events:none}
+.hero-text{position:relative;z-index:7;text-align:center;margin:-170px auto 0;padding:0 20px 64px;max-width:640px}
+.hero h1{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(46px,7vw,84px);letter-spacing:.16em;line-height:1.2;text-shadow:0 0 28px rgba(255,79,168,.55),0 0 2px #fff}
+.hero .sub{margin:10px 0 0;color:#ffc2dc;font-size:15px;letter-spacing:.3em}
+.hero .lede{margin:22px auto 0;max-width:24em;font-size:16px;color:rgba(243,234,255,.86)}
+
+/* 劇透門 */
+.gate{padding-top:56px;padding-bottom:64px;text-align:center}
+.gate p{margin:0 auto;max-width:28em;color:var(--muted)}
+.gate p strong{color:var(--paper);font-weight:600}
+.gate button{margin-top:26px;padding:12px 28px;background:transparent;border:1px solid var(--dragon);color:var(--paper);cursor:pointer;letter-spacing:.08em;transition:background .25s}
+.gate button:hover{background:rgba(255,79,168,.14)}
+body.locked .story{display:none}
+body.open .gate{display:none}
+
+/* 雙線時間軸 */
+.story section{padding-top:72px;padding-bottom:72px;border-bottom:1px solid var(--line)}
+.story h2{margin:0 0 8px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(26px,3.6vw,36px);letter-spacing:.06em}
+.story .intro{margin:0 0 40px;color:var(--muted);max-width:36em}
+
+.heads{display:grid;grid-template-columns:1fr 92px 1fr;margin-bottom:12px}
+.heads div{display:flex;align-items:center;gap:12px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:22px;letter-spacing:.1em}
+.heads img{width:64px;height:auto}
+.heads .b{color:var(--dragon);justify-content:flex-end}
+.heads .r{color:var(--snake)}
+
+.timeline{position:relative}
+.timeline{padding-bottom:6px}
+.timeline::before,.timeline::after{content:"";position:absolute;top:30px;bottom:-12px;width:2px;transform-origin:top}
+.timeline::before{left:calc(50% - 7px);background:var(--dragon);box-shadow:0 0 10px rgba(255,79,168,.6)}
+.timeline::after{left:calc(50% + 5px);background:var(--snake);box-shadow:0 0 10px rgba(196,160,255,.6)}
+body.open .timeline::before,body.open .timeline::after{animation:draw 1.6s ease-out both}
+@keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+.row{display:grid;grid-template-columns:1fr 92px 1fr;align-items:start;margin-bottom:34px}
+.row:last-child{margin-bottom:0}
+.row .age{position:relative;z-index:1;justify-self:center;width:60px;height:60px;border-radius:50%;background:var(--ink);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-weight:900;line-height:1.1}
+.row .age b{font-size:20px}
+.row .age small{font-size:11px;color:var(--muted);font-weight:500}
+.row.key .age{border-color:var(--memo);box-shadow:0 0 0 4px rgba(255,214,10,.12)}
+.row.key .age b{color:var(--memo)}
+.entry{padding-top:6px}
+.entry.b{text-align:right;padding-right:6px}
+.entry.r{padding-left:6px}
+.entry p{margin:0}
+.entry .who{display:none}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 便利商店門口 */
+.story section.meet{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:48px;align-items:center}
+.meet-img{margin:0}
+.meet-img img{width:100%;height:auto;-webkit-mask-image:linear-gradient(180deg,#000 75%,transparent);mask-image:linear-gradient(180deg,#000 75%,transparent)}
+.meet .scene h2{margin-bottom:20px}
+.meet .scene p{margin:0 0 18px;max-width:28em}
+.meet .scene .line-said{font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(22px,2.8vw,28px);line-height:1.6;margin:28px 0}
+.meet .scene .after{font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--snake);margin:0}
+.after-notes{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:12px}
+.after-notes h3{margin:0 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px;color:var(--memo)}
+.after-notes p{margin:0}
+/* 怎麼說、其實 */
+.said{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.said .col-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.said .col-head img{width:76px;height:auto}
+.said .col h3{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:24px;letter-spacing:.08em}
+.said .col.b h3{color:var(--dragon)}
+.said .col.r h3{color:var(--snake)}
+.said details{border-top:1px solid var(--line);padding:14px 0}
+.said details:last-child{border-bottom:1px solid var(--line)}
+.said summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.said summary::-webkit-details-marker{display:none}
+.said summary .q{display:block;font-size:13px;color:var(--muted)}
+.said summary .a{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px}
+.said summary .toggle{font-size:13px;color:var(--muted);white-space:nowrap;padding-top:2px;text-decoration:underline;text-underline-offset:4px}
+.said details[open] .toggle{visibility:hidden}
+.said .truth-text{margin:12px 0 0;padding-left:14px}
+.said .col.b .truth-text{border-left:2px solid var(--dragon)}
+.said .col.r .truth-text{border-left:2px solid var(--snake)}
+.said .truth-text p{margin:0 0 8px}
+.said .tag{display:inline-block;padding:0 8px;border:1px solid var(--memo);color:var(--memo);font-size:12px;font-family:'Noto Serif TC',serif;font-weight:600;vertical-align:2px}
+/* 收著的東西 */
+.things{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.thing{position:relative;padding:20px 18px 16px;background:var(--ink-2);border:1px solid var(--line)}
+.thing::before{content:"";position:absolute;top:0;left:0;width:36px;height:3px}
+.thing.b::before{background:var(--dragon)}
+.thing.r::before{background:var(--snake)}
+.thing.m::before{background:#ffc2dc}
+.thing .ico{position:absolute;top:8px;right:8px;width:58px;height:auto;opacity:.9}
+.thing h3{padding-right:56px;margin:0 0 2px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px}
+.thing .owner{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.thing p{margin:0;font-size:15px}
+
+/* 計分表 */
+.sec-head{position:relative;padding-right:200px}
+.sec-head .glass{position:absolute;right:0;top:-40px;width:190px;height:auto;transform:rotate(8deg)}
+.memo-wrap{display:grid;grid-template-columns:minmax(0,380px) 1fr;gap:36px;align-items:start}
+.memo{background:#1c1c1e;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px 18px 18px;font-family:-apple-system,'PingFang TC','Noto Sans TC',sans-serif;font-size:14px;line-height:1.7}
+.memo .bar{display:flex;justify-content:space-between;color:var(--memo);font-size:14px}
+.memo h3{margin:12px 0 2px;font-size:22px;font-weight:800}
+.memo .meta{font-size:11px;color:rgba(235,235,245,.45)}
+.memo .rule{margin:12px 0 8px;color:rgba(242,242,247,.85)}
+.memo .line{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(235,235,245,.4)}
+.memo .line s{text-decoration-thickness:1px}
+.memo .now{margin-top:8px;padding:9px 11px;border-left:2px solid var(--memo);background:rgba(255,214,10,.08);border-radius:0 8px 8px 0;color:#fff}
+.memo .now span:last-child{color:var(--memo)}
+.plays h3{margin:0 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:19px}
+.plays p{margin:0 0 18px;max-width:30em}
+.plays .note{color:var(--muted);font-size:15px}
+.clues{margin:44px 0 0;padding:0;list-style:none;counter-reset:c;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.clues li{counter-increment:c;padding:18px 18px 16px;border:1px solid var(--line)}
+.clues li::before{content:"線索 " counter(c);display:block;font-family:'Noto Serif JP',serif;font-weight:700;color:var(--memo);font-size:14px;margin-bottom:6px}
+.confront{margin:28px 0 0;color:var(--muted)}
+
+/* 真央 */
+.story section.mao{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:48px;align-items:start}
+.mao-img{margin:0;position:sticky;top:24px}
+.mao-img{isolation:isolate}
+.mao-img .rose{position:absolute;left:-28%;bottom:-6%;width:62%;z-index:2;transform:rotate(-10deg)}
+.mao-img .mao-pic{position:relative;z-index:1;width:100%;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+.mao h2{color:#ffc2dc;margin-bottom:16px}
+.mao-text p{margin:0 0 18px;max-width:32em}
+.mao-text .mao-lead{font-family:'Noto Serif JP',serif;font-weight:700;font-size:20px;color:#ffd6ea}
+.mao .receipt{margin-top:28px;padding:18px 20px;border:1px dashed rgba(255,194,220,.5);color:#ffd6ea}
+
+footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .wrap{padding-left:18px;padding-right:18px}
+  .story section{padding-top:56px;padding-bottom:56px}
+  .stage{height:auto;min-height:0;aspect-ratio:1 / 1}
+  .h-banner{object-position:38% 40%}
+  .hero-text{margin-top:-64px;padding-bottom:48px}
+  .hero .sub{font-size:14px}
+  .hero .lede{font-size:15px}
+  .mao-text .mao-lead{font-size:18px}
+  .heads,.timeline::before,.timeline::after{display:none}
+  .row{grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+  .row .age{order:-1;justify-self:start;flex-direction:row;gap:4px;width:auto;height:auto;padding:4px 14px;border-radius:999px}
+  .row .age small{font-size:12px}
+  .entry.b,.entry.r{text-align:left;padding:0 0 0 14px}
+  .entry.b{border-left:2px solid var(--dragon)}
+  .entry.r{border-left:2px solid var(--snake)}
+  .entry .who{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:14px}
+  .entry.b .who{color:var(--dragon)}
+  .entry.r .who{color:var(--snake)}
+  .story section.meet,.story section.mao{grid-template-columns:1fr;gap:28px}
+  .meet-img{max-width:340px;margin:0 auto}
+  .after-notes,.said,.memo-wrap,.clues{grid-template-columns:1fr}
+  .after-notes{gap:22px;margin-top:4px}
+  .said{gap:40px}
+  .mao-img{position:relative;top:auto;max-width:240px;margin:0 auto}
+  .mao-img .rose{left:-22%;width:58%}
+  .sec-head{padding-right:96px}
+  .sec-head .glass{width:110px;top:-20px;right:-6px}
+  .thing .ico{width:50px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body.open .timeline::before,body.open .timeline::after{animation:none}
+}
+/* 一人一區 */
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding-top:40px;padding-bottom:8px}
+.chips a{color:var(--paper);text-decoration:none;font-size:15px;padding:6px 16px;border:1px solid var(--line);border-radius:999px}
+.chips a:hover,.chips a:focus-visible{border-color:var(--dragon);color:#fff}
+.story.s2 section.person{position:relative;padding:0;margin-top:56px;max-width:none}
+.p-bg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:0}
+.p-bg img{position:absolute;top:0;right:0;width:64%;height:100%;object-fit:cover;object-position:50% 18%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.p-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 34%,rgba(0,0,0,.55) 56%,rgba(0,0,0,.05) 80%)}
+.p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
+.p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
+.p-head h2{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(84px,12vw,160px);line-height:1;letter-spacing:.06em}
+.botan .p-head h2{color:var(--dragon);text-shadow:0 0 40px rgba(255,79,168,.5)}
+.ren .p-head h2{color:var(--snake);text-shadow:0 0 40px rgba(196,160,255,.5)}
+.p-meta{margin:16px 0 0;font-size:15px;letter-spacing:.12em;color:rgba(243,234,255,.85)}
+.p-story{max-width:1180px;margin:0 auto;padding:0 6vw 24vh}
+.ch{max-width:31em;margin:0 0 72px}
+.ch h3{margin:0 0 14px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;letter-spacing:.08em}
+.botan .ch h3{color:#ff8cc6}
+.ren .ch h3{color:#d9c4ff}
+.ch p{margin:0 0 16px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.ch .hit{font-family:'Noto Serif JP',serif;font-weight:700;font-size:19px;color:#fff;margin-top:22px}
+.meet2-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:48px;align-items:start}
+.meet2 h2{margin-bottom:28px}
+.meet2-text p{margin:0 0 16px;max-width:31em}
+.meet2-text .line-said{font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(22px,2.8vw,28px);line-height:1.6;margin:26px 0}
+.meet2-text .after{font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--snake);margin:0 0 26px}
+.s2 .memo-wrap .plays .note{margin-top:4px}
+@media (max-width:720px){
+  .chips{padding-top:28px}
+  .p-bg img{width:100%;-webkit-mask-image:none;mask-image:none;object-position:62% 12%}
+  .ren .p-bg img{object-position:66% 10%}
+  .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+  .p-head{padding:0 20px 10vh}
+  .p-head h2{font-size:96px}
+  .p-meta{font-size:13px;letter-spacing:.06em}
+  .p-story{padding:0 14px 30vh}
+  .ch{margin:0 0 30vh;padding:22px 20px 8px;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
+  .ch:last-child{margin-bottom:0}
+  .ch h3{font-size:20px}
+  .meet2-grid{grid-template-columns:1fr;gap:24px}
+}
+.meetp .p-head h2.h-small{font-size:clamp(54px,7vw,96px);color:#fff;text-shadow:0 0 34px rgba(120,200,255,.55)}
+.meetp .ch h3{color:#9fdcff}
+.maop .p-head h2{color:#ffc2dc;text-shadow:0 0 40px rgba(255,170,210,.6)}
+.maop .ch h3{color:#ffc2dc}
+.ch .said-line{font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;line-height:1.6;color:#fff;margin:22px 0}
+.meetp .p-bg img{width:68%;object-position:50% 50%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%);mask-image:linear-gradient(90deg,transparent 0,#000 14%)}
+.meetp .p-bg::after{background:linear-gradient(90deg,#000 32%,rgba(0,0,0,.55) 44%,rgba(0,0,0,0) 58%)}
+.maop .p-bg img{object-position:52% 25%}
+.maop .p-bg::after{background:linear-gradient(90deg,#000 34%,rgba(0,0,0,.6) 56%,rgba(0,0,0,.12) 80%)}
+@media (max-width:720px){
+  .meetp .p-head h2.h-small{font-size:52px}
+  .meetp .p-bg img{width:100%;object-position:45% 55%;-webkit-mask-image:none;mask-image:none}
+  .meetp .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+  .maop .p-bg img{object-position:56% 22%}
+  .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
+}
+/* langs */
+.langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
+.langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
+.langs a[aria-current]{background:#ff4fa8;border-color:#ff4fa8;color:#fff}
+.langs a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* /langs */
+</style>
+</head>
+<body class="locked">
+
+<header class="hero">
+  <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en" aria-current="page">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
+    <div class="stage" aria-hidden="true">
+    <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
+  </div>
+  <div class="hero-text">
+    <h1>龍と蛇</h1>
+    <p class="sub">Botan &amp; Ren</p>
+    <p class="lede">Both of them hit trouble at sixteen and switched paths at twenty-two. Then they found each other in a basement club in Kabukicho.</p>
+  </div>
+</header>
+
+<div class="gate wrap" id="gate">
+  <p><strong>This page is all spoilers.</strong> It covers their pasts, what they get up to in private, and Mao's secret. Play both openings first, then come back to check your answers.</p>
+  <button type="button" id="open-btn">I've played them, open it</button>
+</div>
+
+<main class="story s2">
+
+  <nav class="chips wrap" aria-label="Jump to">
+    <a href="#botan">Botan</a><a href="#ren">Ren</a><a href="#meet">How they met</a><a href="#mao">Mao</a><a href="#score">The scoreboard</a>
+  </nav>
+
+  <section class="person botan" id="botan" aria-labelledby="n-botan">
+    <div class="p-bg" aria-hidden="true"><img src="botan_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-botan">Botan</h2>
+        <p class="p-meta">Seiichiro Inukai　29　Club MIRAGE No.1</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>Sayuri</h3>
+          <p>His mom runs a tiny bar in Adachi called Sayuri, just seven seats at the counter. He grew up doing homework in the corner of that counter, breathing in cheap whisky and oden.</p>
+          <p>He watched how she smiled, how she touched a customer's hand, how her eyes went red right when someone was about to leave. In his teens he figured it out. Every time her eyes went red, the books showed a little extra the next day. She borrowed from regulars without IOUs and never paid them back. When one crowd of regulars stopped coming, she found a new one.</p>
+        </article>
+        <article class="ch">
+          <h3>Sixteen</h3>
+          <p>One night his mom stabbed the man who had been beating her. He took the blame. As a minor he got a light sentence and went to juvenile detention. The lawyer's fees and the settlement came together fast, with money she had sweet-talked out of her regulars.</p>
+          <p>When customers ask, he tells another version. His best friend from high school, Kenji, hurt someone at an arcade, Kenji had a sick little sister named Koyuki, so he took the fall for him, and nobody came to pick him up the day he got out. That story has earned him a lot of requests, and the details always line up.</p>
+          <p class="hit">Kenji never existed.</p>
+        </article>
+        <article class="ch">
+          <h3>The gang</h3>
+          <p>At seventeen, fresh out of juvie, a gang member who used to collect protection money at the bar brought him into the gang. He was smooth and could read a room. When he collected debts, a few words were enough to make people hand the money over themselves, and the boss soon kept him close. Those years taught him to spot where a person is scared and where they go soft. Say what they most want to hear first, then what they most dread.</p>
+          <p>The peony on his neck went in during his second year in the gang, and the dragon from shoulder to arm was finished the year before he left. Both came from a master in Asakusa in his seventies, hand-poked one needle at a time. The year of the dragon he ran fevers constantly, lying on the tatami in the master's shop listening to stories of Edo firefighters and outlaws. The peony is the only red on his body. The master said one spot of color is all a body can carry.</p>
+        </article>
+        <article class="ch">
+          <h3>One night of talking</h3>
+          <p>At twenty-two he wanted out, and the rule was a pinky. That night he knelt in the boss's room with the knife already on the table. He didn't beg. He poured the boss's drinks, lit his cigarettes, and talked about the boss's younger days, about the daughter who wouldn't come home, about who in the gang had been skimming all these years. He talked until dawn.</p>
+          <p>At dawn the boss put the knife away. He said a mouth like that was wasted on the gang and would be worth more lying to women, and personally sent him to the club where he works now. The manager saw the peony at his collar and picked his host name on the spot.</p>
+          <p>He still has his pinky. He likes to wiggle it in front of customers and say he bought it with one night of talking. The boss died a few years ago. He went to the funeral, stood in the back row for ten minutes, and left.</p>
+        </article>
+        <article class="ch">
+          <h3>Red wine and red bean rice</h3>
+          <p>Six months in, one of his regulars brought along a very quiet friend who spent the whole night watching his hands. The next week he asked her out behind everyone's back and slept with her that night. His regular threw red wine in his face in front of the whole club and never came back. The quiet girl started coming alone to request him, and a year later she was one of his biggest spenders. The last time she came, right before her wedding, she opened a bottle of Ace of Spades and left without a word. The empty bottle still sits on a shelf in the staff room.</p>
+          <p>In his fourth year he made monthly No.1 for the first time. His top client built him a seven-tier champagne tower. After closing he went alone to a ramen stall in the back alley for tonkotsu and called his mom to say the company had promoted him. She said she would make red bean rice to celebrate. He hung up, finished a cigarette by the road, then turned around and asked out the girl who had tagged along with a friend that night.</p>
+          <p>He still hasn't gone home for that red bean rice. He sends money every month, and she thinks he works in sales. On her birthday he sends flowers with a card signed only Seiichiro.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="person ren" id="ren" aria-labelledby="n-ren">
+    <div class="p-bg" aria-hidden="true"><img src="ren_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-ren">Ren</h2>
+        <p class="p-meta">Akari Minase　25　Club MIRAGE No.2</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>Nocturne</h3>
+          <p>The living room was small, with an upright piano his mom had hauled home from a secondhand shop, always a little out of tune. His hands were big, so chords past an octave were easy, and in middle school he won a regional competition. His teacher said he had a heavy touch and played slow pieces best. His own favorite was the nocturne. His mom rarely smiled, but when he practiced she would lean in the kitchen doorway and listen to the end.</p>
+          <p>His dad drove a delivery truck. Sober, he barely spoke. Drunk, he hit people, his mom and the boy standing in front of her. On those nights he played for his little sister Suzu, who fell asleep curled up beside the piano bench. She had one favorite piece, made him play it three times, and laughed whenever he hit a wrong note.</p>
+        </article>
+        <article class="ch">
+          <h3>Suzu</h3>
+          <p>Suzu was five years younger, loved frilly dresses and ribbons, and pestered him every morning to do her hair. His hands were too big and the bows always came out crooked. She went off to school happy anyway.</p>
+          <p>From middle school on he ate as much as he could and trained hard, and eventually grew taller than his dad.</p>
+        </article>
+        <article class="ch">
+          <h3>Sixteen</h3>
+          <p>That night his dad got drunk and dragged Suzu out of her room. He hit back for the first time, broke his dad's nose with one punch, and kept going until his mom screamed. Suzu hid behind their mom, crying. His mom held Suzu and looked at him the same way she looked at his dad.</p>
+          <p>After that night he never touched the piano again. Suzu hid whenever she saw him, and the next year, the day he left home, she didn't come out to say goodbye.</p>
+        </article>
+        <article class="ch">
+          <h3>Tokyo</h3>
+          <p>He worked construction, moving jobs, night shifts at warehouses, slept in internet cafés and on acquaintances' couches, and often went a whole day without speaking. Those years taught him two things. You can live on cheap food, and if you don't talk, nobody can misunderstand you.</p>
+          <p>He never asked what happened to his dad. His mom doesn't know where he lives, and his phone doesn't have a single number from home.</p>
+        </article>
+        <article class="ch">
+          <h3>Bandages</h3>
+          <p>His hands are usually bandaged over old scars on his knuckles, some from that night at sixteen, some from construction sites and fights. Ask and he says he bumped into something. When a drunk customer gets violent, he's always the first one up to block. Being told he's like his dad is one of the few things that make his face change on the spot.</p>
+          <p>The VIP room has a white grand piano for decoration. When customers egg him on to play, he always says he can't and doesn't even glance at it walking past. But when the club plays piano music, his fingers move along on the table, and he doesn't notice.</p>
+          <p>Suzu is twenty now, at a vocational school in Osaka. He knows her social media account and sometimes checks it late at night, never liking or following. His camera roll keeps a single photo of the two of them as kids. Suzu has crooked pigtails in it. He tied them that morning. On her birthday he buys a strawberry cake at a convenience store and eats it himself.</p>
+          <p class="hit">Ask whether he has any siblings and he goes quiet for a long time, then says only one.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="person meetp" id="meet" aria-labelledby="n-meet">
+    <div class="p-bg" aria-hidden="true"><img src="meet_bg.webp" width="1088" height="1920" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-meet" class="h-small">Outside the convenience store</h2>
+        <p class="p-meta">Ren 22　Botan 26　Kabukicho back alley</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>That winter</h3>
+          <p>Ren had just been fired by his construction boss, knuckles still bleeding. He was crouched outside a convenience store in a Kabukicho back alley, eating a karaage bento.</p>
+          <p>Botan, on his way home from work, crouched beside him, lit a cigarette, watched him finish the whole bento, and asked if he wanted a different job. Ren didn't answer, so Botan wrote the club's name on the bento lid.</p>
+          <p class="said-line">Come tomorrow night at eight.<br>No big deal if you don't.</p>
+          <p class="hit">Ren showed up at seven thirty the next day.</p>
+        </article>
+        <article class="ch">
+          <h3>After</h3>
+          <p>He never threw away the bento lid. It's still in a drawer at his apartment, and he still eats that same karaage bento a lot. Botan picked his suits and taught him how to pour and when to shut up. Botan gave him his host name too. A peony goes with a lotus, he said, and a lotus grows out of the mud and still blooms clean.</p>
+          <p>Later Botan took him to the same tattoo artist for a black snake, a match for his own dragon.</p>
+          <p>On his first day Ren said three sentences all night, and right before closing a customer requested him. Botan called it talent and put him at his own table the next day.</p>
+          <p>Why Ren listens to Botan the way he does, he has never told anyone. When Botan is drunk he sometimes says he picked up a big stray dog that night, and Ren takes his glass away.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="person maop" id="mao" aria-labelledby="n-mao">
+    <div class="p-bg" aria-hidden="true"><img src="mao_bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-mao">Mao</h2>
+        <p class="p-meta">Mao Saionji　24　Botan's regular</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>Mao, the son</h3>
+          <p>Mao is a boy. His real name is Saionji Mao, written 真生 and read the same way. The eldest son of the Saionji family, he was raised as the heir, with piano and tea ceremony lessons. But he was chubby and slow, and always lost to his cousin on exams. His dad told relatives the boy didn't seem like a Saionji, and in middle school his classmates called him Little Lord Piggy.</p>
+        </article>
+        <article class="ch">
+          <h3>Birthday party</h3>
+          <p>One year he invited the whole class to his birthday party. Everyone came, ate cake, took the party favors, and left, and nobody talked to him all night. That day he learned that money can make people stay.</p>
+          <p>In family photos he's always at the very edge, half hidden behind relatives, and a few of them crop him out. Now his phone holds thousands of selfies, and in none of them is he at the edge.</p>
+        </article>
+        <article class="ch">
+          <h3>Twenty-eighth floor</h3>
+          <p>He learned makeup from videos in his room, and the first trick he learned was hiding the shadow around his Adam's apple. He slimmed down in high school and went out in a skirt for the first time. Someone told him he was so cute, and he went home and cried all night.</p>
+          <p>When his dad found out, nobody yelled at him. They just made his cousin the heir and the whole family moved abroad, leaving him alone on the twenty-eighth floor of a luxury apartment in Tokyo. At the start of every month a large transfer arrives, the memo line always blank.</p>
+        </article>
+        <article class="ch">
+          <h3>Miss</h3>
+          <p>At twenty he walked into Club MIRAGE for the first time, still dressed as a boy, sat in the far corner, and ordered one oolong tea for the whole night. The other hosts assumed he'd come along with a friend. Near closing Botan sat down, lit a cigarette, called him miss, and asked what he usually wore and what colors he liked.</p>
+          <p>The next time he came in his first jirai-kei dress, Botan recognized him at the door and was the first to say how cute he looked. From then on he only requested Botan. He knows Botan's tenderness is paid for by card and is happy anyway, because for a whole night someone is looking at him and calling his name. Botan has kept his secret ever since, and Ren keeps it too.</p>
+        </article>
+        <article class="ch">
+          <h3>Pancakes</h3>
+          <p>One night a drunk grabbed him near the station. People stared, and nobody stopped. You stepped in front of him, grabbed his hand and ran, and didn't stop until two streets away. Then you asked if he was hungry. At the register he pulled out his card out of habit and said it was on him. You insisted on splitting it and counted out your change to the yen.</p>
+          <p>He has kept that receipt in the innermost pocket of his wallet ever since, creased and never thrown away. You were the first person who stayed without taking his money. He hasn't even told Botan.</p>
+          <p class="hit">He likes you. It's hidden under being your best friend, and he hasn't noticed yet.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="score" aria-labelledby="t-score">
+    <div class="sec-head">
+      <h2 id="t-score">The scoreboard</h2>
+      <p class="intro">On the surface it's a senior training his junior, the club's No.1 and No.2. In private, they're keeping score.</p>
+      <img class="glass" src="glass.webp" width="832" height="1216" alt="" loading="lazy">
+    </div>
+    <div class="memo-wrap">
+      <div class="memo" aria-label="Their shared note">
+        <div class="bar"><span>‹ Notes</span><span>Shared</span></div>
+        <h3>MIRAGE ✕ Eda</h3>
+        <div class="meta">Shared with Botan, Ren</div>
+        <p class="rule">A friend brought along by a regular is called an eda. Who gets her first and how far it goes, it all counts.</p>
+        <div class="line"><s>☑ Misaki's eda</s><span>Botan 7・Ren 5</span></div>
+        <div class="line"><s>☑ Yui's eda</s><span>Botan 4・Ren 6</span></div>
+        <div class="line now"><span>☐ Mao's eda　you</span><span>Botan ?・Ren ?</span></div>
+      </div>
+      <div class="plays">
+        <p>Going after the friends customers bring is something Botan learned the night he got wine in his face. Friends are easier than customers, and getting caught has its own way of paying off.</p>
+        <p>Scores go in a shared note on their phones, with several edas in play at once. They're in no hurry. The longer it drags on, the more fun it is.</p>
+        <p class="note">In Opening 01, Ren barging through the door is a scene they set up together. Botan acts caught so you'll think it's your fault.<br>In Opening 02, they're still sizing you up.</p>
+        <p class="note">Ask them straight out and Botan laughs it off or spins a new story, while Ren goes silent. They only admit it with proof in front of them, and without a trace of guilt.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Open for Romance | by Matcha_</footer>
+
+<script>
+(function () {
+  var body = document.body;
+  function open() {
+    body.classList.remove('locked');
+    body.classList.add('open');
+    try { localStorage.setItem('xiatou-story-open', '1'); } catch (e) {}
+  }
+  try { if (localStorage.getItem('xiatou-story-open') === '1') open(); } catch (e) {}
+  document.getElementById('open-btn').addEventListener('click', function () {
+    open();
+    document.getElementById('botan').scrollIntoView();
+  });
+})();
+</script>
+</body>
+</html>
