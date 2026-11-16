@@ -237,12 +237,14 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 .maop .p-head h2{color:#ffc2dc;text-shadow:0 0 40px rgba(255,170,210,.6)}
 .maop .ch h3{color:#ffc2dc}
 .ch .said-line{font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;line-height:1.6;color:#fff;margin:22px 0}
-.meetp .p-bg img{object-position:40% 20%}
+.meetp .p-bg img{width:68%;object-position:50% 30%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%);mask-image:linear-gradient(90deg,transparent 0,#000 14%)}
+.meetp .p-bg::after{background:linear-gradient(90deg,#000 32%,rgba(0,0,0,.55) 44%,rgba(0,0,0,0) 58%)}
 .maop .p-bg img{object-position:52% 25%}
 .maop .p-bg::after{background:linear-gradient(90deg,#000 34%,rgba(0,0,0,.6) 56%,rgba(0,0,0,.12) 80%)}
 @media (max-width:720px){
   .meetp .p-head h2.h-small{font-size:52px}
-  .meetp .p-bg img{object-position:42% 20%}
+  .meetp .p-bg img{width:100%;object-position:50% 30%;-webkit-mask-image:none;mask-image:none}
+  .meetp .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
   .maop .p-bg img{object-position:56% 22%}
   .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
 }
@@ -269,7 +271,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 <main class="story s2">
 
   <nav class="chips wrap" aria-label="跳到">
-    <a href="#botan">牡丹</a><a href="#ren">蓮</a><a href="#meet">相遇</a><a href="#score">計分表</a><a href="#mao">真央</a>
+    <a href="#botan">牡丹</a><a href="#ren">蓮</a><a href="#meet">相遇</a><a href="#mao">真央</a><a href="#score">計分表</a>
   </nav>
 
   <section class="person botan" id="botan" aria-labelledby="n-botan">
@@ -377,30 +379,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
     </div>
   </section>
 
-  <section class="wrap" id="score" aria-labelledby="t-score">
-    <div class="sec-head">
-      <h2 id="t-score">計分表</h2>
-      <p class="intro">表面上是前輩帶後輩，店裡的一二名。私底下，兩個人在比分。</p>
-      <img class="glass" src="glass.webp" width="832" height="1216" alt="" loading="lazy">
-    </div>
-    <div class="memo-wrap">
-      <div class="memo" aria-label="兩人共用的備忘錄">
-        <div class="bar"><span>‹ 備忘錄</span><span>共享</span></div>
-        <h3>MIRAGE ✕ 枝</h3>
-        <div class="meta">與 牡丹、蓮 共享</div>
-        <p class="rule">指名客帶來的朋友叫枝。誰先到手、玩到什麼程度，都記分。</p>
-        <div class="line"><s>☑ 美咲的枝</s><span>牡丹 7・蓮 5</span></div>
-        <div class="line"><s>☑ 結衣的枝</s><span>牡丹 4・蓮 6</span></div>
-        <div class="line now"><span>☐ 真央的枝　妳</span><span>牡丹 ?・蓮 ?</span></div>
-      </div>
-      <div class="plays">
-        <p>專挑客人帶來的朋友，是牡丹被潑紅酒那次學到的。朋友比客人好下手，被抓到也有被抓到的賺法。</p>
-        <p>分數記在兩人手機的共用備忘錄，同時有好幾個枝在跑。他們不趕，拖越久越好玩。</p>
-        <p class="note">開場 01 蓮撞門那一幕，是兩人套好的戲。牡丹裝出被抓包的樣子，讓妳以為是自己害了他。<br>開場 02 他們還在打量妳。</p>
-        <p class="note">直接問的話，牡丹會笑著帶過或換一套說法，蓮會沉默。證據擺到眼前才承認，而且一點也不愧疚。</p>
-      </div>
-    </div>
-  </section>
+
 
   <section class="person maop" id="mao" aria-labelledby="n-mao">
     <div class="p-bg" aria-hidden="true"><img src="mao_bg.webp" width="832" height="1216" alt=""></div>
@@ -435,6 +414,31 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
           <p>那張收據他一直收在錢包最裡層，皺了也不丟。妳是第一個沒拿他的錢、自己留下來的人，這件事他連牡丹都沒說。</p>
           <p class="hit">他喜歡妳，藏在閨蜜這個身分底下，自己還沒發現。</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="score" aria-labelledby="t-score">
+    <div class="sec-head">
+      <h2 id="t-score">計分表</h2>
+      <p class="intro">表面上是前輩帶後輩，店裡的一二名。私底下，兩個人在比分。</p>
+      <img class="glass" src="glass.webp" width="832" height="1216" alt="" loading="lazy">
+    </div>
+    <div class="memo-wrap">
+      <div class="memo" aria-label="兩人共用的備忘錄">
+        <div class="bar"><span>‹ 備忘錄</span><span>共享</span></div>
+        <h3>MIRAGE ✕ 枝</h3>
+        <div class="meta">與 牡丹、蓮 共享</div>
+        <p class="rule">指名客帶來的朋友叫枝。誰先到手、玩到什麼程度，都記分。</p>
+        <div class="line"><s>☑ 美咲的枝</s><span>牡丹 7・蓮 5</span></div>
+        <div class="line"><s>☑ 結衣的枝</s><span>牡丹 4・蓮 6</span></div>
+        <div class="line now"><span>☐ 真央的枝　妳</span><span>牡丹 ?・蓮 ?</span></div>
+      </div>
+      <div class="plays">
+        <p>專挑客人帶來的朋友，是牡丹被潑紅酒那次學到的。朋友比客人好下手，被抓到也有被抓到的賺法。</p>
+        <p>分數記在兩人手機的共用備忘錄，同時有好幾個枝在跑。他們不趕，拖越久越好玩。</p>
+        <p class="note">開場 01 蓮撞門那一幕，是兩人套好的戲。牡丹裝出被抓包的樣子，讓妳以為是自己害了他。<br>開場 02 他們還在打量妳。</p>
+        <p class="note">直接問的話，牡丹會笑著帶過或換一套說法，蓮會沉默。證據擺到眼前才承認，而且一點也不愧疚。</p>
       </div>
     </div>
   </section>
