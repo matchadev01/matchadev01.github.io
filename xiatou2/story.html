@@ -81,28 +81,48 @@ body.open .timeline::before,body.open .timeline::after{animation:draw 1.6s ease-
 .entry p{margin:0}
 .entry .who{display:none}
 
-.merge{position:relative;margin:12px auto 0;max-width:640px;text-align:center;padding:30px 24px 0}
-.merge::before{content:"";position:absolute;top:-12px;left:50%;width:24px;height:24px;transform:translateX(-50%) rotate(45deg);border:2px solid var(--memo);background:var(--ink)}
-.merge h3{margin:18px 0 10px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:24px;letter-spacing:.08em}
-.merge p{margin:0 auto;max-width:30em}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px;margin:30px auto 0;align-items:center}
-.pair img{width:100%;height:auto}
-.pair figure{margin:0}
-.pair figcaption{margin-top:4px;font-size:13px;color:var(--muted)}
-
-/* 他沒說的 */
-.hidden-truth{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.truth{border:1px solid var(--line);padding:22px 22px 18px;background:var(--ink-2)}
-.truth.b{border-top:2px solid var(--dragon)}
-.truth.r{border-top:2px solid var(--snake)}
-.truth h3{margin:0 0 12px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px}
-.truth.b h3{color:var(--dragon)}
-.truth.r h3{color:var(--snake)}
-.truth .body{filter:blur(7px);transition:filter .35s;user-select:none}
-.truth.shown .body{filter:none;user-select:auto}
-.truth .body p{margin:0 0 10px}
-.truth button{margin-top:6px;background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
-.truth.shown button{display:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 便利商店門口 */
+.meet{margin-top:84px;padding:48px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:44px;align-items:start}
+.meet .scene p{margin:0 0 18px;max-width:30em}
+.meet .scene .line-said{font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(20px,2.6vw,26px);line-height:1.6;color:var(--paper);margin:26px 0}
+.meet .scene .after{font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--snake);margin:0}
+.lid{border:1px solid rgba(255,255,255,.18);background:linear-gradient(160deg,#16101c,#0e0912);padding:26px 24px;transform:rotate(-2deg);max-width:340px;justify-self:center;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.lid .label{font-size:13px;color:var(--muted);letter-spacing:.06em}
+.lid .hand{margin:14px 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:24px;color:var(--paper);line-height:1.5}
+.lid .hand small{display:block;font-size:16px;font-weight:500;color:var(--muted)}
+.lid .where{margin:16px 0 0;font-size:13px;color:var(--muted)}
+.after-notes{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:8px}
+.after-notes h3{margin:0 0 6px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px;color:var(--memo)}
+.after-notes p{margin:0}
+/* 怎麼說、其實 */
+.said{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.said .col h3{margin:0 0 14px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:22px;letter-spacing:.08em}
+.said .col.b h3{color:var(--dragon)}
+.said .col.r h3{color:var(--snake)}
+.said details{border-top:1px solid var(--line);padding:14px 0}
+.said details:last-child{border-bottom:1px solid var(--line)}
+.said summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.said summary::-webkit-details-marker{display:none}
+.said summary .q{display:block;font-size:13px;color:var(--muted)}
+.said summary .a{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:17px}
+.said summary .toggle{font-size:13px;color:var(--muted);white-space:nowrap;padding-top:2px;text-decoration:underline;text-underline-offset:4px}
+.said details[open] .toggle{visibility:hidden}
+.said .truth-text{margin:12px 0 0;padding-left:14px}
+.said .col.b .truth-text{border-left:2px solid var(--dragon)}
+.said .col.r .truth-text{border-left:2px solid var(--snake)}
+.said .truth-text p{margin:0 0 8px}
+.said .tag{display:inline-block;margin-left:6px;padding:0 8px;border:1px solid var(--memo);color:var(--memo);font-size:12px;font-family:'Noto Serif TC',serif;font-weight:600;vertical-align:2px}
+/* 收著的東西 */
+.things{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.thing{position:relative;padding:20px 18px 16px;background:var(--ink-2);border:1px solid var(--line)}
+.thing::before{content:"";position:absolute;top:0;left:0;width:36px;height:3px}
+.thing.b::before{background:var(--dragon)}
+.thing.r::before{background:var(--snake)}
+.thing.m::before{background:#ffc2dc}
+.thing h3{margin:0 0 2px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px}
+.thing .owner{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.thing p{margin:0;font-size:15px}
 
 /* 計分表 */
 .memo-wrap{display:grid;grid-template-columns:minmax(0,380px) 1fr;gap:36px;align-items:start}
@@ -149,13 +169,13 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .entry.b .who{color:var(--dragon)}
   .entry.r .who{color:var(--snake)}
   .row .age{order:-1}
-  .hidden-truth,.memo-wrap,.mao,.clues{grid-template-columns:1fr}
+  .memo-wrap,.mao,.clues,.meet,.after-notes,.said{grid-template-columns:1fr}
+  .lid{justify-self:start}
   .mao img{max-width:240px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   body.open .timeline::before,body.open .timeline::after{animation:none}
-  .truth .body{transition:none}
 }
 </style>
 </head>
@@ -192,24 +212,39 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
     <div class="timeline">
       <div class="row">
-        <div class="entry b"><span class="who">牡丹</span><p>在母親開的小酒館長大。他坐在吧台角落寫功課，看著常客被母親哄著掏錢。</p></div>
+        <div class="entry b"><span class="who">牡丹</span><p>母親在足立區開一間小酒館，叫小百合，只有七個吧台座位。他坐在吧台角落寫功課，聞著廉價威士忌和關東煮的味道長大。</p></div>
         <div class="age"><b>幼</b><small>小時候</small></div>
-        <div class="entry r"><span class="who">蓮</span><p>父親喝醉會打人。他彈琴給妹妹聽，用琴聲蓋過隔壁的聲音。</p></div>
+        <div class="entry r"><span class="who">蓮</span><p>客廳有一台母親從二手店搬回來的直立琴，音準一直有點偏。父親喝醉打人時，他彈琴給妹妹小鈴聽，小鈴窩在鋼琴椅旁邊睡著。</p></div>
+      </div>
+      <div class="row">
+        <div class="entry b"><span class="who">牡丹</span><p>他發現母親每次在客人面前紅了眼眶，隔天店裡的帳就會多一筆。</p></div>
+        <div class="age"><b>少</b><small>十幾歲</small></div>
+        <div class="entry r"><span class="who">蓮</span><p>拚命吃、拚命練身體，長得比父親高。國中拿過地區鋼琴比賽的獎，老師說他手指重，彈慢板最好聽。</p></div>
       </div>
       <div class="row key">
         <div class="entry b"><span class="who">牡丹</span><p>那天晚上，母親拿刀刺傷了打她的男人。他替母親頂罪，未成年判得輕，進了少年院。</p></div>
         <div class="age"><b>16</b><small>歲</small></div>
-        <div class="entry r"><span class="who">蓮</span><p>他拚命長高、練身體，第一次還手打了父親。妹妹哭著躲到母親背後，從此不敢靠近他。</p></div>
+        <div class="entry r"><span class="who">蓮</span><p>父親喝醉後把小鈴從房間拖出來。他第一次還手，一拳打斷父親的鼻樑，打到母親尖叫才停。小鈴哭著躲到母親背後，母親看他的眼神跟看父親一樣。那晚之後他沒再碰過琴。</p></div>
       </div>
       <div class="row">
-        <div class="entry b"><span class="who">牡丹</span><p>出來以後沒有學校要他。常來酒館收保護費的組員把他帶進黑道，龍和牡丹是那幾年刺的。</p></div>
+        <div class="entry b"><span class="who">牡丹</span><p>出了少年院，常來酒館收保護費的組員把他帶回組裡。從跑腿做起，端酒點菸、去店家收帳，學會看一個人哪裡會怕、哪裡會心軟。</p></div>
+        <div class="age"><b>17</b><small>歲</small></div>
+        <div class="entry r"><span class="who">蓮</span><p>離家到東京，做工地、搬家、倉庫夜班，睡網咖和認識的人的沙發，常常一整天不開口。</p></div>
+      </div>
+      <div class="row">
+        <div class="entry b"><span class="who">牡丹</span><p>在淺草找一位七十多歲的老師傅手彫。先刺脖子上的牡丹，再刺肩膀到手臂的龍，前後一年多，那一年常常發燒。龍是黑白的，只有牡丹是紅色，老師傅說一身只留一處顏色才壓得住。</p></div>
         <div class="age"><b>後</b><small>那幾年</small></div>
-        <div class="entry r"><span class="who">蓮</span><p>他不再彈琴，也不太說話，離開家，到處打零工。</p></div>
+        <div class="entry r"><span class="who">蓮</span><p>那幾年他學會兩件事，吃便宜的東西也能活，不說話就不會被誤會。</p></div>
       </div>
       <div class="row key">
-        <div class="entry b"><span class="who">牡丹</span><p>靠手段退出黑道，小指保住了，轉行當男公關。</p></div>
+        <div class="entry b"><span class="who">牡丹</span><p>想退出，規矩是切小指。他跪在老大房裡，刀擺在桌上，他替老大倒酒點菸聊到天亮。老大把刀收回去，親自介紹他到現在這間店。店長看到他領口的牡丹，當場定了花名。</p></div>
         <div class="age"><b>22</b><small>歲</small></div>
-        <div class="entry r"><span class="who">蓮</span><p>在便利商店門口吃便當的時候，被牡丹撿回店裡。</p></div>
+        <div class="entry r"><span class="who">蓮</span><p>冬天，剛被工地老闆辭退，指節還在流血。他蹲在歌舞伎町後巷的便利商店門口，吃一個唐揚便當。</p></div>
+      </div>
+      <div class="row">
+        <div class="entry b"><span class="who">牡丹</span><p>入行半年，睡了指名客帶來的安靜朋友，被主客當眾潑了一臉紅酒。第四年第一次坐上月度 No.1，打烊後一個人去吃拉麵，打電話跟母親說公司幫他升了職。</p></div>
+        <div class="age"><b>入</b><small>入行後</small></div>
+        <div class="entry r"><span class="who">蓮</span><p>第一天上班整晚只講了三句話，打烊前卻被一個客人指名。牡丹說這叫天分，隔天就把他排進自己的桌。</p></div>
       </div>
       <div class="row">
         <div class="entry b"><span class="who">牡丹</span><p>29 歲，Club MIRAGE 的 No.1，入行七年。</p></div>
@@ -218,34 +253,93 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
       </div>
     </div>
 
-    <div class="merge">
-        <h3>成對的刺青</h3>
-        <p>撿到蓮那年，牡丹 26 歲。他帶蓮去找自己的刺青師，刺了一條黑蛇，跟他的龍湊成一對。兩個人衣服一脫，就看得出是一夥的。</p>
-        <div class="pair">
-          <figure><img src="dragon.webp" alt="牡丹的龍"><figcaption>牡丹，肩膀到雙臂</figcaption></figure>
-          <figure><img src="snake2.webp" alt="蓮的蛇"><figcaption>蓮，胸口和雙臂</figcaption></figure>
-        </div>
+    <div class="meet">
+      <div class="scene">
+        <h3 class="sr-only">便利商店門口</h3>
+        <p>那年冬天牡丹 26 歲。他下班經過，在蓮旁邊蹲下來點了一根菸，看他吃完整個便當，問他要不要換一份工作。蓮沒回答，牡丹就在便當蓋上寫了店名。</p>
+        <p class="line-said">明天晚上八點來，<br>不來也沒關係。</p>
+        <p class="after">蓮隔天七點半就到了。</p>
+      </div>
+      <div class="lid" aria-label="便當蓋">
+        <div class="label">唐揚便當的蓋子</div>
+        <div class="hand">Club MIRAGE<small>明晚 8 點</small></div>
+        <p class="where">蓮沒丟，到現在還壓在租屋處的抽屜裡。</p>
+      </div>
+      <div class="after-notes">
+        <div><h3>花名</h3><p>西裝、倒酒、什麼時候該閉嘴，都是牡丹教的。花名也是牡丹取的，他說牡丹配蓮，蓮花長在爛泥裡也開得很乾淨。</p></div>
+        <div><h3>成對的刺青</h3><p>牡丹帶他去找自己的刺青師，刺了一條黑蛇，跟他的龍湊成一對。兩個人衣服一脫，就看得出是一夥的。</p></div>
+        <div><h3>大型犬</h3><p>蓮對牡丹很服從，原因他沒對任何人說過。牡丹喝醉時會說那晚撿到一隻大型犬，蓮聽到就把他的酒杯拿走。</p></div>
+      </div>
     </div>
+  </section>
 
-    <div class="hidden-truth">
-      <div class="truth b">
-        <h3>牡丹沒說的</h3>
-        <div class="body" id="tb">
-          <p>律師費和賠償金很快就湊齊了。後來他才知道，那些錢是母親從常客身上哄來的。常客一個個消失，是被母親榨乾了。</p>
-          <p>他哄人的本事是從母親身上學的，他自己很清楚。</p>
-          <p>對客人，他說是替最好的朋友頂罪，講得很有義氣，客人聽了都心疼。這個朋友不存在。</p>
-          <p>他每個月還是匯錢給母親。母親的事他一提就轉開話題，只有喝醉的時候會漏出一句。</p>
-        </div>
-        <button type="button" aria-controls="tb" aria-expanded="false">看他沒說的</button>
+  <section class="wrap" aria-labelledby="t-said">
+    <h2 id="t-said">他們怎麼說</h2>
+    <p class="intro">被問起過去，兩個人都有一套固定的答案。點開看底下是什麼。</p>
+
+    <div class="said">
+      <div class="col b">
+        <h3>牡丹</h3>
+        <details>
+          <summary><span><span class="q">為什麼進過少年院</span><span class="a">替高中最好的兄弟健司頂罪。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>健司這個人不存在，他頂下的是母親的罪。律師費和賠償金很快就湊齊了，那些錢是母親從常客身上哄來的。</p>
+            <p>這個故事他講過很多次，健司的長相、遊樂場的名字每次都對得上。講到健司的妹妹小雪會笑一下，客人最吃這一段，太客們都以為只有自己聽過。</p>
+          </div>
+        </details>
+        <details>
+          <summary><span><span class="q">你媽媽是怎樣的人</span><span class="a">很可愛，炸雞做得很好吃。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>她快六十歲了，每晚照樣站在吧台後面哄常客。跟常客借錢從不寫借據，借了也從不還。常客一個個不再出現，她就換一批新的。</p>
+            <p>他哄人時碰對方手背、在對方要走時放軟聲音，都是從母親身上學的。店裡沒人見過她，所以沒人發現。</p>
+            <p>他每個月匯錢回去，一年打幾次電話，母親以為他在跑業務。母親生日那天他寄一束花，卡片上只簽誠一郎三個字。</p>
+          </div>
+        </details>
+        <details>
+          <summary><span><span class="q">小指怎麼還在</span><span class="a">用一晚上的嘴換來的。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>這句是真的<span class="tag">真話</span></p>
+            <p>那晚他聊老大年輕時的事、老大不肯回家的女兒，也聊這些年組裡誰在背後動手腳。老大說這張嘴留在這裡太浪費，拿去騙女人比較值錢。他把這件事當酒席上的笑話講。老大前幾年過世，他去了葬禮，在最後一排站了十分鐘就走。</p>
+          </div>
+        </details>
       </div>
-      <div class="truth r">
-        <h3>蓮沒說的</h3>
-        <div class="body" id="tr">
-          <p>真央的打扮讓他想起妹妹，所以他對真央只講好看。</p>
-          <p>家裡的事被問起，他就沉默。</p>
-        </div>
-        <button type="button" aria-controls="tr" aria-expanded="false">看他沒說的</button>
+      <div class="col r">
+        <h3>蓮</h3>
+        <details>
+          <summary><span><span class="q">有沒有兄弟姊妹</span><span class="a">有一個。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>小鈴小他五歲，現在二十歲，在大阪讀專門學校。小時候她每天早上纏著他綁頭髮，他手太大，綁出來的結總是歪的。他離家那天她沒有出來送。</p>
+            <p>他知道她的社群帳號，偶爾半夜點進去看，從不按讚也不追蹤。小鈴生日那天，他去便利商店買一個草莓蛋糕，自己吃掉。</p>
+          </div>
+        </details>
+        <details>
+          <summary><span><span class="q">手怎麼了</span><span class="a">撞到。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>OK繃底下是指節上的舊疤，一部分是十六歲那晚留下的，一部分是後來在工地和打架弄的。</p>
+            <p>店裡有客人喝醉要動手，他會第一個站起來擋在前面。被人說像他父親，是他少數會當場變臉的事。</p>
+          </div>
+        </details>
+        <details>
+          <summary><span><span class="q">會彈鋼琴嗎</span><span class="a">不會。</span></span><span class="toggle">其實</span></summary>
+          <div class="truth-text">
+            <p>VIP 室有一台裝飾用的白色平台鋼琴，客人起鬨要他彈，他每次都說不會，經過時也不看一眼。他自己最喜歡夜曲。</p>
+            <p>店裡放鋼琴曲的時候，他的手指會在桌面上跟著輕輕動，自己沒發現。牡丹注意到過，從沒拿這件事開他玩笑，這是店裡少數牡丹不開玩笑的事。</p>
+          </div>
+        </details>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-things">
+    <h2 id="t-things">收著的東西</h2>
+    <p class="intro">有些東西他們一直留著，有些一直沒回去拿。都沒跟別人提過。</p>
+    <div class="things">
+      <div class="thing r"><h3>便當蓋</h3><p class="owner">蓮，租屋處的抽屜</p><p>上面是牡丹寫的店名。那款唐揚便當他到現在還常吃。</p></div>
+      <div class="thing r"><h3>一張合照</h3><p class="owner">蓮，手機相簿</p><p>只留這一張，沒給任何人看過。照片裡的小鈴綁著歪掉的雙馬尾，是他那天早上綁的。</p></div>
+      <div class="thing b"><h3>黑桃A的空瓶</h3><p class="owner">牡丹，休息室的櫃子</p><p>那個安靜的枝結婚前最後一次來店裡開的，什麼都沒說就走了。蓮看過這個空瓶很多次，從沒問過。</p></div>
+      <div class="thing b"><h3>一碗紅豆飯</h3><p class="owner">牡丹，還沒吃到</p><p>第一次當上 No.1 那晚，母親在電話裡說要煮紅豆飯慶祝。他到現在還沒回去吃。</p></div>
+      <div class="thing m"><h3>鬆餅店的收據</h3><p class="owner">真央，錢包最裡層</p><p>妳堅持各付各的那一張，皺了也不丟。</p></div>
+      <div class="thing m"><h3>妳送的小禮物</h3><p class="owner">真央，臥室最顯眼的架子</p><p>生日時妳送的，全都擺在那裡，比任何名牌包都寶貝。</p></div>
     </div>
   </section>
 
@@ -265,11 +359,14 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
       </div>
 
       <div class="plays">
+        <h3>從那杯紅酒開始</h3>
+        <p>入行半年，指名客帶了一個很安靜的朋友來。她整晚都在看牡丹的手，看他倒酒、點菸、捲袖口。隔週牡丹私下約她，那晚就睡了。主客當著全店的面潑了他一臉紅酒，從此沒再出現，店長扣了他一個月獎金。結果那個安靜的女生隔月開始一個人來指名他，花得比原本的主客還多。</p>
+        <p class="note">他從那次學到兩件事，客人帶來的朋友比客人好下手，被發現也有被發現的賺法。這件事他現在還常拿出來跟蓮講，講到被潑那段會笑出來。</p>
         <h3>撞見勒索</h3>
         <p>牡丹先把枝撩上床，蓮算好時間撞門，舉著手機說要告訴主客。牡丹裝出為難的樣子，說為了保護她，只好答應蓮的條件，條件就是三個人一起。枝以為是自己害牡丹被抓到，帶著愧疚配合。</p>
         <h3>接力</h3>
         <p>牡丹撩到手、睡過幾次以後開始冷淡，蓮出現當那個安慰她的人，把她也弄上床。最後兩個人一起出現，她才知道從頭到尾是同一組。</p>
-        <p class="note">膽小、容易愧疚的枝用撞見勒索。防備心重的用接力慢慢磨。分數記在兩人手機的共用備忘錄，同時有好幾個枝在跑，不趕時間，拖得越久他們越覺得好玩。</p>
+        <p class="note">膽小、容易愧疚的枝用撞見勒索。防備心重的用接力慢慢磨。同時有好幾個枝在跑，不趕時間，拖得越久他們越覺得好玩。</p>
         <p class="note">開場 01 蓮撞門的那一幕，是兩人事先講好的戲。開場 02 他們還在打量妳，不急。</p>
       </div>
     </div>
@@ -286,11 +383,12 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
     <img src="mao2.webp" alt="真央">
     <div>
       <h2 id="t-mao">真央</h2>
-      <p>真央是男生，學生時代就開始這樣打扮。證件上的名字是西園寺真生，讀音一樣是 Mao。</p>
-      <p>他是西園寺家的長男，原本是接班人。打扮的事被父親發現以後，接班人換成了表弟，全家搬去國外，只留他一個人在東京，每個月匯錢，很少聯絡。</p>
-      <p>牡丹和蓮一直都知道。牡丹替他守了好幾年祕密，太客的面子一定要顧，這是牡丹做生意的底線，蓮跟著照做。</p>
-      <p>他喜歡妳，藏在閨蜜的身分底下，自己還沒發現。自拍一定要站妳旁邊，記得妳所有的喜好，妳跟別人走太近的時候，他會悶悶的。</p>
-      <p class="receipt">那天妳把他從糾纏的男人身邊拉走，一起去吃鬆餅，結帳時妳堅持各付各的。那張收據他一直收在錢包裡。妳是第一個沒拿他的錢、自己留下來的人。</p>
+      <p>真央是男生，本名西園寺真生，讀音一樣是 Mao。西園寺家的長男，從小被當成接班人養，學鋼琴、學茶道。他胖、反應慢，考試總是輸給表弟，父親在親戚面前說這孩子不像西園寺家的，國中同學叫他豬少爺。</p>
+      <p>有一年生日會，全班都來了，吃完蛋糕、拿了回禮就走，整晚沒人跟他說話。他從那天學到，錢可以讓人留下來。家族合照裡他總是站在最邊邊，有幾張還被裁掉了。現在他拍了上千張自拍，沒有一張站在邊邊。</p>
+      <p>他躲在房間看影片學化妝，高中瘦了下來，第一次穿裙子出門，有人說他好可愛，他回家哭了一整晚。被父親發現以後，家裡沒有罵他，接班人改成表弟，全家搬去國外，只把他留在東京。每個月初收到一筆很大的匯款，附言欄永遠是空的。</p>
+      <p>二十歲第一次進 Club MIRAGE，他還穿著男裝，坐在最角落點了一杯烏龍茶，其他男公關都當他是陪朋友來的男生。快打烊時牡丹坐過來，叫他這位小姐。下一次他穿著第一件地雷系洋裝來，牡丹在門口就認出來，第一個說好可愛。從那天起他只指名牡丹，牡丹替他守祕密守到現在，蓮跟著照做。</p>
+      <p>他喜歡妳，藏在閨蜜的身分底下，自己還沒發現。自拍一定要站妳旁邊，妳說過喜歡的東西他全都記得，妳跟別人走太近的時候，他會悶悶的。被妳知道以後，他最怕的是妳也覺得他不像，會一直問妳他現在還可不可愛。</p>
+      <p class="receipt">那天妳把他從糾纏的男人身邊拉走，跑到兩條街外才停，一起去吃鬆餅，結帳時妳堅持各付各的。那張收據他一直收在錢包裡。妳是第一個沒拿他的錢、自己留下來的人，這件事他連牡丹都沒講。</p>
     </div>
   </section>
 
@@ -310,12 +408,6 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   document.getElementById('open-btn').addEventListener('click', function () {
     open();
     document.getElementById('t-line').scrollIntoView();
-  });
-  document.querySelectorAll('.truth button').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      btn.parentNode.classList.add('shown');
-      btn.setAttribute('aria-expanded', 'true');
-    });
   });
 })();
 </script>
