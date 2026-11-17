@@ -326,6 +326,30 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
   .hero .deco{scale:.8}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* 2.5D：舞台往後倒，卡片站起來 */
+.space{perspective:1100px}
+.stage{transform-style:preserve-3d}
+.stage > *{transform-style:preserve-3d}
+svg.lines{transform:translateZ(0)}
+.lines .foot{fill:rgba(0,0,0,.45);stroke:none;filter:blur(2px);animation:none}
+.lines .foot.off{opacity:.1}
+.lines .ring{stroke:rgba(200,255,170,.22)}
+.node{transform:translateZ(92px) rotateZ(var(--rz)) rotateX(var(--rx));transform-origin:50% 50%}
+.node:hover,.node:focus-visible{transform:translateZ(92px) rotateZ(var(--rz)) rotateX(var(--rx)) scale(1.3)}
+.node.lift{transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx)) scale(1.15)}
+.planet3d{transform:translateZ(200px) rotateZ(var(--rz)) rotateX(var(--rx))}
+#cherryNode{transform:translateZ(215px) rotateZ(var(--rz)) rotateX(var(--rx))}
+.planet3d::before{display:none}
+.floorGlow{position:absolute;left:800px;top:650px;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(circle,rgba(155,209,75,.28),rgba(155,209,75,.08) 45%,transparent 70%);pointer-events:none}
+/* 星球縮小 */
+.planet3d{width:190px;height:225px;margin:-95px 0 0 -95px;transform:translateZ(165px) rotateZ(var(--rz)) rotateX(var(--rx))}
+.planet3d canvas{width:190px;height:190px}
+.planet3d .nm{top:186px;font-size:14px;padding:3px 12px}
+#cherryNode{width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
+#cherryNode canvas{width:140px;height:140px}
+#cherryNode .nm{top:136px;font-size:12px}
+.floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
+
 </style>
 </head>
 <body>
@@ -370,7 +394,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
   <span class="deco" style="left:12%;top:70%;width:40px;height:40px;--dl:0.9s"><svg class="drift" viewBox="0 0 44 36" style="--dl:0.9s;rotate:14deg"><use href="#i-bfly" class="bf pinkn" style="--dl:0.30s"/></svg></span>
   <span class="deco hm" style="left:80%;top:84%;width:22px;height:22px;--dl:0.3s"><svg viewBox="0 0 40 40" style="rotate:-8deg"><use href="#i-heart" class="tw s-glowg" style="--dl:0.3s"/></svg></span>
   <span class="deco hm" style="left:48%;top:88%;width:20px;height:20px;--dl:1.4s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star5" class="tw s-glow" style="--dl:1.4s"/></svg></span>
-  <div class="sHint">拖星球可以轉　拖卡片可以搬位置<br><b>拖空白處移動畫面</b></div>
+  <div class="sHint">拖空白處轉角度　拖卡片搬位置　拖星球自轉<br><b>中鍵、右鍵或 Shift 拖曳移動畫面　Ctrl＋滾輪縮放</b></div>
   <button class="sDown" id="sDown" type="button">排整齊看全部</button>
   <div class="sTools"><button type="button" id="zIn" aria-label="放大">+</button><button type="button" id="zOut" aria-label="縮小">−</button><button type="button" id="zFit" aria-label="回到中間">◎</button></div>
 </section>
@@ -673,6 +697,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const sp = $('space'), stage = $('stage'), svg = $('lines');
   const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150;
   const NS = 'http://www.w3.org/2000/svg';
+  { const g = document.createElement('div'); g.className = 'floorGlow'; stage.insertBefore(g, stage.firstChild); }
   const mk = (tag, cls) => { const e = document.createElementNS(NS, tag); if (cls) e.setAttribute('class', cls); return e; };
   let rs = 11; const rnd = (a, b) => { rs = (rs * 16807) % 2147483647; return a + (rs / 2147483647) * (b - a); };
 
@@ -705,16 +730,17 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     el.innerHTML = (badges ? '<span class="badges">' + badges + '</span>' : '') +
       '<span class="ph">' + (VID[c.id] ? '<video src="' + VID[c.id] + '" poster="' + IMG(c.id) + '" muted loop playsinline autoplay></video>' : '<img src="' + IMG(c.id) + '" alt="" decoding="async" draggable="false">') + '</span><b>' + esc(c.name) + '</b>';
     stage.appendChild(el);
+    const sh = mk('ellipse', 'foot'); sh.setAttribute('rx', 46); sh.setAttribute('ry', 16); svg.appendChild(sh);
     const p = mk('path'); svg.appendChild(p);
     const q = c.cherry ? mk('path', 'ch') : null; if (q) svg.appendChild(q);
     el.addEventListener('mouseenter', () => { p.classList.add('hot'); if (q) q.classList.add('hot'); });
     el.addEventListener('mouseleave', () => { p.classList.remove('hot'); if (q) q.classList.remove('hot'); });
-    const n = {i, c, el, p, q, x:0, y:0, bend:rnd(-60, 60)};
+    const n = {i, c, el, p, q, sh, x:0, y:0, bend:rnd(-60, 60)};
     place(n, ...posOf(c.id));
     return n;
   });
   function place(n, x, y){
-    n.x = x; n.y = y; n.el.style.left = x + 'px'; n.el.style.top = y + 'px';
+    n.x = x; n.y = y; n.el.style.left = x + 'px'; n.el.style.top = y + 'px'; n.sh.setAttribute('cx', x); n.sh.setAttribute('cy', y);
     const mx = (CX + x) / 2, my = (CY + y) / 2, nx = -(y - CY), ny = x - CX, len = Math.hypot(nx, ny) || 1;
     n.p.setAttribute('d', 'M' + CX + ' ' + CY + ' Q' + (mx + nx / len * n.bend).toFixed(1) + ' ' + (my + ny / len * n.bend).toFixed(1) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1));
     if (n.q) n.q.setAttribute('d', 'M' + CHX + ' ' + CHY + ' Q' + ((CHX + x) / 2 + 50) + ' ' + ((CHY + y) / 2 - 50) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1));
@@ -730,20 +756,37 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     const b = e.target.closest('[data-sf]'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     const f = b.dataset.sf === 'all' ? null : F.find(x => x[0] === b.dataset.sf)[2];
-    nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); });
+    nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.sh.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); });
   });
 
   /* 畫面縮放、平移 */
-  let s = 1, tx = 0, ty = 0;
-  const apply = () => { stage.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')'; };
+  let s = 1, tx = 0, ty = 0, yaw = 0, tilt = 52;
+  const P = 1100; let vYaw = 0, vTilt = 0;
+  function coast(){ if (!mode && (Math.abs(vYaw) > .02 || Math.abs(vTilt) > .02)){ yaw += vYaw; tilt = Math.max(18, Math.min(68, tilt + vTilt)); vYaw *= .92; vTilt *= .92; apply(); } requestAnimationFrame(coast); }
+  requestAnimationFrame(coast);
+  const apply = () => {
+    stage.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale3d(' + s + ',' + s + ',' + s + ') translate(' + CX + 'px,' + CY + 'px) rotateX(' + tilt + 'deg) rotateZ(' + yaw + 'deg) translate(' + (-CX) + 'px,' + (-CY) + 'px)';
+    stage.style.setProperty('--rz', (-yaw) + 'deg'); stage.style.setProperty('--rx', (-tilt) + 'deg');
+    if (typeof sky !== 'undefined') sky.pan(yaw * 7, (tilt - 52) * 6);
+  };
+  /* 螢幕座標換回地面座標 */
+  function toFloor(cx, cy){
+    const r = sp.getBoundingClientRect(), ox = sp.clientWidth / 2, oy = sp.clientHeight / 2;
+    const M = new DOMMatrix('translate(' + ox + 'px,' + oy + 'px) perspective(' + P + 'px) translate(' + (-ox) + 'px,' + (-oy) + 'px) ' + stage.style.transform);
+    const a = M.m11, b = M.m21, c = M.m41, d = M.m12, e = M.m22, f = M.m42, g = M.m14, h = M.m24, i = M.m44;
+    const X = cx - r.left, Y = cy - r.top;
+    const A = e * i - f * h, B = c * h - b * i, C = b * f - c * e, D = f * g - d * i, E = a * i - c * g, F = c * d - a * f, G = d * h - e * g, H = b * g - a * h, I = a * e - b * d;
+    const w = G * X + H * Y + I; return [(A * X + B * Y + C) / w, (D * X + E * Y + F) / w];
+  }
   function fit(){
     const w = sp.clientWidth, h = sp.clientHeight, top = innerWidth < 820 ? 110 : 70;
     const port = h > w * 1.15;
-    s = port ? Math.min(w / 1000, (h - top) / 1150) : Math.min(w / 1720, (h - top - 10) / 1290);
-    tx = w / 2 - CX * s; ty = top + (h - top) / 2 - CY * s; apply();
+    yaw = 0; tilt = 52;
+    s = port ? Math.min(w / 1500, (h - top) / 1050) : Math.min(w / 2000, (h - top - 10) / 1180);
+    tx = w / 2 - CX * s; ty = top + (h - top) / 2 + 40 * s - CY * s; apply();
   }
   function zoomAt(f, px, py){ const ns = Math.max(.2, Math.min(2.6, s * f)), r = ns / s; tx = px - (px - tx) * r; ty = py - (py - ty) * r; s = ns; apply(); }
-  sp.addEventListener('wheel', e => { e.preventDefault(); const b = sp.getBoundingClientRect(); zoomAt(e.deltaY < 0 ? 1.1 : 1 / 1.1, e.clientX - b.left, e.clientY - b.top); }, {passive:false});
+  sp.addEventListener('wheel', e => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const b = sp.getBoundingClientRect(); zoomAt(e.deltaY < 0 ? 1.1 : 1 / 1.1, e.clientX - b.left, e.clientY - b.top); }, {passive:false});
   $('zIn').onclick = () => zoomAt(1.2, sp.clientWidth / 2, sp.clientHeight / 2);
   $('zOut').onclick = () => zoomAt(1 / 1.2, sp.clientWidth / 2, sp.clientHeight / 2);
   $('zFit').onclick = fit;
@@ -754,12 +797,12 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   sp.addEventListener('pointerdown', e => {
     if (e.target.closest('.sTop,.sTools,.sDown,.deco,.layoutBar')) return;
     pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
-    if (pts.size === 2){ const [a, b] = [...pts.values()]; pinch0 = {d:Math.hypot(a.x - b.x, a.y - b.y), s}; mode = 'pinch'; return; }
-    moved = 0;
+    if (pts.size === 2){ const [a, b] = [...pts.values()]; pinch0 = {d:Math.hypot(a.x - b.x, a.y - b.y), s, mx:(a.x + b.x) / 2, my:(a.y + b.y) / 2}; mode = 'pinch'; return; }
+    moved = 0; vYaw = vTilt = 0;
     const card = e.target.closest('.node'), planet = e.target.closest('.planet3d');
-    if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); }
+    if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]]; }
     else if (planet){ mode = 'planet'; grab = planet.id === 'meNode' ? PL.me : PL.cherry; if (grab) grab.hold = true; }
-    else mode = 'pan';
+    else mode = (e.shiftKey || e.button === 2 || e.button === 1) ? 'pan' : 'orbit';
     sp.setPointerCapture(e.pointerId); sp.classList.add('drag');
   });
   sp.addEventListener('pointermove', e => {
@@ -767,8 +810,10 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     const prev = pts.get(e.pointerId), cur = {x:e.clientX, y:e.clientY}; pts.set(e.pointerId, cur);
     const dx = cur.x - prev.x, dy = cur.y - prev.y; moved += Math.abs(dx) + Math.abs(dy);
     if (mode === 'pinch' && pts.size === 2){ const [a, b] = [...pts.values()], r = sp.getBoundingClientRect();
-      zoomAt(pinch0.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch0.d / s, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top); return; }
-    if (mode === 'card' && moved > 4) place(grab, grab.x + dx / s, grab.y + dy / s);
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2; tx += mx - pinch0.mx; ty += my - pinch0.my; pinch0.mx = mx; pinch0.my = my;
+      zoomAt(pinch0.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch0.d / s, mx - r.left, my - r.top); return; }
+    if (mode === 'card' && moved > 4){ const f = toFloor(cur.x, cur.y); place(grab, f[0] + grab.off[0], f[1] + grab.off[1]); }
+    else if (mode === 'orbit'){ vYaw = -dx * .3; vTilt = -dy * .2; yaw += vYaw; tilt = Math.max(18, Math.min(68, tilt + vTilt)); apply(); }
     else if (mode === 'planet' && grab){ grab.vy = dx * .012; grab.vx = dy * .01; grab.spin(dx * .012, dy * .01); }
     else if (mode === 'pan'){ tx += dx; ty += dy; apply(); }
   });
@@ -783,6 +828,9 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     } else if (mode === 'planet' && grab){ grab.hold = false; if (moved < 6) (grab === PL.me ? sayMe : sayCherry)(); }
     mode = null; grab = null;
   };
+  sp.addEventListener('contextmenu', e => e.preventDefault());
+  sp.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
+  sp.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });
   sp.addEventListener('pointerup', up); sp.addEventListener('pointercancel', up);
   nodes.forEach(n => n.el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(n.i); } }));
 
@@ -867,7 +915,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 
     /* 抹茶拿鐵貼圖 */
     const MT = ['#4a8a32','#5fa23c','#78b84a','#95cc5e','#b6de7c'].map(hx), MILK = ['#ecdfc3','#f7efdc','#fffaf0'].map(hx), MIX = ['#c4d38f','#d8e2b0'].map(hx), FOAM = ['#f2e8d3','#fbf5e8','#ffffff'].map(hx);
-    const latte = pixTex(128, 64, (X, Y, Z, x, y) => {
+    const latte = pixTex(512, 256, (X, Y, Z, x, y) => {
       const th = (B4[y & 3][x & 3] + .5) / 16;
       if (Y > .78 + (fbm(X * 5, 2, Z * 5) - .5) * .2) return hash(x * 7, y * 13) > .93 ? hx('#7aa848') : FOAM[(th * 3) | 0];
       const w = fbm(X * 1.3 + 3, Y * 1.3 + 7, Z * 1.3 + 1) * 2.2, s = fbm(X * 1.1 + w + 5, Y * 2.4 + w * .6 + 2, Z * 1.1 + w + 9);
@@ -875,12 +923,12 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       if (s > .58) return MIX[th > .5 ? 1 : 0];
       const v = fbm(X * 3 + 1, Y * 3, Z * 3 + 2); return MT[Math.max(0, Math.min(4, Math.floor(v * 6 + th - 1.2)))];
     });
-    const latteClouds = pixTex(128, 64, (X, Y, Z, x, y) => {
+    const latteClouds = pixTex(512, 256, (X, Y, Z, x, y) => {
       const n = fbm(X * 2.2 + 40, Y * 3.4 + 9, Z * 2.2 + 21); if (n < .66 || Y > .7) return null;
       return n > .7 ? [255, 255, 250] : [236, 244, 226];
     });
     const meHolder = $('meNode');
-    PL.me = makePlanet(meHolder, {res:120, tex:latte, clouds:latteClouds, out:0x182a12, speed:.0045, top(pv){
+    PL.me = makePlanet(meHolder, {res:380, tex:latte, clouds:latteClouds, out:0x182a12, speed:.0045, top(pv){
       /* 抹茶馬卡龍 */
       const m = new THREE.Group(); m.position.set(0, 1.12, 0); m.rotation.z = -.12;
       const shellGeo = new THREE.SphereGeometry(.34, 24, 12), shell = toon({color:0x9fd26a});
@@ -894,7 +942,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 
     /* 櫻桃甜點貼圖 */
     const PINK = ['#de7899','#ee98b4','#f7b8cc','#fcd2df'].map(hx), CREAM = ['#f7eced','#ffffff'].map(hx), JAM = ['#b81a3b','#dc3150'].map(hx), SPR = ['#7fd0ff','#ffe873','#9BD14B','#ffffff','#c9b8ff'].map(hx);
-    const dessert = pixTex(96, 48, (X, Y, Z, x, y) => {
+    const dessert = pixTex(384, 192, (X, Y, Z, x, y) => {
       const th = (B4[y & 3][x & 3] + .5) / 16;
       const capEdge = .62 + (fbm(X * 6, 1, Z * 6) - .5) * .25;
       const drip = fbm(X * 7 + 9, 2, Z * 7 + 3);
@@ -906,7 +954,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       const h = hash(x * 5 + 11, y * 9 + 2); if (h > .94) return SPR[(h * 1000 | 0) % 5];
       return PINK[Math.min(3, Math.floor(fbm(X * 3, Y * 3, Z * 3) * 4 + th - .6))];
     });
-    PL.cherry = makePlanet($('cherryNode'), {res:96, tex:dessert, out:0x3a0c1c, speed:.0035, top(pv){
+    PL.cherry = makePlanet($('cherryNode'), {res:280, tex:dessert, out:0x3a0c1c, speed:.0035, top(pv){
       const g = new THREE.Group(); g.position.set(0, 1.14, 0);
       const cg = new THREE.SphereGeometry(.24, 20, 14);
       const ch = new THREE.Mesh(cg, toon({color:0xdc2a48})); ch.scale.set(1, .92, 1); g.add(ch); { const o = outline(cg, 1, 0x2e0a18); o.scale.set(1.1, 1.02, 1.1); g.add(o); }
