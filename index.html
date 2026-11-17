@@ -230,7 +230,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 @keyframes pulse{50%{transform:scale(1.08);opacity:.8}}
 .planet3d canvas{position:relative;display:block;width:360px;height:360px;image-rendering:pixelated;cursor:grab}
 .space.drag .planet3d canvas{cursor:grabbing}
-.planet3d .nm{position:absolute;left:50%;top:356px;transform:translateX(-50%);white-space:nowrap;font:900 17px var(--cn);padding:4px 14px;border-radius:99px;background:#9BD14B;color:#111;border:2px solid #111;cursor:pointer}
+.planet3d .nm{text-decoration:none;position:absolute;left:50%;top:356px;transform:translateX(-50%);white-space:nowrap;font:900 17px var(--cn);padding:4px 14px;border-radius:99px;background:#9BD14B;color:#111;border:2px solid #111;cursor:pointer}
 #meNode{left:800px;top:650px}
 #cherryNode{left:1490px;top:150px;width:250px;height:290px;margin:-125px 0 0 -125px}
 #cherryNode::before{left:-40px;right:-40px;top:-30px;height:320px;background:radial-gradient(circle,rgba(255,156,203,.3),rgba(255,156,203,.06) 55%,transparent 70%)}
@@ -407,8 +407,8 @@ svg.lines{transform:translateZ(0)}
   <div class="stage" id="stage">
     <svg class="lines" id="lines" viewBox="0 0 1600 1300"></svg>
     <div class="planet3d" id="meNode" aria-label="抹茶星球，可以拖著轉"><canvas></canvas><span class="nm" id="meSay">抹茶 Matcha_</span></div>
-    <div class="planet3d" id="cherryNode" aria-label="櫻桃星球，可以拖著轉"><canvas></canvas><span class="nm">櫻桃 Cherrie.dawn</span></div>
-    <div class="planet3d" id="millyNode" aria-label="米莉星球，香草口味，可以拖著轉"><canvas></canvas><span class="nm">米莉</span></div>
+    <div class="planet3d" id="cherryNode" aria-label="櫻桃星球，可以拖著轉"><canvas></canvas><a class="nm" href="https://cherrienoir.neocities.org/" target="_blank" rel="noopener" title="去櫻桃的網站">櫻桃 Cherrie.dawn</a></div>
+    <div class="planet3d" id="millyNode" aria-label="米莉星球，香草口味，可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉</a></div>
   </div>
   <div class="sTop">
     <div class="ttl">抹茶屋<small>MATCHA'S ROOM</small></div>
@@ -474,7 +474,7 @@ const CARDS = [
 {"id": "raccoon", "name": "浣熊大戰佛州殭屍", "sub": "天佑美國，你是一隻他媽的佛州殭屍浣熊！", "link": "https://caveduck.io/zh-hant/share/characters/2333ba36-5131-4570-ab52-22becf56d571?rc=ls7SFdqPDz&_share_hash=", "world": "佛羅里達", "sim": true, "award": [{"ed": "20 屆", "t": "世界巡迴 美國區"}], "blurb": "佛州殭屍末日，你是一隻被咬過、外表正常、還會講話的浣熊。五個倖存者對你各有態度：有人崇拜、有人溺愛、有人只想抓你去做實驗。黑色幽默，荒唐到底。", "t": 6},
 {"id": "rhaine", "name": "雷恩", "sub": "這頭黑獅子是你的主人。", "link": "https://caveduck.io/zh-hant/share/characters/7d19226d-c898-4d27-a624-9dbf60c271a3", "world": "荊口", "worldPage": "/WORD/thornmouth.html", "series": true, "blurb": "荊口市的故事。這個世界觀和櫻桃 @Cherrie.dawn 共用，她的格雷夫斯也住在同一條河邊。", "cherry": true, "award": [{"ed": "21 屆", "t": "得獎"}], "t": 3},
 {"id": "nora", "name": "諾拉", "sub": "「對、對不起……我明天就辭職……」", "link": "https://caveduck.io/zh-hant/share/characters/fbf41039-7c7b-4af2-9cdb-ddc023a4c916", "world": "NEXA", "worldPage": "/WORD/nexa-cyber.html", "series": true, "blurb": "NEXA 的 LACUNA No.1。", "t": 18},
-{"id": "sejem", "name": "塞傑姆", "sub": "撿到你吊墜的埃及蛇神。", "link": "https://caveduck.io/zh-hant/share/characters/7216aec5-ea68-4bd7-9962-70cb65ad459b?rc=ls7SFdqPDz&_share_hash=", "world": "神話埃及", "collab": true, "blurb": "穿過結界，現代埃及的另一邊是眾神還在的古埃及。蒙著眼的蛇神塞傑姆是眾神的債主，連荷魯斯都欠他一個大人情。他對你很好奇，也很會哄人。聯名合作卡。", "t": 1},
+{"id": "sejem", "name": "塞傑姆", "sub": "撿到你吊墜的埃及蛇神。", "link": "https://caveduck.io/zh-hant/share/characters/7216aec5-ea68-4bd7-9962-70cb65ad459b?rc=ls7SFdqPDz&_share_hash=", "world": "神話埃及", "collab": true, "blurb": "穿過結界，現代埃及的另一邊是眾神還在的古埃及。蒙著眼的蛇神塞傑姆是眾神的債主，連荷魯斯都欠他一個大人情。他對你很好奇，也很會哄人。聯名合作卡。", "milly": true, "t": 1},
 {"id": "chengyou", "name": "韓承佑", "sub": "陽光開朗的保全大哥。", "link": "https://caveduck.io/zh-hant/share/characters/2d26d527-bb3b-484f-84ae-486181dd4fe2?rc=ls7SFdqPDz&_share_hash=", "blurb": "開朗溫柔是他的本性，不是裝出來的。", "t": 4},
 {"id": "elwyn", "name": "艾爾溫", "sub": "課堂嚴肅又溫柔的老師。", "link": "https://caveduck.io/zh-hant/share/characters/da7efffe-bc3e-4d7c-b959-9ccba493f280?rc=ls7SFdqPDz&_share_hash=", "world": "諸神黃昏", "blurb": "大聖堂學院的導師，你是他唯一的關門弟子。諸神黃昏在這裡只是課本上的神話，沒有人當真。他在人前對你淡淡的，私下才溫柔。", "extra": [{"t": "線索頁", "u": "https://ragnarok-truth.netlify.app/"}], "t": 5},
 {"id": "ghost", "name": "色鬼模擬器", "sub": "「🦆 Woohoo～！我現在就要色色！」", "link": "https://caveduck.io/zh-hant/share/characters/0edabb65-de6e-4e2a-bcbc-f4fab7bbb462?rc=ls7SFdqPDz&_share_hash=", "world": "霧崙港", "sim": true, "award": [{"ed": "繁中比賽", "t": "第 4 屆 小獎", "tag": "繁中小獎", "n": 1004}], "blurb": "台灣港口小鎮霧崙港，21 位鎮民。你是一隻色鬼。黑色喜劇成人向模擬器。", "t": 8},
@@ -485,7 +485,7 @@ const CARDS = [
 {"id": "jay", "name": "傑伊", "sub": "「晚上說要準時下班的厭世S級嚮導大叔。」", "link": "https://caveduck.io/zh-hant/share/characters/36ce81af-2bd1-4bc4-9c9e-72a53c3bf19f?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "t": 12},
 {"id": "murong", "name": "慕容珣", "sub": "【金籠裡的北地白玉】", "link": "https://caveduck.io/zh-hant/share/characters/c4e3317e-c340-4a20-9065-62cf5619afdb?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "cherry": true, "t": 13},
 {"id": "sameface", "name": "同臉", "sub": "你的繼父與他的弟弟共用那張臉。", "link": "https://caveduck.io/zh-hant/share/characters/cfaf0ed9-41cd-46db-b59b-a58c252d897b?rc=ls7SFdqPDz&_share_hash=", "blurb": "台灣家庭劇，雙人卡。同一張臉，兩種人生。", "t": 14},
-{"id": "loken", "name": "洛肯", "sub": "Delulu 鎮，你的數學教授。", "link": "https://caveduck.io/zh-hant/share/characters/46ef957b-36ec-4d78-ae54-770d813bfb51?rc=ls7SFdqPDz&_share_hash=", "world": "迪露露鎮", "worldPage": "/delulu/", "blurb": "", "t": 2},
+{"id": "loken", "name": "洛肯", "sub": "Delulu 鎮，你的數學教授。", "link": "https://caveduck.io/zh-hant/share/characters/46ef957b-36ec-4d78-ae54-770d813bfb51?rc=ls7SFdqPDz&_share_hash=", "world": "迪露露鎮", "worldPage": "/delulu/", "blurb": "", "milly": true, "cherry": true, "t": 2},
 {"id": "yuan", "name": "鳶", "sub": "「為什麼……現在才回來。」", "link": "https://caveduck.io/zh-hant/share/characters/4109bad3-3ed2-40ea-8eed-f19ffd839628", "world": "NEXA", "worldPage": "/WORD/nexa-cyber.html", "series": true, "award": [{"ed": "繁中比賽", "t": "第 2 屆 首獎", "tag": "繁中首獎", "n": 1002}, {"ed": "17 屆", "t": "得獎"}], "blurb": "NEXA 的 LACUNA No.2。", "t": 19},
 {"id": "chenxi", "name": "晨夕與共", "sub": "星際浩瀚，晨・夜・你。", "link": "https://caveduck.io/zh-hant/share/characters/63789086-0927-428b-a5a0-55506fea01f8", "world": "星際聯邦", "worldPage": "/WORD/federation-universe.html", "series": true, "award": [{"ed": "16 屆", "t": "得獎"}], "blurb": "星際聯邦的故事。九個種族、各自的成見和故事，都整理在世界觀頁。", "multi": true, "t": 20},
 {"id": "yuzhe", "name": "宇哲", "sub": "同宿舍的田徑校隊。", "link": "https://caveduck.io/zh-hant/share/characters/8c8a93ab-c0a5-4f5f-910f-73264dc8a786?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "t": 17},
@@ -841,7 +841,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   /* 拖：卡片就移動卡片，空白處就平移，星球就轉星球 */
   const pts = new Map(); let mode = null, moved = 0, grab = null, pinch0 = null, holdT = 0;
   sp.addEventListener('pointerdown', e => {
-    if (e.target.closest('.sTop,.sTools,.sDown,.deco,.layoutBar')) return;
+    if (e.target.closest('.sTop,.sTools,.sDown,.deco,.layoutBar,a.nm')) return;
     pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
     if (pts.size === 2){ const [a, b] = [...pts.values()]; pinch0 = {d:Math.hypot(a.x - b.x, a.y - b.y), s, mx:(a.x + b.x) / 2, my:(a.y + b.y) / 2}; mode = 'pinch'; return; }
     moved = 0; vYaw = vTilt = 0;
