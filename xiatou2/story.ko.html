@@ -241,6 +241,15 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .maop .p-bg img{object-position:56% 22%}
   .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
 }
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.gal figure{margin:0}
+.gal a{display:block;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
+.gal img{width:100%;height:auto;transition:transform .3s}
+.gal a:hover img{transform:scale(1.03)}
+.gal a:focus-visible{outline:2px solid var(--dragon);outline-offset:2px}
+.gal figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
+@media (max-width:720px){.gal{grid-template-columns:repeat(2,1fr);gap:10px}}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 /* langs */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
 .langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
@@ -256,7 +265,7 @@ body{word-break:keep-all}
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko" aria-current="page">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
-                  <div class="stage" aria-hidden="true">
+                    <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -270,7 +279,7 @@ body{word-break:keep-all}
 <main class="story s2">
 
   <nav class="chips wrap" aria-label="바로 가기">
-    <a href="#botan">보탄</a><a href="#ren">렌</a><a href="#meet">만남</a><a href="#mao">마오</a><a href="#score">점수표</a>
+    <a href="#botan">보탄</a><a href="#ren">렌</a><a href="#meet">만남</a><a href="#mao">마오</a><a href="#score">점수표</a><a href="#gallery">갤러리</a>
   </nav>
 
   <section class="person botan" id="botan" aria-labelledby="n-botan">
@@ -439,6 +448,18 @@ body{word-break:keep-all}
         <p class="note">오프닝 01에서 렌이 문을 박차고 들어오는 장면은 두 사람이 미리 짠 연극이다. 보탄은 들킨 척해서 당신이 자기 탓이라고 생각하게 만든다.<br>오프닝 02에서는 둘이 아직 당신을 재 보는 중이다.</p>
         <p class="note">대놓고 물으면 보탄은 웃어넘기거나 다른 이야기로 바꾸고, 렌은 입을 다문다. 증거를 들이밀어야 인정하는데, 죄책감은 조금도 없다.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="gallery" aria-labelledby="t-gallery">
+    <h2 id="t-gallery">갤러리</h2>
+    <p class="intro">어린 시절 사진과 2K 축하 일러스트.</p>
+    <div class="gal">
+      <figure><a href="kid_botan.webp" target="_blank" rel="noopener"><img src="kid_botan.webp" width="832" height="1216" alt="어린 시절의 보탄" loading="lazy"></a><figcaption>어린 시절의 보탄</figcaption></figure>
+      <figure><a href="kid_ren.webp" target="_blank" rel="noopener"><img src="kid_ren.webp" width="832" height="1216" alt="어린 시절의 렌" loading="lazy"></a><figcaption>어린 시절의 렌</figcaption></figure>
+      <figure><a href="kid_mao.webp" target="_blank" rel="noopener"><img src="kid_mao.webp" width="832" height="1216" alt="어린 시절의 마오" loading="lazy"></a><figcaption>어린 시절의 마오</figcaption></figure>
+      <figure><a href="kid_duo_2k.webp" target="_blank" rel="noopener"><img src="kid_duo_2k.webp" width="832" height="1216" alt="2K 축하" loading="lazy"></a><figcaption>2K 축하</figcaption></figure>
+      <figure><a href="kid_mao_2k.webp" target="_blank" rel="noopener"><img src="kid_mao_2k.webp" width="832" height="1216" alt="2K 축하" loading="lazy"></a><figcaption>2K 축하</figcaption></figure>
     </div>
   </section>
 

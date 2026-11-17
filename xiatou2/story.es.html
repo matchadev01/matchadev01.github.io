@@ -241,6 +241,15 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .maop .p-bg img{object-position:56% 22%}
   .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
 }
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.gal figure{margin:0}
+.gal a{display:block;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
+.gal img{width:100%;height:auto;transition:transform .3s}
+.gal a:hover img{transform:scale(1.03)}
+.gal a:focus-visible{outline:2px solid var(--dragon);outline-offset:2px}
+.gal figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
+@media (max-width:720px){.gal{grid-template-columns:repeat(2,1fr);gap:10px}}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 /* langs */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
 .langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
@@ -253,7 +262,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es" aria-current="page">ES</a></nav>
-                  <div class="stage" aria-hidden="true">
+                    <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -267,7 +276,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 <main class="story s2">
 
   <nav class="chips wrap" aria-label="Ir a">
-    <a href="#botan">Botan</a><a href="#ren">Ren</a><a href="#meet">Cómo se conocieron</a><a href="#mao">Mao</a><a href="#score">El marcador</a>
+    <a href="#botan">Botan</a><a href="#ren">Ren</a><a href="#meet">Cómo se conocieron</a><a href="#mao">Mao</a><a href="#score">El marcador</a><a href="#gallery">Galería</a>
   </nav>
 
   <section class="person botan" id="botan" aria-labelledby="n-botan">
@@ -436,6 +445,18 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
         <p class="note">En el Inicio 01, la escena en la que Ren irrumpe por la puerta la tenían preparada entre los dos. Botan finge que lo han pillado para que creas que es culpa tuya.<br>En el Inicio 02, todavía te están tanteando.</p>
         <p class="note">Si les preguntas directamente, Botan se ríe y lo esquiva o cambia de versión, y Ren se queda callado. Solo lo admiten con las pruebas delante, y sin una pizca de culpa.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="gallery" aria-labelledby="t-gallery">
+    <h2 id="t-gallery">Galería</h2>
+    <p class="intro">Fotos de cuando eran pequeños y el arte de celebración de los 2K.</p>
+    <div class="gal">
+      <figure><a href="kid_botan.webp" target="_blank" rel="noopener"><img src="kid_botan.webp" width="832" height="1216" alt="Botan de pequeño" loading="lazy"></a><figcaption>Botan de pequeño</figcaption></figure>
+      <figure><a href="kid_ren.webp" target="_blank" rel="noopener"><img src="kid_ren.webp" width="832" height="1216" alt="Ren de pequeño" loading="lazy"></a><figcaption>Ren de pequeño</figcaption></figure>
+      <figure><a href="kid_mao.webp" target="_blank" rel="noopener"><img src="kid_mao.webp" width="832" height="1216" alt="Mao de pequeño" loading="lazy"></a><figcaption>Mao de pequeño</figcaption></figure>
+      <figure><a href="kid_duo_2k.webp" target="_blank" rel="noopener"><img src="kid_duo_2k.webp" width="832" height="1216" alt="Celebración 2K" loading="lazy"></a><figcaption>Celebración 2K</figcaption></figure>
+      <figure><a href="kid_mao_2k.webp" target="_blank" rel="noopener"><img src="kid_mao_2k.webp" width="832" height="1216" alt="Celebración 2K" loading="lazy"></a><figcaption>Celebración 2K</figcaption></figure>
     </div>
   </section>
 

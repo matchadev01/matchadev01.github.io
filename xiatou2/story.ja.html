@@ -241,6 +241,15 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .maop .p-bg img{object-position:56% 22%}
   .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
 }
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.gal figure{margin:0}
+.gal a{display:block;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
+.gal img{width:100%;height:auto;transition:transform .3s}
+.gal a:hover img{transform:scale(1.03)}
+.gal a:focus-visible{outline:2px solid var(--dragon);outline-offset:2px}
+.gal figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
+@media (max-width:720px){.gal{grid-template-columns:repeat(2,1fr);gap:10px}}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 /* langs */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
 .langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
@@ -255,7 +264,7 @@ body,.story h2,.ch h3,.ch .hit,.ch .said-line,.p-head h2,.p-meta,.memo,.plays,.s
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja" aria-current="page">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
-                  <div class="stage" aria-hidden="true">
+                    <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -269,7 +278,7 @@ body,.story h2,.ch h3,.ch .hit,.ch .said-line,.p-head h2,.p-meta,.memo,.plays,.s
 <main class="story s2">
 
   <nav class="chips wrap" aria-label="移動">
-    <a href="#botan">牡丹</a><a href="#ren">蓮</a><a href="#meet">出会い</a><a href="#mao">真央</a><a href="#score">スコア表</a>
+    <a href="#botan">牡丹</a><a href="#ren">蓮</a><a href="#meet">出会い</a><a href="#mao">真央</a><a href="#score">スコア表</a><a href="#gallery">ギャラリー</a>
   </nav>
 
   <section class="person botan" id="botan" aria-labelledby="n-botan">
@@ -438,6 +447,18 @@ body,.story h2,.ch h3,.ch .hit,.ch .said-line,.p-head h2,.p-meta,.memo,.plays,.s
         <p class="note">開幕01で蓮がドアを開けて踏み込む場面は、ふたりが打ち合わせた芝居だ。牡丹は見つかったふりをして、あなたに自分のせいだと思わせる。<br>開幕02では、ふたりはまだあなたを品定めしている。</p>
         <p class="note">正面から問い詰めると、牡丹は笑ってはぐらかすか別の話にすり替え、蓮は黙る。証拠を突きつけられて初めて認めるが、罪悪感はかけらもない。</p>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="gallery" aria-labelledby="t-gallery">
+    <h2 id="t-gallery">ギャラリー</h2>
+    <p class="intro">子どもの頃の写真と、2K記念イラスト。</p>
+    <div class="gal">
+      <figure><a href="kid_botan.webp" target="_blank" rel="noopener"><img src="kid_botan.webp" width="832" height="1216" alt="子どもの頃の牡丹" loading="lazy"></a><figcaption>子どもの頃の牡丹</figcaption></figure>
+      <figure><a href="kid_ren.webp" target="_blank" rel="noopener"><img src="kid_ren.webp" width="832" height="1216" alt="子どもの頃の蓮" loading="lazy"></a><figcaption>子どもの頃の蓮</figcaption></figure>
+      <figure><a href="kid_mao.webp" target="_blank" rel="noopener"><img src="kid_mao.webp" width="832" height="1216" alt="子どもの頃の真央" loading="lazy"></a><figcaption>子どもの頃の真央</figcaption></figure>
+      <figure><a href="kid_duo_2k.webp" target="_blank" rel="noopener"><img src="kid_duo_2k.webp" width="832" height="1216" alt="2K記念" loading="lazy"></a><figcaption>2K記念</figcaption></figure>
+      <figure><a href="kid_mao_2k.webp" target="_blank" rel="noopener"><img src="kid_mao_2k.webp" width="832" height="1216" alt="2K記念" loading="lazy"></a><figcaption>2K記念</figcaption></figure>
     </div>
   </section>
 
