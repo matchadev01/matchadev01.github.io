@@ -379,7 +379,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 .fcard{display:flex;flex-direction:column;text-decoration:none;color:inherit;border:2px solid var(--ink);border-radius:12px;padding:8px 8px 12px;background:var(--white);box-shadow:4px 4px 0 var(--ink);transition:transform .15s}
 .fcard:hover{transform:translateY(-3px)}
 .fpic{display:block;aspect-ratio:616/900;overflow:hidden;border-radius:8px;background:#222}
-.fpic img{width:100%;height:100%;object-fit:cover;display:block}
+.fpic img,.fpic video{width:100%;height:100%;object-fit:cover;display:block}
 .fcard b{margin:10px 2px 0;font-size:17px}
 .fcard small{margin:3px 2px 10px;color:var(--mid);font-size:13px;line-height:1.5;flex:1}
 .fgo{align-self:flex-start;font-size:13px;font-weight:700;padding:5px 12px;border-radius:99px;border:2px solid var(--ink);background:var(--fc,var(--matcha))}
@@ -704,10 +704,10 @@ const SHARE = id => 'https://caveduck.io/zh-hant/share/characters/' + id + '?rc=
 const FRIENDS = {
   cherry: {name:'櫻桃 Cherrie.dawn', c:'#FF9CCB', site:'https://cherrienoir.neocities.org/', siteName:'Cherrie 的遊樂園', author:'https://caveduck.io/zh-hant/user/cherrie.dawn',
     cards:[
-      {name:'KEEPER', sub:'兩根、倒鉤、會放電，你想釣哪隻魚？', img:'room/img/f/keeper.webp', link:SHARE('49c06949-0ff1-4ebe-8837-53883aab3264')},
+      {name:'KEEPER', sub:'兩根、倒鉤、會放電，你想釣哪隻魚？', img:'room/img/f/keeper.webp', vid:'room/img/f/keeper.mp4', link:SHARE('49c06949-0ff1-4ebe-8837-53883aab3264')},
       {name:'赫連耀', sub:'長安握不住的烈日，掌心握著驕陽的少年虎將軍。', img:'room/img/f/helianyao.webp', link:SHARE('f7010912-17ba-4bfd-96ee-c5656a5b974c')},
       {name:'安布拉', sub:'Delulu 鎮。深夜搾乳 × 隱藏配方 = 神級美味。', img:'room/img/f/umbra.webp', link:SHARE('5b6960c1-07d8-479b-ac71-b49cfe2bfc66')},
-      {name:'溫綏之', sub:'舔完了，我先回一下我媽的 LINE。', img:'room/img/f/wensuizhi.webp', link:SHARE('bcb10020-18f3-49c0-beeb-88466dbe0a05')}
+      {name:'溫綏之', sub:'舔完了，我先回一下我媽的 LINE。', img:'room/img/f/wensuizhi.webp', vid:'room/img/f/wensuizhi.mp4', link:SHARE('bcb10020-18f3-49c0-beeb-88466dbe0a05')}
     ]},
   milly: {name:'米莉 Milly', c:'#FFE08A', site:'https://milly-mi.neocities.org/', siteName:'CaveMilly', author:'https://caveduck.io/zh-hant/user/Milly',
     cards:[
@@ -719,11 +719,12 @@ function openFriend(k){
   const f = FRIENDS[k]; if (!f) return;
   $('fdPl').style.background = f.c; $('fdPl').textContent = k === 'cherry' ? '櫻' : '米';
   $('fdTitle').textContent = f.name; $('fdSub').textContent = '和抹茶一起聯名的角色';
-  $('fdGrid').innerHTML = f.cards.map(c => '<a class="fcard" href="' + esc(c.link) + '" target="_blank" rel="noopener"><span class="fpic"><img src="' + esc(c.img) + '" alt="' + esc(c.name) + '" loading="lazy"></span><b>' + esc(c.name) + '</b><small>' + esc(c.sub) + '</small><span class="fgo">去鴨答聊天</span></a>').join('');
+  $('fdGrid').innerHTML = f.cards.map(c => '<a class="fcard" href="' + esc(c.link) + '" target="_blank" rel="noopener"><span class="fpic">' + (c.vid ? '<video src="' + esc(c.vid) + '" poster="' + esc(c.img) + '" muted loop playsinline autoplay preload="auto"></video>' : '<img src="' + esc(c.img) + '" alt="' + esc(c.name) + '" loading="lazy">') + '</span><b>' + esc(c.name) + '</b><small>' + esc(c.sub) + '</small><span class="fgo">去鴨答聊天</span></a>').join('');
   $('fdActs').innerHTML = '<a href="' + esc(f.site) + '" target="_blank" rel="noopener">逛 ' + esc(f.siteName) + '</a><a href="' + esc(f.author) + '" target="_blank" rel="noopener">鴨答作者頁</a>';
   $('fdlg').style.setProperty('--fc', f.c);
   if (!$('fdlg').open){ $('fdlg').showModal(); openFriend.t = performance.now(); }
 }
+$('fdlg').addEventListener('close', () => { $('fdGrid').querySelectorAll('video').forEach(v => v.pause()); });
 $('fdlg').addEventListener('click', e => { if (e.target.closest('[data-close]') || (e.target === $('fdlg') && performance.now() - (openFriend.t || 0) > 450)) $('fdlg').close(); });
 
 /* 詳細 */
