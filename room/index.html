@@ -116,8 +116,8 @@ main{max-width:1180px;margin:0 auto;padding:10px 32px 40px}
 .sh a{margin-left:auto;margin-bottom:4px;text-decoration:none;font-weight:700;font-size:14px;padding:7px 16px;border:2px solid var(--ink);border-radius:99px;background:var(--white);box-shadow:3px 3px 0 var(--ink)}
 .sh a:hover{background:var(--c,var(--matcha))}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:34px 26px}
-.card{position:relative;display:block;text-align:left;width:100%;background:var(--white);padding:8px 8px 12px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:34px 26px}
+.card{position:relative;display:block;min-width:0;text-align:left;width:100%;background:var(--white);padding:8px 8px 12px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
   transform:rotate(var(--r,0deg));transition:transform .2s,box-shadow .2s}
 .card:hover,.card:focus-visible{transform:rotate(0) translate(-3px,-5px);box-shadow:8px 10px 0 var(--ink)}
 .card .pic{display:block;position:relative;aspect-ratio:616/900;overflow:hidden;background:#222}
@@ -312,7 +312,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
   .bar .in{padding:8px 14px}
   .bar .ext{display:none}
   main{padding:0 16px 30px}
-  .grid{grid-template-columns:repeat(2,1fr);gap:24px 16px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}
   .card b{font-size:15px}
   .card .medal{width:46px;height:46px;right:-10px;top:-10px}
   .sh a{margin-left:0}
