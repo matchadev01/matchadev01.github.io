@@ -236,6 +236,12 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 #cherryNode::before{left:-40px;right:-40px;top:-30px;height:320px;background:radial-gradient(circle,rgba(255,156,203,.3),rgba(255,156,203,.06) 55%,transparent 70%)}
 #cherryNode canvas{width:250px;height:250px}
 #cherryNode .nm{top:246px;background:#FF9CCB;font-size:15px}
+#millyNode{left:130px;top:160px}
+#millyNode .nm{background:#FFE08A}
+.lines path.ml{stroke:rgba(255,224,140,.7)}
+.lines path.ml.hot{stroke:#FFE08A;filter:drop-shadow(0 0 6px #FFE08A)}
+.lines path.bond.ml{stroke:rgba(255,224,140,.25)}
+.node .badges i.ml{background:#FFE9A8}
 .node{position:absolute;width:104px;margin:-86px 0 0 -52px;z-index:2;text-align:center;transition:transform .2s;touch-action:none;cursor:grab}
 .node .ph{display:block;width:104px;height:152px;padding:5px;background:#fff;border-radius:4px;transform:rotate(var(--r));box-shadow:0 0 0 2px #111,0 8px 22px rgba(0,0,0,.55);transition:box-shadow .2s,transform .2s}
 .node .ph img,.node .ph video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
@@ -348,6 +354,9 @@ svg.lines{transform:translateZ(0)}
 #cherryNode{width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
 #cherryNode canvas{width:140px;height:140px}
 #cherryNode .nm{top:136px;font-size:12px}
+#millyNode{width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
+#millyNode canvas{width:140px;height:140px}
+#millyNode .nm{top:136px;font-size:12px}
 .floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
 .mHint{display:none}
 @media (max-width:820px){
@@ -399,6 +408,7 @@ svg.lines{transform:translateZ(0)}
     <svg class="lines" id="lines" viewBox="0 0 1600 1300"></svg>
     <div class="planet3d" id="meNode" aria-label="抹茶星球，可以拖著轉"><canvas></canvas><span class="nm" id="meSay">抹茶 Matcha_</span></div>
     <div class="planet3d" id="cherryNode" aria-label="櫻桃星球，可以拖著轉"><canvas></canvas><span class="nm">櫻桃 Cherrie.dawn</span></div>
+    <div class="planet3d" id="millyNode" aria-label="米莉星球，香草口味，可以拖著轉"><canvas></canvas><span class="nm">米莉</span></div>
   </div>
   <div class="sTop">
     <div class="ttl">抹茶屋<small>MATCHA'S ROOM</small></div>
@@ -475,7 +485,7 @@ const CARDS = [
 {"id": "jay", "name": "傑伊", "sub": "「晚上說要準時下班的厭世S級嚮導大叔。」", "link": "https://caveduck.io/zh-hant/share/characters/36ce81af-2bd1-4bc4-9c9e-72a53c3bf19f?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "t": 12},
 {"id": "murong", "name": "慕容珣", "sub": "【金籠裡的北地白玉】", "link": "https://caveduck.io/zh-hant/share/characters/c4e3317e-c340-4a20-9065-62cf5619afdb?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "cherry": true, "t": 13},
 {"id": "sameface", "name": "同臉", "sub": "你的繼父與他的弟弟共用那張臉。", "link": "https://caveduck.io/zh-hant/share/characters/cfaf0ed9-41cd-46db-b59b-a58c252d897b?rc=ls7SFdqPDz&_share_hash=", "blurb": "台灣家庭劇，雙人卡。同一張臉，兩種人生。", "t": 14},
-{"id": "loken", "name": "洛肯", "sub": "Delulu 鎮，你的數學教授。", "link": "https://caveduck.io/zh-hant/share/characters/46ef957b-36ec-4d78-ae54-770d813bfb51?rc=ls7SFdqPDz&_share_hash=", "world": "Delulu 鎮", "worldPage": "/delulu/", "blurb": "", "t": 2},
+{"id": "loken", "name": "洛肯", "sub": "Delulu 鎮，你的數學教授。", "link": "https://caveduck.io/zh-hant/share/characters/46ef957b-36ec-4d78-ae54-770d813bfb51?rc=ls7SFdqPDz&_share_hash=", "world": "迪露露鎮", "worldPage": "/delulu/", "blurb": "", "t": 2},
 {"id": "yuan", "name": "鳶", "sub": "「為什麼……現在才回來。」", "link": "https://caveduck.io/zh-hant/share/characters/4109bad3-3ed2-40ea-8eed-f19ffd839628", "world": "NEXA", "worldPage": "/WORD/nexa-cyber.html", "series": true, "award": [{"ed": "繁中比賽", "t": "第 2 屆 首獎", "tag": "繁中首獎", "n": 1002}, {"ed": "17 屆", "t": "得獎"}], "blurb": "NEXA 的 LACUNA No.2。", "t": 19},
 {"id": "chenxi", "name": "晨夕與共", "sub": "星際浩瀚，晨・夜・你。", "link": "https://caveduck.io/zh-hant/share/characters/63789086-0927-428b-a5a0-55506fea01f8", "world": "星際聯邦", "worldPage": "/WORD/federation-universe.html", "series": true, "award": [{"ed": "16 屆", "t": "得獎"}], "blurb": "星際聯邦的故事。九個種族、各自的成見和故事，都整理在世界觀頁。", "multi": true, "t": 20},
 {"id": "yuzhe", "name": "宇哲", "sub": "同宿舍的田徑校隊。", "link": "https://caveduck.io/zh-hant/share/characters/8c8a93ab-c0a5-4f5f-910f-73264dc8a786?rc=ls7SFdqPDz&_share_hash=", "blurb": "", "t": 17},
@@ -506,6 +516,7 @@ const SECTIONS = [
   {k:'babel', n:'巴別塔學院', c:'#E6D7A3', d:'哨兵與嚮導的學院。', page:'/WORD/babel-academy.html', f:c => c.world === '巴別塔學院'},
   {k:'thorn', n:'荊口', c:'#9FB8C6', d:'下雨的獸人港城，和櫻桃共用的世界觀。', page:'/WORD/thornmouth.html', f:c => c.world === '荊口'},
   {k:'fed', n:'星際聯邦', c:'#B5C2FF', d:'九個種族的宇宙。', page:'/WORD/federation-universe.html', f:c => c.world === '星際聯邦'},
+  {k:'delulu', n:'迪露露鎮', c:'#FFB8E6', d:'夢核小鎮，迷霧裡別亂走。', page:'/delulu/', f:c => c.world === '迪露露鎮'},
   {k:'multi', n:'多人卡', c:'#FF7FAF', d:'一張卡好幾個主角，一起出場。', f:c => c.multi},
   {k:'sim', n:'模擬器', c:'#FFB36B', d:'一張卡一整個小世界，很多 NPC 一起出場。', f:c => c.sim},
   {k:'one', n:'單篇', c:'#FF9CCB', d:'一張卡一個故事。', f:() => true}
@@ -715,7 +726,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 /* ===== 宇宙：3D 像素星球在中間，卡片可以直接拖 ===== */
 (function(){
   const sp = $('space'), stage = $('stage'), svg = $('lines');
-  const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150;
+  const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150, MLX = 130, MLY = 160;
   const NS = 'http://www.w3.org/2000/svg';
   const LITE = matchMedia('(pointer:coarse)').matches || innerWidth < 820;
   const TH = id => 'room/img/t/' + id + '.webp', TV = {"esports": "room/img/t/esports.mp4", "raccoon": "room/img/t/raccoon.mp4"};
@@ -747,13 +758,14 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   /* 圈 */
   RINGS.forEach(R => { const e = mk('ellipse', 'ring'); e.setAttribute('cx', CX); e.setAttribute('cy', CY); e.setAttribute('rx', R.r * KX); e.setAttribute('ry', R.r * KY); svg.appendChild(e); });
   const bond = mk('path', 'bond'); bond.setAttribute('d', 'M' + CX + ' ' + CY + ' Q 1200 300 ' + CHX + ' ' + CHY); svg.appendChild(bond);
+  const bond2 = mk('path', 'bond ml'); bond2.setAttribute('d', 'M' + CX + ' ' + CY + ' Q 380 330 ' + MLX + ' ' + MLY); svg.appendChild(bond2);
 
   /* 卡片 */
   const nodes = CARDS.map((c, i) => {
     const el = document.createElement('button'); el.type = 'button'; el.className = 'node'; el.dataset.i = i; el.setAttribute('aria-label', c.name);
     el.style.setProperty('--r', rnd(-6, 6).toFixed(1) + 'deg');
     const aw = c.award || [];
-    const badges = [c.isNew ? '<i class="new">NEW</i>' : '', c.official ? '<i class="off">官方合作</i>' : '', c.cherry ? '<i class="ch">櫻桃聯名</i>' : '']
+    const badges = [c.isNew ? '<i class="new">NEW</i>' : '', c.official ? '<i class="off">官方合作</i>' : '', c.cherry ? '<i class="ch">櫻桃聯名</i>' : '', c.milly ? '<i class="ml">米莉聯名</i>' : '']
       .concat(aw.map(a => '<i>' + esc(a.tag || a.ed) + '</i>')).join('');
     el.innerHTML = (badges ? '<span class="badges">' + badges + '</span>' : '') +
       '<span class="ph">' + (TV[c.id] ? '<video src="' + TV[c.id] + '" poster="' + TH(c.id) + '" muted loop playsinline autoplay preload="auto"></video>' : '<img src="' + TH(c.id) + '" alt="" decoding="async" draggable="false">') + '</span><b>' + esc(c.name) + '</b>';
@@ -761,9 +773,11 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     const sh = mk('ellipse', 'foot'); sh.setAttribute('rx', 46); sh.setAttribute('ry', 16); svg.appendChild(sh);
     const p = mk('path'); svg.appendChild(p);
     const q = c.cherry ? mk('path', 'ch') : null; if (q) svg.appendChild(q);
-    el.addEventListener('mouseenter', () => { p.classList.add('hot'); if (q) q.classList.add('hot'); });
-    el.addEventListener('mouseleave', () => { p.classList.remove('hot'); if (q) q.classList.remove('hot'); });
-    const n = {i, c, el, p, q, sh, x:0, y:0, bend:rnd(-60, 60)};
+    const qm = c.milly ? mk('path', 'ml') : null; if (qm) svg.appendChild(qm);
+    const extra = [q, qm].filter(Boolean);
+    el.addEventListener('mouseenter', () => { p.classList.add('hot'); extra.forEach(e => e.classList.add('hot')); });
+    el.addEventListener('mouseleave', () => { p.classList.remove('hot'); extra.forEach(e => e.classList.remove('hot')); });
+    const n = {i, c, el, p, q, qm, sh, x:0, y:0, bend:rnd(-60, 60)};
     place(n, ...posOf(c.id));
     return n;
   });
@@ -771,12 +785,13 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     n.x = x; n.y = y; n.el.style.left = x + 'px'; n.el.style.top = y + 'px'; n.sh.setAttribute('cx', x); n.sh.setAttribute('cy', y);
     const mx = (CX + x) / 2, my = (CY + y) / 2, nx = -(y - CY), ny = x - CX, len = Math.hypot(nx, ny) || 1;
     n.p.setAttribute('d', 'M' + CX + ' ' + CY + ' Q' + (mx + nx / len * n.bend).toFixed(1) + ' ' + (my + ny / len * n.bend).toFixed(1) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1));
+    if (n.qm) n.qm.setAttribute('d', 'M' + MLX + ' ' + MLY + ' Q' + ((MLX + x) / 2 - 50) + ' ' + ((MLY + y) / 2 - 50) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1));
     if (n.q) n.q.setAttribute('d', 'M' + CHX + ' ' + CHY + ' Q' + ((CHX + x) / 2 + 50) + ' ' + ((CHY + y) / 2 - 50) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1));
   }
 
   /* 篩選 */
   const F = groups.map(g => [g.k, g.n, c => groups.find(x => x.f(c)) === g])
-    .concat([['cherry', '和櫻桃聯名', c => c.cherry], ['award', '得獎', c => (c.award || []).length], ['official', '官方合作', c => c.official]])
+    .concat([['cherry', '和櫻桃聯名', c => c.cherry], ['milly', '和米莉聯名', c => c.milly], ['award', '得獎', c => (c.award || []).length], ['official', '官方合作', c => c.official]])
     .filter(f => CARDS.some(f[2]));
   const chips = $('chips');
   chips.innerHTML = '<button type="button" class="on" data-sf="all">全部</button>' + F.map(f => '<button type="button" data-sf="' + f[0] + '">' + esc(f[1]) + '</button>').join('');
@@ -784,7 +799,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     const b = e.target.closest('[data-sf]'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     const f = b.dataset.sf === 'all' ? null : F.find(x => x[0] === b.dataset.sf)[2];
-    nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.sh.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); });
+    nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.sh.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); if (n.qm) n.qm.classList.toggle('off', !on); });
   });
 
   /* 畫面縮放、平移 */
@@ -836,7 +851,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       clearTimeout(holdT); holdT = setTimeout(() => { if (mode === 'wait' && moved < 8){ mode = 'card'; moved = 10; grab.el.classList.add('lift'); if (navigator.vibrate) navigator.vibrate(15); } }, 380);
     }
     else if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]]; }
-    else if (planet){ mode = 'planet'; grab = planet.id === 'meNode' ? PL.me : PL.cherry; if (grab) grab.hold = true; }
+    else if (planet){ mode = 'planet'; grab = {meNode:PL.me, cherryNode:PL.cherry, millyNode:PL.milly}[planet.id]; if (grab) grab.hold = true; }
     else mode = (e.shiftKey || e.button === 2 || e.button === 1) ? 'pan' : 'orbit';
     sp.setPointerCapture(e.pointerId); sp.classList.add('drag');
   });
@@ -862,7 +877,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       grab.el.classList.remove('lift');
       if (moved < 6) open(grab.i);
       else { mine[grab.c.id] = [Math.round(grab.x), Math.round(grab.y)]; try{ localStorage.setItem(LSK, JSON.stringify(mine)); }catch(e){} showBar(); }
-    } else if (mode === 'planet' && grab){ grab.hold = false; if (moved < 6) (grab === PL.me ? sayMe : sayCherry)(); }
+    } else if (mode === 'planet' && grab){ grab.hold = false; if (moved < 6) (grab === PL.me ? sayMe : grab === PL.milly ? sayMilly : sayCherry)(); }
     mode = null; grab = null;
   };
   sp.addEventListener('contextmenu', e => e.preventDefault());
@@ -892,6 +907,9 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   let li = 0; function sayMe(){ li = (li + 1) % LINES.length; $('meSay').textContent = LINES[li]; }
   const CL = ['櫻桃星球，甜的', '常常一起聯名的櫻桃', '粉紅線連到的是聯名卡']; let ci = 0;
   function sayCherry(){ const n = $('cherryNode').querySelector('.nm'); n.textContent = CL[ci = (ci + 1) % CL.length]; clearTimeout(sayCherry.t); sayCherry.t = setTimeout(() => n.textContent = '櫻桃 Cherrie.dawn', 2400); }
+
+  const MLL = ['香草口味的米莉星球', '黃色線連到的是聯名卡']; let mi = 0;
+  function sayMilly(){ const n = $('millyNode').querySelector('.nm'); n.textContent = MLL[mi = (mi + 1) % MLL.length]; clearTimeout(sayMilly.t); sayMilly.t = setTimeout(() => n.textContent = '米莉', 2400); }
 
   /* ===== 3D 像素星球 ===== */
   const PL = {};
@@ -1001,6 +1019,39 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       const st = new THREE.Mesh(new THREE.CylinderGeometry(.025, .03, .42, 6), toon({color:0x4a7a2a})); st.position.set(.06, .32, 0); st.rotation.z = -.35; g.add(st);
       const lf = new THREE.Mesh(new THREE.SphereGeometry(.1, 10, 8), toon({color:0x8fd14b})); lf.scale.set(1.4, .35, .8); lf.position.set(.2, .46, 0); lf.rotation.z = .4; g.add(lf);
       const hl = new THREE.Mesh(new THREE.SphereGeometry(.05, 8, 6), new THREE.MeshBasicMaterial({color:0xffffff})); hl.position.set(-.09, .08, .19); g.add(hl);
+      pv.add(g);
+    }});
+
+    /* 香草甜點貼圖：香草冰淇淋、香草籽、焦糖淋醬、頂上鮮奶油 */
+    const VAN = ['#f6dc8c','#fbe7a8','#fff1c6','#fff8e2'].map(hx), VWHITE = ['#fffaf0','#ffffff'].map(hx), CAR = ['#b9732f','#d8954a','#ebb46c'].map(hx), BEAN = hx('#3a2213');
+    const PAST = ['#ffc6dc','#bfe6ff','#d9c9ff'].map(hx);
+    const vanilla = pixTex(384, 192, (X, Y, Z, x, y) => {
+      const th = (B4[y & 3][x & 3] + .5) / 16;
+      const capEdge = .66 + (fbm(X * 5 + 3, 4, Z * 5 + 7) - .5) * .22;
+      if (Y > capEdge) return VWHITE[th > .35 ? 1 : 0];
+      const drip = fbm(X * 6 + 21, 5, Z * 6 + 11);
+      if (Y > capEdge - (drip - .48) * 1.6 && drip > .52) return CAR[th > .66 ? 2 : th > .33 ? 1 : 0];
+      const sw = Math.sin((Y * 5 + fbm(X * 1.6 + 8, Y * 1.6, Z * 1.6 + 2) * 4.5) * 1.3);
+      if (sw > .965 && Y < capEdge - .15) return CAR[2];
+      const h = hash(x * 7 + 3, y * 11 + 5);
+      if (h > .988 && Y < capEdge - .05) return BEAN;
+      if (h < .02) return PAST[(x * 3 + y) % 3];
+      return VAN[Math.max(0, Math.min(3, Math.floor(fbm(X * 2.6 + 1, Y * 2.6, Z * 2.6 + 5) * 4.4 + th - .9)))];
+    });
+    PL.milly = makePlanet($('millyNode'), {res:280, tex:vanilla, out:0x4a3214, speed:.004, top(pv){
+      /* 香草布丁：焦糖頂、鮮奶油、一根香草莢 */
+      const g = new THREE.Group(); g.position.set(0, .98, 0); g.rotation.z = .08; g.scale.setScalar(1.12);
+      const bodyGeo = new THREE.CylinderGeometry(.21, .28, .3, 24);
+      const body = new THREE.Mesh(bodyGeo, toon({color:0xf8d872})); body.position.y = .13; g.add(body);
+      { const o = outline(bodyGeo, 1, 0x4a3214); o.position.y = .13; o.scale.set(1.09, 1.06, 1.09); g.add(o); }
+      const capGeo = new THREE.CylinderGeometry(.215, .215, .07, 24);
+      const cap = new THREE.Mesh(capGeo, toon({color:0x9a531f})); cap.position.y = .3; g.add(cap);
+      for (let k = 0; k < 6; k++){ const a = k / 6 * Math.PI * 2 + .3, d = new THREE.Mesh(new THREE.SphereGeometry(.045, 8, 6), toon({color:0x9a531f}));
+        d.scale.set(1, 1.6 - (k % 2) * .5, 1); d.position.set(Math.cos(a) * .2, .24 - (k % 2) * .04, Math.sin(a) * .2); g.add(d); }
+      const cr = new THREE.Mesh(new THREE.SphereGeometry(.1, 14, 10), toon({color:0xfffaf2})); cr.scale.set(1, .8, 1); cr.position.y = .39; g.add(cr);
+      const tip = new THREE.Mesh(new THREE.ConeGeometry(.06, .1, 12), toon({color:0xfffaf2})); tip.position.y = .49; g.add(tip);
+      const pod = new THREE.Mesh(new THREE.CylinderGeometry(.018, .012, .4, 6), toon({color:0x3a2213})); pod.position.set(.09, .52, .02); pod.rotation.z = -.55; g.add(pod);
+      const hl = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), new THREE.MeshBasicMaterial({color:0xffffff})); hl.position.set(-.1, .2, .2); g.add(hl);
       pv.add(g);
     }});
   }).catch(e => console.warn('3D 星球載入失敗', e));
