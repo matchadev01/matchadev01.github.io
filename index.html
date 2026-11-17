@@ -212,7 +212,7 @@ dialog.d::backdrop{background:rgba(17,17,17,.6)}
 
 
 /* ===== 宇宙 ===== */
-.space{position:relative;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#07090f;color:#fff;touch-action:none;cursor:grab;user-select:none}
+.space{position:relative;height:calc(100vh - 58px);height:calc(100dvh - 58px);min-height:560px;overflow:hidden;background:#07090f;color:#fff;touch-action:none;cursor:grab;user-select:none}
 .space.drag{cursor:grabbing}
 .space canvas.sky{position:absolute;inset:0;width:100%;height:100%}
 .stage{position:absolute;left:0;top:0;width:1600px;height:1300px;transform-origin:0 0;z-index:1}
@@ -296,7 +296,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 .sTools button:hover{background:#9BD14B;color:#111}
 .sHint{position:absolute;left:26px;bottom:24px;z-index:10;font-size:13px;line-height:1.7;color:rgba(233,245,221,.7);pointer-events:none}
 .sHint b{color:#C8F27A}
-.sDown{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:10;font-size:13px;font-weight:700;color:#111;background:#9BD14B;padding:8px 18px;border-radius:99px;border:2px solid #111;text-decoration:none;cursor:pointer}
+.sDown{display:inline-flex;align-items:center;gap:6px;position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:10;font-size:13px;font-weight:700;color:#111;background:#9BD14B;padding:8px 18px;border-radius:99px;border:2px solid #111;text-decoration:none;cursor:pointer}
 .space .deco{z-index:4}
 .s-glow{fill:#fff}.s-glowg{fill:#C8F27A}
 .bf.night{--bw:#C8F27A;--bd:#111}
@@ -332,6 +332,22 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
   .hero .deco{scale:.8}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* 宇宙和卡片牆的接縫：波浪 */
+.space::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:64px;z-index:6;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 64' preserveAspectRatio='none'%3E%3Cpath d='M0 40 C180 10 300 10 480 32 S800 58 980 30 S1300 6 1440 26 V64 H0Z' fill='%23ECEDE8' fill-opacity='.35'/%3E%3Cpath d='M0 48 C200 26 340 30 520 44 S860 64 1040 42 S1320 24 1440 38 V64 H0Z' fill='%23ECEDE8'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+.space::before{content:"";position:absolute;left:0;right:0;bottom:0;height:200px;z-index:1;pointer-events:none;background:linear-gradient(transparent,rgba(155,209,75,.10) 60%,rgba(236,237,232,.16))}
+.bar{border-top:0}
+.sDown svg{width:14px;height:14px;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(3px)}}
+.sTools{bottom:44px}
+.sHint{bottom:56px}
+@media (max-width:820px){.sTools{bottom:90px}}
+.card[hidden]{display:none}
+.card .tags i.w{border-color:var(--ink)}
+.wallInfo{margin:0 0 26px}
+.wallInfo[hidden]{display:none}
+#wallSec{padding-top:34px}
+.wallTitle{padding-top:34px}
 /* 2.5D：舞台往後倒，卡片站起來 */
 .space{perspective:1100px}
 .stage{transform-style:preserve-3d}
@@ -360,7 +376,7 @@ svg.lines{transform:translateZ(0)}
 .floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
 .mHint{display:none}
 @media (max-width:820px){
-  .mHint{display:block;position:absolute;left:50%;bottom:70px;transform:translateX(-50%);z-index:10;width:max-content;max-width:90%;text-align:center;font-size:13px;line-height:1.6;padding:8px 16px;border-radius:14px;background:rgba(7,9,15,.8);border:1.5px solid rgba(200,242,122,.5);color:#e9f5dd;pointer-events:none;transition:opacity .6s}
+  .mHint{display:block;position:absolute;left:50%;top:128px;transform:translateX(-50%);z-index:10;width:max-content;max-width:90%;text-align:center;font-size:13px;line-height:1.6;padding:8px 16px;border-radius:14px;background:rgba(7,9,15,.8);border:1.5px solid rgba(200,242,122,.5);color:#e9f5dd;pointer-events:none;transition:opacity .6s}
   .mHint.gone{opacity:0}
   .node b{font-size:14px}
 }
@@ -423,7 +439,7 @@ svg.lines{transform:translateZ(0)}
   <span class="deco hm" style="left:48%;top:88%;width:20px;height:20px;--dl:1.4s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star5" class="tw s-glow" style="--dl:1.4s"/></svg></span>
   <div class="sHint">拖空白處轉角度　拖卡片搬位置　拖星球自轉<br><b>中鍵、右鍵或 Shift 拖曳移動畫面　Ctrl＋滾輪縮放</b></div>
   <div class="mHint" id="mHint">單指滑動轉角度　兩指縮放、移動<br>點卡片看詳細　長按卡片可以搬</div>
-  <button class="sDown" id="sDown" type="button">排整齊看全部</button>
+  <button class="sDown" id="sDown" type="button">往下看全部角色<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="sTools"><button type="button" id="zIn" aria-label="放大">+</button><button type="button" id="zOut" aria-label="縮小">−</button><button type="button" id="zFit" aria-label="回到中間">◎</button></div>
 </section>
 
@@ -525,24 +541,27 @@ const placed = new Set(), groups = SECTIONS.map(s => {
   const list = CARDS.map((c, i) => ({c, i})).filter(x => !placed.has(x.i) && s.f(x.c));
   list.forEach(x => placed.add(x.i)); return Object.assign({list}, s);
 }).filter(g => g.list.length);
-const order = groups.flatMap(g => g.list.map(x => x.i));
+const order = CARDS.map((c, i) => i).sort((a, b) => (CARDS[a].t ?? 99) - (CARDS[b].t ?? 99));
+const WCOL = {}; SECTIONS.forEach(s => { WCOL[s.k] = s.c; });
+const WORLDS = {'NEXA':'nexa', '巴別塔學院':'babel', '荊口':'thorn', '星際聯邦':'fed', '迪露露鎮':'delulu'};
+const groupOf = c => groups.find(g => g.f(c));
 
 
 const STAR = '<svg viewBox="0 0 40 40"><path d="M20 2l4.6 7.4 8.4-2-2 8.4L38.4 20l-7.4 4.6 2 8.4-8.4-2L20 38.4l-4.6-7.4-8.4 2 2-8.4L1.6 20 9 15.4l-2-8.4 8.4 2z"/></svg>';
 const rot = i => ((i * 37) % 7 - 3) * .5;
 function card(c, i){
   const aw = c.award || [];
-  const tags = [c.isNew ? 'NEW' : '', c.official ? '官方合作' : '', c.collab ? '聯名' : '', (!c.worldPage && c.world) ? c.world : ''].filter(Boolean);
+  const wk = WORLDS[c.world];
+  const tags = [c.isNew ? ['NEW', 'new'] : null, c.world ? [c.world, 'w', WCOL[wk]] : null, c.multi ? ['多人卡', 'w', WCOL.multi] : null, c.sim ? ['模擬器', 'w', WCOL.sim] : null,
+    c.official ? ['官方合作'] : null, (c.cherry || c.milly || c.collab) ? ['聯名'] : null].filter(Boolean);
   return '<button class="card" type="button" data-i="' + i + '" style="--r:' + rot(i) + 'deg">' +
     (i % 5 === 2 ? '<span class="tape"></span>' : '') +
     aw.map((a, k) => '<span class="medal" style="top:' + (-14 + k * 50) + 'px">' + STAR + '<span>' + esc(a.tag || a.ed).replace('繁中', '繁中<br>') + '</span></span>').join('') +
     '<span class="pic">' + (VID[c.id] ? '<video data-src="' + VID[c.id] + '" poster="' + IMG(c.id) + '" muted loop playsinline preload="none"></video>' : '<img src="' + IMG(c.id) + '" alt="' + esc(c.name) + '" loading="lazy" decoding="async">') +
-    (tags.length ? '<span class="tags">' + tags.map(t => '<i' + (t === 'NEW' ? ' class="new"' : '') + '>' + esc(t) + '</i>').join('') + '</span>' : '') + '</span>' +
+    (tags.length ? '<span class="tags">' + tags.map(t => '<i' + (t[1] ? ' class="' + t[1] + '"' : '') + (t[2] ? ' style="background:' + t[2] + '"' : '') + '>' + esc(t[0]) + '</i>').join('') + '</span>' : '') + '</span>' +
     '<b>' + esc(c.name) + '</b><small>' + esc(c.sub || '') + '</small></button>';
 }
-$('sections').innerHTML = groups.map(g =>
-  '<section class="sec" id="s-' + g.k + '" data-k="' + g.k + '"><div class="sh" style="--c:' + g.c + '"><h2>' + esc(g.n) + '</h2><p>' + esc(g.d) + '</p>' +
-  (g.page ? '<a href="' + g.page + '">看世界觀</a>' : '') + '</div><div class="grid">' + g.list.map(x => card(x.c, x.i)).join('') + '</div></section>').join('');
+$('sections').innerHTML = '<section class="sec" id="wallSec"><div class="sh wallInfo" id="wallInfo" hidden></div><div class="grid" id="wallGrid">' + order.map(i => card(CARDS[i], i)).join('') + '</div></section>';
 
 /* 每區散幾張貼紙 */
 const SK = [['i-star','s-ink',26],['i-star5','s-green',30],['i-heart','s-green',28],['i-star','s-ink',18],['i-paw','s-line',30],['i-star5','s-line',26]];
@@ -569,7 +588,13 @@ fb.insertAdjacentHTML('beforeend', '<button type="button" class="on" data-f="all
 fb.addEventListener('click', e => {
   const b = e.target.closest('[data-f]'); if (!b) return;
   fb.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b));
-  document.querySelectorAll('#sections .sec').forEach(s => s.hidden = b.dataset.f !== 'all' && s.dataset.k !== b.dataset.f);
+  const k = b.dataset.f, g = groups.find(x => x.k === k);
+  document.querySelectorAll('#wallGrid .card').forEach(el => { const c = CARDS[+el.dataset.i];
+    el.hidden = k !== 'all' && !(k === 'one' ? groupOf(c) === g : g.f(c)); });
+  const info = $('wallInfo');
+  if (g && k !== 'one'){ info.hidden = false; info.style.setProperty('--c', g.c);
+    info.innerHTML = '<h2>' + esc(g.n) + '</h2><p>' + esc(g.d) + '</p>' + (g.page ? '<a href="' + g.page + '">看世界觀</a>' : ''); }
+  else info.hidden = true;
   $('chars').scrollIntoView({behavior:'smooth'});
 });
 
@@ -591,7 +616,7 @@ function open(i){
 document.addEventListener('click', e => { const b = e.target.closest('.card'); if (b) open(+b.dataset.i); });
 $('dlg').addEventListener('click', e => { if (e.target === $('dlg') || e.target.closest('[data-close]')) $('dlg').close(); });
 $('dlg').addEventListener('close', () => { $('dImg').innerHTML = ''; });
-const step = d => { const k = order.indexOf(cur); open(order[(k + d + order.length) % order.length]); };
+const step = d => { const vis = order.filter(i => !document.querySelector('#wallGrid .card[data-i="' + i + '"]').hidden); const list = vis.length ? vis : order; const k = list.indexOf(cur); if (k < 0){ open(list[0]); return; } open(list[(k + d + list.length) % list.length]); };
 $('prev').onclick = () => step(-1); $('next').onclick = () => step(1);
 document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
 
