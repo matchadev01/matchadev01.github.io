@@ -241,21 +241,28 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .maop .p-bg img{object-position:56% 22%}
   .maop .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
 }
-.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
-.gal figure{margin:0}
+.gal-h{display:flex;align-items:center;gap:16px;margin:44px 0 18px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:20px;letter-spacing:.12em;color:#ffc2dc}
+.gal-h::before,.gal-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.gal,.gal-v{display:flex;justify-content:center;align-items:flex-start;gap:16px}
+.gal figure,.gal-v figure{margin:0}
+.gal figure{flex:0 1 260px;min-width:0}
 .gal a{display:block;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
-.gal img{width:100%;height:auto;transition:transform .3s}
+.gal img{display:block;width:100%;height:auto;transition:transform .3s}
 .gal a:hover img{transform:scale(1.03)}
 .gal a:focus-visible{outline:2px solid var(--dragon);outline-offset:2px}
-.gal figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
-@media (max-width:720px){.gal{grid-template-columns:repeat(2,1fr);gap:10px}}
+.gal figcaption,.gal-v figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
+.gal-v video{display:block;height:440px;width:auto;max-width:100%;border-radius:6px;border:1px solid var(--line);background:#000}
+#gallery h2,#gallery .intro{text-align:center;margin-left:auto;margin-right:auto}
+@media (max-width:720px){
+  .gal{gap:8px}
+  .gal figure{flex:1 1 0}
+  .gal figcaption,.gal-v figcaption{font-size:12px}
+  .gal-v{flex-direction:column;align-items:center;gap:20px}
+  .gal-v figure{width:100%}
+  .gal-v video{width:100%;height:auto}
+  .gal-v figure.tall{width:62%}
+}
 @media (prefers-reduced-motion:reduce){.gal img{transition:none}}
-.gal-h{margin:36px 0 14px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:20px;letter-spacing:.08em;color:#ffc2dc}
-.gal-v{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:16px;align-items:start}
-.gal-v figure{margin:0}
-.gal-v video{display:block;width:100%;height:auto;border-radius:6px;border:1px solid var(--line);background:#000}
-.gal-v figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
-@media (max-width:720px){.gal-v{grid-template-columns:1fr}.gal-v figure:first-child{max-width:72%;margin:0 auto}}
 /* langs */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
 .langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
@@ -268,7 +275,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant" aria-current="page">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
-                      <div class="stage" aria-hidden="true">
+                        <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -459,7 +466,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
     <p class="intro">預告片、小時候的照片，還有 2K 賀圖。</p>
     <h3 class="gal-h">預告片</h3>
     <div class="gal-v">
-      <figure><video controls playsinline preload="none" poster="pv_full.webp" width="1080" height="1920"><source src="pv_full.mp4" type="video/mp4"></video><figcaption>完整版</figcaption></figure>
+      <figure class="tall"><video controls playsinline preload="none" poster="pv_full.webp" width="1080" height="1920"><source src="pv_full.mp4" type="video/mp4"></video><figcaption>完整版</figcaption></figure>
       <figure><video controls playsinline preload="none" poster="pv_short.webp" width="960" height="656"><source src="pv_short.mp4" type="video/mp4"></video><figcaption>短版</figcaption></figure>
     </div>
     <h3 class="gal-h">小時候</h3>
