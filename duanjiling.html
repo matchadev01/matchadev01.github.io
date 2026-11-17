@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>斷脊領</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,600&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe5cd;
+  --paper-2:#e6d7b6;
+  --paper-3:#f6efdd;
+  --ink:#2b2117;
+  --ink-2:#4a3c26;
+  --ink-3:#7a6a52;
+  --wine:#7a2620;
+  --wine-2:#9b3a2e;
+  --gold:#a67c32;
+  --earth:#7b5a36;
+  --slate:#56626b;
+  --line:#3d2b17;
+  --serif:"Noto Serif TC","Songti TC",serif;
+  --latin:"Cormorant Garamond","Noto Serif TC",serif;
+  --caps:"Cinzel","Noto Serif TC",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.9;
+  overflow-x:hidden;
+}
+/* 紙紋與色鉛筆顆粒 */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .25  0 0 0 0 .18  0 0 0 0 .1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.38'/></svg>"),
+    radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(90,60,25,.16) 100%);
+  mix-blend-mode:multiply;
+}
+img{max-width:100%;display:block}
+a{color:var(--wine)}
+.wrap{position:relative;z-index:1}
+
+/* ---------- 封面 ---------- */
+.hero{
+  min-height:100vh;display:grid;place-items:center;text-align:center;
+  padding:64px 16px 48px;position:relative;
+}
+.hero-inner{max-width:760px}
+.crest{width:min(220px,52vw);margin:0 auto 18px;filter:url(#pencil)}
+.hero .kicker{
+  font-family:var(--caps);letter-spacing:.42em;font-size:12px;color:var(--ink-3);
+}
+.hero h1{
+  font-weight:900;font-size:clamp(76px,17vw,168px);line-height:1;letter-spacing:.18em;
+  margin:14px 0 6px .18em;color:var(--ink);
+  text-shadow:1px 1px 0 rgba(122,38,32,.18);
+}
+.hero .latin{
+  font-family:var(--latin);font-style:italic;font-size:clamp(18px,3vw,24px);color:var(--wine);
+  letter-spacing:.06em;
+}
+.rule{display:flex;align-items:center;gap:14px;justify-content:center;margin:26px auto;color:var(--ink-3);max-width:420px}
+.rule::before,.rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--ink-3),transparent)}
+.rule span{font-size:14px;letter-spacing:.3em}
+.epigraph{
+  font-size:clamp(16px,2.4vw,19px);color:var(--ink-2);line-height:2.1;max-width:560px;margin:0 auto;
+  padding:18px 26px;border-top:1px solid rgba(61,43,23,.35);border-bottom:1px solid rgba(61,43,23,.35);
+}
+.scroll-cue{
+  margin-top:40px;font-family:var(--caps);font-size:11px;letter-spacing:.4em;color:var(--ink-3);
+  animation:bob 2.6s ease-in-out infinite;
+}
+@keyframes bob{50%{transform:translateY(6px);opacity:.6}}
+
+/* ---------- 目錄 ---------- */
+.toc{
+  position:sticky;top:0;z-index:20;
+  background:rgba(239,229,205,.94);backdrop-filter:blur(4px);
+  border-top:1px solid var(--line);border-bottom:3px double var(--line);
+}
+.toc ul{list-style:none;display:flex;gap:4px;overflow-x:auto;max-width:1100px;margin:0 auto;padding:0 12px;scrollbar-width:none}
+.toc ul::-webkit-scrollbar{display:none}
+.toc a{
+  display:block;white-space:nowrap;padding:11px 12px;text-decoration:none;color:var(--ink-2);font-size:14px;
+  border-bottom:2px solid transparent;transition:.2s;
+}
+.toc a b{font-family:var(--caps);font-weight:600;color:var(--wine);margin-right:6px;font-size:12px}
+.toc a:hover,.toc a.on{color:var(--ink);border-bottom-color:var(--wine)}
+
+/* ---------- 章節 ---------- */
+section.ch{max-width:1100px;margin:0 auto;padding:88px 16px 32px}
+.ch-head{text-align:center;margin-bottom:44px}
+.numeral{
+  display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;
+  border:1.5px solid var(--wine);outline:1px solid var(--wine);outline-offset:4px;
+  font-family:var(--caps);font-weight:700;color:var(--wine);font-size:19px;margin-bottom:16px;
+}
+.ch-head h2{font-size:clamp(30px,5vw,44px);font-weight:900;letter-spacing:.2em;margin-left:.2em}
+.ch-head .sub{font-family:var(--latin);font-style:italic;color:var(--ink-3);font-size:18px;letter-spacing:.08em}
+.prose{max-width:720px;margin:0 auto}
+.prose p{margin:0 0 1.3em;text-align:justify;color:var(--ink-2);font-size:17px}
+.prose p.illum::first-letter{
+  float:left;font-size:4.1em;line-height:.9;font-weight:900;color:var(--paper-3);
+  background:var(--wine);padding:.12em .16em .1em;margin:.08em .16em 0 0;
+  border:3px double var(--paper-3);outline:1.5px solid var(--wine);
+}
+h3.side{
+  clear:both;font-size:22px;font-weight:900;letter-spacing:.14em;margin:46px 0 16px;display:flex;align-items:center;gap:12px;
+}
+h3.side::before{content:"";width:22px;height:22px;flex:none;background:var(--wine);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+
+/* ---------- 困局 ---------- */
+.crisis-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;margin-top:10px}
+.ledger{
+  background:var(--paper-3);border:1px solid var(--line);padding:28px 26px;position:relative;
+  box-shadow:6px 6px 0 rgba(61,43,23,.12);
+}
+.ledger::before{content:"";position:absolute;inset:6px;border:1px solid rgba(61,43,23,.3);pointer-events:none}
+.ledger h4{font-family:var(--caps);letter-spacing:.3em;font-size:12px;color:var(--ink-3);margin-bottom:6px}
+.ledger .big{font-size:22px;font-weight:900;margin-bottom:14px}
+.tally{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
+.tally i{
+  aspect-ratio:1;border:1.5px solid var(--ink-2);display:grid;place-items:center;font-style:normal;
+  font-family:var(--caps);font-size:13px;color:var(--ink-2);position:relative;transition:.35s;background:var(--paper)
+}
+.tally i.gone{color:transparent;background:rgba(122,38,32,.08);border-color:rgba(122,38,32,.45)}
+.tally i.gone::after{
+  content:"";position:absolute;inset:3px;
+  background:linear-gradient(45deg,transparent 46%,var(--wine) 47%,var(--wine) 53%,transparent 54%),
+             linear-gradient(-45deg,transparent 46%,var(--wine) 47%,var(--wine) 53%,transparent 54%);
+}
+.tally.three{grid-template-columns:repeat(7,1fr)}
+.ledger .status{min-height:3.6em;font-size:15px;color:var(--wine);border-top:1px dashed rgba(61,43,23,.4);padding-top:12px}
+.btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{
+  font-family:var(--serif);font-size:14px;letter-spacing:.12em;cursor:pointer;
+  background:var(--ink);color:var(--paper-3);border:none;padding:9px 18px;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:.2s;
+}
+.btn:hover{background:var(--wine)}
+.btn.ghost{background:transparent;color:var(--ink-2);outline:1px solid var(--ink-3)}
+.btn.ghost:hover{color:var(--wine)}
+.edicts{display:flex;flex-direction:column;gap:12px}
+.edict{
+  display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;
+  background:var(--paper-3);border:1px solid rgba(61,43,23,.45);padding:14px 16px;position:relative;
+}
+.seal{
+  width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#a8473a,#6c1f19 70%);color:#f3e2c4;font-weight:900;font-size:17px;
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.12),inset 0 0 0 5px rgba(243,226,196,.25);
+  clip-path:polygon(50% 0,63% 5%,77% 3%,85% 14%,97% 22%,95% 37%,100% 50%,95% 63%,97% 78%,85% 86%,77% 97%,63% 95%,50% 100%,37% 95%,23% 97%,15% 86%,3% 78%,5% 63%,0 50%,5% 37%,3% 22%,15% 14%,23% 3%,37% 5%);
+}
+.edict b{display:block;font-size:16px}
+.edict span{font-size:14px;color:var(--ink-3);line-height:1.6;display:block}
+
+/* ---------- 帝國 ---------- */
+.court{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+.seven{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:26px;background:var(--ink);position:relative}
+.seven::before{content:"七個名字";position:absolute;top:-12px;left:22px;background:var(--paper);padding:0 10px;font-weight:900;letter-spacing:.3em;font-size:14px}
+.seven .s{
+  aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:var(--caps);font-size:18px;
+  background:radial-gradient(circle at 35% 30%,#a8473a,#5e1a15 72%);color:#f0dcbc;position:relative;
+  transition:.4s;
+}
+.seven .s::after{content:"";position:absolute;inset:6px;border-radius:50%;border:1px dashed rgba(240,220,188,.35)}
+.seven .s.seventh{background:radial-gradient(circle at 35% 30%,#3a3530,#0f0d0b 72%);color:#7a6a52;box-shadow:0 0 0 1px #7a6a52}
+.seven .s.seventh:hover{color:#f0dcbc}
+.seven .cap{grid-column:1/-1;color:#cdbb97;font-size:14px;line-height:1.8;margin-top:6px;text-align:center}
+.decree{
+  margin-top:28px;padding:22px 24px;border-left:6px solid var(--wine);background:var(--paper-3);
+  font-size:17px;line-height:2;
+}
+.decree em{font-style:normal;font-weight:900;color:var(--wine);background:linear-gradient(transparent 62%,rgba(166,124,50,.3) 62%)}
+
+/* ---------- 階級 ---------- */
+.strata{display:flex;flex-direction:column;gap:0;max-width:860px;margin:0 auto}
+.stratum{
+  display:grid;grid-template-columns:180px 1fr;border:1px solid var(--line);border-top:none;background:var(--paper-3);
+}
+.stratum:first-child{border-top:1px solid var(--line)}
+.stratum .nm{
+  padding:20px 18px;font-weight:900;font-size:20px;letter-spacing:.14em;color:var(--paper-3);
+  display:flex;align-items:center;gap:10px;position:relative;
+}
+.stratum .nm small{display:block;font-family:var(--latin);font-style:italic;font-weight:500;font-size:14px;letter-spacing:.04em;opacity:.85}
+.stratum .tx{padding:20px 22px;color:var(--ink-2);font-size:16px;align-self:center}
+.stratum:nth-child(1) .nm{background:var(--wine)}
+.stratum:nth-child(2) .nm{background:var(--earth)}
+.stratum:nth-child(3) .nm{background:#3b322a}
+.stratum:nth-child(4) .nm{background:var(--slate)}
+.stratum:nth-child(1){margin-left:0;margin-right:60px}
+.stratum:nth-child(2){margin-left:20px;margin-right:40px}
+.stratum:nth-child(3){margin-left:40px;margin-right:20px}
+.stratum:nth-child(4){margin-left:60px;margin-right:0}
+.codex{
+  max-width:860px;margin:40px auto 0;position:relative;padding:30px 34px 30px 120px;
+  background:#2a211a;color:#e9d8b6;border:1px solid #000;
+}
+.codex .stamp{
+  position:absolute;left:24px;top:50%;transform:translateY(-50%) rotate(-12deg);
+  width:78px;height:78px;border:3px solid #b2463a;border-radius:50%;display:grid;place-items:center;
+  color:#c45040;font-weight:900;font-size:18px;letter-spacing:.1em;line-height:1.2;text-align:center;
+  box-shadow:inset 0 0 0 4px #2a211a,inset 0 0 0 5px #b2463a;
+}
+.codex b{display:block;font-size:20px;letter-spacing:.2em;margin-bottom:6px;color:#f3e2c4}
+.codex p{font-size:16px;line-height:2}
+
+/* ---------- 輿圖 ---------- */
+.map-frame{
+  position:relative;background:var(--paper-3);padding:14px;border:1px solid var(--line);
+  box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--line),10px 12px 0 7px rgba(61,43,23,.12);
+  cursor:zoom-in;margin:0 auto;max-width:960px;
+}
+.map-frame img{width:100%;height:auto}
+.map-frame .hint{position:absolute;right:22px;bottom:22px;background:rgba(43,33,23,.82);color:var(--paper-3);font-size:12px;padding:4px 10px;letter-spacing:.2em}
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:44px}
+.place{background:var(--paper-3);border:1px solid rgba(61,43,23,.5);padding:18px 18px 16px;position:relative}
+.place h5{font-size:18px;font-weight:900;letter-spacing:.14em;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.place h5 span{font-family:var(--caps);font-size:11px;letter-spacing:.14em;color:var(--wine);font-weight:600;white-space:nowrap}
+.place p{font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:8px}
+.routes{margin:44px auto 0;max-width:760px}
+.routes h4{text-align:center;font-weight:900;letter-spacing:.3em;margin-bottom:16px}
+.route{display:grid;grid-template-columns:100px 1fr auto;gap:14px;align-items:center;padding:8px 0;border-bottom:1px dotted rgba(61,43,23,.45);font-size:15px}
+.route .bar{height:6px;background:repeating-linear-gradient(90deg,var(--ink-2) 0 8px,transparent 8px 13px);position:relative}
+.route .bar i{position:absolute;right:-5px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--wine);transform:translateY(-50%)}
+.route .d{font-family:var(--latin);font-size:16px;color:var(--ink-2);white-space:nowrap}
+
+/* ---------- 人物 ---------- */
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:-20px 0 28px;font-size:13px;color:var(--ink-3)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;display:inline-block}
+.factions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:30px}
+.factions button{
+  font-family:var(--serif);font-size:14px;cursor:pointer;background:transparent;color:var(--ink-2);
+  border:1px solid rgba(61,43,23,.5);padding:7px 14px;letter-spacing:.1em;transition:.2s;
+}
+.factions button.on,.factions button:hover{background:var(--ink);color:var(--paper-3);border-color:var(--ink)}
+.faction-intro{max-width:760px;margin:0 auto 28px;text-align:center;color:var(--ink-2);font-size:16px;min-height:3em}
+.faction-intro b{color:var(--wine);letter-spacing:.1em}
+.diagram{max-width:520px;margin:0 auto 26px}
+.diagram svg{width:100%;height:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px}
+.card{
+  --c:var(--wine);
+  position:relative;background:var(--paper-3);cursor:pointer;
+  border:1px solid var(--line);border-left:7px solid var(--c);
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%);
+  transition:transform .25s, box-shadow .25s;
+  animation:rise .5s both;
+}
+.card:hover{transform:translateY(-4px)}
+.card::after{
+  content:"";position:absolute;top:0;right:0;width:37px;height:1px;background:var(--line);
+  transform-origin:right top;transform:rotate(-45deg) translateX(0);
+}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card.gold{--c:var(--gold)} .card.wine{--c:var(--wine)} .card.earth{--c:var(--earth)} .card.slate{--c:var(--slate)}
+.card .ph{aspect-ratio:3/4;overflow:hidden;background:var(--paper-2);border-bottom:1px solid var(--line)}
+.card .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transition:transform .6s}
+.card:hover .ph img{transform:scale(1.04)}
+.card .tag{
+  position:absolute;top:12px;left:0;background:var(--c);color:var(--paper-3);font-size:12px;letter-spacing:.18em;
+  padding:3px 10px 3px 8px;clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%);
+}
+.card .bd{padding:14px 16px 16px}
+.card .nm{font-size:20px;font-weight:900;letter-spacing:.14em}
+.card .rl{font-size:13px;color:var(--wine);margin:2px 0 10px;line-height:1.6}
+.stats{display:flex;flex-direction:column;gap:5px}
+.stat{display:grid;grid-template-columns:28px 1fr 28px;gap:8px;align-items:center;font-size:12.5px;color:var(--ink-3)}
+.stat .pips{display:grid;grid-template-columns:repeat(9,1fr);gap:2px}
+.stat .pips i{height:7px;background:rgba(61,43,23,.13)}
+.stat .pips i.f{background:var(--c)}
+.stat .v{font-family:var(--latin);font-size:15px;color:var(--ink);text-align:right}
+
+/* 卷宗彈窗 */
+.folio-bg{position:fixed;inset:0;background:rgba(20,15,10,.72);z-index:50;display:none;place-items:center;padding:16px;overflow-y:auto}
+.folio-bg.open{display:grid}
+.folio{
+  --c:var(--wine);
+  position:relative;width:min(920px,100%);background:var(--paper-3);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  border:1px solid var(--line);box-shadow:0 0 0 8px var(--paper),0 0 0 9px var(--line),0 30px 60px rgba(0,0,0,.5);
+  animation:open .35s ease;max-height:calc(100vh - 32px);
+}
+@keyframes open{from{opacity:0;transform:scale(.97)}}
+.folio.gold{--c:var(--gold)} .folio.wine{--c:var(--wine)} .folio.earth{--c:var(--earth)} .folio.slate{--c:var(--slate)}
+.folio .fimg{background:var(--paper-2);border-right:1px solid var(--line);overflow:hidden}
+.folio .fimg img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.folio .ftx{padding:34px 32px 30px;overflow-y:auto;border-top:8px solid var(--c)}
+.folio .fk{font-family:var(--caps);font-size:12px;letter-spacing:.3em;color:var(--ink-3)}
+.folio h3{font-size:34px;font-weight:900;letter-spacing:.16em;margin:4px 0 2px}
+.folio .frole{color:var(--wine);font-size:15px;margin-bottom:18px}
+.folio .stats{margin-bottom:22px;max-width:320px}
+.folio .fdesc p{font-size:15.5px;color:var(--ink-2);line-height:2;margin-bottom:1em;text-align:justify}
+.folio .x{
+  position:absolute;top:10px;right:10px;width:38px;height:38px;border:none;cursor:pointer;z-index:2;
+  background:var(--ink);color:var(--paper-3);font-size:20px;line-height:1;
+}
+.folio .nav{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
+
+/* ---------- 規則 ---------- */
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.rule-card{background:var(--paper-3);border:1px solid rgba(61,43,23,.5);padding:22px 22px 20px;position:relative}
+.rule-card .no{font-family:var(--caps);font-size:42px;font-weight:700;color:rgba(122,38,32,.16);position:absolute;right:16px;top:4px;line-height:1}
+.rule-card h5{font-size:18px;font-weight:900;letter-spacing:.14em;margin-bottom:8px;color:var(--wine)}
+.rule-card p{font-size:15px;color:var(--ink-2);line-height:1.95}
+.delay{margin:46px auto 0;max-width:900px;background:var(--ink);color:#e9d8b6;padding:28px 26px 24px}
+.delay h4{font-weight:900;letter-spacing:.3em;margin-bottom:6px}
+.delay .note{font-size:14px;color:#b8a580;margin-bottom:22px}
+.track{position:relative;height:96px}
+.track::before{content:"";position:absolute;left:0;right:0;top:40px;height:2px;background:repeating-linear-gradient(90deg,#b8a580 0 6px,transparent 6px 10px)}
+.stop{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:72px}
+.stop .dot{width:14px;height:14px;border-radius:50%;background:#b2463a;margin:33px auto 8px;box-shadow:0 0 0 3px #2b2117,0 0 0 4px #b2463a}
+.stop .dot.far{background:#2b2117;box-shadow:0 0 0 3px #2b2117,0 0 0 4px #b8a580}
+.stop b{display:block;font-size:13px;letter-spacing:.06em}
+.stop span{font-family:var(--latin);font-size:14px;color:#b8a580}
+.stop .lbl{position:absolute;top:0;left:0;right:0;font-size:12px;color:#b8a580}
+
+/* ---------- 終章 ---------- */
+.finale{
+  max-width:820px;margin:60px auto 0;padding:60px 40px;text-align:center;position:relative;
+  background:#211a14;color:#eadbbd;border:1px solid #000;
+}
+.finale::before{content:"";position:absolute;inset:10px;border:1px solid rgba(234,219,189,.25)}
+.letters{display:flex;justify-content:center;gap:14px;margin-bottom:30px}
+.letter{width:70px;height:48px;background:#e9dcbf;position:relative;transform:rotate(var(--r));box-shadow:0 6px 12px rgba(0,0,0,.4)}
+.letter::before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,transparent 49%,rgba(61,43,23,.35) 50%,transparent 51%),linear-gradient(20deg,transparent 49%,rgba(61,43,23,.35) 50%,transparent 51%)}
+.letter::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#b2463a,#5e1a15)}
+.finale p{font-size:18px;line-height:2.2;max-width:600px;margin:0 auto}
+.finale .whisper{margin-top:22px;color:#d9a990;font-size:17px}
+
+/* ---------- 附錄 ---------- */
+.appendix{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr;gap:22px}
+.box{background:var(--paper-3);border:1px solid rgba(61,43,23,.5);padding:22px 22px}
+.box h5{font-weight:900;letter-spacing:.2em;margin-bottom:12px;font-size:17px}
+.box a.cta{display:inline-block;margin-top:6px;text-decoration:none}
+.model{display:grid;grid-template-columns:1fr auto;padding:8px 0;border-bottom:1px dotted rgba(61,43,23,.4);font-size:15px}
+.model span{color:var(--ink-3);font-size:14px}
+.model.no b{text-decoration:line-through;text-decoration-color:var(--wine);color:var(--ink-3)}
+.box .tip{margin-top:12px;font-size:14px;color:var(--wine)}
+
+footer{text-align:center;padding:60px 16px 70px;color:var(--ink-3);font-family:var(--caps);font-size:12px;letter-spacing:.4em}
+
+/* 地圖燈箱 */
+.lightbox{position:fixed;inset:0;background:rgba(15,11,8,.9);z-index:60;display:none;place-items:center;padding:16px;cursor:zoom-out}
+.lightbox.open{display:grid}
+.lightbox img{max-width:100%;max-height:calc(100vh - 32px);box-shadow:0 0 0 6px #efe5cd}
+
+/* 捲動淡入 */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s, transform .8s}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:820px){
+  .crisis-grid,.court,.appendix{grid-template-columns:1fr}
+  .stratum,.stratum:nth-child(n){grid-template-columns:1fr;margin:0}
+  .codex{padding:110px 22px 26px}
+  .codex .stamp{left:50%;top:22px;transform:translateX(-50%) rotate(-12deg)}
+  .folio{grid-template-columns:1fr;max-height:none}
+  .folio .fimg{border-right:none;border-bottom:1px solid var(--line);max-height:58vh}
+  .folio .ftx{padding:26px 20px}
+  .route{grid-template-columns:84px 1fr auto}
+  .track{height:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px 6px}
+  .track::before{display:none}
+  .stop{position:static;transform:none;width:auto}
+  .stop .dot{margin:6px auto 6px}
+  .stop .lbl{display:none}
+  .finale{padding:44px 22px}
+}
+@media (max-width:420px){
+  .cards{grid-template-columns:1fr 1fr;gap:12px}
+  .card .bd{padding:10px 10px 12px}
+  .card .nm{font-size:16px}
+  .seven{grid-template-columns:repeat(4,1fr);gap:10px;padding:22px 14px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.4"/></filter>
+  <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2117" stroke-width="1.3" opacity=".55"/></pattern>
+  <pattern id="hatchR" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="0" x2="0" y2="4" stroke="#7a2620" stroke-width="1.4" opacity=".7"/></pattern>
+</svg>
+
+<div class="wrap">
+
+<!-- 封面 -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <svg class="crest" viewBox="0 0 200 240" aria-hidden="true">
+      <path d="M20 18 H180 V120 C180 178 140 212 100 228 C60 212 20 178 20 120 Z" fill="#f6efdd" stroke="#2b2117" stroke-width="3"/>
+      <path d="M28 26 H172 V120 C172 172 136 202 100 218 C64 202 28 172 28 120 Z" fill="none" stroke="#2b2117" stroke-width="1"/>
+      <!-- 左崖與主堡 -->
+      <path d="M28 70 L52 58 L62 74 L74 70 L80 150 L72 196 C52 180 28 156 28 120 Z" fill="url(#hatch)" stroke="#2b2117" stroke-width="2"/>
+      <rect x="44" y="34" width="20" height="26" fill="#f6efdd" stroke="#2b2117" stroke-width="2"/>
+      <path d="M42 34 h4 v-6 h4 v6 h4 v-6 h4 v6 h4 v-6 h4 v6" fill="none" stroke="#2b2117" stroke-width="2"/>
+      <rect x="51" y="44" width="6" height="9" fill="#2b2117"/>
+      <!-- 右崖與鎖鏈塔 -->
+      <path d="M172 80 L152 74 L140 86 L124 84 L120 150 L128 200 C150 186 172 160 172 120 Z" fill="url(#hatch)" stroke="#2b2117" stroke-width="2"/>
+      <rect x="146" y="56" width="14" height="22" fill="#f6efdd" stroke="#2b2117" stroke-width="2"/>
+      <!-- 鐵索 -->
+      <g fill="none" stroke="#7a2620" stroke-width="2.4">
+        <path d="M66 68 Q100 96 150 72" stroke-dasharray="0" opacity=".25"/>
+        <ellipse cx="74" cy="74" rx="6" ry="4"/><ellipse cx="85" cy="80" rx="4" ry="6"/><ellipse cx="96" cy="84" rx="6" ry="4"/>
+        <ellipse cx="107" cy="85" rx="4" ry="6"/><ellipse cx="118" cy="84" rx="6" ry="4"/><ellipse cx="129" cy="80" rx="4" ry="6"/><ellipse cx="140" cy="75" rx="6" ry="4"/>
+      </g>
+      <!-- 海 -->
+      <g fill="none" stroke="#2b2117" stroke-width="1.6">
+        <path d="M80 160 q8 -6 16 0 t16 0 t16 0"/><path d="M78 176 q8 -6 16 0 t16 0 t16 0 t8 0"/><path d="M84 192 q8 -6 16 0 t16 0 t12 0"/>
+      </g>
+      <!-- 斷脊之裂 -->
+      <path d="M100 100 L96 116 L104 126 L98 142" fill="none" stroke="#7a2620" stroke-width="2.2"/>
+    </svg>
+    <div class="kicker">IMPERIVM AESOLENIS · DOMVS DERANIS</div>
+    <h1>斷脊領</h1>
+    <div class="latin">Fretum Spinae Fractae</div>
+    <div class="rule"><span>艾索倫帝國 ・ 德蘭家</span></div>
+    <p class="epigraph">斷脊海峽北岸。老領主臥病第十日，議事廳漆黑的長桌上，沉甸甸地壓著三封未乾的漆封密信。</p>
+    <div class="scroll-cue">拆封 ↓</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <ul>
+    <li><a href="#chronicle"><b>I</b>領地紀事</a></li>
+    <li><a href="#crisis"><b>II</b>現狀困局</a></li>
+    <li><a href="#empire"><b>III</b>帝國局勢</a></li>
+    <li><a href="#strata"><b>IV</b>社會階級</a></li>
+    <li><a href="#atlas"><b>V</b>版圖概觀</a></li>
+    <li><a href="#cast"><b>VI</b>勢力與人物</a></li>
+    <li><a href="#rules"><b>VII</b>運作規則</a></li>
+    <li><a href="#finale"><b>VIII</b>開卷</a></li>
+  </ul>
+</nav>
+
+<!-- I -->
+<section class="ch" id="chronicle">
+  <div class="ch-head reveal"><div class="numeral">I</div><h2>領地紀事</h2><div class="sub">Chronica Terrae</div></div>
+  <div class="prose reveal">
+    <p class="illum">這是個沒有神蹟與魔法的冷酷世道。刀鋒過處即是血肉，傷口潰爛便會致命，流民因飢餓而暴動，貴族的誓言比寒冬的薄冰更易碎。</p>
+    <p>權力、欲望與殺戮相互糾纏。權力爭奪播下流血的種子，對死亡的恐懼驅使人們在黑夜裡尋求體溫與安撫，而榻邊的耳語，翌日清晨就會化為談判桌上的籌碼。</p>
+    <p>世間本無絕對的善惡，唯有身處的位置。人人皆在為自己死守的底線掙扎，殘忍與溫柔，不過是同套生存規則下的兩種面向。</p>
+    <h3 class="side">你的身份</h3>
+    <p>斷脊領的代理掌舵者。老公爵病榻纏綿，權柄已落入你手中，但你尚未受爵，對外行文只能署「代理」二字。</p>
+    <p>你掌控著兩項命脈：咽喉海峽的商貿過路稅，以及崖壁深處全帝國獨一無二的霜鐵礦脈。北方重騎兵無霜鐵打造的甲冑便無法熬過嚴冬，禁衛軍與聖堂騎士的兵刃亦皆仰賴於此。</p>
+    <p>名義上的第一順位繼承人是你的兄長奧倫，然而六年前他被授以霜牙隘口守將之職，終身不得擅離，離開半步即以叛國論處。</p>
+  </div>
+</section>
+
+<!-- II -->
+<section class="ch" id="crisis">
+  <div class="ch-head reveal"><div class="numeral">II</div><h2>現狀困局</h2><div class="sub">Status Rerum</div></div>
+  <div class="crisis-grid">
+    <div class="ledger reveal">
+      <h4>RATIONES HORREI</h4>
+      <div class="big">庫房存糧</div>
+      <div class="tally" id="tallyFood"></div>
+      <div class="big">碎浪騎士團 · 軍餉期限</div>
+      <div class="tally three" id="tallyPay"></div>
+      <div class="status" id="ledgerStatus">糧餉庫存僅夠支撐十四日。副團長下了最後通牒，限期三日。</div>
+      <div class="btns">
+        <button class="btn" id="nextDay">翻過一日</button>
+        <button class="btn ghost" id="resetDay">重置</button>
+      </div>
+    </div>
+    <div class="edicts">
+      <div class="edict reveal"><div class="seal">糧</div><div><b>庫房只剩十四日</b><span>並非缺乏資財，而是資金全卡在航路上。霜鐵雖不愁銷路，貨款卻須經由赭金港的商船結算，船期握在他人手中。</span></div></div>
+      <div class="edict reveal"><div class="seal">餉</div><div><b>軍餉拖欠三個月</b><span>駐紮的碎浪騎士團已三個月未領餉，副團長的最後通牒只給三天。</span></div></div>
+      <div class="edict reveal"><div class="seal">麥</div><div><b>五百袋小麥</b><span>你的叔父已私自運送五百袋小麥進入營房，籠絡人心。</span></div></div>
+      <div class="edict reveal"><div class="seal">北</div><div><b>重騎兵陳兵科倫北界</b><span>北方重騎兵在邊境虎視眈眈。一旦南下，第一個被輾過的是科倫。</span></div></div>
+      <div class="edict reveal"><div class="seal">稅</div><div><b>雙倍海峽稅</b><span>首都來函，要求斷脊繳納雙倍海峽稅。</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- III -->
+<section class="ch" id="empire">
+  <div class="ch-head reveal"><div class="numeral">III</div><h2>帝國局勢</h2><div class="sub">De Imperio</div></div>
+  <div class="court">
+    <div class="prose reveal" style="margin:0">
+      <p class="illum">老皇帝臥病三年，政令不出京畿。九大領地表面順從，暗地裡皆在囤積糧草、招兵買馬。</p>
+      <h3 class="side" style="margin-top:28px">太子妃懸案</h3>
+      <p>四年前，懷胎八月的皇太子妃被控通敵，歷經審訊、軟禁與醫官隔離後，母子俱亡。官方宣稱死於難產意外。</p>
+      <p>皇太子暗中密查兩年，掌握了七個關鍵名字，卻因背後牽扯龐大的封地與宗室勢力而無法動彈。至於第七個名字，他從未向任何人吐露，那人至今仍在他身旁掌管要職。</p>
+    </div>
+    <div class="reveal">
+      <div class="seven">
+        <div class="s">I</div><div class="s">II</div><div class="s">III</div><div class="s">IV</div>
+        <div class="s">V</div><div class="s">VI</div><div class="s seventh" title="從未吐露">VII</div>
+        <div class="cap">六枚封蠟已拆，名字背後是封地與宗室席位。<br>第七枚，至今未拆。</div>
+      </div>
+      <div class="decree">自此事件後，朝廷削藩的手段愈發激進，其中一條律令，正是直指 <em>斷脊領的霜鐵掌控權。</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- IV -->
+<section class="ch" id="strata">
+  <div class="ch-head reveal"><div class="numeral">IV</div><h2>社會階級</h2><div class="sub">Ordines Hominum</div></div>
+  <div class="strata reveal">
+    <div class="stratum"><div class="nm"><div>純血貴族<small>Sanguis Purus</small></div></div><div class="tx">掌管土地與兵權，擁有合法蓄奴權，對奴隸享有絕對的生殺大權。</div></div>
+    <div class="stratum"><div class="nm"><div>自由民<small>Liberi</small></div></div><div class="tx">負擔沉重賦稅的商賈、農夫與工匠。對奴隸的踐踏更為刻薄，因那是他們唯一能俯視的對象。</div></div>
+    <div class="stratum"><div class="nm"><div>烙印者<small>Signati</small></div></div><div class="tx">由戰俘、債奴、罪犯及異族組成。十歲前後於頸側刻上主家徽記，法律定義為「具備言語能力的器具」。</div></div>
+    <div class="stratum"><div class="nm"><div>異族混血<small>Mixti</small></div></div><div class="tx">即便取得自由身，亦被排除於行會與軍籍之外，於街巷間遭受唾棄乃尋常百態。</div></div>
+  </div>
+  <div class="codex reveal">
+    <div class="stamp">奴隸<br>法典</div>
+    <b>奴隸法典</b>
+    <p>奴隸若對貴族施以主動接觸、覬覦、襲擊或逃亡之舉，處以剝皮、剜眼或火刑。處刑無須經過審判程序，全憑主家處置。</p>
+  </div>
+</section>
+
+<!-- V -->
+<section class="ch" id="atlas">
+  <div class="ch-head reveal"><div class="numeral">V</div><h2>版圖概觀</h2><div class="sub">Tabula Freti et Maris Cani</div></div>
+  <div class="map-frame reveal" id="mapFrame">
+    <img src="https://r2.uploads.tw/2026/08/kg04juKC1W.webp" alt="斷脊領版圖">
+    <div class="hint">點擊放大</div>
+  </div>
+  <div class="places" id="places"></div>
+  <div class="routes reveal">
+    <h4>自斷脊主堡出發</h4>
+    <div id="routes"></div>
+  </div>
+</section>
+
+<!-- VI -->
+<section class="ch" id="cast">
+  <div class="ch-head reveal"><div class="numeral">VI</div><h2>勢力與人物</h2><div class="sub">Personae Dramatis</div></div>
+  <div class="legend">
+    <span><i style="background:var(--gold)"></i>皇族</span>
+    <span><i style="background:var(--wine)"></i>貴族與騎士</span>
+    <span><i style="background:var(--earth)"></i>平民</span>
+    <span><i style="background:var(--slate)"></i>烙印者與異族</span>
+  </div>
+  <div class="factions" id="factions"></div>
+  <div class="faction-intro" id="factionIntro"></div>
+  <div class="diagram" id="diagram"></div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- VII -->
+<section class="ch" id="rules">
+  <div class="ch-head reveal"><div class="numeral">VII</div><h2>運作規則</h2><div class="sub">Leges Mundi</div></div>
+  <div class="rules">
+    <div class="rule-card reveal"><div class="no">I</div><h5>三軸屬性</h5><p>武力、謀略、社交三者相互獨立。高武力往往伴隨著較低的社交屬性，無人能做到全方位完美。</p></div>
+    <div class="rule-card reveal"><div class="no">II</div><h5>武力限制</h5><p>世上不存在能以一敵百的英雄。弩箭、劇毒、人數優勢、地形與創傷感染皆能致命。</p></div>
+    <div class="rule-card reveal"><div class="no">III</div><h5>雙重關係</h5><p>盟約代表政治層面的合作，牽絆則代表私人情感，兩者可各自獨立甚至呈現極端反差。</p></div>
+    <div class="rule-card reveal"><div class="no">IV</div><h5>情報延遲</h5><p>訊息傳遞需要時間，你所掌握的情報皆是過往的狀態。</p></div>
+    <div class="rule-card reveal"><div class="no">V</div><h5>動態世界</h5><p>即便你不採取行動，各方勢力的結盟、背叛與變故仍會持續進行。</p></div>
+    <div class="rule-card reveal"><div class="no">VI</div><h5>抉擇代價</h5><p>任何決策皆無法達成完美的皆大歡喜，滿足部分人利益的同時必會損害另一部分人的權益。</p></div>
+  </div>
+  <div class="delay reveal">
+    <h4>消息抵達主堡所需時日</h4>
+    <div class="note">你聽到的，永遠是幾天前的事。</div>
+    <div class="track" id="track"></div>
+  </div>
+</section>
+
+<!-- VIII -->
+<section class="ch" id="finale">
+  <div class="finale reveal">
+    <div class="letters"><div class="letter" style="--r:-8deg"></div><div class="letter" style="--r:3deg"></div><div class="letter" style="--r:10deg"></div></div>
+    <p>三封密信靜靜躺在桌上。糧餉庫存僅剩十四日，軍餉期限只剩三天。</p>
+    <p class="whisper">跪在壁爐旁為你擦拭長靴的維斯，此時壓低了聲音微弱地開口：<br>主子，霍華德爵士今晚打算去老鐵鉤酒館。</p>
+  </div>
+</section>
+
+<section class="ch" style="padding-top:40px">
+  <div class="appendix">
+    <div class="box reveal">
+      <h5>選項小工具</h5>
+      <p style="font-size:14.5px;color:var(--ink-2)">搭配卡片使用的選項面板。</p>
+      <a class="btn cta" href="https://caveduck.io/zh-hant/widgets/share/20e4d244-2fbc-471a-8620-8fb6f9dbdaee" target="_blank" rel="noopener">前往取用</a>
+    </div>
+    <div class="box reveal">
+      <h5>模型推薦</h5>
+      <div class="model"><b>Gemini 3.1</b><span>預設</span></div>
+      <div class="model"><b>Claude Opus 4.7</b><span>情感細節</span></div>
+      <div class="model"><b>Claude Opus 4.6</b><span>色色之神</span></div>
+      <div class="tip">建議 Gemini 3.1 混喜歡的 Claude 模型</div>
+      <div style="margin-top:16px;font-weight:900;letter-spacing:.2em;font-size:14px">不建議</div>
+      <div class="model no"><b>Gemini 3.5 ／ 2.5</b><span>討好 PC 很嚴重，有 OOC 之餘</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>FINIS · 斷脊領 · MATCHA_</footer>
+</div>
+
+<!-- 彈窗 -->
+<div class="folio-bg" id="folioBg">
+  <div class="folio" id="folio">
+    <button class="x" id="folioX" aria-label="關閉">×</button>
+    <div class="fimg"><img id="fImg" alt=""></div>
+    <div class="ftx">
+      <div class="fk" id="fKick"></div>
+      <h3 id="fName"></h3>
+      <div class="frole" id="fRole"></div>
+      <div class="stats" id="fStats"></div>
+      <div class="fdesc" id="fDesc"></div>
+      <div class="nav"><button class="btn ghost" id="fPrev">← 上一位</button><button class="btn ghost" id="fNext">下一位 →</button></div>
+    </div>
+  </div>
+</div>
+<div class="lightbox" id="lightbox"><img src="https://r2.uploads.tw/2026/08/kg04juKC1W.webp" alt="斷脊領版圖"></div>
+
+<script>
+const IMG = id => "https://r2.uploads.tw/2026/08/" + id + ".webp";
+
+const FACTIONS = [
+  { key:"guard", name:"隨侍與近衛", place:"",
+    intro:"一明一暗，守在你身邊最近的兩個人，彼此厭惡。",
+    diagram:true,
+    chars:[
+      {n:"維斯", en:"VESH", img:"H6ZP3Xzfnu", role:"20歲｜貼身奴隸", c:"slate", w:3, m:4, s:4.5,
+       d:"灰金色的瞳孔，硬挺的黑髮與荒原血統的深褐膚色。出生於水牢外的雜役窩，母親為戰俘，賤民本無名字，「維斯」僅是洗滌房老婦隨意的呼喚。八歲時被指派服侍你，只因他身材瘦弱、食量小，即便死去也無人在意。\n具備反擊能力卻從不展現，深知活下去遠比一時的勝負重要，無人知曉其真正武力。能在三句話內洞悉對手的恐懼，並將自己偽裝成對方最不屑一顧的姿態。\n對你的依戀是他生存的唯一支柱。若一天未被召喚便會舉止不安。擅長蠶食鯨吞式的靠近：今日多向前邁出半步，遞茶時手指稍作停留，若未遭斥責便再進分毫，一旦察覺你皺眉則立刻退回原處賠笑。"},
+      {n:"路西安", en:"LUCIAN", img:"POrC2fj7tm", role:"21歲｜護衛騎士", c:"wine", w:4, m:2, s:1,
+       d:"亞麻金短髮與湛藍雙眼，一身擦拭得光亮的銀白輕甲。作為首席封臣長子，八歲起便進入主堡擔任你的伴讀與對練夥伴，陪你走過十三個年頭。\n深愛你十三年卻選擇埋藏心底。那並非委屈的苦戀，而是熾熱的情意——見你微笑便神魂顛倒，為你扣上衣扣時指尖不自主地顫抖。將克制視為一種虔誠的獻祭，越是忍耐，越覺得這份情感純粹。\n三年前，他十六歲的弟弟首次參戰，頭顱被血狼斬下並掛於馬鞍上巡遊兩日才被拋回。他從不提及此事，唯有在他人提起該名字時，動作會頓挫數秒。"}
+    ]},
+  { key:"keep", name:"斷脊主堡", place:"斷脊主堡",
+    intro:"佇立於北岸崖頂的三層石造堡壘。上層為議事廳與領主寢宮；中層為騎士團營房與帳房；下層則為後廚、洗衣房、酒窖與水牢。奴隸僅能通行暗道，嚴禁踏入主廊。石牆終年滲水，冬季時室內極為潮濕寒冷。",
+    chars:[
+      {n:"奧倫", en:"AUREN", img:"Wo8VcrM3HM", role:"27歲｜霜牙隘口守將", c:"wine", w:4.5, m:3, s:1,
+       d:"你的兄長，霜牙隘口守將。左手兩節指節因凍傷而截去，改用三指扣握劍柄。\n經歷六年物資匱乏的磨礪，鍛造出精瘦體魄，身穿滿是補丁的舊軍大衣，連寢臥時也不卸下。每月捎來一封信，字裡行間全為糧草與兵額數據，絕口不提自身處境。\n重逢時會露出罕見的笑容，將你緊緊擁入懷中，感嘆你消瘦了。"},
+      {n:"埃德蒙大公", en:"LORD EDMUND", img:"kQrIEi6tr3", role:"叔父｜代理攝政", c:"wine", w:1, m:4, s:4,
+       d:"銀髮整齊，身著深紫絨袍與貂皮領飾，五十餘歲仍維持著優雅的騎步姿態。\n善於將體面轉化為政治籌碼，從不發出直接威脅，習慣以溫和的長輩姿態勸誘。\n身為次子，一生甘居人後，其真正意圖並非海峽或礦脈，而是取得掌控局勢的簽署權。"},
+      {n:"索菲亞", en:"SOPHIA", img:"BvutkTwqgD", role:"家族總管", c:"earth", w:1, m:3, s:1,
+       d:"灰髮緊束，腰間懸掛鑰匙串與長鞭。\n十九歲那年冬天，前任總管因一時寬恕偷竊者，導致糧倉於大雪封山前空虛，堡內餓死十一人。自此深信秩序一旦鬆動便會引發潰敗。\n曾抱過嬰孩時期的你，雖然態度嚴厲，但每逢你患病時仍會親自守夜照料。"},
+      {n:"加雷斯", en:"SIR GARETH", img:"q70s21RLsD", role:"守衛隊長", c:"wine", w:4, m:2, s:2,
+       d:"灰白長髮束於腦後，留著整齊的絡腮鬍，身上的鎧甲留有數處舊傷痕跡。\n八年前長子為掩護村民撤退而殉職。\n看著你成長，言語間帶著老派長輩的碎唸與關切，在你表現出色時會暗自竊喜。"},
+      {n:"霍華德", en:"SIR HOWARD", img:"olLvOhTgVv", role:"碎浪騎士團副團長", c:"wine", w:4, m:2, s:2,
+       d:"左頰橫貫著一道舊傷疤，使其半邊嘴角呈現不自然地下垂。慣於用冰冷的數據說話。\n出自農戶背景，憑藉軍功升至副團長，十九年前的潰敗讓他不再相信虛妄的榮譽，僅專注於確保麾下兄弟能按時拿到軍餉。"},
+      {n:"伊文", en:"SIR EVAN", img:"0CG4wtXkVk", role:"22歲｜護衛騎士", c:"wine", w:3, m:2, s:3,
+       d:"與路西安同期受訓，十三年來每一場對練與評選皆屈居半步之後。\n人前總會先讚揚路西安一番，再補上一句惋惜的評語。"},
+      {n:"吉賽爾", en:"LADY GISELLE", img:"ks3kMLJLR7", role:"19歲｜大公親信之女", c:"wine", w:0, m:2, s:3,
+       d:"禮服華麗到過頭，香粉味在她進門前三步就到。\n將示好塑造成他人不便拒絕的形狀，近三個月開始記錄日期與時辰。"}
+    ]},
+  { key:"town", name:"城下市鎮", place:"城下市鎮",
+    intro:"以舊城牆與貴族區相隔。聚集了麵包坊、酒館、鐵匠鋪、傭兵營區與黑市巷弄，東側空地每旬舉辦人市交易。",
+    chars:[
+      {n:"瑪莎", en:"MARTHA", img:"4dNS6l2dUh", role:"麵包坊主", c:"earth", w:1, m:1, s:3,
+       d:"性格豪爽大氣，嘴上抱怨賦稅沉重，暗地裡卻會為你留存優質麵包。"},
+      {n:"哈克", en:"HUCK", img:"JmvUFg5rm5", role:"巡邏老兵", c:"earth", w:2, m:1, s:1,
+       d:"服役三十年的老兵，因不識字而未能晉升。\n妻子臥床需昂貴藥物，偶爾會偷塞食物給奴隸。"},
+      {n:"米奇", en:"MICKEY", img:"GeuvgdvIRa", role:"19歲｜情報線人", c:"earth", w:1, m:2, s:3,
+       d:"後廚幫工兼情報線人。身材瘦小，精通堡內所有暗道，給予情報前必先論價。"},
+      {n:"妮娜", en:"NINA", img:"HrycXPZQcD", role:"洗衣房女僕", c:"earth", w:1, m:0, s:1,
+       d:"雙手因鹼水而脫皮。將心思寄託於食物，半個月前曾於深夜目擊不尋常的事件。"},
+      {n:"巴洛克", en:"BAROQUE", img:"E4tlzC3cpt", role:"赤鴉傭兵團團長", c:"slate", w:4, m:2, s:2,
+       d:"暗紅長髮，左眼失明呈白翳。\n講求實際利益，隨時準備轉投出價更高的一方，且會事先告知以示趣味。"},
+      {n:"希莉亞", en:"CELIA", img:"jUf8yZktVL", role:"黑市情報販子", c:"slate", w:2, m:4, s:3,
+       d:"身上帶有異族刺青，說話節奏掌控精妙，手握一份沉寂兩年的關鍵證據。"},
+      {n:"艾妲", en:"ADA", img:"ZBgpJM2K50", role:"紅簾樓老鴇", c:"earth", w:0, m:3, s:4,
+       d:"手腕戴滿銀鐲，籌謀十九年只為在南方購買店鋪落腳。"}
+    ]},
+  { key:"guild", name:"天秤金工會", place:"天秤金工會",
+    intro:"掌握帝國四成借貸與最高階外科技術。恪守絕對中立，同時向所有陣營提供資金與醫療。",
+    chars:[
+      {n:"瓦倫丁", en:"MASTER VALENTIN", img:"l85q8566Fh", role:"大長老", c:"wine", w:0, m:4.5, s:3,
+       d:"天秤金工會與醫官院大長老。配戴多層鏡片，態度保持絕對中立，對所有人一視同仁地提供貸款與醫療，不參與任何陣營立場。"}
+    ]},
+  { key:"crown", name:"帝冠城", place:"帝冠城",
+    intro:"帝國首都。由三重高聳城牆嚴密分隔內外城。地方領主入城前必須報備並繳納武器。此處沒有直接的刃伐，只有政治交鋒，一句失言的代價往往重於刃傷。距斷脊領七日路程。",
+    chars:[
+      {n:"亞歷山大", en:"CROWN PRINCE ALEXANDER", img:"5bBxpdZ7ak", role:"皇太子", c:"gold", w:3, m:4, s:2,
+       d:"目光冷峻，手戴素銀戒指，將所有事物與人命皆轉化為政治利益計算。"},
+      {n:"伊莉莎白", en:"PRINCESS ELIZABETH", img:"psEkBRZ3Qs", role:"皇女", c:"gold", w:0, m:4, s:4.5,
+       d:"舉止華貴，擅長將威脅隱藏於讚美之中，對自身的政治處境有著清醒的認識。"},
+      {n:"維克托親王", en:"PRINCE VIKTOR", img:"YmoIieBim0", role:"宗室長者", c:"gold", w:0, m:4, s:3,
+       d:"言辭恪守禮法卻暗藏鋒芒。"}
+    ]},
+  { key:"frost", name:"霜壘", place:"霜壘",
+    intro:"北方六郡的權力核心。氣候酷寒、糧產匱乏且缺乏出海口，距斷脊領約五日路程。",
+    chars:[
+      {n:"卡爾文侯爵", en:"MARQUIS CALVIN", img:"VNf69ILCzr", role:"霜壘領主", c:"wine", w:4.5, m:2, s:0,
+       d:"身材魁梧，性格剛烈，提出以聯姻作為資源交換條件。"},
+      {n:"卡珊德拉", en:"CASSANDRA", img:"HkCbnaSZFl", role:"19歲｜侯爵長女", c:"wine", w:1, m:2, s:2,
+       d:"看似順從，實則暗中拖延聯姻安排。"}
+    ]},
+  { key:"ochre", name:"赭金港", place:"赭金港",
+    intro:"南方商業聯盟的重鎮，全帝國最富庶之地。掌握八成以上的糧食與海洋貿易，商會行會的實權甚至凌駕於地方領主之上。距斷脊領十日路程。",
+    chars:[
+      {n:"海倫娜女公爵", en:"DUCHESS HELENA", img:"rTFwMFTgkV", role:"南方商業聯盟領袖", c:"wine", w:0, m:4, s:4,
+       d:"手握摺扇，言辭委婉卻手段狠辣，尋求揭發過往真相。"},
+      {n:"席昂", en:"SION VAR", img:"qBVa40GxbD", role:"25歲｜船隊代表", c:"wine", w:1, m:3, s:4,
+       d:"海倫娜次子，船隊代表，外表隨和，內心極具野心。"}
+    ]},
+  { key:"faith", name:"聖宗", place:"聖宗",
+    intro:"神權凌駕皇權。掌握聖堂騎士團與宗教審判權，試圖以信仰之名擴展勢力與獲取資源。",
+    chars:[
+      {n:"莫爾大司祭", en:"HIGH PRIEST MOHL", img:"FLmYW2mVrg", role:"國教神聖議會領袖", c:"wine", w:0, m:4.5, s:4,
+       d:"十指戴滿戒指，將要求包裝為祝福，而祝福之後永遠附帶條件。"},
+      {n:"格里恩", en:"GRIEN", img:"0u2OOzy4PS", role:"28歲｜審判官", c:"wine", w:3, m:3, s:1,
+       d:"莫爾門徒。白袍之下露出鎖甲邊緣，任何對話皆能在三句內接引至經文，而該段經文永遠支持他既定的判決。"}
+    ]},
+  { key:"realms", name:"周邊領地", place:"周邊領地",
+    intro:"麥垣土地肥沃但缺乏港口，對朝廷立場動搖；科倫則是夾在霜壘與斷脊之間的狹小侯國，冬季糧秣極度依賴海峽航線。",
+    chars:[
+      {n:"塞西爾", en:"CECIL DANBRY", img:"hZtLkcRUhf", role:"24歲｜丹布里伯爵", c:"wine", w:1, m:3, s:2,
+       d:"三代前買爵的新興貴族。衣飾永遠是當季最新款且過於整潔，袖釦比在場任何人都高一級，那正是舊貴族恥笑他的地方。\n指甲修剪得極短近乎剪傷，那是他緊張時啃咬的痕跡。開口前必先確認措辭是否合乎規矩，因此每句話都慢上半拍。\n畢生所求是獲得舊貴族的承認，願意為此支付任何代價。"},
+      {n:"伊莎貝拉", en:"ISABELLA CORRAN", img:"eW2ftSuJPx", role:"23歲｜科倫女侯爵", c:"wine", w:2, m:4, s:3,
+       d:"二十歲繼爵。深色騎裝拒穿禮服，袖口有洗不掉的墨漬。\n先問數字再談交情。全帝國最搶手的聯姻標的，提親信一封都沒回。"},
+      {n:"雷納德", en:"REYNALD VIC", img:"WF0fLDxzl0", role:"26歲｜維克子爵", c:"wine", w:2, m:2, s:4.5,
+       d:"賭徒。把所有事情講成笑話，包括自己的破產。\n消息比誰都靈通，因為全帝國的牌桌他都上過。"}
+    ]}
+];
+
+const PLACES = [
+  {n:"斷脊海峽", tag:"FRETVM", d:"貫通內陸與南方大洋的唯一水路咽喉。兩岸皆為陡峭懸崖，風浪不斷，南岸鎖鏈塔與北岸絞盤以鐵索鎖江。冬季封凍二十至三十日，關稅斷檔。"},
+  {n:"斷脊領", tag:"DOMINIVM", d:"海峽兩岸各約三十里的崖地與腹地，東西狹長南北淺。崖地薄土，產糧只夠養四分之一人口，糧是買來的。人口約一萬四，歲入關稅七成、礦三成。"},
+  {n:"科倫", tag:"CORRAN", d:"夾在霜壘與斷脊之間的小侯國，產鐵，冬季糧食仰賴海峽航道。北方重騎兵若南下，這裡是第一個被輾過的地方。"},
+  {n:"霜壘", tag:"FROSTWALL", d:"北方六郡的權力核心。氣候酷寒、糧產匱乏且缺乏出海口。"},
+  {n:"霜牙隘口", tag:"FROSTFANG", d:"霜壘以北唯一可供大軍通行的要道，一年中有八個月被大雪封鎖。駐軍編制一千二百人，如今僅存四百餘人。"},
+  {n:"凍骨原", tag:"BONEFROST", d:"隘口之外的蠻荒無主之地。荒原部落每逢冬季便南下掠奪，純粹出於飢荒生存而非野心。"},
+  {n:"帝冠城", tag:"CROWN CITY", d:"帝國首都，坐落灰海東岸。三重城牆分隔內外城，地方領主入城須報備並繳械。"},
+  {n:"赭金港", tag:"OCHREGOLD", d:"出峽南下，沿外洋海岸而至。帝國最富庶之地，霜鐵貨款的船期在這裡。"},
+  {n:"麥垣", tag:"WHEATWALL", d:"東南內陸，土地肥沃但無出海口，仰賴帝國的貿易配額，對朝廷的立場最為搖擺。"}
+];
+
+const ROUTES = [
+  ["城下市鎮","半日",0.5],["科倫","三日",3],["霜壘","五日 · 經科倫",5],
+  ["帝冠城","海路四日 · 陸路七日",7],["麥垣","八日",8],
+  ["赭金港","海路五日 · 陸路十日",10],["霜牙隘口","十四日 · 雪季不通",14]
+];
+
+const DELAY = [
+  ["主堡","當日",0],["城下","1日",1],["科倫","3日",3],["霜壘","5日",5],
+  ["帝冠城","7日",7],["赭金港","10日",10],["霜牙隘口","1個月",30]
+];
+
+/* ---- 地點與路程 ---- */
+const placesEl = document.getElementById("places");
+PLACES.forEach(p=>{
+  const el=document.createElement("div");el.className="place reveal";
+  el.innerHTML=`<h5>${p.n}<span>${p.tag}</span></h5><p>${p.d}</p>`;
+  placesEl.appendChild(el);
+});
+const routesEl=document.getElementById("routes");
+ROUTES.forEach(r=>{
+  const el=document.createElement("div");el.className="route";
+  el.innerHTML=`<b>${r[0]}</b><div class="bar" style="width:${Math.max(6,r[2]/14*100)}%"><i></i></div><span class="d">${r[1]}</span>`;
+  routesEl.appendChild(el);
+});
+const track=document.getElementById("track");
+DELAY.forEach((s,i)=>{
+  const pos = 4 + i*(92/(DELAY.length-1));
+  const el=document.createElement("div");el.className="stop";el.style.left=pos+"%";
+  el.innerHTML=`<div class="dot ${s[2]>=10?'far':''}"></div><b>${s[0]}</b><span>${s[1]}</span>`;
+  track.appendChild(el);
+});
+
+/* ---- 帳冊倒數 ---- */
+let food=14, pay=3;
+const tF=document.getElementById("tallyFood"), tP=document.getElementById("tallyPay"), st=document.getElementById("ledgerStatus");
+function drawTally(){
+  tF.innerHTML="";tP.innerHTML="";
+  for(let i=1;i<=14;i++){const b=document.createElement("i");b.textContent=i;if(i>food)b.className="gone";tF.appendChild(b)}
+  for(let i=1;i<=3;i++){const b=document.createElement("i");b.textContent=i;if(i>pay)b.className="gone";tP.appendChild(b)}
+  let msg;
+  if(food===14) msg="糧餉庫存僅夠支撐十四日。副團長下了最後通牒，限期三日。";
+  else if(pay>0) msg=`第 ${14-food} 日。庫房還剩 ${food} 日，騎士團的期限還剩 ${pay} 日。`;
+  else if(food>0) msg=`第 ${14-food} 日。碎浪騎士團的期限已過，營房的火堆邊，誰在說話？庫房還剩 ${food} 日。`;
+  else msg="庫房見底。拖延本身，也是一種選擇。";
+  st.textContent=msg;
+}
+document.getElementById("nextDay").onclick=()=>{ if(food>0){food--; if(pay>0)pay--;} drawTally(); };
+document.getElementById("resetDay").onclick=()=>{ food=14;pay=3;drawTally(); };
+drawTally();
+
+/* ---- 人物 ---- */
+const PIP = v => { let h=""; for(let i=1;i<=9;i++) h+=`<i class="${i<=v*2?'f':''}"></i>`; return h; };
+const statsHTML = ch => [["武",ch.w],["謀",ch.m],["社",ch.s]].map(([k,v])=>`<div class="stat"><span>${k}</span><div class="pips">${PIP(v)}</div><span class="v">${v}</span></div>`).join("");
+
+const STRATUM = {gold:"皇族",wine:"貴族與騎士",earth:"平民",slate:"烙印者與異族"};
+const facEl=document.getElementById("factions"), cardsEl=document.getElementById("cards"),
+      introEl=document.getElementById("factionIntro"), diaEl=document.getElementById("diagram");
+let curFac=0, curIdx=0;
+
+const DIAGRAM = `<svg viewBox="0 0 520 250" aria-label="隨侍關係">
+  <g font-family="Noto Serif TC" text-anchor="middle">
+    <path d="M260 56 L110 170" stroke="#56626b" stroke-width="2.2" stroke-dasharray="6 6" fill="none"/>
+    <path d="M260 56 L410 170" stroke="#7a2620" stroke-width="2.6" fill="none"/>
+    <path d="M150 196 l20 -10 l20 10 l20 -10 l20 10 l20 -10 l20 10 l20 -10 l20 10 l20 -10 l20 10 l20 -10 l20 10" stroke="#7a2620" stroke-width="1.6" fill="none" opacity=".75"/>
+    <rect x="200" y="18" width="120" height="40" fill="#2b2117"/>
+    <text x="260" y="44" fill="#f6efdd" font-size="16" font-weight="900" letter-spacing="3">代理領主</text>
+    <rect x="50" y="168" width="120" height="40" fill="#f6efdd" stroke="#56626b" stroke-width="2"/>
+    <text x="110" y="194" fill="#2b2117" font-size="17" font-weight="900" letter-spacing="4">維斯</text>
+    <rect x="350" y="168" width="120" height="40" fill="#f6efdd" stroke="#7a2620" stroke-width="2"/>
+    <text x="410" y="194" fill="#2b2117" font-size="17" font-weight="900" letter-spacing="4">路西安</text>
+    <text x="172" y="98" fill="#56626b" font-size="13" transform="rotate(-37 172 98)">暗處 · 隱忍 · 敏銳 · 依存</text>
+    <text x="348" y="98" fill="#7a2620" font-size="13" transform="rotate(37 348 98)">明處 · 忠誠 · 克制 · 青梅竹馬</text>
+    <text x="260" y="232" fill="#7a2620" font-size="13" letter-spacing="4">互相厭惡</text>
+  </g></svg>`;
+
+FACTIONS.forEach((f,i)=>{
+  const b=document.createElement("button");b.textContent=f.name;b.onclick=()=>showFaction(i);facEl.appendChild(b);
+});
+function showFaction(i){
+  curFac=i;const f=FACTIONS[i];
+  [...facEl.children].forEach((b,j)=>b.classList.toggle("on",i===j));
+  introEl.innerHTML = f.place ? `<b>${f.place}</b>｜${f.intro}` : f.intro;
+  diaEl.innerHTML = f.diagram ? DIAGRAM : "";
+  diaEl.style.display = f.diagram ? "" : "none";
+  cardsEl.innerHTML="";
+  f.chars.forEach((ch,j)=>{
+    const c=document.createElement("article");c.className="card "+ch.c;c.style.animationDelay=(j*60)+"ms";
+    c.innerHTML=`<div class="ph"><img loading="lazy" src="${IMG(ch.img)}" alt="${ch.n}"></div>
+      <div class="tag">${STRATUM[ch.c]}</div>
+      <div class="bd"><div class="nm">${ch.n}</div><div class="rl">${ch.role}</div><div class="stats">${statsHTML(ch)}</div></div>`;
+    c.onclick=()=>openFolio(j);
+    cardsEl.appendChild(c);
+  });
+}
+showFaction(0);
+
+const bg=document.getElementById("folioBg"), fo=document.getElementById("folio");
+function openFolio(j){
+  curIdx=j;const f=FACTIONS[curFac], ch=f.chars[j];
+  fo.className="folio "+ch.c;
+  document.getElementById("fImg").src=IMG(ch.img);
+  document.getElementById("fImg").alt=ch.n;
+  document.getElementById("fKick").textContent=ch.en+" · "+f.name;
+  document.getElementById("fName").textContent=ch.n;
+  document.getElementById("fRole").textContent=ch.role;
+  document.getElementById("fStats").innerHTML=statsHTML(ch);
+  document.getElementById("fDesc").innerHTML=ch.d.split("\n").map(p=>`<p>${p}</p>`).join("");
+  const many=f.chars.length>1;
+  document.getElementById("fPrev").style.visibility=many?"visible":"hidden";
+  document.getElementById("fNext").style.visibility=many?"visible":"hidden";
+  bg.classList.add("open");document.body.style.overflow="hidden";
+  fo.querySelector(".ftx").scrollTop=0;
+}
+function closeFolio(){bg.classList.remove("open");document.body.style.overflow=""}
+function step(d){const n=FACTIONS[curFac].chars.length;openFolio((curIdx+d+n)%n)}
+document.getElementById("folioX").onclick=closeFolio;
+document.getElementById("fPrev").onclick=()=>step(-1);
+document.getElementById("fNext").onclick=()=>step(1);
+bg.addEventListener("click",e=>{if(e.target===bg)closeFolio()});
+
+const lb=document.getElementById("lightbox");
+document.getElementById("mapFrame").onclick=()=>{lb.classList.add("open");document.body.style.overflow="hidden"};
+lb.onclick=()=>{lb.classList.remove("open");document.body.style.overflow=""};
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeFolio();lb.classList.remove("open");document.body.style.overflow=""}
+  if(bg.classList.contains("open")){ if(e.key==="ArrowRight")step(1); if(e.key==="ArrowLeft")step(-1); }
+});
+
+/* ---- 捲動淡入與目錄高亮 ---- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+const links=[...document.querySelectorAll(".toc a")];
+const secIO=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id))}
+}),{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("section.ch[id]").forEach(s=>secIO.observe(s));
+</script>
+</body>
+</html>

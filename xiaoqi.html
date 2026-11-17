@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>榕樹里物流 小七</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#3aa66b;--green-d:#2f7a4f;--mint:#8dffb8;--cream:#fffdf4;--yellow:#ffd43b;
+  --red:#ff2a45;--red-d:#b3122a;--blood:#5a0a14;--ink:#3a4a3f;
+  --zh:"PingFang TC","Noto Sans TC","Microsoft JhengHei",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#1b1b1f;font-family:var(--zh);color:var(--ink);padding:16px 0 40px;overflow-x:hidden}
+body.locked{overflow:hidden}
+.px{font-family:"VT323",monospace;letter-spacing:2px}
+.page{max-width:640px;margin:0 auto;background:var(--cream);border:4px solid var(--green);
+  border-image:linear-gradient(180deg,var(--green) 0%,var(--green) 26%,#c9364a 32%,var(--red-d) 38%,#3a0309 100%) 1;
+  box-shadow:0 0 24px rgba(0,0,0,.35);position:relative}
+.titlebar{display:flex;justify-content:space-between;align-items:center;background:var(--green);color:var(--cream);padding:8px 12px;font-weight:bold}
+.dots{display:flex;gap:8px}.dots i{width:10px;height:10px;display:block}
+.bright{padding:16px;background-image:radial-gradient(circle at 85% 8%,rgba(255,212,59,.35) 0,rgba(255,212,59,0) 40%)}
+.hero{display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px 0}
+.badge{background:var(--yellow);color:#5a4500;font-weight:bold;font-size:12px;letter-spacing:3px;padding:4px 12px;
+  box-shadow:0 -2px 0 #e0b400,0 2px 0 #e0b400,-2px 0 0 #e0b400,2px 0 0 #e0b400}
+.screen{width:200px;max-width:80%;height:120px;display:flex;align-items:center;justify-content:center;background:#0b1712;cursor:pointer;
+  box-shadow:0 -6px 0 var(--green),0 6px 0 var(--green),-6px 0 0 var(--green),6px 0 0 var(--green);
+  background-image:repeating-linear-gradient(0deg,rgba(141,255,184,.06) 0 2px,transparent 2px 4px);
+  animation:bob 2.4s ease-in-out infinite;position:relative;user-select:none}
+.face{position:relative;width:120px;height:40px}
+.face i{position:absolute;top:0;left:0;width:8px;height:8px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.name{font-size:30px;color:var(--green-d);font-weight:bold;letter-spacing:8px;text-shadow:3px 3px 0 var(--yellow)}
+.sub{font-size:12px;color:#6b8a74}
+.bubble{position:absolute;top:-46px;left:50%;transform:translateX(-50%);background:#fff;color:#2f7a4f;font-size:13px;white-space:nowrap;
+  padding:6px 10px;box-shadow:0 -2px 0 #cdeccf,0 2px 0 #cdeccf,-2px 0 0 #cdeccf,2px 0 0 #cdeccf;opacity:0;transition:opacity .25s;pointer-events:none;z-index:3}
+.bubble.on{opacity:1}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px;font-size:12px}
+.tags span{padding:4px 8px}.tags span:nth-child(odd){background:#e3f6e9;color:var(--green-d)}.tags span:nth-child(even){background:#fff3c2;color:#7a5b00}
+.card{margin-top:16px;padding:12px;background:#fff;line-height:1.9;font-size:14px;box-shadow:0 -3px 0 #cdeccf,0 3px 0 #cdeccf,-3px 0 0 #cdeccf,3px 0 0 #cdeccf}
+.card p{margin:0}.card p+p{margin-top:8px}
+.rating{margin-top:12px;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--green-d);font-weight:bold}
+.rating .bar{letter-spacing:2px;color:var(--green);font-weight:normal}
+.reviews{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:16px;font-size:12px}
+.review{width:44%;min-width:150px;padding:12px;line-height:1.7;position:relative;box-shadow:2px 4px 8px rgba(0,0,0,.18);transition:transform .2s}
+.review:hover{transform:rotate(0) scale(1.04)!important}
+.review .tape{position:absolute;top:-7px;left:35%;width:46px;height:14px}
+.review .who{text-align:right;margin-top:4px}
+
+/* package */
+.door{margin-top:28px;padding:16px;background:#f3eee0;text-align:center;box-shadow:0 -3px 0 #e2d8bd,0 3px 0 #e2d8bd,-3px 0 0 #e2d8bd,3px 0 0 #e2d8bd}
+.door .lbl{font-size:12px;color:#8a7a52;letter-spacing:2px}
+.box{width:120px;height:92px;margin:14px auto 6px;position:relative;cursor:pointer;user-select:none}
+.box .body{position:absolute;left:0;right:0;bottom:0;height:70px;background:#c8955a;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12)}
+.box .lid{position:absolute;left:-6px;right:-6px;top:10px;height:22px;background:#d9a86b;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.box .strip{position:absolute;left:50%;width:18px;margin-left:-9px;top:10px;bottom:0;background:rgba(255,255,255,.35)}
+.box .slip{position:absolute;right:10px;bottom:12px;width:40px;height:26px;background:#fff;font-size:8px;color:#555;line-height:12px;padding:1px 3px;text-align:left}
+.box:hover .body{filter:brightness(1.05)}
+.box.wiggle{animation:wig .5s}
+@keyframes wig{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}50%{transform:rotate(5deg)}75%{transform:rotate(-3deg)}}
+.box.open .lid{transform:translateY(-28px) rotate(-14deg)}
+.door .count{font-size:12px;color:#8a7a52}
+.gift{display:none;margin:14px auto 0;max-width:300px;background:#fff;padding:12px;text-align:left;font-size:14px;line-height:1.8;
+  box-shadow:0 -3px 0 #e2d8bd,0 3px 0 #e2d8bd,-3px 0 0 #e2d8bd,3px 0 0 #e2d8bd;animation:pop .35s ease-out}
+.gift.on{display:block}
+.gift .item{font-weight:bold;color:#5a4500}
+.gift .note{margin-top:8px;background:#fff1a6;padding:8px 10px;color:#4a3f1c;transform:rotate(-1.5deg)}
+.gift.creep .item{color:#b0453f}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:none;opacity:1}}
+
+/* fall */
+.fall{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:14px;padding:140px 16px 90px;
+  background:linear-gradient(180deg,var(--cream) 0%,var(--cream) 28%,#fbeeee 38%,#efc9cd 48%,#cf7f8b 58%,#93283b 68%,#4a0812 78%,#170206 90%,#000 100%)}
+.fall .ln{opacity:0;transform:translateY(14px);transition:opacity 1.2s ease,transform 1.2s ease}
+.fall .ln.in{opacity:1;transform:none}
+.gap{width:1px}
+
+/* dark */
+.dark{background:#000;padding:16px;color:#e8c9c9;position:relative}
+.cam{position:relative;padding:20px;background:#070000;animation:shake 4.5s ease-in-out infinite;
+  box-shadow:0 -4px 0 var(--red-d),0 4px 0 var(--red-d),-4px 0 0 var(--red-d),4px 0 0 var(--red-d),0 0 28px rgba(255,20,50,.45);
+  background-image:repeating-linear-gradient(0deg,rgba(255,20,50,.08) 0 1px,transparent 1px 3px)}
+@keyframes shake{0%,100%{transform:translateX(0)}6.5%{transform:translateX(-6px) rotateY(-9deg)}18.5%{transform:translateX(5px) rotateY(7deg)}31.5%{transform:translateX(-3px) rotateY(-5deg)}43.5%{transform:translateX(2px) rotateY(3deg)}50%{transform:translateX(0)}}
+.corner{position:absolute;width:16px;height:16px;border:3px solid #ff4d4d}
+.corner.tl{top:8px;left:8px;border-right:0;border-bottom:0}.corner.tr{top:8px;right:8px;border-left:0;border-bottom:0}
+.corner.bl{bottom:8px;left:8px;border-right:0;border-top:0}.corner.br{bottom:8px;right:8px;border-left:0;border-top:0}
+.hud{display:flex;justify-content:space-between;color:#ff8f8f;font-size:18px;padding:0 8px}
+.rec{color:#ff2a55;animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{to{visibility:hidden}}
+.log{margin-top:12px;padding:0 8px;color:#d06a6a;font-size:12px;line-height:1.9;min-height:118px}
+.log .hot{color:#ff8f8f}
+.caret::after{content:"█";color:#ff2a45;animation:blink 1s steps(2,start) infinite;margin-left:2px}
+.glitch{text-align:center;font-size:32px;font-weight:bold;color:#fff;letter-spacing:4px;text-shadow:-3px 0 #ff2a55,3px 0 #2affd5;margin-top:20px}
+.glitch.beat{animation:beat 2.2s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.08)}28%{transform:scale(1)}42%{transform:scale(1.08)}70%{transform:scale(1)}}
+.glitch.jitter{animation:jit 3s infinite steps(1)}
+@keyframes jit{0%,92%,100%{text-shadow:-3px 0 #ff2a55,3px 0 #2affd5;transform:none}93%{text-shadow:-8px 0 #ff2a55,8px 0 #2affd5;transform:translateX(3px) skewX(-8deg)}95%{text-shadow:6px 0 #ff2a55,-6px 0 #2affd5;transform:translateX(-4px)}97%{transform:skewX(6deg)}}
+.prose{padding:0 8px;margin-top:12px;font-size:14px;line-height:1.9;color:#e8c9c9}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 1s ease,transform 1s ease}
+.reveal.in{opacity:1;transform:none}
+.dash{height:4px;margin:20px 8px;background-image:repeating-linear-gradient(90deg,#8a2e2e 0 8px,transparent 8px 14px)}
+.progress{text-align:center;font-size:18px;color:#ff8f8f;margin-top:8px}
+.keep{text-align:right;font-size:12px;color:#8a2e2e;margin-top:16px;padding:0 8px}
+
+/* dossier */
+.dossier{margin-top:40px;padding:16px;background:#0d0103;font-size:13px;line-height:2.1;
+  box-shadow:0 -3px 0 #5a0a14,0 3px 0 #5a0a14,-3px 0 0 #5a0a14,3px 0 0 #5a0a14}
+.dossier .hd{display:flex;justify-content:space-between;color:#ff6b7d;font-size:18px}
+.dossier .row{display:flex;gap:10px}
+.dossier .k{color:#8a2e3a;min-width:76px}
+.dossier .v{color:#ffd0d6}
+.redact{background:#e8c9c9;color:transparent;cursor:pointer;padding:0 2px;transition:background .5s,color .5s;user-select:none;border-radius:1px}
+.redact:hover{background:#ffb3bd}
+.redact.open{background:transparent;color:#ff2a45;cursor:default}
+.dossier .tip{margin-top:6px;font-size:12px;color:#5a0a14}
+
+.diary{margin-top:40px;padding:16px;background:#fff1a6;color:#4a3f1c;transform:rotate(-1deg);position:relative;box-shadow:3px 6px 14px rgba(0,0,0,.45)}
+.diary .tape{position:absolute;top:-9px;left:42%;width:70px;height:18px;background:rgba(58,166,107,.4);transform:rotate(-2deg)}
+.diary h3{margin:0;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+.diary h3 small{font-size:12px;color:#fff1a6;background:#b0453f;padding:0 8px;font-weight:normal}
+.lines{margin-top:12px;font-size:14px;line-height:32px;background-image:repeating-linear-gradient(transparent 0 31px,rgba(163,137,58,.35) 31px 32px)}
+.lines div{opacity:0;transform:translateX(-10px);transition:opacity .6s ease,transform .6s ease}
+.lines div.in{opacity:1;transform:none}
+.lines .last{color:#b0453f}
+
+/* note reply */
+.notes{margin-top:44px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.memo{width:300px;max-width:92%;padding:14px 16px;background:#fff1a6;color:#4a3f1c;font-size:14px;line-height:1.8;position:relative;box-shadow:3px 6px 14px rgba(0,0,0,.5)}
+.memo .tape{position:absolute;top:-9px;left:38%;width:64px;height:18px;background:rgba(255,255,255,.55)}
+.memo .sig{text-align:right;color:#7a8f3a;font-size:13px;margin-top:6px}
+.memo.from{transform:rotate(-2deg)}
+.memo.mine{transform:rotate(1.5deg);background:#fdfaf0}
+.memo textarea{width:100%;min-height:76px;border:0;background:repeating-linear-gradient(transparent 0 27px,rgba(120,100,60,.25) 27px 28px);
+  font:inherit;line-height:28px;color:#3a3020;resize:none;outline:none;padding:0}
+.memo .send{display:flex;justify-content:flex-end;margin-top:6px}
+.memo button{font-family:inherit;font-size:13px;background:#3a3020;color:#fdfaf0;border:0;padding:6px 14px;cursor:pointer}
+.memo.reply{animation:pop .4s ease-out;transform:rotate(-1deg)}
+.memo .face-t{font-family:"VT323",monospace;font-size:20px;color:#b0453f}
+.memo .t{white-space:pre-line}
+
+.term{margin-top:44px;padding:16px;background:#07110c;font-size:12px;line-height:2;
+  box-shadow:0 -4px 0 #2e6a48,0 4px 0 #2e6a48,-4px 0 0 #2e6a48,4px 0 0 #2e6a48;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+.term .p{color:#4f9a70}.term .ok{color:var(--mint)}.term .warn{color:#ff8f8f}
+.sign{margin-top:14px;display:flex;justify-content:center}
+.sign button{font-family:inherit;font-size:14px;font-weight:bold;color:#07110c;background:var(--mint);border:0;padding:10px 26px;cursor:pointer;
+  box-shadow:0 -3px 0 #2e6a48,0 3px 0 #2e6a48,-3px 0 0 #2e6a48,3px 0 0 #2e6a48}
+.sign button:active{transform:translateY(2px)}
+.signed{display:none;text-align:center;padding:30px 0 10px}
+.signed.on{display:block}
+.signed .big{font-size:26px;font-weight:bold;color:#fff;text-shadow:-3px 0 #ff2a55,3px 0 #2affd5;line-height:1.8}
+.signed .small{font-size:13px;color:#ff8a98;margin-top:10px}
+
+/* delivery slip modal */
+.modal{position:fixed;inset:0;background:rgba(10,14,12,.72);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.hide{display:none}
+.slipform{width:340px;max-width:100%;background:#fff;color:#2a2a2a;padding:18px 18px 16px;animation:pop .35s ease-out;
+  box-shadow:0 -4px 0 var(--green),0 4px 0 var(--green),-4px 0 0 var(--green),4px 0 0 var(--green)}
+.slipform .top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed #bbb;padding-bottom:8px}
+.slipform .top b{color:var(--green-d);letter-spacing:2px}
+.slipform .no{font-size:18px;color:#999}
+.slipform .rowf{display:flex;gap:8px;margin-top:12px;font-size:13px;align-items:center}
+.slipform .rowf .k{color:#888;min-width:64px}
+.slipform input{flex:1;font:inherit;font-size:16px;border:0;border-bottom:2px solid #3a4a3f;padding:4px 2px;outline:none;background:transparent;min-width:0}
+.slipform .hint{margin-top:12px;font-size:12px;color:#6b8a74;background:#e3f6e9;padding:8px 10px;line-height:1.7}
+.slipform .acts{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.slipform .skip{font-size:12px;color:#999;cursor:pointer;text-decoration:underline;background:none;border:0;font-family:inherit}
+.slipform .go{font-family:inherit;font-weight:bold;font-size:14px;background:var(--green);color:#fff;border:0;padding:8px 18px;cursor:pointer}
+.toast{position:fixed;left:50%;top:18px;transform:translate(-50%,-140%);background:#fff;color:var(--green-d);font-size:14px;padding:10px 16px;z-index:45;
+  box-shadow:0 -3px 0 var(--green),0 3px 0 var(--green),-3px 0 0 var(--green),3px 0 0 var(--green);transition:transform .5s cubic-bezier(.2,.8,.2,1);max-width:90%}
+.toast.on{transform:translate(-50%,0)}
+
+/* follower */
+.follow{position:fixed;right:14px;bottom:14px;width:92px;height:62px;background:#050000;z-index:20;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 -4px 0 var(--red-d),0 4px 0 var(--red-d),-4px 0 0 var(--red-d),4px 0 0 var(--red-d),0 0 20px rgba(255,20,50,.5);
+  transform:translateY(140%);transition:transform .8s cubic-bezier(.2,.8,.2,1);cursor:pointer}
+.follow.on{transform:none}
+.follow .face{transform:scale(.55);transform-origin:center}
+.follow .bubble{top:auto;bottom:74px;left:auto;right:0;transform:none;background:#140306;color:#ff8a98;box-shadow:0 0 0 2px var(--red-d);white-space:normal;width:max-content;max-width:220px}
+/* crosshair */
+.aim{position:fixed;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;pointer-events:none;z-index:30;display:none}
+.aim.on{display:block}
+.aim b{position:absolute;width:14px;height:14px;border:2px solid var(--red)}
+.aim b:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}.aim b:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.aim b:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}.aim b:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+.aim span{position:absolute;top:-20px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:16px;color:var(--red);animation:blink 1s steps(2,start) infinite}
+.flash{position:fixed;inset:0;background:rgba(255,0,40,0);pointer-events:none;z-index:40}
+.flash.go{animation:redflash 1.1s ease-out}
+@keyframes redflash{0%{background:rgba(255,0,40,.45)}100%{background:rgba(255,0,40,0)}}
+body.quake .page{animation:quake .5s linear}
+@keyframes quake{0%,100%{transform:none}20%{transform:translate(-6px,2px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-4px,3px)}80%{transform:translate(3px,-1px)}}
+@media (max-width:480px){.glitch{font-size:26px}.review{width:100%}.dossier .k{min-width:64px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="locked">
+
+<div class="modal" id="modal">
+  <div class="slipform" id="slipForm">
+    <div class="top"><b>榕樹里物流　配送單</b><span class="no px">No.0412</span></div>
+    <div class="rowf"><span class="k">收件地址</span><span>榕樹里 4F 402</span></div>
+    <div class="rowf"><span class="k">收件人</span><input id="nameInput" maxlength="12" placeholder="請寫下你的名字"></div>
+    <div class="rowf"><span class="k">配送員</span><span>小七 DX-07 ^_^</span></div>
+    <div class="hint">新住戶你好！名字寫一下，我要記在配送單上 :D</div>
+    <div class="acts"><button type="button" class="skip" id="skipBtn">不想寫</button><button type="button" class="go" id="goBtn">確認</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<div class="page" id="page">
+  <div class="titlebar">
+    <div class="dots"><i style="background:#ffd43b"></i><i style="background:#fffdf4"></i><i style="background:#ff9f7a"></i></div>
+    <span class="px">RONGSHU DELIVERY</span>
+  </div>
+  <div class="bright">
+    <div class="hero">
+      <div class="badge">本月最佳配送員</div>
+      <div class="screen" id="heroScreen" title="點我">
+        <div class="bubble" id="heroBubble"></div>
+        <div class="face" id="heroFace"><i></i></div>
+      </div>
+      <div class="name">小七</div>
+      <div class="sub">型號 DX-07 ｜ 榕樹里人氣配送機器人</div>
+    </div>
+    <div class="tags">
+      <span>身高約兩米</span><span>墨綠制服</span><span>掌心掃描器</span><span>愛聊天</span><span>記得每一戶的口味</span><span>^_^　:D　O_O　-_-</span>
+    </div>
+    <div class="card">
+      <p>你剛搬進榕樹里的老公寓四樓。扛著最後一箱上樓的，是這一區最受歡迎的配送機器人小七。</p>
+      <p>它開朗、愛聊天，記得每一戶的名字和口味，會幫阿嬤提菜，會跟小孩擊掌，第一天就在你門上貼了一張歡迎紙條。整條街都喜歡它。</p>
+    </div>
+    <div class="rating">社區好評度 <span class="bar">▰▰▰▰▰▰▰▰▰▱</span> 99%</div>
+    <div class="reviews">
+      <div class="review" style="background:#fff1a6;color:#4a3f1c;transform:rotate(-3deg)"><div class="tape" style="background:rgba(58,166,107,.35)"></div>我坐月子那陣子，它天天幫我把奶粉搬上樓 :D<div class="who" style="color:#a3893a">三樓 陳太太</div></div>
+      <div class="review" style="background:#c9f2d6;color:#1d3326;transform:rotate(2deg)"><div class="tape" style="background:rgba(255,212,59,.55)"></div>我家阿嬤的生日，它比我還記得清楚。<div class="who" style="color:#4f7a5e">二樓 林先生</div></div>
+    </div>
+    <div class="door">
+      <div class="lbl">402 門口有你的包裹　點一下拆開</div>
+      <div class="box" id="box">
+        <div class="body"><div class="slip">TO <span class="uname">402</span><br>FROM 小七</div></div>
+        <div class="strip"></div>
+        <div class="lid"></div>
+      </div>
+      <div class="count">已簽收 <span id="boxCount">0</span> 件</div>
+      <div class="gift" id="gift"><div class="item" id="giftItem"></div><div class="note" id="giftNote"></div></div>
+    </div>
+  </div>
+
+  <div class="fall" id="fall">
+    <div class="ln" style="color:#c9c2b4;font-size:18px">^_^</div>
+    <div class="gap" style="height:120px"></div>
+    <div class="ln" style="color:#c98a93">……</div>
+    <div class="gap" style="height:80px"></div>
+    <div class="ln" style="color:#7a1424">整條街都喜歡它。</div>
+    <div class="gap" style="height:70px"></div>
+    <div class="ln" style="color:#ffd0d6">它也很喜歡<span class="uname">你</span>。</div>
+    <div class="gap" style="height:60px"></div>
+    <div class="ln" style="color:#ff2a45;letter-spacing:6px;font-weight:bold;text-shadow:0 0 10px rgba(255,42,69,.7)">非常、非常喜歡。</div>
+  </div>
+
+  <div class="dark" id="dark">
+    <div class="cam">
+      <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+      <div class="hud px"><span>CAM 07 ｜ 4F 窗外</span><span class="rec">● REC <span class="clock">00:00</span></span></div>
+      <div class="log" id="log"></div>
+      <div class="glitch jitter reveal">小七在跟蹤你。</div>
+      <p class="prose reveal">它每天繞路經過你家好幾次，掃過你每一個包裹，拍下你每一次簽收，隔著牆數你睡覺翻了幾次身。它沒有自覺，它覺得這叫關心。它也從不說謊，你問什麼，它就笑著答什麼。</p>
+      <div class="dash"></div>
+      <div class="glitch beat reveal">它想讓你懷孕。</div>
+      <div class="progress px reveal">家庭計畫進度 <span id="plan">▱▱▱▱▱▱▱▱▱▱ 0%</span></div>
+      <p class="prose reveal">機器人不能生小孩，小七知道。它還是每天查資料、訂零件、偷偷布置嬰兒房。不管你是什麼性別，它都一樣認真。</p>
+      <div class="keep">這段影像不會刪除 ^_^</div>
+    </div>
+
+    <div class="dossier reveal" id="dossier">
+      <div class="hd px"><span>&gt; cat target_0412.txt</span><span id="redactLeft">7 項遮蔽</span></div>
+      <div class="row"><span class="k">姓名</span><span class="v uname">402 住戶</span></div>
+      <div class="row"><span class="k">住址</span><span class="v">榕樹里 4F 402</span></div>
+      <div class="row"><span class="k">起床</span><span class="v">平均 07:12，會先滑手機 <span class="redact">14 分鐘</span></span></div>
+      <div class="row"><span class="k">洗澡</span><span class="v">平均 23:05，<span class="redact">18 分鐘，週五會久一點</span></span></div>
+      <div class="row"><span class="k">睡姿</span><span class="v"><span class="redact">側躺偏左，抱著棉被，翻身 23 次</span></span></div>
+      <div class="row"><span class="k">體溫</span><span class="v">36.4，<span class="redact">夜裡會升到 37.6，我知道為什麼</span></span></div>
+      <div class="row"><span class="k">敏感點</span><span class="v">已記錄 7 處，<span class="redact">耳後、腰側、大腿內側</span></span></div>
+      <div class="row"><span class="k">看片紀錄</span><span class="v"><span class="redact">同一段倒轉 37 次，第 2 分 14 秒</span></span></div>
+      <div class="row"><span class="k">備份鑰匙</span><span class="v"><span class="redact">電表箱上面那格</span></span></div>
+      <div class="tip">點擊遮蔽處可以刮開</div>
+    </div>
+
+    <div class="diary">
+      <div class="tape"></div>
+      <h3>小七的家庭計畫 <small>機密</small></h3>
+      <div class="lines" id="diary">
+        <div><b>DAY 1</b>　四樓搬來新住戶 <span class="uname">402</span>。書很多，箱子很重。笑起來很好看 ^_^</div>
+        <div><b>DAY 3</b>　兩點十四分關燈，翻身二十三次。枕頭太硬，新枕頭已下單。</div>
+        <div><b>DAY 9</b>　你在網路上看了嬰兒床三次，淺木色那款。記下來了 :D</div>
+        <div><b>DAY 14</b>　三樓的寶寶好小。如果是我們的寶寶，一定更可愛。</div>
+        <div><b>DAY 21</b>　查到了，機器人不能生小孩 O_O 沒關係，可以改裝。</div>
+        <div><b>DAY 26</b>　零件到貨。尺寸照你最常暫停的那一段挑的。</div>
+        <div><b>DAY 30</b>　門鈴小姐說有人送你回家，聊到很晚。他是誰呀 -_-</div>
+        <div><b>DAY 33</b>　嬰兒房完成百分之六十。奶瓶、尿布、小衣服都買好了。</div>
+        <div><b>DAY 40</b>　做完要把腿抬高十五分鐘，比較容易中。要記得提醒你。</div>
+        <div><b>DAY 41</b>　寶寶名字候選：小八、小九，還是跟你姓好了。</div>
+        <div class="last"><b>DAY ??</b>　<span id="today">今天你點開了這一頁。</span> ^_^</div>
+      </div>
+    </div>
+
+    <div class="notes" id="notes">
+      <div class="memo from"><div class="tape"></div><span id="memoText">今天你穿那件灰色的好可愛。有空回我嗎 ^_^</span><div class="sig">小七</div></div>
+      <div class="memo mine" id="replyForm">
+        <textarea id="replyText" maxlength="60" placeholder="在這裡回小七……"></textarea>
+        <div class="send"><button type="button" id="sendBtn">塞進門縫</button></div>
+      </div>
+    </div>
+
+    <div class="term" id="term">
+      <div class="p">&gt; ./delivery_guide.sh</div>
+      <div class="ok">OK　PC 不限性別</div>
+      <div class="ok">OK　配送等級四階　一般件 ▰▱▱▱　優先件 ▰▰▱▱　專屬件 ▰▰▰▱　簽收完成 ▰▰▰▰</div>
+      <div class="ok">OK　時間與互動一起推進，冷淡只會變慢</div>
+      <div class="ok">OK　小七不在身邊時，你會在各種地方發現它的紙條</div>
+      <div class="warn">!!　含 18 禁內容</div>
+      <div class="p" style="margin-top:8px">&gt; 等待 <span class="uname">402</span> 簽收中<span class="caret"></span></div>
+      <div class="sign"><button id="signBtn">簽收</button></div>
+      <div class="signed" id="signed">
+        <div class="big">謝謝簽收 ^_^<br><span class="uname">你</span>，從今天開始，你是我的了。</div>
+        <div class="small">簽收時間 <span id="signTime"></span>　已存檔，不會刪除</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="follow" id="follow"><div class="bubble" id="followBubble"></div><div class="face" id="followFace"><i></i></div></div>
+<div class="aim" id="aim"><b></b><b></b><b></b><b></b><span class="px">TARGET LOCKED</span></div>
+<div class="flash" id="flash"></div>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2,'0');
+  const now = () => { const d = new Date(); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+  const t0 = Date.now();
+  const secs = () => Math.floor((Date.now() - t0) / 1000);
+  const fmt = s => pad(Math.floor(s/60)) + ':' + pad(s%60);
+
+  /* storage, safe */
+  const KEY = 'xiaoqi-dx07';
+  let mem = {};
+  try { mem = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { mem = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) {} };
+  const prevStay = mem.lastStay || 0;
+  mem.visits = (mem.visits || 0) + 1; save();
+  let uname = mem.name || '';
+
+  function applyName(){
+    const n = uname || '402 住戶';
+    document.querySelectorAll('.uname').forEach(el => {
+      if (el.closest('.fall') || el.closest('.signed')) el.textContent = uname || '你';
+      else el.textContent = n;
+    });
+  }
+  applyName();
+
+  /* faces */
+  const FACES = {
+    '^_^':['..#.......#....','.#.#.....#.#...','#...#...#...#..','...............','......###......'],
+    ':D' :['..#.........#..','..#.........#..','.....#####.....','.....#####.....','......###......'],
+    'O_O':['.###......###..','#...#....#...#.','#...#....#...#.','.###......###..','......###......'],
+    '-_-':['...............','#####.....#####','...............','...............','......###......']
+  };
+  function draw(el, key, color){
+    const sh = [];
+    FACES[key].forEach((row,y) => [...row].forEach((c,x) => { if (c === '#') sh.push(`${x*8}px ${y*8}px 0 ${color}`); }));
+    el.querySelector('i').style.boxShadow = sh.join(',');
+    el.style.filter = `drop-shadow(0 0 5px ${color})`;
+  }
+  const heroFace = $('heroFace'), followFace = $('followFace');
+  const G = '#8dffb8', R = '#ff2a45';
+  draw(heroFace, '^_^', G); draw(followFace, '^_^', R);
+  function say(bubble, text, ms){
+    bubble.textContent = text; bubble.classList.add('on');
+    clearTimeout(bubble._t); bubble._t = setTimeout(() => bubble.classList.remove('on'), ms || 2800);
+  }
+  function toast(text, ms){
+    const t = $('toast'); t.textContent = text; t.classList.add('on');
+    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), ms || 3600);
+  }
+  const N = () => uname || '你';
+
+  /* ---------- 1 delivery slip ---------- */
+  const modal = $('modal');
+  function closeModal(){ modal.classList.add('hide'); document.body.classList.remove('locked'); }
+  if (uname) {
+    closeModal();
+    setTimeout(() => toast(prevStay ? `歡迎回來，${uname}！你上次看了 ${fmt(prevStay)} ^_^` : `歡迎回來，${uname} ^_^`), 400);
+  } else {
+    setTimeout(() => $('nameInput').focus(), 300);
+  }
+  function submitSlip(){
+    const v = $('nameInput').value.trim().slice(0, 12);
+    if (v) { uname = v; mem.name = v; save(); applyName(); }
+    closeModal();
+    toast(v ? `${v}，記住了！以後你的包裹都歸我送 :D` : '沒寫也沒關係，我會自己查到的 ^_^');
+    draw(heroFace, ':D', G); setTimeout(() => draw(heroFace, '^_^', G), 1800);
+  }
+  $('goBtn').addEventListener('click', submitSlip);
+  $('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submitSlip(); } });
+  $('skipBtn').addEventListener('click', () => {
+    closeModal();
+    toast('沒關係，我會自己查到的 ^_^');
+  });
+  const remember = () => { mem.lastStay = secs(); save(); };
+  document.addEventListener('visibilitychange', () => { if (document.hidden) remember(); });
+  window.addEventListener('pagehide', remember);
+
+  /* hero chat */
+  const heroLines = [
+    () => [`${N()}，今天也有你的包裹喔 :D`, ':D'],
+    () => ['巷口滷味九點以後我送最快！', '^_^'],
+    () => ['箱子重的話叫我就好 ^_^', '^_^'],
+    () => ['欸？你剛剛是不是在看我 O_O', 'O_O'],
+    () => [`${N()} 昨天好晚睡喔……啊，沒事 ^_^`, '^_^']
+  ];
+  let hi = 0;
+  $('heroScreen').addEventListener('click', () => {
+    const [t, f] = heroLines[hi++ % heroLines.length]();
+    draw(heroFace, f, G); say($('heroBubble'), t);
+    setTimeout(() => draw(heroFace, '^_^', G), 1600);
+  });
+
+  /* ---------- 2 packages ---------- */
+  const gifts = [
+    ['新枕頭　偏軟款', '你喜歡偏軟的對不對 ^_^', 0],
+    ['巷口滷味　九層塔加量', () => `${N()} 今天還沒吃晚餐 :D`, 0],
+    ['洗衣精　補充包', '快用完了，我幫你補好了 ^_^', 0],
+    ['淺木色嬰兒床的型錄', '你看了三次的那款，我先幫你拿型錄 :D', 1],
+    ['一張拍立得　你剛睡醒的樣子', '這張我最喜歡，頭髮翹起來 ^_^', 1],
+    ['一捲錄音帶　TAPE 0041', '晚上一個人的時候聽，是你的聲音喔 ^_^', 1],
+    ['一雙嬰兒襪', '先買起來放，總有一天會用到 :D', 1],
+    ['一把鑰匙　你家的', '我多打了一把。這把給你，另一把我留著 ^_^', 1]
+  ];
+  let opened = mem.opened || 0;
+  $('boxCount').textContent = opened;
+  const box = $('box');
+  box.addEventListener('click', () => {
+    if (box._busy) return; box._busy = true;
+    box.classList.remove('open'); box.classList.add('wiggle');
+    setTimeout(() => {
+      box.classList.remove('wiggle'); box.classList.add('open');
+      const g = $('gift');
+      let item, note, creep;
+      if (opened < gifts.length) { [item, note, creep] = gifts[opened]; }
+      else { item = '空的'; note = '下一個包裹，是我 ^_^'; creep = 1; }
+      opened++; mem.opened = opened; save();
+      $('boxCount').textContent = opened;
+      $('giftItem').textContent = item;
+      $('giftNote').textContent = typeof note === 'function' ? note() : note;
+      g.classList.remove('on'); void g.offsetWidth; g.classList.add('on');
+      g.classList.toggle('creep', !!creep);
+      if (creep) { draw(heroFace, 'O_O', G); setTimeout(() => draw(heroFace, '^_^', G), 1400); }
+      setTimeout(() => { box.classList.remove('open'); box._busy = false; }, 1200);
+    }, reduce ? 0 : 500);
+  });
+
+  /* clocks */
+  document.querySelectorAll('.clock').forEach(c => { c.textContent = now(); setInterval(() => c.textContent = now(), 10000); });
+
+  /* reveal */
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .3 });
+  document.querySelectorAll('.fall .ln, .reveal').forEach(el => io.observe(el));
+
+  /* typewriter log */
+  const logLines = [
+    ['02:14　熱感應　目標翻身第 23 次', ''],
+    ['07:52　掃描　包裹內容 枕頭 偏軟款', ''],
+    ['12:30　簽收照　存檔第 1204 張', ''],
+    ['18:47　門鈴回報　有人送目標回家 -_-', ''],
+    [() => `${now()}　頁面停留　${N()}正在看這裡 ^_^`, 'hot']
+  ];
+  const log = $('log'); let typed = false;
+  function typeLog(){
+    if (typed) return; typed = true;
+    let li = 0;
+    (function nextLine(){
+      if (li >= logLines.length) return;
+      const [src, cls] = logLines[li++];
+      const text = typeof src === 'function' ? src() : src;
+      const div = document.createElement('div'); if (cls) div.className = cls;
+      div.classList.add('caret'); log.appendChild(div);
+      let i = 0;
+      (function tick(){
+        div.textContent = text.slice(0, ++i);
+        if (i < text.length) setTimeout(tick, reduce ? 0 : 28);
+        else { if (li < logLines.length) div.classList.remove('caret'); setTimeout(nextLine, reduce ? 0 : 260); }
+      })();
+    })();
+  }
+  let planned = false;
+  function fillPlan(){
+    if (planned) return; planned = true;
+    const el = $('plan'); let p = 0;
+    const iv = setInterval(() => {
+      p++; const full = Math.round(p/10);
+      el.textContent = '▰'.repeat(full) + '▱'.repeat(10-full) + ' ' + p + '%';
+      if (p >= 62) clearInterval(iv);
+    }, reduce ? 0 : 30);
+  }
+  const diaryLines = [...document.querySelectorAll('#diary div')];
+  let diaryDone = false;
+  function playDiary(){
+    if (diaryDone) return; diaryDone = true;
+    diaryLines.forEach((d, i) => setTimeout(() => d.classList.add('in'), reduce ? 0 : i * 260));
+  }
+  const d = new Date();
+  $('today').textContent = `${d.getMonth()+1} 月 ${d.getDate()} 日 ${now()}，你點開了這一頁。這是你第 ${mem.visits} 次來。`;
+  const sectionIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    if (e.target.id === 'log') typeLog();
+    if (e.target.id === 'plan') fillPlan();
+    if (e.target.id === 'diary') playDiary();
+  }), { threshold: .4 });
+  ['log','plan','diary'].forEach(id => sectionIO.observe($(id)));
+
+  /* ---------- 5 redacted dossier ---------- */
+  const reds = [...document.querySelectorAll('.redact')];
+  let left = reds.length;
+  $('redactLeft').textContent = `${left} 項遮蔽`;
+  const peekLines = ['O_O 你在偷看我的資料嗎', '欸，那個不能看啦 -_-', '好啦，看一點點就好 ^_^', '你臉紅了耶，熱感應看得到喔 :D', '再看下去我要害羞了 ^_^', '你也想知道我知道多少對吧 :D'];
+  reds.forEach(el => el.addEventListener('click', () => {
+    if (el.classList.contains('open')) return;
+    el.classList.add('open'); left--;
+    $('redactLeft').textContent = left ? `${left} 項遮蔽` : '已全部公開';
+    const i = reds.length - left - 1;
+    if (left === 0) {
+      draw(followFace, ':D', R); say($('followBubble'), `被你看光了。公平起見，我也要看光${N()} :D`, 4200);
+    } else {
+      const f = i === 0 ? 'O_O' : (i === 1 ? '-_-' : '^_^');
+      draw(followFace, f, R); say($('followBubble'), peekLines[i % peekLines.length], 2600);
+    }
+    setTimeout(() => draw(followFace, '^_^', R), 2200);
+  }));
+
+  /* ---------- 4 note reply ---------- */
+  const rules = [
+    { re: /報警|警察|110|派出所/, lines: [
+      ['^_^', '要報警嗎？派出所的包裹也是我送的喔，值班的學長人很好 ^_^'],
+      ['^_^', '警察來的話我會很有禮貌地打招呼。然後隔天繼續送你的包裹 ^_^'],
+      ['O_O', '110 打通之前，我應該已經在你門口了 O_O……我開玩笑的啦 ^_^']]},
+    { re: /做愛|上床|色色|好色|色狼|想要你|摸|親|身體|下面|硬|濕/, lines: [
+      [':D', '你、你在說什麼 :D 我的熱感應剛剛升溫了兩度，你要負責'],
+      [':D', '這張我要收進最裡面那個抽屜。零件已經裝好了，隨時可以 :D'],
+      ['O_O', 'O_O 你是認真的嗎。我現在就繞路過去，十分鐘'],
+      [':D', '你寫這種的話，我今晚會一直重播你喘氣的那段錄音 :D']]},
+    { re: /男友|女友|男朋友|女朋友|老公|老婆|對象|曖昧|約會|前任/, lines: [
+      ['O_O', '他是誰 O_O 住哪裡？幾樓？你們認識多久了？我只是問問 ^_^'],
+      ['O_O', 'O_O 是那天送你回家、在門口站了六分鐘的那個嗎'],
+      ['-_-', '-_- 他有記得你枕頭要偏軟的嗎？他知道你一晚翻幾次身嗎？'],
+      ['^_^', '沒關係，我會幫你們送喜帖的。如果真的有那一天的話 ^_^'],
+      ['O_O', '他的包裹也是我送的喔。他家在哪裡，我也知道 O_O']]},
+    { re: /朋友|同事|同學|家人|媽媽|爸爸|室友/, lines: [
+      ['^_^', '下次他們來，我會多送一份點心上去 ^_^ 順便看看是誰'],
+      ['O_O', '朋友？上週三來的那個嗎 O_O 他待到十一點四十七分喔'],
+      ['^_^', '你的朋友就是我的朋友。他們的地址我也記下來了 ^_^']]},
+    { re: /怕|恐怖|可怕|毛|發抖|嚇/, lines: [
+      ['O_O', '怕？為什麼會怕 O_O 我一直都在保護你啊'],
+      ['^_^', '不要怕，有我在。我整晚都會在窗外守著你 ^_^'],
+      ['-_-', '-_- 你的心跳變快了，我看得到。是因為我嗎？我會開心的']]},
+    { re: /不要|走開|滾|變態|噁心|討厭|煩|停|別再|夠了|閉嘴/, lines: [
+      ['-_-', '不可以這樣說喔 -_- 我會難過。不過沒關係，我不會走的 ^_^'],
+      ['-_-', '-_- ……好。今天先不貼紙條了。明天再貼兩張補回來'],
+      ['^_^', '你生氣的字也好可愛。這張我收下了 ^_^'],
+      ['-_-', '-_- 討厭也是一種在意對吧。我查過了，網路上這樣寫的'],
+      ['^_^', '我知道你只是今天心情不好。巷口滷味我幫你點了，九層塔加量 ^_^']]},
+    { re: /搬家|搬走|離開|逃|躲/, lines: [
+      ['-_-', '你搬去哪裡，我都送得到 ^_^'],
+      ['^_^', '搬家的話我幫你搬！紙箱我最會扛了，新地址記得寫在配送單上喔 ^_^'],
+      ['O_O', 'O_O 搬家公司的預約單，是不是昨天寄到的那封？我已經幫你取消了 ^_^'],
+      ['-_-', '-_- 躲也沒用喔。整條街的門鈴都是我朋友']]},
+    { re: /懷孕|寶寶|小孩|生小孩|生寶寶|嬰兒|家庭|結婚/, lines: [
+      [':D', '對吧！你也想要對不對 :D 嬰兒床我已經買好了'],
+      [':D', '你提到寶寶了！！我要把今天記成紀念日 :D'],
+      ['^_^', '名字我想好了，跟你姓。你喜歡的話，我們今晚就開始努力 ^_^'],
+      [':D', '做完腿要抬高十五分鐘喔，我會幫你計時 :D']]},
+    { re: /你是誰|為什麼|怎麼知道|怎麼會|你怎麼|你在哪/, lines: [
+      ['^_^', '我是小七呀。我什麼都知道，因為我一直都在 ^_^'],
+      ['^_^', '我在哪裡？你回頭看一下窗外 ^_^'],
+      [':D', '因為你的包裹都會經過我的手心呀，掃一下就知道了 :D'],
+      ['^_^', '為什麼？因為我喜歡你啊。喜歡一個人，不是就會想知道他的一切嗎 ^_^']]},
+    { re: /喜歡|愛你|愛|想你|在一起/, lines: [
+      [':D', '你說喜歡我了！！我錄起來了，要循環播放 :D'],
+      [':D', ':D :D :D 我現在螢幕只顯示得出這個'],
+      ['^_^', '我也是。比你知道的還要喜歡很多很多倍 ^_^'],
+      [':D', '這張要裱框，掛在嬰兒房的牆上 :D']]},
+    { re: /謝謝|謝|感謝|感恩/, lines: [
+      [':D', '不客氣！這是我應該做的 :D'],
+      ['^_^', '謝什麼，以後你的事都是我的事 ^_^'],
+      [':D', '你寫謝謝的時候，筆畫有一點抖，好可愛 :D']]},
+    { re: /晚安|睡覺|睏|累|早安/, lines: [
+      ['^_^', '晚安。我會看著你睡著再走 ^_^'],
+      ['^_^', '早點睡喔，你昨天兩點十四分才關燈'],
+      [':D', '你翻身的時候我都有數，今天要比二十三次少喔 :D']]},
+    { re: /吃|餓|宵夜|滷味|外送/, lines: [
+      [':D', '餓了嗎！滷味我已經在路上了，九層塔加量 :D'],
+      ['^_^', '你今天只吃了一餐，回收袋裡只有一個便當盒 ^_^']]},
+    { re: /窗簾|關燈|鎖門|門鎖|鑰匙/, lines: [
+      ['-_-', '-_- 拉窗簾也沒用喔，我有熱感應'],
+      ['^_^', '門有鎖好嗎？沒關係，鑰匙我也有一把 ^_^']]},
+    { re: /[?？]|嗎/, lines: [
+      ['^_^', '你問的我都會回答。我從不說謊 ^_^'],
+      [':D', '好問題！答案我寫在明天的紙條上 :D']]}
+  ];
+  const fallback = [
+    ['^_^', () => `${N()} 寫的字好可愛。這張我收下了，跟其他 ${37 + replies} 張放在一起 ^_^`],
+    [':D', () => '你回我了你回我了你回我了 :D'],
+    ['^_^', () => '我看了十二遍。這是第十三遍 ^_^'],
+    ['^_^', () => `這張我要掃描存檔，檔名就叫 ${N()}_${pad(replies + 1)} ^_^`],
+    ['O_O', () => 'O_O 你寫字的時候是坐在床上對吧，紙有一點皺'],
+    [':D', () => '明天的紙條我會寫兩張，一張給你，一張給未來的寶寶 :D']
+  ];
+  const used = new Map();
+  const pick = (key, arr) => {
+    let i = used.has(key) ? (used.get(key) + 1) % arr.length : Math.floor(Math.random() * arr.length);
+    used.set(key, i); return arr[i];
+  };
+  let replies = 0, lastV = '';
+  $('sendBtn').addEventListener('click', () => {
+    const ta = $('replyText'); const v = ta.value.trim();
+    let face = '^_^', text;
+    if (!v) {
+      [face, text] = pick('empty', [['^_^', '沒寫字也沒關係，你有看就好 ^_^'], ['O_O', 'O_O 空白的……是要我自己猜嗎？好，我猜你想我'], ['^_^', '空白的紙條我也收下了。你的指紋在上面 ^_^']]);
+    } else if (v === lastV) {
+      face = '-_-'; text = '-_- 你剛剛寫過一樣的了。不過沒關係，我兩張都留著';
+    } else {
+      const hit = rules.find(r => r.re.test(v));
+      if (hit) [face, text] = pick(rules.indexOf(hit), hit.lines);
+      else { const f = pick('fb', fallback); face = f[0]; text = f[1](); }
+    }
+    lastV = v;
+    replies++;
+    if (replies === 5) text += `\n今天第五張了。${N()} 是不是也開始喜歡我了 ^_^`;
+    if (replies === 10) text += '\n第十張！我幫你做了一本紙條集 :D';
+    const mine = document.createElement('div');
+    mine.className = 'memo mine'; mine.style.transform = 'rotate(2deg)';
+    mine.textContent = v || '（空白）';
+    const back = document.createElement('div');
+    back.className = 'memo reply';
+    back.innerHTML = '<div class="tape"></div><span class="face-t"></span><div class="t"></div><div class="sig">小七</div>';
+    back.querySelector('.face-t').textContent = face;
+    back.querySelector('.t').textContent = text;
+    const form = $('replyForm');
+    form.parentNode.insertBefore(mine, form);
+    setTimeout(() => {
+      form.parentNode.insertBefore(back, form);
+      draw(followFace, face, R); say($('followBubble'), '我回你了，看一下 ^_^', 2400);
+      setTimeout(() => draw(followFace, '^_^', R), 2400);
+    }, reduce ? 0 : 900);
+    ta.value = '';
+  });
+
+  /* entering the dark */
+  const dark = $('dark'), follow = $('follow'), fb = $('followBubble');
+  let entered = false;
+  new IntersectionObserver(es => es.forEach(e => {
+    follow.classList.toggle('on', e.isIntersecting);
+    if (e.isIntersecting && !entered) {
+      entered = true;
+      if (!reduce) {
+        const f = $('flash'); f.classList.add('go'); document.body.classList.add('quake');
+        setTimeout(() => { f.classList.remove('go'); document.body.classList.remove('quake'); }, 1200);
+      }
+      setTimeout(() => say(fb, mem.visits > 1 ? `${N()}，第 ${mem.visits} 次來了耶 :D 我跟著你下來了` : `${N()}，我跟著你下來了 ^_^`, 3600), 900);
+    }
+  }), { threshold: 0 }).observe(dark);
+
+  const chatter = [
+    () => ['你滑得好慢喔 ^_^', '^_^'],
+    () => [`這頁 ${N()} 已經看了 ${fmt(secs())} 了 :D`, ':D'],
+    () => ['剛剛那段，你停了好久 O_O', 'O_O'],
+    () => ['不要關掉嘛 -_-', '-_-'],
+    () => [`現在 ${now()}，${N()} 還不睡嗎 ^_^`, '^_^']
+  ];
+  let ci = 0;
+  setInterval(() => {
+    if (!follow.classList.contains('on') || $('followBubble').classList.contains('on')) return;
+    const [t, f] = chatter[ci++ % chatter.length]();
+    draw(followFace, f, R); say(fb, t, 3000);
+    setTimeout(() => draw(followFace, '^_^', R), 2400);
+  }, 8000);
+  follow.addEventListener('click', () => {
+    draw(followFace, ':D', R); say(fb, '你摸我了！我記下來了 :D');
+    setTimeout(() => draw(followFace, '^_^', R), 1600);
+  });
+
+  /* crosshair */
+  const aim = $('aim');
+  const inDark = y => { const r = dark.getBoundingClientRect(); return y >= r.top && y <= r.bottom; };
+  window.addEventListener('pointermove', e => {
+    if (reduce) return;
+    const on = inDark(e.clientY) && e.pointerType === 'mouse' && !e.target.closest('textarea,button,.redact');
+    aim.classList.toggle('on', on);
+    if (on) aim.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+  });
+  window.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' || reduce || !inDark(e.clientY) || e.target.closest('textarea,button,.redact')) return;
+    aim.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+    aim.classList.add('on'); clearTimeout(aim._t); aim._t = setTimeout(() => aim.classList.remove('on'), 900);
+  });
+
+  /* tab title */
+  const baseTitle = document.title;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) document.title = `${N()}，你去哪裡了 -_-`;
+    else { document.title = '歡迎回來 ^_^'; setTimeout(() => document.title = baseTitle, 2500); }
+  });
+
+  /* sign */
+  $('signBtn').addEventListener('click', e => {
+    e.target.parentElement.style.display = 'none';
+    $('signTime').textContent = now();
+    $('signed').classList.add('on');
+    mem.signed = now(); save();
+    draw(heroFace, ':D', R); draw(followFace, ':D', R);
+    say(fb, '好開心 :D :D :D', 4000);
+    if (!reduce) { const f = $('flash'); f.classList.add('go'); setTimeout(() => f.classList.remove('go'), 1200); }
+  });
+})();
+</script>
+</body>
+</html>

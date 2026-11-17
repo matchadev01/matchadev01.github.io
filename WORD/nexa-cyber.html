@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXA 終端機</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&family=Nunito:wght@800;900&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00ffcc;--pink:#ff2a6d;--amber:#f39c12;--violet:#b26bff;--blue:#3fa9ff;--orange:#ff8a1f;
+  --bg:#04040a;--text:#c9d4d8;--dim:#6b7a80;
+  --mono:'Share Tech Mono',Consolas,'Courier New',monospace;
+  --sans:'Noto Sans TC',system-ui,-apple-system,sans-serif;
+  --cut:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;padding:28px 12px;background:radial-gradient(ellipse at 50% 0%,#071c1c 0%,#020205 55%,#000 100%);font-family:var(--sans);color:var(--text)}
+
+/* ===== 外框 ===== */
+.nx-wrap{max-width:620px;margin:0 auto}
+.nx-border{padding:1px;background:linear-gradient(135deg,var(--cyan) 0%,#0b3d36 28%,#1a0610 70%,var(--pink) 100%);
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));
+  animation:jitter 7s infinite steps(1)}
+.nx{position:relative;overflow:hidden;background:var(--bg);
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)))}
+.nx.crash{animation:crash .6s steps(2)}
+
+#rain{position:absolute;inset:0;width:100%;height:100%;opacity:.2;pointer-events:none}
+.scan{position:absolute;inset:0;z-index:50;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+.scan::after{content:"";position:absolute;left:0;right:0;top:0;height:100%;will-change:transform;
+  background:linear-gradient(180deg,transparent 0,rgba(0,255,204,.06) 3%,transparent 6%);animation:sweep 6s linear infinite}
+.vig{position:absolute;inset:0;z-index:49;pointer-events:none;box-shadow:inset 0 0 80px rgba(0,0,0,.9)}
+.content{position:relative}
+
+/* ===== 標題列 ===== */
+.bar{display:flex;align-items:center;gap:12px;padding:9px 30px 9px 14px;background:linear-gradient(90deg,#0c1416,#0a0a10);border-bottom:1px solid rgba(0,255,204,.25)}
+.dots{display:flex;gap:6px;flex:none}
+.dots i{width:10px;height:10px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:var(--pink);box-shadow:0 0 6px var(--pink)}
+.dots i:nth-child(2){background:var(--amber);box-shadow:0 0 6px var(--amber)}
+.dots i:nth-child(3){background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+.bar-title{flex:1;min-width:0;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:2px;color:#7f9a9a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-clock{flex:none;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--cyan)}
+.rec{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 6px var(--pink);animation:blink 1s steps(1) infinite}
+
+/* ===== 跑馬燈 ===== */
+.ticker{overflow:hidden;white-space:nowrap;border-bottom:1px solid #1a1a22;background:#07070c;font-family:var(--mono);font-size:11px;color:#5f7f7f;padding:5px 0}
+.ticker-track{display:inline-block;animation:marquee 26s linear infinite}
+.ticker-track span{padding-right:28px}
+.ticker .up{color:var(--cyan)}.ticker .dn{color:var(--pink)}
+
+/* ===== 主視覺 ===== */
+.hero{position:relative;padding:34px 24px 64px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;left:-50%;right:-50%;bottom:-40px;height:150px;
+  background:
+    linear-gradient(rgba(0,255,204,.35) 1px,transparent 1px) 0 0/100% 22px,
+    linear-gradient(90deg,rgba(0,255,204,.25) 1px,transparent 1px) 0 0/34px 100%;
+  transform:perspective(220px) rotateX(62deg);transform-origin:50% 100%;
+  -webkit-mask:linear-gradient(transparent,#000 70%);mask:linear-gradient(transparent,#000 70%);
+  animation:grid 1.6s linear infinite}
+.hero::after{content:"";position:absolute;left:50%;bottom:60px;width:70%;height:2px;transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,var(--pink),transparent);box-shadow:0 0 18px var(--pink)}
+.hero-tag{position:relative;font-family:var(--mono);font-size:11px;color:var(--pink);letter-spacing:3px;margin-bottom:10px}
+.glitch{position:relative;display:inline-block;margin:0;font-family:'Orbitron',var(--mono);font-weight:900;
+  font-size:clamp(30px,9vw,50px);letter-spacing:.06em;color:#eafffb;text-shadow:0 0 14px rgba(0,255,204,.65)}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;text-shadow:none;opacity:.85}
+.glitch::before{color:var(--pink);animation:gA 2.6s infinite linear alternate-reverse}
+.glitch::after{color:var(--cyan);animation:gB 3.2s infinite linear alternate-reverse}
+.hero-sub{position:relative;margin-top:8px;font-size:13px;font-weight:700;letter-spacing:4px;color:#8fb3b0}
+
+/* ===== 開機紀錄 ===== */
+.body{padding:0 clamp(16px,5vw,28px) 26px;display:flex;flex-direction:column;gap:26px}
+.log{font-family:var(--mono);font-size:clamp(12px,3.4vw,14px);line-height:1.75;color:var(--cyan);text-shadow:0 0 6px rgba(0,255,204,.45);
+  padding:14px 16px;background:rgba(0,255,204,.03);border:1px solid rgba(0,255,204,.15)}
+.log p{margin:0;opacity:0;animation:pop .35s calc(var(--d) * .45s) forwards}
+.log .ok{color:#3dff6e;font-weight:400}
+.log .w{color:#fff;font-weight:400}
+.log .warn{color:var(--pink);text-shadow:0 0 8px rgba(255,42,109,.6)}
+.log .warn.flick{animation:pop .35s calc(var(--d) * .45s) forwards,flicker 2.5s 2s infinite}
+.cur{animation:blink .8s steps(1) infinite}
+.prog{margin-top:10px;opacity:0;animation:pop .3s calc(var(--d) * .45s) forwards;display:flex;align-items:center;gap:10px}
+.prog-bar{flex:1;height:10px;border:1px solid rgba(0,255,204,.4);padding:1px}
+.prog-bar i{display:block;height:100%;width:0;background:var(--cyan);box-shadow:0 0 10px var(--cyan);
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px);mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px);transition:width .1s}
+.prog-pct{font-size:12px;min-width:86px;text-align:right}
+
+/* ===== 區塊標題 ===== */
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-no{font-family:'Orbitron',var(--mono);font-size:12px;font-weight:900;color:#000;background:var(--cyan);padding:2px 7px;
+  clip-path:polygon(0 0,100% 0,100% 70%,80% 100%,0 100%)}
+.sec-t{font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,255,204,.6),transparent)}
+.sec-hint{font-family:var(--mono);font-size:10px;color:var(--cyan);animation:nudge 1.4s ease-in-out infinite}
+
+/* ===== 檔案面板 ===== */
+.panel{position:relative;padding:18px 18px 16px;background:linear-gradient(135deg,rgba(0,255,204,.07),rgba(0,255,204,.01));border:1px solid rgba(0,255,204,.18)}
+.panel::before,.panel::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--cyan)}
+.panel::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.panel::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.file-h{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.file-h small{color:var(--dim);font-size:10px}
+.panel p{margin:0 0 8px;font-size:14px;line-height:1.95;font-weight:700;color:#d2dcdf;text-align:justify}
+.panel p:last-child{margin:0}
+.panel em{font-style:normal;color:var(--cyan)}
+
+/* ===== NEXA 宣傳層 ===== */
+.nexa{display:grid}
+.nexa>*{grid-area:1/1}
+.ad{position:relative;z-index:60;overflow:hidden;border-radius:18px;padding:22px 20px 16px;color:#3b4a5c;
+  background:radial-gradient(circle at 88% 8%,#fff7cf 0,transparent 38%),linear-gradient(160deg,#e3f6ff 0%,#f1eaff 55%,#ffe7f1 100%);
+  box-shadow:0 8px 28px rgba(120,200,255,.22),inset 0 0 0 1px rgba(255,255,255,.85);
+  animation:adglitch 8s infinite steps(1)}
+.ad-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
+.ad-logo{display:flex;align-items:center;gap:7px;font-family:'Nunito',var(--sans);font-weight:900;font-size:15px;letter-spacing:3px;color:#4aa8d8}
+.ad-logo b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7be0c8,#7ab8ff);color:#fff;font-size:12px;letter-spacing:0;box-shadow:0 2px 8px rgba(122,184,255,.5)}
+.ad-live{font-size:11px;font-weight:700;color:#ff6f9f;background:#fff;border-radius:99px;padding:3px 10px;box-shadow:0 2px 8px rgba(255,111,159,.2);white-space:nowrap}
+.ad-live i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff6f9f;margin-right:5px;vertical-align:middle;animation:blink 1.4s steps(1) infinite}
+.ad-kicker{font-size:12px;font-weight:700;letter-spacing:3px;color:#7a8ea3;margin-bottom:6px}
+.ad-title{margin:0 0 10px;font-size:clamp(25px,7.2vw,33px);font-weight:900;line-height:1.3;
+  background:linear-gradient(90deg,#3fa3d6,#b07bff 55%,#ff7fae);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ad-lead{margin:0 0 16px;font-size:14px;line-height:1.85;font-weight:700;color:#4b5b6e}
+.ad-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.ad-stats div{background:rgba(255,255,255,.78);border-radius:12px;padding:10px 4px 9px;text-align:center;box-shadow:0 3px 10px rgba(150,170,220,.18)}
+.ad-stats b{display:block;font-family:'Nunito',var(--sans);font-size:23px;font-weight:900;color:#4aa8d8;line-height:1.2}
+.ad-stats small{font-size:12px;margin-left:1px}
+.ad-stats span{font-size:11px;font-weight:700;color:#7a8ea3}
+.ad-quote{margin:0 0 12px;padding:11px 14px;background:rgba(255,255,255,.62);border-radius:12px;font-size:13px;font-weight:700;line-height:1.7;color:#4b5b6e}
+.ad-quote cite{display:block;margin-top:4px;font-style:normal;font-size:11px;color:#9aaabb;text-align:right}
+.ad-fine{margin:0;font-size:10px;line-height:1.6;color:#a6b2c0}
+.flip{display:block;margin:12px 0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;background:#05050a;color:var(--pink);border:1px solid var(--pink);padding:4px 10px}
+.flip:hover{background:var(--pink);color:#000}
+.spark{position:absolute;color:#fff;text-shadow:0 0 8px #fff,0 0 14px #ffc7de;animation:twinkle 2.6s ease-in-out infinite;pointer-events:none}
+.s1{top:84px;right:104px;font-size:15px}.s2{top:168px;right:12px;font-size:11px;animation-delay:.8s}.s3{top:120px;right:112px;font-size:10px;animation-delay:1.6s}
+.truth{z-index:61;display:flex;flex-direction:column;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px),linear-gradient(135deg,rgba(0,255,204,.07),rgba(0,255,204,.01)),var(--bg);opacity:0;visibility:hidden;animation:leak 8s infinite steps(1)}
+.truth .flip{margin-top:auto}
+.nexa.show .truth{opacity:1;visibility:visible;animation:none}
+.nexa.show .ad{visibility:hidden;animation:none}
+
+/* 更美好 */
+.ad{box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,190,220,.6),0 10px 34px rgba(176,123,255,.35),inset 0 0 0 1px rgba(255,255,255,.85)}
+.ad::before{content:"";position:absolute;z-index:-1;top:-130px;right:-130px;width:340px;height:340px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,transparent 50%,rgba(255,158,196,.4) 51% 55%,rgba(255,214,120,.4) 56% 60%,rgba(150,230,190,.4) 61% 65%,rgba(122,184,255,.4) 66% 70%,rgba(190,150,255,.4) 71% 75%,transparent 76%)}
+.ad-title{padding-right:96px}
+.ad-title .heart{display:inline-block;color:#ff7fae;-webkit-text-fill-color:#ff7fae;font-size:.8em;animation:beat 1.2s ease-in-out infinite}
+.mascot{position:absolute;z-index:2;top:86px;right:18px;width:76px;height:76px;animation:bob 2.4s ease-in-out infinite}
+.mascot::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:repeating-conic-gradient(rgba(255,206,80,.55) 0 10deg,transparent 10deg 30deg);animation:spin 14s linear infinite}
+.mascot .face{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8c8,#ffd95e 60%,#ffc23d);box-shadow:0 0 0 5px rgba(255,236,170,.8),0 0 26px rgba(255,200,80,.7)}
+.mascot .eye{position:absolute;top:28px;width:13px;height:8px;border:3px solid #6b4520;border-bottom:0;border-radius:12px 12px 0 0}
+.mascot .eye.l{left:17px}.mascot .eye.r{right:17px}
+.mascot .blush{position:absolute;top:42px;width:13px;height:7px;border-radius:50%;background:rgba(255,120,150,.6)}
+.mascot .blush.l{left:9px}.mascot .blush.r{right:9px}
+.mascot .mouth{position:absolute;top:42px;left:50%;width:22px;height:12px;margin-left:-11px;border:3px solid #6b4520;border-top:0;border-radius:0 0 14px 14px;background:#ff8fae}
+.mascot-tag{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:900;color:#ff6f9f;background:#fff;border-radius:99px;padding:2px 8px;box-shadow:0 2px 8px rgba(255,111,159,.25)}
+.ad-tick{overflow:hidden;white-space:nowrap;border-radius:99px;background:#fff;box-shadow:0 2px 10px rgba(255,150,190,.2);font-size:11px;font-weight:700;color:#e0709a;padding:5px 0;margin:-4px 0 16px}
+.ad-tick-track{display:inline-block;animation:marquee 24s linear infinite}
+.ad-tick-track span{padding-right:22px}
+.ad-stats .ico{display:block;font-style:normal;font-size:17px;line-height:1.2;margin-bottom:2px}
+.ad-quote{position:relative;padding-right:76px}
+.stars{color:#ffc93c;font-size:12px;letter-spacing:2px;margin-bottom:3px}
+.sticker{position:absolute;top:10px;right:-10px;width:72px;height:72px;border-radius:50%;display:grid;place-content:center;text-align:center;
+  font-size:9px;font-weight:900;line-height:1.25;color:#fff;background:radial-gradient(circle at 35% 30%,#ffb8d4,#ff6f9f);
+  box-shadow:0 0 0 3px #fff,0 0 0 5px #ffaacb,0 6px 14px rgba(255,111,159,.4);transform:rotate(12deg);animation:wobble 3s ease-in-out infinite}
+.sticker b{font-family:'Nunito',var(--sans);font-size:17px;line-height:1}
+.hearts{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.hearts span{position:absolute;bottom:-24px;opacity:0;animation:rise 7s linear infinite}
+.ad-cta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ad-cta .flip{margin:0}
+.apply{border:0;cursor:pointer;border-radius:99px;padding:9px 16px;font-family:var(--sans);font-size:13px;font-weight:900;color:#fff;
+  background:linear-gradient(90deg,#7ab8ff,#b07bff,#ff7fae,#7ab8ff);background-size:300% 100%;box-shadow:0 4px 14px rgba(176,123,255,.4);animation:shine 4s linear infinite}
+.apply:active{transform:scale(.96)}
+.toast{position:absolute;z-index:5;left:50%;bottom:62px;width:max-content;max-width:88%;transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+  background:#fff;color:#e0709a;font-size:12.5px;font-weight:900;line-height:1.6;text-align:center;padding:9px 16px;border-radius:14px;box-shadow:0 8px 24px rgba(255,111,159,.35)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ===== 橫向卡片 ===== */
+.rail{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--cyan) #111}
+.rail::-webkit-scrollbar{height:4px}
+.rail::-webkit-scrollbar-track{background:#111}
+.rail::-webkit-scrollbar-thumb{background:var(--cyan)}
+
+.life{flex:0 0 78%;max-width:250px;scroll-snap-align:start;position:relative;padding:16px 15px 14px;background:#08080e;border:1px solid #23232e;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s}
+.life:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 0 18px color-mix(in srgb,var(--c) 35%,transparent)}
+.life-id{font-family:var(--mono);font-size:11px;color:var(--c);opacity:.85}
+.life-name{font-family:'Orbitron',var(--mono);font-weight:900;font-size:18px;color:var(--c);letter-spacing:2px;margin:4px 0 10px;text-shadow:0 0 10px color-mix(in srgb,var(--c) 50%,transparent)}
+.life p{margin:0 0 14px;font-size:13px;line-height:1.8;font-weight:700;color:#b7c2c6;text-align:justify;flex:1}
+.meter{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--dim)}
+.meter-bar{flex:1;height:7px;background:rgba(255,255,255,.06)}
+.meter-bar i{display:block;height:100%;width:0;background:var(--c);box-shadow:0 0 8px var(--c);
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 5px,transparent 5px 7px);mask:repeating-linear-gradient(90deg,#000 0 5px,transparent 5px 7px);
+  animation:fill 1.6s 2.6s cubic-bezier(.2,.8,.2,1) forwards}
+.meter b{color:var(--c);font-weight:400;min-width:18px;text-align:right}
+
+.life.omega{flex-basis:84%;max-width:280px;border-color:var(--pink);background:linear-gradient(160deg,rgba(255,42,109,.12),#0a0408 60%)}
+.life.omega::before{content:"";position:absolute;inset:-1px;pointer-events:none;box-shadow:0 0 18px rgba(255,42,109,.45),inset 0 0 18px rgba(255,42,109,.15);opacity:0;animation:pulse 2.4s ease-in-out infinite}
+.omega .badge{position:absolute;top:0;right:0;font-family:var(--mono);font-size:10px;background:var(--pink);color:#000;padding:2px 8px;font-weight:700}
+.omega .life-name{animation:shake 3s infinite steps(1)}
+.omega p{color:#e6d3d9}
+.hl{color:var(--pink);background:rgba(255,42,109,.18);padding:0 3px;box-shadow:0 0 10px rgba(255,42,109,.35)}
+
+.city{flex:0 0 72%;max-width:220px;scroll-snap-align:start;position:relative;padding:14px 14px 12px;background:#0b0b11;border:1px solid #1f1f28;border-top:3px solid var(--c);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.city:hover{transform:translateY(-3px);box-shadow:0 -4px 22px color-mix(in srgb,var(--c) 30%,transparent)}
+.city-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.city-code{font-family:var(--mono);font-size:10px;color:var(--dim)}
+.chip{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 50%,transparent);padding:1px 6px}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c);animation:blink 1.2s steps(1) infinite}
+.city h3{margin:0;font-family:'Orbitron',var(--mono);font-size:16px;letter-spacing:1px;color:var(--c)}
+.city-zh{font-size:12px;font-weight:900;color:var(--c);letter-spacing:3px;margin:2px 0 8px;opacity:.9}
+.city p{margin:0 0 12px;font-size:13px;line-height:1.8;font-weight:700;color:#b7c2c6;text-align:justify;flex:1}
+.barcode{height:14px;opacity:.35;background:repeating-linear-gradient(90deg,var(--c) 0 1px,transparent 1px 3px,var(--c) 3px 5px,transparent 5px 6px,var(--c) 6px 7px,transparent 7px 10px)}
+
+/* ===== LACUNA ===== */
+.lacuna{position:relative;background:#0f0007;border:1px solid var(--pink);box-shadow:0 0 24px rgba(255,42,109,.18),inset 0 0 40px rgba(255,42,109,.08);overflow:hidden}
+.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--pink) 0 10px,#0f0007 10px 20px);background-size:28px 28px;animation:stripes 1s linear infinite}
+.lac-in{padding:20px 18px 18px}
+.stamp{position:absolute;top:20px;right:-34px;transform:rotate(35deg);background:var(--pink);color:#000;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 40px;letter-spacing:1px}
+.lac-title{font-family:'Orbitron',var(--mono);font-size:22px;font-weight:900;color:var(--pink);letter-spacing:2px;margin:0 0 6px;text-shadow:0 0 10px rgba(255,42,109,.6);animation:flicker 4s infinite}
+.lac-sub{font-size:13px;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:16px;padding-right:60px}
+.lacuna p{margin:0;font-size:13.5px;line-height:1.95;font-weight:700;color:#e2d6da;text-align:justify}
+.redact{background:var(--pink);color:transparent;padding:0 3px;cursor:pointer;transition:background .2s,color .2s;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.redact:hover,.redact.on{background:rgba(255,42,109,.16);color:#ff86a8}
+.hint{font-family:var(--mono);font-size:10px;color:#8a4a5c;margin:6px 0 16px}
+.proto{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.proto li{position:relative;padding:10px 12px 10px 14px;background:rgba(255,42,109,.06);border-left:2px solid var(--pink);font-size:13px;line-height:1.85;font-weight:700;color:#ddd}
+.proto li::after{content:"";position:absolute;right:0;top:0;width:8px;height:8px;border-top:1px solid var(--pink);border-right:1px solid var(--pink)}
+.proto b{display:block;font-family:var(--mono);font-weight:400;color:var(--pink);font-size:12px;letter-spacing:1px;margin-bottom:2px}
+
+/* ===== 頁尾 ===== */
+.foot{font-family:var(--mono);font-size:12px;color:#888;padding-top:4px}
+.trace{display:flex;justify-content:space-between;color:var(--pink);margin-bottom:6px}
+.trace .blk{animation:blink 1s steps(1) infinite}
+.trace-bar{height:3px;background:#1a0a10;margin-bottom:10px}
+.trace-bar i{display:block;height:100%;width:0;background:var(--pink);box-shadow:0 0 8px var(--pink)}
+.disc{text-align:center}
+.disc .ok{color:#3dff6e;font-weight:400}
+
+/* ===== 動畫 ===== */
+@keyframes blink{50%{opacity:0}}
+@keyframes sweep{from{transform:translateY(-6%)}to{transform:translateY(100%)}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes grid{to{background-position:0 22px,0 0}}
+@keyframes pop{0%{opacity:0;transform:translateX(-8px);text-shadow:-3px 0 var(--pink),3px 0 var(--cyan)}60%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes flicker{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.35}}
+@keyframes nudge{50%{transform:translateX(4px)}}
+@keyframes fill{to{width:var(--v)}}
+@keyframes pulse{50%{opacity:1}}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+@keyframes wobble{50%{transform:rotate(4deg) scale(1.06)}}
+@keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}12%{opacity:.75}100%{transform:translate(14px,-640px) scale(1.1);opacity:0}}
+@keyframes shine{to{background-position:300% 0}}
+@keyframes twinkle{50%{opacity:.2;transform:scale(.7)}}
+@keyframes leak{0%,86%,100%{opacity:0;visibility:hidden}87%,89%{opacity:1;visibility:visible}88%,90%{opacity:0;visibility:hidden}}
+@keyframes adglitch{0%,86%,91%,100%{transform:none}87%{transform:translate(-4px,0) skewX(-3deg)}89%{transform:translate(3px,1px)}}
+@keyframes shake{0%,90%,100%{transform:none}91%{transform:translate(-2px,1px)}93%{transform:translate(2px,-1px)}95%{transform:translate(-1px,0)}}
+@keyframes stripes{to{background-position:28px 0}}
+@keyframes jitter{0%,92%,100%{transform:none}93%{transform:translate(2px,-1px) skewX(-1.5deg)}94%{transform:translate(-3px,1px)}95%{transform:translate(1px,0) skewX(1deg)}}
+@keyframes crash{0%{filter:invert(1) hue-rotate(90deg);transform:translateX(-4px)}50%{filter:hue-rotate(-60deg) saturate(3);transform:translateX(5px) skewX(3deg)}100%{filter:none;transform:none}}
+@keyframes gA{0%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)}20%{clip-path:inset(60% 0 15% 0);transform:translate(-5px,1px)}40%{clip-path:inset(30% 0 52% 0);transform:translate(2px,0)}60%{clip-path:inset(85% 0 3% 0);transform:translate(4px,-1px)}80%{clip-path:inset(4% 0 72% 0);transform:translate(-3px,0)}100%{clip-path:inset(46% 0 40% 0);transform:translate(-2px,1px)}}
+@keyframes gB{0%{clip-path:inset(70% 0 12% 0);transform:translate(2px,0)}25%{clip-path:inset(8% 0 78% 0);transform:translate(4px,-1px)}50%{clip-path:inset(40% 0 38% 0);transform:translate(-3px,1px)}75%{clip-path:inset(90% 0 1% 0);transform:translate(3px,0)}100%{clip-path:inset(22% 0 60% 0);transform:translate(2px,0)}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .log p,.prog{opacity:1}
+  .meter-bar i{width:var(--v)}
+}
+</style>
+</head>
+<body>
+
+<div class="nx-wrap">
+<div class="nx-border">
+<div class="nx" id="nx">
+  <div class="scan"></div>
+  <div class="vig"></div>
+
+  <div class="content">
+    <div class="bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="bar-title">NEXA_MAINFRAME_OS // SECURE_TERMINAL_V4.2</div>
+      <div class="bar-clock"><span class="rec"></span><span id="clk">--:--:--</span></div>
+    </div>
+
+    <div class="ticker"><div class="ticker-track">
+      <span>NEXA_IDX <b class="up">+2.31%</b></span><span>NEONVALE 算力負載 <b class="up">97%</b></span><span>ASTRAHAVEN 北界 <b class="dn">封鎖中</b></span><span>DUSKFALL 能量異常 <b class="dn">x3</b></span><span>LUMERIS 空間讀數 <b class="dn">ERROR</b></span><span>FRONTIER 訊號 <b class="dn">NO_RESPONSE</b></span>
+      <span>NEXA_IDX <b class="up">+2.31%</b></span><span>NEONVALE 算力負載 <b class="up">97%</b></span><span>ASTRAHAVEN 北界 <b class="dn">封鎖中</b></span><span>DUSKFALL 能量異常 <b class="dn">x3</b></span><span>LUMERIS 空間讀數 <b class="dn">ERROR</b></span><span>FRONTIER 訊號 <b class="dn">NO_RESPONSE</b></span>
+    </div></div>
+
+    <header class="hero">
+      <canvas id="rain"></canvas>
+      <div class="hero-tag">// ACCESS_GRANTED : GUEST_0x7F</div>
+      <h1 class="glitch" data-text="NEXA://EARTH">NEXA://EARTH</h1>
+      <div class="hero-sub">未來美好科技企業 ｜ 地球檔案庫</div>
+    </header>
+
+    <div class="body">
+
+      <div class="log">
+        <p style="--d:0">&gt; 建立連線... <b class="ok">[OK]</b></p>
+        <p style="--d:1">&gt; 繞過NEXA防火牆... <b class="ok">[OK]</b></p>
+        <p style="--d:2">&gt; 解密檔案: <b class="w">NEXA地球.dat</b></p>
+        <p style="--d:3" class="warn flick">&gt; 警告：偵測到未經授權的訪問</p>
+        <p style="--d:4">&gt; 取得數據<span class="cur">_</span></p>
+        <div class="prog" style="--d:5"><div class="prog-bar"><i id="prog-fill"></i></div><span class="prog-pct" id="prog-pct">00%</span></div>
+      </div>
+
+      <section class="nexa" id="nexa">
+        <div class="ad">
+          <div class="ad-top">
+            <span class="ad-logo"><b>N</b>NEXA</span>
+            <span class="ad-live"><i></i>市民幸福頻道 LIVE</span>
+          </div>
+          <div class="ad-tick"><div class="ad-tick-track">
+            <span>♪ 今天也是美好的一天</span><span>♪ 第 3 區市民 B-1120 今天微笑了 37 次</span><span>♪ 不合規市民已全數轉化為幸福市民</span><span>♪ 本週失蹤人口：0（查無此人）</span><span>♪ 記得多喝水、多微笑、少發問</span>
+            <span>♪ 今天也是美好的一天</span><span>♪ 第 3 區市民 B-1120 今天微笑了 37 次</span><span>♪ 不合規市民已全數轉化為幸福市民</span><span>♪ 本週失蹤人口：0（查無此人）</span><span>♪ 記得多喝水、多微笑、少發問</span>
+          </div></div>
+          <div class="ad-kicker">未來美好科技企業</div>
+          <h2 class="ad-title">歡迎回家，<br>親愛的市民！<span class="heart">♡</span></h2>
+          <div class="mascot"><div class="face"><i class="eye l"></i><i class="eye r"></i><i class="blush l"></i><i class="blush r"></i><i class="mouth"></i></div><span class="mascot-tag">幸福小 N</span></div>
+          <p class="ad-lead">NEXA 二十四小時守護您的完美生活。在這裡沒有異常，也沒有雜音，只有永遠明亮的明天。</p>
+          <div class="ad-stats">
+            <div><em class="ico">😊</em><b>100<small>%</small></b><span>市民幸福指數</span></div>
+            <div><em class="ico">🌈</em><b>0<small>件</small></b><span>本月異常回報*</span></div>
+            <div><em class="ico">☀️</em><b>24<small>h</small></b><span>城市永不熄燈</span></div>
+          </div>
+          <blockquote class="ad-quote"><span class="sticker">全球<br>幸福城市<br><b>No.1</b></span><div class="stars">★★★★★</div>「自從搬進 NEXA 社區，我再也沒聽過鄰居吵鬧了。」<cite>第 7 區 市民 A-0091</cite></blockquote>
+          <p class="ad-fine">*異常皆已妥善處理，請市民安心。幸福指數由 NEXA 演算法代為填寫。如您感到不幸福，請留在家中，專員將到府協助。</p>
+          <div class="ad-cta">
+            <button class="apply" id="apply">立即申請成為幸福市民 ♡</button>
+            <button class="flip" data-to="truth">[ 移除宣傳濾鏡 ]</button>
+          </div>
+          <div class="toast" id="toast">申請成功 ♡<br>專員將於 3 分鐘內抵達您目前的位置</div>
+          <div class="hearts">
+            <span style="left:8%;color:#ff9ec4;font-size:14px;animation-delay:0s">♡</span>
+            <span style="left:22%;color:#b9a2ff;font-size:11px;animation-delay:2.2s">♡</span>
+            <span style="left:38%;color:#7ec8ff;font-size:16px;animation-delay:4.1s">♡</span>
+            <span style="left:55%;color:#ff9ec4;font-size:12px;animation-delay:1.3s">♡</span>
+            <span style="left:70%;color:#ffcf6b;font-size:15px;animation-delay:3.4s">♡</span>
+            <span style="left:86%;color:#b9a2ff;font-size:13px;animation-delay:5.5s">♡</span>
+          </div>
+          <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>
+        </div>
+        <div class="panel truth">
+          <div class="file-h"><span>[FILE_01] 宣傳層已剝除 // RAW_DATA</span><small>SIZE 4.7TB / ENC AES-X</small></div>
+          <p>NEXA 構築了完美的無死角牢籠。高聳的鋼鐵叢林，不過是掩飾腐敗的發光墓碑。在這個被打磨至毫無瑕疵的「盛世」裡，不合規的異常連悲鳴的權利都沒有，只會被<em>物理刪除</em>。</p>
+          <p>人類傲慢地以為自己統治了地表，卻對陰影中蟄伏的古老法則，以及從深空降臨的真正恐懼一無所知。</p>
+          <button class="flip" data-to="ad">[ 恢復美好 ]</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-h"><span class="sec-no">01</span><span class="sec-t">三大生命體系</span><span class="sec-line"></span><span class="sec-hint">SCROLL &gt;&gt;</span></div>
+        <div class="rail">
+          <article class="life" style="--c:#8fa3ad">
+            <div class="life-id">├─ 人類.obj</div>
+            <div class="life-name">HUMAN</div>
+            <p>傲慢的盲者。沉溺於 NEXA 餵養的賽博溫室中，對真實樣貌一無所知，卻佔據了最多的地表資源。</p>
+            <div class="meter"><span>THREAT</span><div class="meter-bar"><i style="--v:18%"></i></div><b>18</b></div>
+          </article>
+          <article class="life" style="--c:#f39c12">
+            <div class="life-id">├─ 古代種族</div>
+            <div class="life-name">ANCIENT</div>
+            <p>舊神與怪物的殘黨。吸血鬼、精靈與惡魔。曾在神話中呼風喚雨的物種，如今只能在城市廢軌與地底苟延殘喘。</p>
+            <div class="meter"><span>THREAT</span><div class="meter-bar"><i style="--v:52%"></i></div><b>52</b></div>
+          </article>
+          <article class="life omega" style="--c:#ff2a6d">
+            <span class="badge">OMEGA</span>
+            <div class="life-id">└─ FRONTIER.exe</div>
+            <div class="life-name">FRONTIER</div>
+            <p>行星級滅絕倒數。43年前墜落的粒子生命。無敵意，無溝通。<span class="hl">「奪熱反射」</span>足以將一切化為死寂。牠們的沉默，是全人類尚未滅絕的唯一理由。</p>
+            <div class="meter"><span>THREAT</span><div class="meter-bar"><i style="--v:99%"></i></div><b>99</b></div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-h"><span class="sec-no">02</span><span class="sec-t">地球各大城市</span><span class="sec-line"></span><span class="sec-hint">SCROLL &gt;&gt;</span></div>
+        <div class="rail">
+          <article class="city" style="--c:#00ffcc">
+            <div class="city-top"><span class="city-code">SEC_01</span><span class="chip"><i></i>ONLINE</span></div>
+            <h3>Neonvale</h3><div class="city-zh">霓虹谷</div>
+            <p>全球算力的心臟。其深不見底的地下暗層 Umbra，則是法外狂徒與古老族群的狂歡地。</p>
+            <div class="barcode"></div>
+          </article>
+          <article class="city" style="--c:#e8f4f4">
+            <div class="city-top"><span class="city-code">SEC_02</span><span class="chip" style="--c:#ff2a6d"><i></i>LOCKDOWN</span></div>
+            <h3>Astrahaven</h3><div class="city-zh">星港城</div>
+            <p>異星災厄的起點。城外殘留著晶化凍土，整個北界已被永久封鎖，是最接近地獄的前沿禁區。</p>
+            <div class="barcode"></div>
+          </article>
+          <article class="city" style="--c:#ff8a1f">
+            <div class="city-top"><span class="city-code">SEC_03</span><span class="chip"><i></i>TOXIC</span></div>
+            <h3>Ironflame</h3><div class="city-zh">熾鋼城</div>
+            <p>建構於百年煉鋼遺跡之上的巨型火爐。漫天的金屬毒霧孕育出這顆星球最殘暴的改造人軍團。</p>
+            <div class="barcode"></div>
+          </article>
+          <article class="city" style="--c:#b26bff">
+            <div class="city-top"><span class="city-code">SEC_04</span><span class="chip"><i></i>ANOMALY</span></div>
+            <h3>Duskfall</h3><div class="city-zh">暗潮城</div>
+            <p>不見天日的迷宮之城。沉重的雲層將其封鎖，精靈的低語與狂暴的能量異常在暗巷中交錯。</p>
+            <div class="barcode"></div>
+          </article>
+          <article class="city" style="--c:#3fa9ff">
+            <div class="city-top"><span class="city-code">SEC_05</span><span class="chip"><i></i>NO_SIGNAL</span></div>
+            <h3>Lumeris</h3><div class="city-zh">海霧城</div>
+            <p>被海霧吞沒的邊陲。深水下潛藏著無法解析的未知生命，空間與現實的邊界在此處被扭曲。</p>
+            <div class="barcode"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lacuna">
+        <div class="hazard"></div>
+        <div class="stamp">CLASSIFIED_BLACK_OPS</div>
+        <div class="lac-in">
+          <h2 class="lac-title">組織: LACUNA</h2>
+          <div class="lac-sub">用無戶籍邊緣人的血肉，澆灌而成的修羅場</div>
+          <p>在 NEXA 財報裡，這是一處無害的「職能復健設施」。但剝開偽裝，<span class="redact">極高的死亡淘汰率</span>只為淬鍊出<span class="redact">不到百人</span>的精英幽靈。他們是刀，卻時刻準備割斷主人的咽喉。</p>
+          <div class="hint">[ 點擊或懸停解除遮蔽 ]</div>
+          <ul class="proto">
+            <li><b>&gt; 黑色協定 [DIRTY_WORK]</b>替高層處理見不得光的髒活——越界的古老怪物、失控的重裝兵器，或高層名單上「<span class="redact">不方便存在</span>」的人。</li>
+            <li><b>&gt; 絕對禁區 [FRONTIER_AVOID]</b>嚴禁接觸異星遺留物。奪熱效應會讓執行人永遠墜入無法回溫的永凍夢魘。</li>
+            <li><b>&gt; 生存法則 [RANK_SYSTEM]</b>內部沒有憐憫，只有階級數字。排名決定生殺大權，甚至直接綁定聯絡人能享有的防護級別。</li>
+          </ul>
+        </div>
+        <div class="hazard"></div>
+      </section>
+
+      <footer class="foot">
+        <div class="trace"><span class="blk">TRACE DETECTED</span><span id="trace-pct">00%</span></div>
+        <div class="trace-bar"><i id="trace-fill"></i></div>
+        <div class="disc">&gt; DISCONNECTING SYSTEM... <b class="ok">[DONE]</b></div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+
+  // 時鐘
+  var clk = document.getElementById('clk');
+  function tick(){ var d = new Date(); clk.textContent = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); }
+  tick(); setInterval(tick, 1000);
+
+  // 解密進度
+  var pf = document.getElementById('prog-fill'), pp = document.getElementById('prog-pct'), p = 0;
+  function step(){
+    p += Math.ceil(Math.random()*7);
+    if(p >= 100){ p = 100; pf.style.width = '100%'; pp.textContent = '100% 解密完成'; return; }
+    pf.style.width = p + '%'; pp.textContent = pad(p) + '%';
+    setTimeout(step, 50 + Math.random()*90);
+  }
+  if(reduce){ pf.style.width='100%'; pp.textContent='100% 解密完成'; } else setTimeout(step, 2300);
+
+  // 遮蔽文字點擊切換
+  document.querySelectorAll('.redact').forEach(function(el){
+    el.addEventListener('click', function(){ el.classList.toggle('on'); });
+  });
+
+  // 追蹤倒數
+  var nx = document.getElementById('nx'), tf = document.getElementById('trace-fill'), tp = document.getElementById('trace-pct'), tr = 0, busy = false;
+  setInterval(function(){
+    if(busy) return;
+    tr += Math.random()*2.6;
+    if(tr >= 100){
+      tr = 100; busy = true;
+      if(!reduce) nx.classList.add('crash');
+      setTimeout(function(){ nx.classList.remove('crash'); tr = 0; busy = false; }, 650);
+    }
+    tf.style.width = tr + '%'; tp.textContent = pad(Math.floor(tr)) + '%';
+  }, 220);
+
+  // 宣傳層切換
+  var nexa = document.getElementById('nexa');
+  nexa.querySelectorAll('.flip').forEach(function(b){
+    b.addEventListener('click', function(){ nexa.classList.toggle('show', b.dataset.to === 'truth'); });
+  });
+
+  // 幸福市民申請
+  var toast = document.getElementById('toast'), tt;
+  document.getElementById('apply').addEventListener('click', function(){
+    toast.classList.add('on'); clearTimeout(tt);
+    tt = setTimeout(function(){ toast.classList.remove('on'); }, 2800);
+  });
+
+  // 主視覺十六進位雨（只畫在標題區，離開畫面就暫停）
+  var cv = document.getElementById('rain'), cx = cv.getContext('2d'), host = cv.parentElement, fs = 13, cols, drops, visible = true;
+  function size(){
+    cv.width = host.clientWidth; cv.height = host.clientHeight;
+    cols = Math.floor(cv.width / fs);
+    drops = Array.from({length: cols}, function(){ return Math.random() * cv.height / fs; });
+  }
+  size();
+  if(window.ResizeObserver) new ResizeObserver(size).observe(host); else addEventListener('resize', size);
+  if(window.IntersectionObserver) new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(host);
+  var chars = '0123456789ABCDEF', last = 0;
+  function draw(t){
+    requestAnimationFrame(draw);
+    if(!visible || t - last < 90) return; last = t;
+    cx.fillStyle = 'rgba(4,4,10,0.2)'; cx.fillRect(0,0,cv.width,cv.height);
+    cx.font = fs + 'px "Share Tech Mono", monospace';
+    for(var i=0;i<cols;i++){
+      var y = drops[i]*fs;
+      cx.fillStyle = Math.random() < .03 ? '#ff2a6d' : '#00ffcc';
+      cx.fillText(chars[Math.random()*16|0], i*fs, y);
+      if(y > cv.height && Math.random() > .975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  if(!reduce) requestAnimationFrame(draw);
+})();
+</script>
+<a class="mw-back" href="index.html" aria-label="回到抹茶世界觀總覽">← 世界觀總覽</a>
+<style>.mw-back{position:fixed;z-index:9999;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));padding:9px 14px;border-radius:99px;font:600 12px/1 'Noto Sans TC',system-ui,sans-serif;letter-spacing:.08em;text-decoration:none;color:#00ffcc;background:rgba(4,4,10,.85);border:1px solid #00ffcc;box-shadow:0 4px 16px rgba(0,0,0,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,color .2s}.mw-back:hover,.mw-back:focus-visible{background:#00ffcc;color:#000;outline:none}</style>
+<script>
+/* GoatCounter：Neocities 免費版擋掉 sendBeacon，改用圖片像素計數 */
+(function(){
+  var base = 'https://matcha1642.goatcounter.com/count';
+  try{ if(localStorage.getItem('skipgc') === 't') return; }catch(e){}
+  if(location.hash === '#toggle-goatcounter') return;
+  if(location.protocol === 'file:') return;
+  function hit(q){ var i = new Image(); q.rnd = Math.random().toString(36).slice(2); i.src = base + '?' + Object.keys(q).map(function(k){ return k + '=' + encodeURIComponent(q[k]); }).join('&'); }
+  hit({p: location.pathname, t: document.title, r: document.referrer, s: [screen.width, screen.height, devicePixelRatio || 1].join(',')});
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest && ev.target.closest('[data-goatcounter-click]'); if(!a) return;
+    hit({p: a.getAttribute('data-goatcounter-click'), t: a.getAttribute('data-goatcounter-title') || '', e: 'true'});
+  }, true);
+})();
+</script>
+<script>
+/* 停用／啟用自己的瀏覽器：在網址後面加 #toggle-goatcounter */
+(function(){
+  if(location.hash !== '#toggle-goatcounter') return;
+  try{
+    var on = localStorage.getItem('skipgc') === 't';
+    if(on){ localStorage.removeItem('skipgc'); alert('GoatCounter 已重新啟用，這個瀏覽器的瀏覽會被計算。'); }
+    else { localStorage.setItem('skipgc','t'); alert('GoatCounter 已停用，這個瀏覽器的瀏覽不會被計算。'); }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

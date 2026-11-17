@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>抹茶叔叔打賞中心</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+/* 直播間打賞介面：手機直式單欄，上舞台、中聊天室、下禮物列；刻意俗豔的單一深色調 */
+:root{
+  --bg:#1b1026;
+  --panel:#2a1839;
+  --panel-2:#352047;
+  --fg:#fbeefe;
+  --muted:#b9a2c7;
+  --gold:#ffd04d;
+  --pink:#ff6fb8;
+  --matcha:#9ef062;
+  --line:#4a3160;
+  --red:#ff5468;
+  --display:"Huninn","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:480px;margin:0 auto;padding-block:16px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-family:var(--display);font-size:22px;line-height:1.2;text-wrap:balance}
+.brand b{color:var(--matcha);font-weight:400}
+.top-r{display:flex;align-items:center;gap:8px}
+.snd{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-family:var(--body);font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.snd:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.live{font-size:12px;font-weight:700;background:var(--pink);color:var(--bg);padding:3px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.06em}
+
+.stage{position:relative;border-radius:18px;overflow:hidden;background:
+  radial-gradient(circle at 20% 15%,rgba(255,111,184,.45),transparent 45%),
+  radial-gradient(circle at 85% 80%,rgba(158,240,98,.35),transparent 50%),
+  var(--panel);padding:18px;min-height:170px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;border:1px solid var(--line)}
+.card-tag{font-size:12px;color:var(--gold);letter-spacing:.08em}
+.card-title{font-family:var(--display);font-size:26px;line-height:1.25}
+.card-author{font-size:14px;color:var(--pink);font-weight:700;margin-top:2px}
+.card-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.combo{position:absolute;right:16px;top:12px;font-family:var(--display);font-size:40px;color:var(--gold);text-shadow:0 2px 0 var(--pink);opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s;pointer-events:none}
+.combo.on{opacity:1;transform:scale(1)}
+.fly{position:absolute;bottom:10px;font-size:34px;pointer-events:none;animation:fly 1.3s ease-out forwards}
+@keyframes fly{0%{transform:translateY(0) scale(.7);opacity:1}100%{transform:translateY(-150px) scale(1.4);opacity:0}}
+
+.me{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.ava{width:44px;height:44px;border-radius:50%;background:var(--matcha);object-fit:cover;display:block}
+.me-name{font-weight:700}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:6px;background:var(--gold);color:var(--bg);margin-left:6px;vertical-align:1px}
+.bar{height:6px;border-radius:3px;background:var(--panel-2);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--matcha),var(--gold));transition:width .3s}
+.next{font-size:12px;color:var(--muted);margin-top:3px}
+.stat{text-align:right;font-variant-numeric:tabular-nums}
+.stat small{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em}
+.stat strong{font-size:17px;color:var(--gold)}
+
+.chat{background:var(--panel);border:1px solid var(--line);border-radius:14px;height:230px;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.msg{min-width:0;overflow-wrap:anywhere;animation:pop .35s ease-out}
+@keyframes pop{0%{opacity:0;transform:translateX(-14px)}100%{opacity:1;transform:none}}
+.msg.sys{animation:popGold .5s ease-out}
+@keyframes popGold{0%{opacity:0;transform:scale(.9);background:rgba(255,208,77,.35)}60%{opacity:1;background:rgba(255,208,77,.2)}100%{transform:none;background:transparent}}
+.msg .who{color:var(--muted);margin-right:6px}
+.msg.uncle .who{color:var(--matcha);font-weight:700}
+.msg.sys{color:var(--gold);font-size:13px}
+
+.gifts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gift{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:14px;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:var(--body);transition:transform .1s,background .15s}
+.gift:hover{background:var(--panel-2)}
+.gift:active{transform:scale(.94)}
+.gift:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.gift .e{font-size:28px;line-height:1.2}
+.gift .n{font-size:13px;font-weight:700}
+.gift .c{font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums}
+
+.dm{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.dm-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dm-head h2{font-family:var(--display);font-weight:400;font-size:18px;margin:0}
+.dm-head span{font-size:12px;color:var(--muted)}
+.dm-st{display:flex;align-items:center;gap:8px}
+.dm-head .pill{font-weight:700;padding:2px 9px;border-radius:999px;background:var(--matcha);color:var(--bg);transition:background .3s}
+.dm-head .pill[data-s="1"]{background:var(--gold)}
+.dm-head .pill[data-s="2"]{background:var(--pink)}
+.dm-head .pill[data-s="3"]{background:var(--red)}
+.dm-head .pill[data-s="4"]{background:var(--line);color:var(--fg)}
+.bub.note{align-self:center;background:transparent;color:var(--pink);font-size:12px;font-weight:700;padding:2px 0}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.thread{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto}
+.bub{max-width:82%;padding:8px 12px;border-radius:16px;font-size:14px;overflow-wrap:anywhere}
+.bub.out{align-self:flex-end;background:var(--matcha);color:var(--bg);border-bottom-right-radius:4px}
+.bub.in{align-self:flex-start;background:var(--panel-2);border-bottom-left-radius:4px}
+.bub.typing{color:var(--muted)}
+.empty{font-size:13px;color:var(--muted);text-align:center;padding:6px 0}
+
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:0;border-radius:12px;padding:11px 14px;font-family:var(--body);font-weight:700;font-size:14px;cursor:pointer;flex:1 1 140px}
+.btn.pink{background:var(--pink);color:var(--bg)}
+.btn.ghost{background:var(--panel-2);color:var(--fg);border:1px solid var(--line)}
+.btn[hidden]{display:none!important}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:var(--bg);font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1}
+.foot{font-size:12px;color:var(--muted);text-align:center}
+
+.dan{position:absolute;left:100%;white-space:nowrap;font-size:14px;font-weight:700;color:var(--fg);text-shadow:0 1px 3px var(--bg),0 0 2px var(--bg);pointer-events:none;animation:dan 7s linear forwards;z-index:1}
+.dan.uncle{color:var(--matcha);font-size:16px}
+.dan.gold{color:var(--gold)}
+@keyframes dan{to{transform:translateX(calc(-560px - 100%))}}
+@media (prefers-reduced-motion:reduce){.dan{display:none}.msg,.msg.sys{animation:none}.fly{animation:none;display:none}.combo,.bar i,.toast{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">抹茶叔叔<b>打賞中心</b></div>
+    <div class="top-r"><button class="snd" id="snd" type="button" aria-pressed="true">🔊 音效開</button><div class="live" id="viewers">LIVE 1,284</div></div>
+  </header>
+
+  <section class="stage" id="stage" aria-label="直播舞台">
+    <div class="combo" id="combo">×1</div>
+    <div>
+      <div class="card-tag">新卡上架｜NSFW</div>
+      <div class="card-title">下僕的誘惑</div>
+      <div class="card-author">作者：阿湮妹妹</div>
+    </div>
+    <div class="card-meta">
+      <span>榜一：抹茶叔叔</span>
+      <span>本場收禮 <b id="stageTotal">0</b> 鴨幣</span>
+    </div>
+  </section>
+
+  <section class="me" aria-label="叔叔資料">
+    <img class="ava" alt="抹茶叔叔頭貼" src="data:image/webp;base64,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">
+    <div style="min-width:0">
+      <div class="me-name">抹茶叔叔<span class="badge" id="level">路人叔叔</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="next" id="next">再課 500 升級成熟面孔叔叔</div>
+    </div>
+    <div class="stat"><small>私房錢</small><strong id="wallet">20,000</strong></div>
+  </section>
+
+  <section class="chat" id="chat" aria-label="留言區" aria-live="polite"></section>
+
+  <section class="gifts" id="gifts" aria-label="禮物"></section>
+
+  <div class="row">
+    <button class="btn ghost" id="refill" type="button" hidden>偷挪年終獎金 +20,000</button>
+  </div>
+
+  <section class="dm" aria-label="私訊">
+    <div class="dm-head">
+      <h2>私訊妹妹</h2>
+      <span id="readState">尚未傳送</span>
+    </div>
+    <div class="thread" id="thread">
+      <div class="empty" id="empty">送完火箭，該來提點小要求了</div>
+    </div>
+    <div class="row">
+      <button class="btn pink" id="dmBtn" type="button">傳私訊提要求</button>
+      <button class="btn ghost" id="altBtn" type="button" hidden>開小帳重來</button>
+    </div>
+  </section>
+
+  <p class="foot">本頁純屬自嘲，叔叔沒有真的花錢</p>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const gifts=[
+  {e:'🌹',n:'玫瑰',c:10},
+  {e:'💖',n:'愛心',c:66},
+  {e:'🚀',n:'火箭',c:520},
+  {e:'🏰',n:'城堡',c:1314}
+];
+const levels=[
+  {at:0,name:'路人叔叔'},
+  {at:500,name:'熟面孔叔叔'},
+  {at:2000,name:'定時課大單叔叔'},
+  {at:6000,name:'榜一大叔'},
+  {at:15000,name:'傳說級噁叔'}
+];
+const uncleLines=[
+  '妹妹今天的卡好香','叔叔第一個留言','這張叔叔已經玩三輪了','妹妹出卡辛苦了 叔叔心疼',
+  '叔叔下班就來報到','我最喜歡下僕誘惑我了','妹妹有沒有吃飯','火箭送上 不用謝',
+  '叔叔的心意 妹妹收下','狀態欄好精緻 叔叔看了好久','叔叔剛洗完澡就來了','這個下僕叔叔可以',
+  '今天也是為妹妹課金的一天','叔叔不會說話 只會送禮','妹妹的文筆 叔叔看了很感動','下僕叫主人的時候 叔叔心臟受不了',
+  '叔叔老婆睡了 可以盡情留言','有沒有人跟叔叔一樣玩到天亮','叔叔幫妹妹衝榜','妹妹記得多喝水',
+  '叔叔剛剛又重開一輪','這段開場叔叔可以背出來了','各位不要跟叔叔搶榜一','叔叔的錢就是妹妹的錢',
+  '叔叔今天加班 但還是來了','下僕剛剛拒絕叔叔 叔叔更喜歡了','叔叔把妹妹的卡全部收藏了','年輕人不懂 這叫品味'
+];
+const viewers=['路過的鴨子','潛水三年','只是來看卡的','河童','深夜不睡','鴨答老玩家','剛註冊','下僕控','Gemini受害者','匿名鴨鴨'];
+const chatter=['開場白好有氛圍','下僕好香','這張要玩爆','剛看完 好色','作者好會寫','狀態欄好可愛','求出續集','第三輪了還是好好玩','封面好好看','有人一起玩嗎','剛被下僕撩到','模型推薦哪個','好想被誘惑','這張可以進榜吧',
+  '有人知道狀態欄怎麼開嗎','下僕的聲音腦內自動配音了','Claude 跑起來好細膩','剛剛被下僕拒絕了 好爽','這個作者每張都好吃','今晚不睡了',
+  '誰把我的模型換掉了','下僕叫我少爷 我死了','開場白第三段好會','剛刷新五次','求出下僕視角番外','這張值得一個火箭',
+  '追蹤作者了','好感度好難衝','第一次留言 好好玩','下僕好會撩','作者是不是也有在寫別的卡','阿湮的卡都好色','有人玩到隱藏結局嗎','下僕吃醋好可愛'];
+const reacts=['又是這個叔叔','榜一大哥又來了','叔叔好有錢','樓上冷靜','叔叔你老婆知道嗎','我也想被送火箭','這個叔叔每天都在','叔叔 收斂一點',
+  '叔叔又在課了','叔叔 你今天第幾支火箭了','榜一不意外','叔叔的錢是怎麼來的','叔叔我跟你借一點','這叔叔我認識 每張卡都有他',
+  '叔叔 回家吃飯了','又被叔叔洗版','叔叔你的頭貼好綠','叔叔是不是沒在上班','這個 ID 我在每個留言區都看過'];
+const stages=[
+  {name:'客氣期',read:.1,
+   asks:['妹妹出卡辛苦了 叔叔一直有在支持','剛剛的火箭是叔叔送的 不用回禮喔 😊'],
+   replies:['謝謝叔叔支持❤️','謝謝！玩得開心']},
+  {name:'敷衍期',read:.35,
+   asks:['下一張可以出下僕嗎 叔叔很期待','開場白可以再長一點嗎 叔叔讀不夠'],
+   replies:['嗯嗯','好的，會考慮看看']},
+  {name:'警戒期',read:.4,
+   asks:['叔叔想要一個會叫我主人的管家 價錢好談','狀態欄可以加一個「對叔叔好感度」嗎'],
+   replies:['叔叔 這邊不接客製喔','火箭不能換劇情喔']},
+  {name:'封鎖邊緣',read:.5,
+   asks:['妹妹怎麼不回 叔叔又送了城堡耶','叔叔不是壞人 只是想跟妹妹聊聊 🥺'],
+   replies:['（妹妹已設定僅限好友私訊）','叔叔 請不要再私訊了']}
+];
+let dmStage=0,dmCount=0,blocked=false,alts=0;
+
+let others=0,uncleBroke=false;
+let wallet=20000,total=0,combo=0,comboTimer=null,refills=0,askIdx=0;
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('en-US');
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let ac=null,soundOn=true;
+function initAudio(){
+  if(ac)return;
+  try{ac=new (window.AudioContext||window.webkitAudioContext)();ac.resume();}catch(e){ac=null}
+}
+function tone(f,d,type,vol,at,f2){
+  if(!soundOn||!ac)return;
+  const t=ac.currentTime+(at||0);
+  const o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'sine';o.frequency.setValueAtTime(f,t);
+  if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol||.1,t+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d+.03);
+}
+const sfx={
+  gift(g,c,quiet){
+    const v=quiet?.4:1,m=Math.pow(1.06,Math.min(c,12)-1);
+    if(g.c===10){tone(1047*m,.15,'triangle',.12*v)}
+    else if(g.c===66){tone(784*m,.1,'triangle',.12*v);tone(1175*m,.2,'triangle',.12*v,.08)}
+    else if(g.c===520){tone(160,.55,'sawtooth',.05*v,0,1600);tone(1568*m,.35,'triangle',.14*v,.5);tone(2093*m,.4,'sine',.08*v,.55)}
+    else{[523,659,784,1047].forEach((f,i)=>tone(f*m,.3,'square',.06*v,i*.12));tone(1319*m,.6,'triangle',.1*v,.5)}
+  },
+  chat(u){tone(u?880:600,.05,'sine',u?.05:.025)},
+  level(){[523,659,784,1047,1319,1568].forEach((f,i)=>tone(f,.18,'triangle',.12,i*.08))},
+  dm(){tone(500,.15,'sine',.1,0,1400)},
+  reply(){tone(988,.12,'sine',.12);tone(1319,.25,'sine',.12,.1)},
+  broke(){[392,330,262].forEach((f,i)=>tone(f,.25,'square',.06,i*.18))}
+};
+
+function addChat(who,text,cls){
+  const box=$('chat');
+  const d=document.createElement('div');
+  d.className='msg '+(cls||'');
+  if(cls==='sys'){d.textContent=text}
+  else{const w=document.createElement('span');w.className='who';w.textContent=who;d.append(w,document.createTextNode(text))}
+  box.append(d);
+  if(cls!=='sys')sfx.chat(cls==='uncle');
+  if(!reduce&&(cls!=='sys'?Math.random()<.65:Math.random()<.5))danmaku(cls==='sys'?text:text,cls||'');
+  while(box.children.length>40)box.firstChild.remove();
+  box.scrollTop=box.scrollHeight;
+}
+function danmaku(text,cls){
+  const s=$('stage');const d=document.createElement('div');
+  d.className='dan'+(cls==='uncle'?' uncle':cls==='sys'?' gold':'');
+  d.textContent=text;
+  d.style.top=(8+Math.random()*62)+'%';
+  d.style.animationDuration=(5.5+Math.random()*3)+'s';
+  s.append(d);setTimeout(()=>d.remove(),9000);
+}
+function toast(t){
+  const el=$('toast');el.textContent=t;el.classList.add('on');
+  clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1800);
+}
+function render(){
+  $('wallet').textContent=fmt(wallet);
+  $('stageTotal').textContent=fmt(total+others);
+  let i=0;for(let k=0;k<levels.length;k++)if(total>=levels[k].at)i=k;
+  $('level').textContent=levels[i].name;
+  const nx=levels[i+1];
+  if(nx){
+    const span=nx.at-levels[i].at;
+    $('barFill').style.width=Math.min(100,(total-levels[i].at)/span*100)+'%';
+    $('next').textContent='再課 '+fmt(nx.at-total)+' 升級成'+nx.name;
+  }else{
+    $('barFill').style.width='100%';
+    $('next').textContent='已達最高等級，妹妹看到你的 ID 會先深呼吸';
+  }
+  $('refill').hidden=wallet>=10;
+  return levels[i].name;
+}
+function fly(e){
+  if(reduce)return;
+  const s=$('stage');const f=document.createElement('div');
+  f.className='fly';f.textContent=e;
+  f.style.left=(10+Math.random()*75)+'%';
+  s.append(f);setTimeout(()=>f.remove(),1400);
+}
+function send(g){
+  if(wallet<g.c){toast('私房錢不夠了，要動用年終嗎');$('refill').hidden=false;return}
+  const before=render();
+  wallet-=g.c;total+=g.c;
+  combo++;clearTimeout(comboTimer);
+  sfx.gift(g,combo);
+  const cb=$('combo');cb.textContent='×'+combo;cb.classList.add('on');
+  comboTimer=setTimeout(()=>{combo=0;cb.classList.remove('on')},1500);
+  fly(g.e);
+  addChat('','抹茶叔叔 送出 '+g.n+' '+g.e+(combo>1?' ×'+combo+' 連擊':''),'sys');
+  if(Math.random()<.4)setTimeout(()=>addChat('抹茶叔叔',pick(uncleLines),'uncle'),350);
+  if(Math.random()<.35)setTimeout(()=>addChat(pick(viewers),pick(reacts)),800);
+  const after=render();
+  if(after!==before){sfx.level();addChat('','恭喜抹茶叔叔升級為【'+after+'】','sys');toast('升級：'+after)}
+}
+function bubble(cls,text){
+  const th=$('thread');const b=document.createElement('div');
+  b.className='bub '+cls;b.textContent=text;th.append(b);th.scrollTop=th.scrollHeight;return b;
+}
+function block(){
+  blocked=true;sfx.broke();
+  bubble('note','你已被對方封鎖');
+  $('readState').textContent='無法傳送';
+  $('dmBtn').textContent='已被封鎖';$('dmBtn').disabled=true;
+  $('altBtn').hidden=false;
+  addChat('抹茶叔叔','妹妹怎麼封鎖叔叔了 😢','uncle');
+}
+function sendDM(){
+  if(blocked)return;
+  $('empty')?.remove();
+  const st=stages[dmStage];
+  bubble('out',st.asks[dmCount%st.asks.length]);dmCount++;sfx.dm();
+  $('readState').textContent='已送出';
+  $('dmBtn').disabled=true;
+  let ty;
+  setTimeout(()=>{ty=bubble('in typing','對方輸入中⋯')},500);
+  setTimeout(()=>{
+    ty?.remove();
+    if(Math.random()<st.read){$('readState').textContent='已讀不回';}
+    else{bubble('in',pick(st.replies));sfx.reply();$('readState').textContent='已讀';}
+    if(dmCount>=2){
+      dmCount=0;
+      if(dmStage<stages.length-1){dmStage++;}
+      else{block();return;}
+    }
+    $('dmBtn').disabled=false;
+  },1700);
+}
+
+const gbox=$('gifts');
+gifts.forEach(g=>{
+  const b=document.createElement('button');b.type='button';b.className='gift';
+  b.setAttribute('aria-label','送出'+g.n+'，'+g.c+' 鴨幣');
+  b.innerHTML='<span class="e" aria-hidden="true">'+g.e+'</span><span class="n">'+g.n+'</span><span class="c">'+fmt(g.c)+'</span>';
+  b.addEventListener('click',()=>send(g));
+  gbox.append(b);
+});
+$('refill').addEventListener('click',()=>{
+  refills++;wallet+=20000;render();
+  addChat('','抹茶叔叔 挪用了年終獎金（第 '+refills+' 次）','sys');
+  if(refills>=2)setTimeout(()=>addChat(pick(viewers),'叔叔 你的年終還剩多少'),600);
+});
+$('dmBtn').addEventListener('click',sendDM);
+$('altBtn').addEventListener('click',()=>{
+  alts++;blocked=false;dmStage=0;dmCount=0;
+  $('thread').innerHTML='<div class="empty" id="empty">新帳號，妹妹應該認不出來</div>';
+  $('readState').textContent='尚未傳送';
+  $('dmBtn').textContent='傳私訊提要求';$('dmBtn').disabled=false;
+  $('altBtn').hidden=true;
+  addChat('','抹茶叔叔的第 '+alts+' 個小帳 進入直播間','sys');
+  if(alts>=2)setTimeout(()=>addChat(pick(viewers),'這個小帳的頭貼好眼熟'),700);
+});
+['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,initAudio,{once:true}));
+$('snd').addEventListener('click',()=>{
+  initAudio();
+  if(!ac){toast('這個瀏覽器不支援音效');return}
+  soundOn=!soundOn;
+  $('snd').textContent=soundOn?'🔊 音效開':'🔇 靜音';
+  $('snd').setAttribute('aria-pressed',String(soundOn));
+  if(soundOn)sfx.reply();
+});
+
+(function autoChat(){
+  const r=Math.random();
+  if(r<.28)addChat('抹茶叔叔',pick(uncleLines),'uncle');
+  else if(r<.42)addChat(pick(viewers),pick(reacts));
+  else addChat(pick(viewers),pick(chatter));
+  setTimeout(autoChat,1000+Math.random()*1500);
+})();
+(function otherGift(){
+  const g=Math.random()<.75?gifts[Math.floor(Math.random()*2)]:gifts[2];
+  others+=g.c;fly(g.e);sfx.gift(g,1,true);
+  addChat('',pick(viewers)+' 送出 '+g.n+' '+g.e,'sys');
+  render();
+  setTimeout(otherGift,4000+Math.random()*4000);
+})();
+(function autoUncle(){
+  const g=Math.random()<.55?gifts[2]:pick(gifts);
+  if(wallet>=g.c){uncleBroke=false;send(g);if(Math.random()<.5)setTimeout(()=>send(g),300);}
+  else if(!uncleBroke){uncleBroke=true;sfx.broke();addChat('抹茶叔叔','叔叔私房錢用完了 等等去轉帳','uncle');}
+  setTimeout(autoUncle,5000+Math.random()*4000);
+})();
+setInterval(()=>{$('viewers').textContent='LIVE '+fmt(1200+Math.floor(Math.random()*180))},3000);
+
+[['只是來看卡的','新卡上架了'],['河童','好色的下僕'],['抹茶叔叔','我最喜歡下僕誘惑我了','uncle'],['潛水三年','樓上叔叔好熟悉'],['深夜不睡','又是這個叔叔']]
+  .forEach(m=>addChat(m[0],m[1],m[2]));
+render();
+</script>
+
+</html>

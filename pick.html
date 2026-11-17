@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="zh-Hant"><head>
+    
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CaveDuck 繁中作者私心推薦</title>
+<meta name="description" content="鴨答鴨答 CaveDuck 繁中作者私心推坑圖鑑，女性向、男性向、同志向、多平台作者一次逛。">
+<meta property="og:title" content="CaveDuck 繁中作者私心推薦">
+<meta property="og:description" content="私心推坑作者圖鑑，點進主頁挖下一個本命。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&amp;family=LXGW+WenKai+TC:wght@400;700&amp;family=Fredoka:wght@600;700&amp;display=swap" rel="stylesheet">
+<style id="app-style">
+:root{
+  --bg:#f5efe2;
+  --grid:#e9e1cf;
+  --ink:#2b2a27;
+  --soft:#6b665c;
+  --green:#6cc23a;
+  --pink:#f27aa8;
+  --pink-l:#f9c0d8;
+  --sky:#7fc4ea;
+  --sky-l:#a3d9f4;
+  --lime:#d3ec62;
+  --lime-l:#d3ec62;
+  --lav:#a993f0;
+  --lav-l:#c4b4f6;
+  --yellow:#fde45a;
+  --butter:#fff3b0;
+  --mint-l:#aee6c4;
+  --peach:#ffcda3;
+  --paper:#fffdf8;
+  --line:#e4ecf5;
+  --margin:#f6b3cc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px;
+  color:var(--ink);
+  font-family:"Huninn","LXGW WenKai TC",system-ui,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;color:var(--ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+body.editing .wrap,body.can-edit .wrap{padding-bottom:120px}
+
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;font-family:"Fredoka",sans-serif;font-weight:600;font-size:12px;letter-spacing:.1em}
+.topbar .mid{font-weight:700;letter-spacing:.24em}
+.topbar .right{text-align:right}
+
+.hero{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:18px 34px;margin:26px 0 18px}
+.title{position:relative;font-weight:400;line-height:1}
+.kicker{
+  display:table;margin:0 0 16px;padding:4px 14px 3px;font-family:"Fredoka","Huninn",sans-serif;font-weight:700;
+  font-size:clamp(13px,3vw,16px);letter-spacing:.06em;background:var(--paper);border:2px solid var(--ink);
+  border-radius:999px;box-shadow:2px 3px 0 var(--ink);rotate:-2deg;
+}
+.kicker b{color:var(--pink);font-weight:700}
+.t1{display:flex;gap:8px}
+.blk{
+  display:grid;place-items:center;width:1.16em;height:1.16em;
+  font-size:clamp(40px,10.5vw,78px);font-style:normal;color:var(--ink);
+  border:3px solid var(--ink);border-radius:12px;box-shadow:3px 4px 0 var(--ink);
+  -webkit-text-stroke:5px #fff;paint-order:stroke fill;
+}
+.b-pink{background:var(--pink-l)}.b-lime{background:var(--lime)}.b-sky{background:var(--sky-l)}.b-lav{background:var(--lav-l)}
+.blk:nth-child(odd){rotate:-4deg}
+.blk:nth-child(even){rotate:3deg;translate:0 7px}
+
+.t2{
+  display:block;margin:18px 0 0 .25em;font-size:clamp(32px,8vw,58px);letter-spacing:.08em;
+  color:var(--pink);-webkit-text-stroke:8px var(--ink);paint-order:stroke fill;rotate:-3deg;
+}
+.badge{
+  position:absolute;top:34px;right:-22px;font-style:normal;
+  font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(16px,3.6vw,24px);
+  color:var(--ink);background:var(--lime);border:2.5px solid var(--ink);
+  padding:1px 12px;border-radius:999px;rotate:12deg;box-shadow:2px 3px 0 var(--ink);
+}
+.tagline{
+  font-family:"LXGW WenKai TC",cursive;font-weight:700;color:var(--ink);
+  font-size:clamp(16px,3.4vw,21px);line-height:1.8;rotate:-3deg;
+}
+.tagline div:nth-child(2){padding-left:1.5em}
+.tagline div:nth-child(3){padding-left:3em}
+.tagline mark{color:inherit;background:linear-gradient(transparent 58%,var(--yellow) 58%)}
+.deco{position:absolute;pointer-events:none}
+
+.tagbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px}
+.chip{
+  font-size:14px;cursor:pointer;background:var(--paper);border:2px solid var(--ink);
+  border-radius:999px;padding:5px 12px 4px;transition:transform .15s,background .15s;
+  display:inline-flex;align-items:center;
+}
+.chip i{font-style:normal;font-size:11px;color:var(--soft);margin-left:4px}
+.chip .x{margin-left:7px;font-size:15px;line-height:1;opacity:.45;padding:0 2px}
+.chip .x:hover{opacity:1;color:#d0453a}
+.chip:hover{transform:rotate(-2deg) scale(1.04)}
+.chip.on{background:var(--yellow);box-shadow:2px 3px 0 var(--ink)}
+.chip.on i{color:var(--ink)}
+.chip.brush{background:var(--green);color:#fff;box-shadow:2px 3px 0 var(--ink)}
+.chip.brush i,.chip.brush .x{color:#fff}
+.chip-input{
+  font-family:inherit;font-size:16px;width:120px;border:2px dashed var(--ink);
+  border-radius:999px;padding:4px 12px;background:transparent;color:var(--ink);outline:none;
+}
+.chip-input:focus{background:var(--paper);border-style:solid}
+
+.tag-note{
+  position:relative;display:inline-block;max-width:100%;margin:6px 0 22px 4px;
+  font-family:"LXGW WenKai TC",cursive;font-size:15px;line-height:1.6;color:var(--ink);
+  background:var(--butter);border:2px solid var(--ink);padding:12px 16px 10px;border-radius:6px;rotate:-1deg;
+  box-shadow:2px 3px 0 rgba(43,42,39,.22);
+}
+.tag-note::before{
+  content:"";position:absolute;top:-9px;left:22px;width:52px;height:16px;rotate:-6deg;
+  background:rgba(242,122,168,.5);
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 4px,transparent 4px 8px);
+}
+
+.hint{
+  font-family:"LXGW WenKai TC",cursive;font-size:15px;line-height:1.5;
+  background:var(--lav-l);border:2px solid var(--ink);border-radius:14px;
+  padding:8px 12px;margin:0 0 18px;box-shadow:2px 3px 0 var(--ink);
+}
+.hint b{font-family:"Huninn",sans-serif;font-weight:400;background:var(--paper);padding:0 6px;border-radius:6px}
+
+/* 分區索引頁籤 */
+.days{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:0 12px 0 40px}
+.day{
+  cursor:pointer;text-align:center;background:var(--paper);
+  border:2.5px solid var(--ink);border-bottom:none;border-radius:14px 14px 0 0;
+  padding:8px 4px 10px;translate:0 8px;transition:translate .15s,background .15s;
+}
+.day b{display:block;font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(13px,3.2vw,19px);letter-spacing:.06em}
+.day small{font-size:12px;color:var(--soft)}
+.day:hover{translate:0 3px}
+.day.on{background:var(--yellow);translate:0 2px}
+
+/* 筆記本 */
+.notebook{position:relative;padding-left:22px}
+.spiral{
+  position:absolute;left:0;top:26px;bottom:26px;width:44px;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 16px 6px at 50% 50%,#f3f5fa 0 50%,#8b94aa 56% 70%,transparent 75%) 0 0/44px 30px repeat-y;
+}
+.board{
+  position:relative;background-color:var(--paper);
+  background-image:
+    linear-gradient(90deg,transparent 48px,var(--margin) 48px,var(--margin) 50px,transparent 50px),
+    linear-gradient(transparent 31px,var(--line) 31px);
+  background-size:100% 100%,100% 32px;
+  border:2.5px solid var(--ink);border-radius:6px 22px 22px 6px;
+  box-shadow:7px 9px 0 rgba(43,42,39,.18);
+  padding:30px 18px 30px 64px;
+}
+.section{margin-bottom:40px}
+.section:last-child{margin-bottom:0}
+.sec-head{display:flex;align-items:flex-end;flex-wrap:wrap;gap:6px 14px;margin:0 4px 20px}
+.sticker{
+  display:inline-block;rotate:-2deg;padding:7px 22px 5px;
+  font-size:clamp(22px,5vw,30px);color:var(--ink);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.5) 0 6px,transparent 6px 12px);
+  clip-path:polygon(0 10%,4% 0,50% 5%,96% 0,100% 12%,98% 50%,100% 90%,95% 100%,50% 95%,5% 100%,0 88%,2% 50%);
+}
+.sec-en{font-family:"Fredoka",sans-serif;font-weight:700;font-size:14px;letter-spacing:.12em;color:var(--soft)}
+.sec-desc{font-family:"LXGW WenKai TC",cursive;font-size:15px;color:var(--soft);width:100%}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:22px 16px}
+.card{
+  position:relative;display:flex;flex-direction:column;gap:8px;
+  border:2px solid var(--ink);border-radius:6px;padding:18px 12px 12px;
+  rotate:var(--r,0deg);box-shadow:3px 4px 0 rgba(43,42,39,.24);
+  transition:rotate .18s,translate .18s,box-shadow .18s,opacity .2s,filter .2s;
+  animation:pop .35s ease backwards;
+}
+.grid .card:nth-child(4n+1){--r:-1.4deg}
+.grid .card:nth-child(4n+2){--r:1deg}
+.grid .card:nth-child(4n+3){--r:-.6deg}
+.grid .card:nth-child(4n){--r:1.5deg}
+.card::before{
+  content:"";position:absolute;top:-11px;left:50%;width:58px;height:19px;translate:-50% 0;rotate:-4deg;
+  background:rgba(255,255,255,.65);
+  background-image:repeating-linear-gradient(90deg,rgba(127,196,234,.45) 0 5px,transparent 5px 10px);
+  border-left:1px dashed rgba(43,42,39,.3);border-right:1px dashed rgba(43,42,39,.3);
+}
+.grid .card:nth-child(even)::before{background-image:repeating-linear-gradient(90deg,rgba(242,122,168,.35) 0 5px,transparent 5px 10px)}
+.card:hover{rotate:0deg;translate:0 -3px;box-shadow:4px 6px 0 var(--ink)}
+@keyframes pop{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+body.editing .card{cursor:pointer;outline:2px dashed rgba(43,42,39,.3);outline-offset:-7px;animation:none}
+.card.dim{opacity:.42;filter:saturate(.5)}
+.card.dim:hover{opacity:.75}
+.card.has{outline:3px solid var(--ink)!important;outline-offset:-4px!important}
+.card.has::after{
+  content:"✓";position:absolute;top:-10px;left:-8px;width:26px;height:26px;border-radius:50%;
+  background:var(--yellow);color:var(--ink);border:2px solid var(--ink);display:grid;place-items:center;
+  font-family:"Fredoka",sans-serif;font-weight:700;font-size:14px;
+}
+.card-top{display:flex;align-items:center;gap:8px;min-width:0}
+.avatar{
+  flex:none;width:36px;height:36px;border-radius:50%;background:var(--paper);border:2px solid var(--ink);
+  display:grid;place-items:center;font-family:"Fredoka",sans-serif;font-weight:700;font-size:17px;
+}
+.handle{font-family:"Fredoka","Huninn",sans-serif;font-weight:700;font-size:17px;line-height:1.15;word-break:break-all}
+.handle.blank{color:var(--soft);font-weight:600}
+.row{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.88);border:1.5px solid rgba(43,42,39,.18);border-radius:999px;padding:4px 10px;font-size:13px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.row svg{flex:none;width:15px;height:15px}
+a.row:hover{background:#fff;border-color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:12px;border:1.5px solid var(--ink);border-radius:999px;padding:1px 8px;background:#fff}
+.note{align-self:flex-start;font-family:"LXGW WenKai TC",cursive;font-weight:700;font-size:14px;line-height:1.4;background:rgba(255,255,255,.75);border:1.5px dashed var(--ink);border-radius:8px;padding:2px 9px 1px;rotate:-1.5deg}
+.note::before{content:"✦ ";color:var(--pink)}
+.sticker-star{position:absolute;top:-17px;right:4px;width:36px;height:36px;rotate:14deg;filter:drop-shadow(1px 2px 0 rgba(43,42,39,.35))}
+.empty{
+  grid-column:1/-1;text-align:center;padding:28px 10px;font-family:"LXGW WenKai TC",cursive;
+  font-size:17px;color:var(--soft);border:2px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.7);
+}
+.c-pink{background-color:var(--pink-l)}.c-sky{background-color:var(--sky-l)}.c-lime{background-color:var(--lime-l)}.c-yellow{background-color:var(--yellow)}.c-peach{background-color:var(--peach)}
+.c-lav{background-color:var(--lav-l)}.c-butter{background-color:var(--butter)}.c-mint{background-color:var(--mint-l)}.c-white{background-color:#fff}
+
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:34px}
+.stamp{
+  width:100px;height:100px;border-radius:50%;display:grid;place-items:center;text-align:center;
+  font-family:"Fredoka",sans-serif;font-weight:700;font-size:24px;line-height:1.05;color:var(--pink);
+  border:3px solid var(--pink);background:rgba(255,255,255,.7);rotate:-12deg;
+  box-shadow:inset 0 0 0 4px rgba(255,255,255,.9),inset 0 0 0 6px var(--pink);
+}
+.stamp small{display:block;font-family:"Huninn",sans-serif;font-weight:400;font-size:12px;letter-spacing:.1em;margin-top:2px}
+.foot-line{font-family:"LXGW WenKai TC",cursive;font-weight:700;color:var(--ink);font-size:19px;line-height:1.8;text-align:right;rotate:-3deg}
+.foot-line mark{color:inherit;background:linear-gradient(transparent 58%,var(--yellow) 58%)}
+
+/* 底部工具列 */
+.dock{
+  position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:40;
+  display:flex;gap:4px;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px;
+  padding:5px;box-shadow:3px 4px 0 var(--ink);max-width:calc(100% - 24px);overflow-x:auto;
+}
+.dock:empty{display:none}
+.dock button{font-size:14px;border:none;background:none;padding:8px 13px;border-radius:999px;white-space:nowrap;cursor:pointer}
+.dock button:hover{background:var(--bg)}
+.dock .primary{background:var(--green);color:#fff}
+.dock .primary:hover{background:#5aae2c}
+.dock .ghost{color:var(--soft);font-size:13px}
+
+/* 編輯面板 */
+.sheet-bg{position:fixed;inset:0;z-index:50;background:rgba(43,42,39,.38);display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.open{display:flex}
+.sheet{
+  width:100%;max-width:480px;max-height:88vh;overflow:auto;background:var(--paper);
+  border:3px solid var(--ink);border-bottom:none;border-radius:24px 24px 0 0;padding:16px 16px 22px;
+}
+@media (min-width:600px){
+  .sheet-bg{align-items:center;padding:20px}
+  .sheet{border-bottom:3px solid var(--ink);border-radius:24px;box-shadow:5px 6px 0 var(--ink)}
+}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sheet-head b{font-weight:400;font-size:22px}
+.field{display:block;margin-bottom:14px}
+.field > span{display:block;font-size:13px;color:var(--soft);margin-bottom:6px}
+.field input,.field textarea{
+  width:100%;font-family:inherit;font-size:16px;color:var(--ink);background:#fff;
+  border:2px solid var(--ink);border-radius:12px;padding:8px 10px;outline:none;resize:vertical;
+}
+.field input:focus,.field textarea:focus{box-shadow:2px 3px 0 var(--green)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button,.pick{font-size:14px;cursor:pointer;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 12px 4px}
+.seg button.on{background:var(--pink-l)}
+.picks{display:flex;flex-wrap:wrap;gap:6px}
+.pick.on{background:var(--yellow);box-shadow:2px 2px 0 var(--ink)}
+.pf{display:grid;grid-template-columns:1fr 1.8fr auto;gap:6px;margin-bottom:6px}
+.pf input{padding:6px 8px;font-size:16px}
+.pf button,.mini{font-size:14px;cursor:pointer;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:4px 10px}
+.mini{border-style:dashed}
+.btn-done{font-size:15px;cursor:pointer;background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:6px 16px}
+.danger{margin-top:6px;font-size:14px;cursor:pointer;background:none;border:none;color:#c2433a;text-decoration:underline;text-underline-offset:3px}
+
+.toast{
+  position:fixed;top:14px;left:50%;transform:translate(-50%,-80px);z-index:60;
+  background:var(--ink);color:#fff;padding:8px 16px;border-radius:999px;font-size:14px;
+  transition:transform .25s;max-width:calc(100% - 32px);text-align:center;
+}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:520px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:20px 10px}
+  .card{padding:16px 9px 10px}
+  .handle{font-size:15px}
+  .avatar{width:30px;height:30px;font-size:14px}
+  .row{font-size:12px;padding:4px 8px}
+  .notebook{padding-left:16px}
+  .spiral{width:32px;background-size:32px 26px}
+  .board{padding:24px 10px 24px 40px;background-image:
+    linear-gradient(90deg,transparent 30px,var(--margin) 30px,var(--margin) 32px,transparent 32px),
+    linear-gradient(transparent 31px,var(--line) 31px)}
+  .days{margin:0 6px 0 26px;gap:3px}
+  .day{padding:9px 2px 11px}
+  .day b{display:none}
+  .day small{font-size:13px;color:var(--ink)}
+  .badge{right:-6px}
+  .deco-hide{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>VOL.01<br>#私心推坑</div>
+    <div class="mid">CREATOR NOTEBOOK</div>
+    <div class="right">CAVEDUCK<br>鴨答鴨答 繁中場</div>
+  </div>
+
+  <header class="hero">
+    <h1 class="title">
+      <span class="kicker">CaveDuck <b>✦</b> 繁中作者私心推薦</span>
+      <span class="t1"><i class="blk b-pink">私</i><i class="blk b-lime">心</i><i class="blk b-sky">推</i><i class="blk b-lav">坑</i></span>
+      <span class="t2">繁中作者圖鑑</span>
+      <em class="badge">Pick!</em>
+    </h1>
+    <div class="tagline">
+      <div>逛主頁 聊角色 <mark>挖寶藏</mark></div>
+      <div>換個口味</div>
+      <div>遇見下一個本命</div>
+    </div>
+    <svg class="deco " style="width:34px;top:-6px;right:4%;rotate:12deg" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.5 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.5l6.6-.8z" fill="#fde45a" stroke="#2b2a27" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+    <svg class="deco deco-hide" style="width:22px;bottom:4px;right:22%;rotate:-18deg" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.5 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.5l6.6-.8z" fill="#f9a8c8" stroke="#2b2a27" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+    <svg class="deco deco-hide" style="width:26px;top:40%;right:-4px;rotate:8deg" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.5 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.5l6.6-.8z" fill="#a3d9f4" stroke="#2b2a27" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+  </header>
+
+  <div class="tagbar" id="tagbar"></div>
+  <p class="tag-note">這些標籤是我私心覺得大家特別拿手的類型 (๑ˊᵕˋ๑)<br>每位作者能寫的都不只這樣，點進主頁慢慢挖，會有好多驚喜等著你 ♡</p>
+  <div id="hint"></div>
+
+  <nav class="days" id="days"></nav>
+  <div class="notebook">
+    <div class="spiral"></div>
+    <main class="board" id="board"></main>
+  </div>
+
+  <footer class="foot">
+    <div class="stamp"><div>PICK!<small>繁中場</small></div></div>
+    <div class="foot-line">這是一份<mark>沒有排名</mark>的書單<br>點進去，就是新的坑</div>
+  </footer>
+</div>
+
+<div class="dock" id="dock"></div>
+<div class="sheet-bg" id="sheetBg"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script id="data" type="application/json">
+{
+ "editable": false,
+ "tags": [
+  "單人角",
+  "模擬器",
+  "機制",
+  "BL",
+  "BG",
+  "獸人非人",
+  "古風",
+  "大奶黨"
+ ],
+ "creators": [
+  {
+   "id": "Matcha_",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG",
+    "獸人非人",
+    "古風",
+    "大奶黨"
+   ],
+   "note": "色龜寫卡"
+  },
+  {
+   "id": "cherrie.dawn",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "獸人非人",
+    "古風",
+    "機制"
+   ],
+   "note": "六邊形戰士"
+  },
+  {
+   "id": "gogogoyin",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG",
+    "機制"
+   ],
+   "note": "有自己的美學標準"
+  },
+  {
+   "id": "web_haseki",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "機制"
+   ],
+   "note": ""
+  },
+  {
+   "id": "angu_",
+   "group": "female",
+   "tags": [
+    "BL",
+    "BG",
+    "獸人非人",
+    "機制"
+   ],
+   "note": "",
+   "star": true
+  },
+  {
+   "id": "rikka_hanairo",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG"
+   ],
+   "note": ""
+  },
+  {
+   "id": "RRR3",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG"
+   ],
+   "note": "很會寫特定題材"
+  },
+  {
+   "id": "Olivia_0",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG"
+   ],
+   "note": ""
+  },
+  {
+   "id": "sinking_fish",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "獸人非人",
+    "機制"
+   ],
+   "note": "資工女寫模擬器"
+  },
+  {
+   "id": "Prysline",
+   "group": "female",
+   "tags": [
+    "BG",
+    "單人角",
+    "機制"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Rococo_Cocoa",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "獸人非人",
+    "機制"
+   ],
+   "note": "奇思妙想"
+  },
+  {
+   "id": "ririka18__",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG"
+   ],
+   "note": "角色卡設定都很完整"
+  },
+  {
+   "id": "Unca",
+   "group": "gay",
+   "tags": [
+    "BL",
+    "單人角",
+    "機制"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Qxc.__",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG",
+    "獸人非人"
+   ],
+   "note": "非常細膩的情感描寫"
+  },
+  {
+   "id": "yuuri__uzi",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG",
+    "獸人非人"
+   ],
+   "note": "色龜優哥無情推薦"
+  },
+  {
+   "id": "yuyi_0",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Milly",
+   "group": "female",
+   "tags": [
+    "單人角",
+    "BG"
+   ],
+   "note": "",
+   "star": true
+  },
+  {
+   "id": "-__-a",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG"
+   ],
+   "note": ""
+  },
+  {
+   "id": "CYKuan75",
+   "group": "female",
+   "tags": [
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "777_Nightcat",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "機制",
+    "獸人非人"
+   ],
+   "note": ""
+  },
+  {
+   "id": "NANA.tw",
+   "group": "female",
+   "tags": [
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Ivy14740714",
+   "group": "female",
+   "tags": [
+    "模擬器",
+    "BG",
+    "機制",
+    "獸人非人"
+   ],
+   "note": "題材多元"
+  },
+  {
+   "id": "Gentuoman",
+   "group": "male",
+   "tags": [
+    "大奶黨",
+    "模擬器",
+    "單人角"
+   ],
+   "note": "意外雜食黨本命大奶"
+  },
+  {
+   "id": "AragamiAku",
+   "group": "male",
+   "tags": [
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Uncle_Squid001",
+   "group": "male",
+   "tags": [
+    "大奶黨",
+    "單人角"
+   ],
+   "note": "不是大奶我可不吃ㄛ"
+  },
+  {
+   "id": "Mr.Yellow",
+   "group": "gay",
+   "tags": [
+    "BL",
+    "單人角",
+    "模擬器"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Mayrain55555",
+   "group": "multi",
+   "tags": [
+    "單人角",
+    "BG",
+    "獸人非人",
+    "古風"
+   ],
+   "note": "細緻的古風"
+  },
+  {
+   "id": "lyu",
+   "group": "multi",
+   "tags": [
+    "單人角",
+    "BG",
+    "獸人非人"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Moyan",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "獸人非人",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "official.emostore",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Hot_pot",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "獸人非人",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "nov",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "獸人非人",
+    "單人角"
+   ],
+   "note": "無情多平台超人"
+  },
+  {
+   "id": "Lovelycat",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "單人角",
+    "模擬器",
+    "古風"
+   ],
+   "note": "古風、大世界觀"
+  },
+  {
+   "id": "J_CNa",
+   "group": "multi",
+   "tags": [
+    "模擬器",
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "namai999",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "Hypen",
+   "group": "multi",
+   "tags": [
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  },
+  {
+   "id": "lyre273",
+   "group": "multi",
+   "tags": [
+    "BL",
+    "BG",
+    "單人角"
+   ],
+   "note": ""
+  }
+ ]
+}
+</script>
+
+<script id="app">
+let SOURCE = '';
+try {
+  // 只留自己的樣式和程式，預覽視窗或擴充功能塞進來的東西一律拿掉
+  const doc = new DOMParser().parseFromString('<!doctype html>' + document.documentElement.outerHTML, 'text/html');
+  doc.querySelectorAll('script').forEach(el => { if (el.id !== 'data' && el.id !== 'app') el.remove(); });
+  doc.querySelectorAll('style').forEach(el => { if (el.id !== 'app-style') el.remove(); });
+  [...doc.documentElement.attributes].forEach(a => { if (a.name !== 'lang') doc.documentElement.removeAttribute(a.name); });
+  ['days','tagbar','hint','board','dock','sheet','toast'].forEach(id => { const el = doc.getElementById(id); if (el) el.innerHTML = ''; });
+  doc.body.removeAttribute('class'); doc.body.removeAttribute('id');
+  SOURCE = '<!doctype html>\n' + doc.documentElement.outerHTML;
+} catch (e) {}
+
+const GROUPS = [
+  {id:'female', name:'女性向',     en:'FOR HER',    color:'c-pink', desc:'心動、拉扯、被偏愛的那種'},
+  {id:'male',   name:'男性向',     en:'FOR HIM',    color:'c-sky',  desc:'老司機請上車'},
+  {id:'gay',    name:'同志向',     en:'RAINBOW',    color:'c-lav',  desc:'寫給同志的心動'},
+  {id:'multi',  name:'多平台超人', en:'EVERYWHERE', color:'c-lime', desc:'哪個平台都找得到他們'},
+];
+const PALETTE = ['c-pink','c-yellow','c-sky','c-lime','c-lav','c-mint','c-peach'];
+const DRAFT_KEY = 'pick-guide-draft-v1';
+
+const FILE_DATA = JSON.parse(document.getElementById('data').textContent);
+const canEdit = !!FILE_DATA.editable || new URLSearchParams(location.search).has('edit');
+
+let uid = 0;
+function prep(d){
+  const out = JSON.parse(JSON.stringify(d));
+  out.tags = out.tags || [];
+  out.creators = (out.creators || []).map(c => ({
+    _k: ++uid, id: c.id || '', group: c.group || 'female',
+    tags: c.tags || [], note: c.note || '', others: c.others || [], star: !!c.star
+  }));
+  return out;
+}
+
+// 檔案內容的指紋：換了新檔案就不讀舊的自動存檔
+const FILE_SIG = (() => {
+  const s = document.getElementById('data').textContent;
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return String(h);
+})();
+
+let data = prep(FILE_DATA);
+if (canEdit) {
+  try {
+    const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    if (d && d.base === FILE_SIG && d.data) data = prep(d.data);
+  } catch (e) {}
+}
+
+let editing = !!FILE_DATA.editable;
+let state = {group:'all', tag:null, brush:null};
+let viewOrder = [];
+let sheetFor = null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const url = id => 'https://caveduck.io/zh-hant/user/' + encodeURIComponent(id.trim());
+const initial = id => (id.match(/[A-Za-z0-9]/) || ['?'])[0].toUpperCase();
+const byKey = k => data.creators.find(c => c._k === +k);
+
+function shuffle(a){
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+  return b;
+}
+function allTags(){
+  const t = data.tags.slice();
+  data.creators.forEach(c => c.tags.forEach(x => { if (!t.includes(x)) t.push(x); }));
+  return t;
+}
+
+// 自己畫的確認框，預覽視窗會擋掉瀏覽器內建的 confirm
+function ask(msg){
+  return new Promise(resolve => {
+    const bg = document.createElement('div');
+    bg.className = 'sheet-bg open';
+    bg.style.zIndex = 70;
+    bg.innerHTML = `<div class="sheet" style="max-width:360px">
+      <p style="font-size:16px;line-height:1.6;margin-bottom:16px">${esc(msg)}</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="mini" data-v="0" style="border-style:solid">取消</button>
+        <button class="btn-done" data-v="1">確定</button>
+      </div></div>`;
+    const done = v => { bg.remove(); resolve(v); };
+    bg.addEventListener('click', e => {
+      const b = e.target.closest('[data-v]');
+      if (b) done(b.dataset.v === '1'); else if (e.target === bg) done(false);
+    });
+    document.body.appendChild(bg);
+  });
+}
+
+let toastTimer;
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+let saveTimer;
+function save(quiet){
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({base: FILE_SIG, data})); } catch (e) { return; }
+  if (!quiet) { clearTimeout(saveTimer); saveTimer = setTimeout(() => toast('已自動儲存'), 600); }
+}
+
+const pin = '<svg viewBox="0 0 24 24" fill="none" stroke="#2b2a27" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>';
+const dot = '<svg viewBox="0 0 24 24" fill="none" stroke="#2b2a27" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+const clover = '<svg class="sticker-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.5 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.5l6.6-.8z" fill="#fde45a" stroke="#2b2a27" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+
+/* ---------- 畫面 ---------- */
+function renderDays(){
+  const opts = [{id:'all', name:'全部', en:'ALL.'}].concat(GROUPS.map(g => ({id:g.id, name:g.name, en:g.en.split(' ').pop() + '.'})));
+  $('days').innerHTML = opts.map(o =>
+    `<button class="day ${state.group === o.id ? 'on' : ''}" data-g="${o.id}"><b>${esc(o.en)}</b><small>${esc(o.name)}</small></button>`).join('');
+}
+
+function renderTags(){
+  const pool = data.creators.filter(c => state.group === 'all' || c.group === state.group);
+  let html = allTags().map(t => {
+    const n = pool.filter(c => c.tags.includes(t)).length;
+    const cls = editing ? (state.brush === t ? 'chip brush' : 'chip') : (state.tag === t ? 'chip on' : 'chip');
+    const x = editing ? `<span class="x" data-del="${esc(t)}" title="刪除標籤">×</span>` : '';
+    return `<button class="${cls}" data-t="${esc(t)}">${esc(t)}<i>${n}</i>${x}</button>`;
+  }).join('');
+  if (editing) html += `<input class="chip-input" id="newTag" placeholder="+ 新標籤" maxlength="14">`;
+  $('tagbar').innerHTML = html;
+}
+
+function renderHint(){
+  if (!editing) { $('hint').innerHTML = ''; return; }
+  $('hint').innerHTML = state.brush
+    ? `<div class="hint">正在貼 <b>${esc(state.brush)}</b>，點作者卡片就會貼上，再點一次拿掉。貼完再點一下粉紅色標籤收起來。</div>`
+    : `<div class="hint">先點上面任一個標籤，再一張張點作者卡片就能貼上。直接點卡片可以改分區、寫專屬小字、加其他平台。</div>`;
+}
+
+function card(c, i){
+  const color = PALETTE[i % PALETTE.length];
+  const tags = c.tags.length ? `<div class="tags">${c.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : '';
+  const note = c.note ? `<p class="note">${esc(c.note)}</p>` : '';
+  const others = c.others.filter(o => o.url && o.url.trim());
+  const name = c.id.trim() ? `<span class="handle">${esc(c.id)}</span>` : `<span class="handle blank">未命名</span>`;
+  let cls = 'card ' + color;
+  let rows;
+  if (editing) {
+    if (state.brush) cls += c.tags.includes(state.brush) ? ' has' : ' dim';
+    rows = `<span class="row">${pin}鴨答主頁</span>` + others.map(o => `<span class="row">${dot}${esc(o.name || '其他平台')}</span>`).join('');
+  } else {
+    rows = `<a class="row" href="${url(c.id)}" target="_blank" rel="noopener">${pin}鴨答主頁</a>` +
+      others.map(o => `<a class="row" href="${esc(o.url)}" target="_blank" rel="noopener">${dot}${esc(o.name || '其他平台')}</a>`).join('');
+  }
+  return `<div class="${cls}" data-k="${c._k}" style="animation-delay:${Math.min(i, 20) * 25}ms">
+    ${c.star ? clover : ''}
+    <div class="card-top"><span class="avatar">${esc(initial(c.id))}</span>${name}</div>
+    ${note}${tags}${rows}
+  </div>`;
+}
+
+function renderBoard(){
+  const src = editing ? data.creators : viewOrder;
+  const groups = GROUPS.filter(g => state.group === 'all' || g.id === state.group);
+  let html = groups.map(g => {
+    let list = src.filter(c => c.group === g.id);
+    if (!editing && state.tag) list = list.filter(c => c.tags.includes(state.tag));
+    if (!editing && state.tag && !list.length && state.group === 'all') return '';
+    return `<section class="section">
+      <div class="sec-head">
+        <span class="sticker ${g.color}">${esc(g.name)}</span>
+        <span class="sec-en">${esc(g.en)} · ${list.length}</span>
+        <span class="sec-desc">${esc(g.desc)}</span>
+      </div>
+      <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">這區還在挖寶中，先去別區逛逛</div>'}</div>
+    </section>`;
+  }).join('');
+  if (!html) html = `<div class="grid"><div class="empty">「${esc(state.tag)}」還沒放人</div></div>`;
+  $('board').innerHTML = html;
+}
+
+function renderDock(){
+  document.body.classList.toggle('can-edit', canEdit && !editing);
+  if (editing) {
+    $('dock').innerHTML = `
+      <button class="primary" data-act="add">+ 新增作者</button>
+      <button data-act="preview">預覽</button>
+      <button data-act="work">存工作檔</button>
+      <button data-act="final">下載成品</button>
+      <button data-act="copy">複製成品 HTML</button>
+      <button class="ghost" data-act="reset">還原</button>`;
+  } else if (canEdit) {
+    $('dock').innerHTML = `<button class="primary" data-act="edit">繼續編輯</button>`;
+  } else {
+    $('dock').innerHTML = '';
+  }
+}
+
+function render(){
+  document.body.classList.toggle('editing', editing);
+  renderDays(); renderTags(); renderHint(); renderBoard(); renderDock();
+}
+
+/* ---------- 標籤 ---------- */
+function addTag(name){
+  name = (name || '').trim();
+  if (!name) return;
+  if (allTags().includes(name)) { state.brush = name; render(); return; }
+  data.tags.push(name);
+  state.brush = name;
+  save(true); render();
+  toast(`點作者卡片就能貼上「${name}」`);
+}
+async function delTag(t){
+  if (!(await ask(`刪掉「${t}」？已經貼上的作者也會一起拿掉`))) return;
+  data.tags = data.tags.filter(x => x !== t);
+  data.creators.forEach(c => c.tags = c.tags.filter(x => x !== t));
+  if (state.brush === t) state.brush = null;
+  if (state.tag === t) state.tag = null;
+  save(); render();
+}
+
+$('days').addEventListener('click', e => {
+  const b = e.target.closest('.day'); if (!b) return;
+  state.group = b.dataset.g; render();
+});
+$('tagbar').addEventListener('click', e => {
+  const del = e.target.closest('[data-del]');
+  if (del) { e.stopPropagation(); delTag(del.dataset.del); return; }
+  const b = e.target.closest('.chip'); if (!b) return;
+  const t = b.dataset.t;
+  if (editing) state.brush = state.brush === t ? null : t;
+  else state.tag = state.tag === t ? null : t;
+  render();
+});
+$('tagbar').addEventListener('keydown', e => {
+  if (e.target.id === 'newTag' && e.key === 'Enter') { e.preventDefault(); const v = e.target.value; e.target.value = ''; addTag(v); }
+});
+$('tagbar').addEventListener('change', e => {
+  if (e.target.id === 'newTag' && e.target.value.trim()) { const v = e.target.value; e.target.value = ''; addTag(v); }
+});
+
+$('board').addEventListener('click', e => {
+  if (!editing) return;
+  const el = e.target.closest('.card'); if (!el) return;
+  const c = byKey(el.dataset.k); if (!c) return;
+  if (state.brush) {
+    const t = state.brush;
+    c.tags = c.tags.includes(t) ? c.tags.filter(x => x !== t) : c.tags.concat(t);
+    save(true); renderTags(); renderBoard();
+  } else {
+    openSheet(c);
+  }
+});
+
+/* ---------- 編輯面板 ---------- */
+function openSheet(c){ sheetFor = c; drawSheet(); $('sheetBg').classList.add('open'); }
+function closeSheet(){
+  const c = sheetFor; sheetFor = null;
+  $('sheetBg').classList.remove('open');
+  if (c && !c.id.trim()) data.creators = data.creators.filter(x => x !== c);
+  save(); render();
+}
+function drawSheet(){
+  const c = sheetFor; if (!c) return;
+  $('sheet').innerHTML = `
+    <div class="sheet-head"><b>編輯作者</b><button class="btn-done" data-act="close">完成</button></div>
+    <label class="field"><span>鴨答帳號（網址最後那段）</span><input data-f="id" value="${esc(c.id)}" placeholder="例如 Matcha_" autocomplete="off" autocapitalize="off"></label>
+    <div class="field"><span>分區</span><div class="seg">${GROUPS.map(g => `<button class="${c.group === g.id ? 'on' : ''}" data-act="group" data-v="${g.id}">${esc(g.name)}</button>`).join('')}</div></div>
+    <div class="field"><span>私心星星</span><div class="seg"><button class="${c.star ? 'on' : ''}" data-act="star">${c.star ? '★ 已貼星星' : '☆ 貼一顆星星'}</button></div></div>
+    <label class="field"><span>專屬小字（可留空，只寫特別想推的人就好）</span><input data-f="note" value="${esc(c.note)}" placeholder="例如 賽博修仙" maxlength="16" autocomplete="off"></label>
+    <div class="field"><span>標籤</span><div class="picks">${allTags().map(t => `<button class="pick ${c.tags.includes(t) ? 'on' : ''}" data-act="tag" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>
+    <div class="field"><span>其他平台（可留空）</span>
+      ${c.others.map((o, i) => `<div class="pf">
+        <input data-o="name" data-i="${i}" value="${esc(o.name || '')}" placeholder="平台名">
+        <input data-o="url" data-i="${i}" value="${esc(o.url || '')}" placeholder="https://" autocomplete="off" autocapitalize="off">
+        <button data-act="delo" data-i="${i}" title="刪除">×</button></div>`).join('')}
+      <button class="mini" data-act="addo">+ 加一個平台</button>
+    </div>
+    <button class="danger" data-act="remove">刪除這位作者</button>`;
+}
+$('sheet').addEventListener('input', e => {
+  const c = sheetFor; if (!c) return;
+  const f = e.target.dataset.f, o = e.target.dataset.o;
+  if (f) c[f] = e.target.value;
+  if (o) c.others[+e.target.dataset.i][o] = e.target.value;
+  save(true); renderBoard();
+});
+$('sheet').addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const c = sheetFor; if (!c) return;
+  const act = b.dataset.act;
+  if (act === 'close') { closeSheet(); return; }
+  if (act === 'group') c.group = b.dataset.v;
+  if (act === 'star') c.star = !c.star;
+  if (act === 'tag') { const t = b.dataset.v; c.tags = c.tags.includes(t) ? c.tags.filter(x => x !== t) : c.tags.concat(t); }
+  if (act === 'addo') c.others.push({name:'', url:''});
+  if (act === 'delo') c.others.splice(+b.dataset.i, 1);
+  if (act === 'remove') {
+    if (!(await ask(`把 ${c.id || '這位作者'} 從名單拿掉？`))) return;
+    data.creators = data.creators.filter(x => x !== c);
+    sheetFor = null; $('sheetBg').classList.remove('open'); save(); render(); return;
+  }
+  save(true); drawSheet(); renderTags(); renderBoard();
+  if (act === 'addo') { const ins = $('sheet').querySelectorAll('.pf input[data-o="name"]'); ins[ins.length - 1].focus(); }
+});
+$('sheetBg').addEventListener('click', e => { if (e.target === $('sheetBg')) closeSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheetFor) closeSheet(); });
+
+/* ---------- 匯出 ---------- */
+function buildHTML(editable){
+  if (!SOURCE) return null;
+  const out = {
+    editable,
+    tags: data.tags.slice(),
+    creators: data.creators.filter(c => c.id.trim()).map(c => {
+      const o = {id: c.id.trim(), group: c.group, tags: c.tags, note: c.note.trim()};
+      const ot = c.others.filter(x => x.url && x.url.trim()).map(x => ({name: (x.name || '').trim(), url: x.url.trim()}));
+      if (ot.length) o.others = ot;
+      if (c.star) o.star = true;
+      return o;
+    })
+  };
+  const json = JSON.stringify(out, null, 1).replace(/</g, '\\u003c');
+  return SOURCE.replace(/(<script id="data" type="application\/json">)[\s\S]*?(<\/script>)/, (m, a, b) => a + '\n' + json + '\n' + b);
+}
+function download(name, text){
+  const blob = new Blob([text], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function copyText(text){
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove(); toast(ok ? '已複製成品 HTML' : '複製失敗，改用下載成品');
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast('已複製成品 HTML'), fallback);
+  else fallback();
+}
+
+$('dock').addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act;
+  if (act === 'add') {
+    const c = {_k: ++uid, id:'', group: state.group === 'all' ? 'female' : state.group, tags:[], note:'', others:[], star:false};
+    data.creators.push(c); state.brush = null; render(); openSheet(c);
+    setTimeout(() => { const i = $('sheet').querySelector('input[data-f="id"]'); if (i) i.focus(); }, 50);
+  }
+  if (act === 'preview') { editing = false; state.brush = null; state.tag = null; viewOrder = shuffle(data.creators); render(); window.scrollTo({top:0, behavior:'smooth'}); }
+  if (act === 'edit') { editing = true; state.tag = null; render(); }
+  if (act === 'work' || act === 'final' || act === 'copy') {
+    const html = buildHTML(act === 'work');
+    if (!html) { toast('這個瀏覽器讀不到原始檔，請用電腦瀏覽器打開'); return; }
+    if (act === 'work') { download('推坑圖鑑-工作檔.html', html); toast('工作檔下載好了，之後打開它就能繼續編輯'); }
+    if (act === 'final') { download('index.html', html); toast('成品下載好了，直接丟上 GitHub Pages'); }
+    if (act === 'copy') copyText(html);
+  }
+  if (act === 'reset') {
+    if (!(await ask('清掉這台裝置上的編輯紀錄，回到檔案原本的內容？'))) return;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    data = prep(FILE_DATA); state.brush = null; render(); toast('已還原');
+  }
+});
+
+viewOrder = shuffle(data.creators);
+render();
+</script></body></html>
