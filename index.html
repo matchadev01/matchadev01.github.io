@@ -740,7 +740,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   let rs = 11; const rnd = (a, b) => { rs = (rs * 16807) % 2147483647; return a + (rs / 2147483647) * (b - a); };
 
   /* 預設位置：照新舊排三圈，越新越裡面 */
-  const DEFAULT = {"xiatou":[1045,783],"esports":[1098,288],"raccoon":[583,934],"rhaine":[1017,535],"nora":[633,494],"sejem":[526,692],"chengyou":[843,423],"elwyn":[796,1043],"ghost":[427,429],"eli-caleb":[1292,769],"nick":[1172,586],"styleguide":[262,379],"fowlplay":[401,906],"jay":[991,986],"murong":[1337,519],"sameface":[277,624],"loken":[144,777],"yuan":[666,276],"chenxi":[1251,976],"yuzhe":[922,192],"yuri":[1098,1141],"kain":[809,1228],"lilian":[461,194],"star":[463,1143]}
+  const DEFAULT = {"xiatou":[1045,783],"esports":[1098,288],"raccoon":[624,925],"rhaine":[1017,535],"nora":[633,494],"sejem":[526,692],"chengyou":[843,423],"elwyn":[796,1043],"ghost":[427,429],"eli-caleb":[1273,774],"nick":[1172,586],"styleguide":[262,379],"fowlplay":[401,906],"jay":[991,986],"murong":[1337,519],"sameface":[277,624],"loken":[728,227],"yuan":[562,277],"chenxi":[1251,976],"yuzhe":[922,192],"yuri":[1098,1141],"kain":[809,1228],"lilian":[215,818],"star":[463,1143]}
 ;
   const RINGS = [{r:300, n:5}, {r:470, n:8}, {r:640, n:99}], KX = 1.2, KY = .86;
   const by = CARDS.map((c, i) => i).sort((a, b) => (CARDS[a].t ?? 99) - (CARDS[b].t ?? 99));
