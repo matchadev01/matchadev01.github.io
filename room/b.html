@@ -349,6 +349,12 @@ svg.lines{transform:translateZ(0)}
 #cherryNode canvas{width:140px;height:140px}
 #cherryNode .nm{top:136px;font-size:12px}
 .floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
+.mHint{display:none}
+@media (max-width:820px){
+  .mHint{display:block;position:absolute;left:50%;bottom:70px;transform:translateX(-50%);z-index:10;width:max-content;max-width:90%;text-align:center;font-size:13px;line-height:1.6;padding:8px 16px;border-radius:14px;background:rgba(7,9,15,.8);border:1.5px solid rgba(200,242,122,.5);color:#e9f5dd;pointer-events:none;transition:opacity .6s}
+  .mHint.gone{opacity:0}
+  .node b{font-size:14px}
+}
 
 </style>
 </head>
@@ -395,6 +401,7 @@ svg.lines{transform:translateZ(0)}
   <span class="deco hm" style="left:80%;top:84%;width:22px;height:22px;--dl:0.3s"><svg viewBox="0 0 40 40" style="rotate:-8deg"><use href="#i-heart" class="tw s-glowg" style="--dl:0.3s"/></svg></span>
   <span class="deco hm" style="left:48%;top:88%;width:20px;height:20px;--dl:1.4s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star5" class="tw s-glow" style="--dl:1.4s"/></svg></span>
   <div class="sHint">拖空白處轉角度　拖卡片搬位置　拖星球自轉<br><b>中鍵、右鍵或 Shift 拖曳移動畫面　Ctrl＋滾輪縮放</b></div>
+  <div class="mHint" id="mHint">單指滑動轉角度　兩指縮放、移動<br>點卡片看詳細　長按卡片可以搬</div>
   <button class="sDown" id="sDown" type="button">排整齊看全部</button>
   <div class="sTools"><button type="button" id="zIn" aria-label="放大">+</button><button type="button" id="zOut" aria-label="縮小">−</button><button type="button" id="zFit" aria-label="回到中間">◎</button></div>
 </section>
@@ -781,26 +788,30 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   function fit(){
     const w = sp.clientWidth, h = sp.clientHeight, top = innerWidth < 820 ? 110 : 70;
     const port = h > w * 1.15;
-    yaw = 0; tilt = 52;
-    s = port ? Math.min(w / 1500, (h - top) / 1050) : Math.min(w / 2000, (h - top - 10) / 1180);
-    tx = w / 2 - CX * s; ty = top + (h - top) / 2 + 40 * s - CY * s; apply();
+    yaw = 0; tilt = port ? 40 : 52;
+    s = port ? Math.min(w / 760, (h - top) / 820) : Math.min(w / 2000, (h - top - 10) / 1180);
+    tx = w / 2 - CX * s; ty = top + (h - top) / 2 + (port ? 10 : 40) * s - CY * s; apply();
   }
   function zoomAt(f, px, py){ const ns = Math.max(.2, Math.min(2.6, s * f)), r = ns / s; tx = px - (px - tx) * r; ty = py - (py - ty) * r; s = ns; apply(); }
   sp.addEventListener('wheel', e => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const b = sp.getBoundingClientRect(); zoomAt(e.deltaY < 0 ? 1.1 : 1 / 1.1, e.clientX - b.left, e.clientY - b.top); }, {passive:false});
   $('zIn').onclick = () => zoomAt(1.2, sp.clientWidth / 2, sp.clientHeight / 2);
   $('zOut').onclick = () => zoomAt(1 / 1.2, sp.clientWidth / 2, sp.clientHeight / 2);
   $('zFit').onclick = fit;
-  addEventListener('resize', fit);
+  let lastW = innerWidth; addEventListener('resize', () => { if (innerWidth !== lastW){ lastW = innerWidth; fit(); } });
 
   /* 拖：卡片就移動卡片，空白處就平移，星球就轉星球 */
-  const pts = new Map(); let mode = null, moved = 0, grab = null, pinch0 = null;
+  const pts = new Map(); let mode = null, moved = 0, grab = null, pinch0 = null, holdT = 0;
   sp.addEventListener('pointerdown', e => {
     if (e.target.closest('.sTop,.sTools,.sDown,.deco,.layoutBar')) return;
     pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
     if (pts.size === 2){ const [a, b] = [...pts.values()]; pinch0 = {d:Math.hypot(a.x - b.x, a.y - b.y), s, mx:(a.x + b.x) / 2, my:(a.y + b.y) / 2}; mode = 'pinch'; return; }
     moved = 0; vYaw = vTilt = 0;
     const card = e.target.closest('.node'), planet = e.target.closest('.planet3d');
-    if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]]; }
+    if (card && e.pointerType === 'touch'){
+      mode = 'wait'; grab = nodes[+card.dataset.i]; const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]];
+      clearTimeout(holdT); holdT = setTimeout(() => { if (mode === 'wait' && moved < 8){ mode = 'card'; moved = 10; grab.el.classList.add('lift'); if (navigator.vibrate) navigator.vibrate(15); } }, 380);
+    }
+    else if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]]; }
     else if (planet){ mode = 'planet'; grab = planet.id === 'meNode' ? PL.me : PL.cherry; if (grab) grab.hold = true; }
     else mode = (e.shiftKey || e.button === 2 || e.button === 1) ? 'pan' : 'orbit';
     sp.setPointerCapture(e.pointerId); sp.classList.add('drag');
@@ -812,6 +823,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     if (mode === 'pinch' && pts.size === 2){ const [a, b] = [...pts.values()], r = sp.getBoundingClientRect();
       const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2; tx += mx - pinch0.mx; ty += my - pinch0.my; pinch0.mx = mx; pinch0.my = my;
       zoomAt(pinch0.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch0.d / s, mx - r.left, my - r.top); return; }
+    if (mode === 'wait' && moved > 8){ clearTimeout(holdT); mode = 'orbit'; grab = null; }
     if (mode === 'card' && moved > 4){ const f = toFloor(cur.x, cur.y); place(grab, f[0] + grab.off[0], f[1] + grab.off[1]); }
     else if (mode === 'orbit'){ vYaw = -dx * .3; vTilt = -dy * .2; yaw += vYaw; tilt = Math.max(18, Math.min(68, tilt + vTilt)); apply(); }
     else if (mode === 'planet' && grab){ grab.vy = dx * .012; grab.vx = dy * .01; grab.spin(dx * .012, dy * .01); }
@@ -820,7 +832,8 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const up = e => {
     if (!pts.has(e.pointerId)) return; pts.delete(e.pointerId);
     if (pts.size) return;
-    sp.classList.remove('drag');
+    sp.classList.remove('drag'); clearTimeout(holdT);
+    if (mode === 'wait'){ if (moved < 8) open(grab.i); mode = null; grab = null; return; }
     if (mode === 'card'){
       grab.el.classList.remove('lift');
       if (moved < 6) open(grab.i);
@@ -1003,6 +1016,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 
 
   fit();
+  { const mh = $('mHint'); if (mh){ const hide = () => mh.classList.add('gone'); setTimeout(hide, 6000); sp.addEventListener('pointerdown', hide, {once:true}); } }
   $('sDown').onclick = () => $('chars').scrollIntoView({behavior:'smooth'});
 })();
 
