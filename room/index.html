@@ -355,6 +355,17 @@ svg.lines{transform:translateZ(0)}
   .mHint.gone{opacity:0}
   .node b{font-size:14px}
 }
+/* 效能：線不跑動、影子不用濾鏡、按鈕不模糊背景 */
+.lines path{animation:none}
+.lines .foot{filter:none;fill:url(#footG)}
+.node .ph{box-shadow:0 0 0 2px #111,0 6px 12px rgba(0,0,0,.45)}
+.node b{text-shadow:0 1px 2px #000}
+.sTools button{backdrop-filter:none;background:rgba(20,24,34,.75)}
+@media (pointer:coarse),(max-width:820px){
+  .node .ph{box-shadow:0 0 0 2px #111}
+  .node,.node .ph{transition:none}
+  .space .deco .tw,.space .deco .drift{animation:none}
+}
 
 </style>
 </head>
@@ -704,6 +715,13 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const sp = $('space'), stage = $('stage'), svg = $('lines');
   const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150;
   const NS = 'http://www.w3.org/2000/svg';
+  const LITE = matchMedia('(pointer:coarse)').matches || innerWidth < 820;
+  const TH = id => 'img/t/' + id + '.webp', TV = {"esports": "img/t/esports.mp4", "raccoon": "img/t/raccoon.mp4"};
+  let VIS = true;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { VIS = es[0].isIntersecting;
+    sp.querySelectorAll('.node video').forEach(v => VIS ? v.play().catch(() => {}) : v.pause()); }).observe(sp);
+  const awake = () => VIS && !document.hidden;
+  svg.insertAdjacentHTML('afterbegin', '<defs><radialGradient id="footG"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>');
   { const g = document.createElement('div'); g.className = 'floorGlow'; stage.insertBefore(g, stage.firstChild); }
   const mk = (tag, cls) => { const e = document.createElementNS(NS, tag); if (cls) e.setAttribute('class', cls); return e; };
   let rs = 11; const rnd = (a, b) => { rs = (rs * 16807) % 2147483647; return a + (rs / 2147483647) * (b - a); };
@@ -735,7 +753,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     const badges = [c.isNew ? '<i class="new">NEW</i>' : '', c.official ? '<i class="off">官方合作</i>' : '', c.cherry ? '<i class="ch">櫻桃聯名</i>' : '']
       .concat(aw.map(a => '<i>' + esc(a.tag || a.ed) + '</i>')).join('');
     el.innerHTML = (badges ? '<span class="badges">' + badges + '</span>' : '') +
-      '<span class="ph">' + (VID[c.id] ? '<video src="' + VID[c.id] + '" poster="' + IMG(c.id) + '" muted loop playsinline autoplay></video>' : '<img src="' + IMG(c.id) + '" alt="" decoding="async" draggable="false">') + '</span><b>' + esc(c.name) + '</b>';
+      '<span class="ph">' + (TV[c.id] ? '<video src="' + TV[c.id] + '" poster="' + TH(c.id) + '" muted loop playsinline autoplay preload="auto"></video>' : '<img src="' + TH(c.id) + '" alt="" decoding="async" draggable="false">') + '</span><b>' + esc(c.name) + '</b>';
     stage.appendChild(el);
     const sh = mk('ellipse', 'foot'); sh.setAttribute('rx', 46); sh.setAttribute('ry', 16); svg.appendChild(sh);
     const p = mk('path'); svg.appendChild(p);
@@ -771,13 +789,16 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const P = 1100; let vYaw = 0, vTilt = 0;
   function coast(){ if (!mode && (Math.abs(vYaw) > .02 || Math.abs(vTilt) > .02)){ yaw += vYaw; tilt = Math.max(18, Math.min(68, tilt + vTilt)); vYaw *= .92; vTilt *= .92; apply(); } requestAnimationFrame(coast); }
   requestAnimationFrame(coast);
-  const apply = () => {
+  let applyQ = 0;
+  const apply = () => { if (!applyQ) applyQ = requestAnimationFrame(applyNow); };
+  const applyNow = () => { applyQ = 0;
     stage.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale3d(' + s + ',' + s + ',' + s + ') translate(' + CX + 'px,' + CY + 'px) rotateX(' + tilt + 'deg) rotateZ(' + yaw + 'deg) translate(' + (-CX) + 'px,' + (-CY) + 'px)';
     stage.style.setProperty('--rz', (-yaw) + 'deg'); stage.style.setProperty('--rx', (-tilt) + 'deg');
     if (typeof sky !== 'undefined') sky.pan(yaw * 7, (tilt - 52) * 6);
   };
   /* 螢幕座標換回地面座標 */
   function toFloor(cx, cy){
+    if (applyQ){ cancelAnimationFrame(applyQ); applyNow(); }
     const r = sp.getBoundingClientRect(), ox = sp.clientWidth / 2, oy = sp.clientHeight / 2;
     const M = new DOMMatrix('translate(' + ox + 'px,' + oy + 'px) perspective(' + P + 'px) translate(' + (-ox) + 'px,' + (-oy) + 'px) ' + stage.style.transform);
     const a = M.m11, b = M.m21, c = M.m41, d = M.m12, e = M.m22, f = M.m42, g = M.m14, h = M.m24, i = M.m44;
@@ -904,7 +925,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     function makePlanet(holder, opt){
       const cv = holder.querySelector('canvas');
       const R = new THREE.WebGLRenderer({canvas:cv, antialias:false, alpha:true});
-      R.setPixelRatio(1); R.setSize(opt.res, opt.res, false);
+      R.setPixelRatio(1); const res = LITE ? Math.round(opt.res * .7) : opt.res; R.setSize(res, res, false);
       const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, .1, 50); cam.position.set(0, .4, 5.1); cam.lookAt(0, .2, 0);
       scene.add(new THREE.AmbientLight(0xffffff, .55));
       const sun = new THREE.DirectionalLight(0xfff6e6, 2.1); sun.position.set(-3, 2.4, 3); scene.add(sun);
@@ -918,11 +939,14 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       pivot.rotation.x = .18;
       const P = {hold:false, vy:.004, vx:0, spin(dy, dx){ pivot.rotation.y += dy; pivot.rotation.x = Math.max(-.7, Math.min(.9, pivot.rotation.x + dx)); }};
       const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-      (function loop(){
-        if (!P.hold){ P.vy += ((reduce ? 0 : opt.speed) - P.vy) * .03; P.vx *= .9; P.spin(P.vy, P.vx); pivot.rotation.x += (.18 - pivot.rotation.x) * .01; }
-        if (clouds) clouds.rotation.y += .0016;
-        R.render(scene, cam); requestAnimationFrame(loop);
-      })();
+      let lastT = 0;
+      (function loop(now){
+        requestAnimationFrame(loop);
+        if (!awake() || now - lastT < 33) return; lastT = now;
+        if (!P.hold){ P.vy += ((reduce ? 0 : opt.speed * 2) - P.vy) * .06; P.vx *= .9; P.spin(P.vy, P.vx); pivot.rotation.x += (.18 - pivot.rotation.x) * .01; }
+        if (clouds) clouds.rotation.y += .0032;
+        R.render(scene, cam);
+      })(0);
       return P;
     }
 
@@ -982,7 +1006,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const sky = (function(){
     const cv = $('sky'), ctx = cv.getContext('2d'); let W, H, stars = [], neb, ox = 0, oy = 0, shoot = null;
     function size(){
-      const dpr = Math.min(2, devicePixelRatio || 1); W = sp.clientWidth; H = sp.clientHeight;
+      const dpr = LITE ? 1 : Math.min(2, devicePixelRatio || 1); W = sp.clientWidth; H = sp.clientHeight;
       cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       stars = Array.from({length: Math.round(W * H / 2600)}, () => ({x:Math.random() * W * 1.4, y:Math.random() * H * 1.4, r:Math.random() < .08 ? rnd(1.4, 2.2) : rnd(.3, 1.1), p:rnd(0, 6.3), sp:rnd(.6, 2), z:rnd(.02, .12), g:Math.random() < .15}));
       neb = document.createElement('canvas'); neb.width = W; neb.height = H; const n = neb.getContext('2d');
@@ -991,7 +1015,10 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
         n.fillStyle = g; n.fillRect(0, 0, W, H);
       });
     }
+    let lastS = 0, dirty = true;
     function draw(t){
+      if (!matchMedia('(prefers-reduced-motion:reduce)').matches) requestAnimationFrame(draw);
+      if (!awake() || (t - lastS < (LITE ? 50 : 33) && !dirty)) return; lastS = t; dirty = false;
       ctx.clearRect(0, 0, W, H); ctx.drawImage(neb, 0, 0);
       stars.forEach(st => {
         const a = .45 + .55 * Math.sin(t / 1000 * st.sp + st.p);
@@ -1008,9 +1035,8 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
         ctx.beginPath(); ctx.moveTo(shoot.x, shoot.y); ctx.lineTo(shoot.x - 120, shoot.y + 60); ctx.stroke();
         shoot.x -= 14; shoot.y += 7; if (shoot.l > 500) shoot = null;
       }
-      if (!matchMedia('(prefers-reduced-motion:reduce)').matches) requestAnimationFrame(draw);
     }
-    size(); addEventListener('resize', size); requestAnimationFrame(draw);
+    let sw = 0; size(); addEventListener('resize', () => { if (innerWidth !== sw || !LITE){ sw = innerWidth; size(); } }); sw = innerWidth; requestAnimationFrame(draw);
     return {pan(x, y){ ox = x; oy = y; }};
   })();
 
