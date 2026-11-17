@@ -38,14 +38,7 @@ button{font:inherit;color:inherit}
 .hero .lede{margin:22px auto 0;max-width:24em;font-size:16px;color:rgba(243,234,255,.86)}
 
 /* 劇透門 */
-.gate{padding-top:56px;padding-bottom:64px;text-align:center}
-.gate p{margin:0 auto;max-width:28em;color:var(--muted)}
-.gate p strong{color:var(--paper);font-weight:600}
-.gate button{margin-top:26px;padding:12px 28px;background:transparent;border:1px solid var(--dragon);color:var(--paper);cursor:pointer;letter-spacing:.08em;transition:background .25s}
-.gate button:hover{background:rgba(255,79,168,.14)}
-body.locked .story{display:none}
-body.open .gate{display:none}
-
+body.open 
 /* 雙線時間軸 */
 .story section{padding-top:72px;padding-bottom:72px;border-bottom:1px solid var(--line)}
 .story h2{margin:0 0 8px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(26px,3.6vw,36px);letter-spacing:.06em}
@@ -256,11 +249,11 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 /* /langs */
 </style>
 </head>
-<body class="locked">
+<body>
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es" aria-current="page">ES</a></nav>
-    <div class="stage" aria-hidden="true">
+      <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -270,10 +263,6 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   </div>
 </header>
 
-<div class="gate wrap" id="gate">
-  <p><strong>Esta página es puro spoiler.</strong> Incluye el pasado de los dos, lo que hacen a escondidas y el secreto de Mao. Juega primero los dos inicios y luego vuelve a comprobar tus respuestas.</p>
-  <button type="button" id="open-btn">Ya los jugué, abrir</button>
-</div>
 
 <main class="story s2">
 
@@ -454,20 +443,5 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
 <footer>Abierto al romance | by Matcha_</footer>
 
-<script>
-(function () {
-  var body = document.body;
-  function open() {
-    body.classList.remove('locked');
-    body.classList.add('open');
-    try { localStorage.setItem('xiatou-story-open', '1'); } catch (e) {}
-  }
-  try { if (localStorage.getItem('xiatou-story-open') === '1') open(); } catch (e) {}
-  document.getElementById('open-btn').addEventListener('click', function () {
-    open();
-    document.getElementById('botan').scrollIntoView();
-  });
-})();
-</script>
 </body>
 </html>
