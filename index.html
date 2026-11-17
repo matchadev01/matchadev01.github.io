@@ -408,7 +408,7 @@ svg.lines{transform:translateZ(0)}
     <svg class="lines" id="lines" viewBox="0 0 1600 1300"></svg>
     <div class="planet3d" id="meNode" aria-label="抹茶星球，可以拖著轉"><canvas></canvas><span class="nm" id="meSay">抹茶 Matcha_</span></div>
     <div class="planet3d" id="cherryNode" aria-label="櫻桃星球，可以拖著轉"><canvas></canvas><a class="nm" href="https://cherrienoir.neocities.org/" target="_blank" rel="noopener" title="去櫻桃的網站">櫻桃 Cherrie.dawn</a></div>
-    <div class="planet3d" id="millyNode" aria-label="米莉星球，香草口味，可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉</a></div>
+    <div class="planet3d" id="millyNode" aria-label="米莉星球，香草口味，可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉 Milly</a></div>
   </div>
   <div class="sTop">
     <div class="ttl">抹茶屋<small>MATCHA'S ROOM</small></div>
@@ -909,7 +909,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   function sayCherry(){ const n = $('cherryNode').querySelector('.nm'); n.textContent = CL[ci = (ci + 1) % CL.length]; clearTimeout(sayCherry.t); sayCherry.t = setTimeout(() => n.textContent = '櫻桃 Cherrie.dawn', 2400); }
 
   const MLL = ['香草口味的米莉星球', '黃色線連到的是聯名卡']; let mi = 0;
-  function sayMilly(){ const n = $('millyNode').querySelector('.nm'); n.textContent = MLL[mi = (mi + 1) % MLL.length]; clearTimeout(sayMilly.t); sayMilly.t = setTimeout(() => n.textContent = '米莉', 2400); }
+  function sayMilly(){ const n = $('millyNode').querySelector('.nm'); n.textContent = MLL[mi = (mi + 1) % MLL.length]; clearTimeout(sayMilly.t); sayMilly.t = setTimeout(() => n.textContent = '米莉 Milly', 2400); }
 
   /* ===== 3D 像素星球 ===== */
   const PL = {};
