@@ -403,54 +403,9 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 .stage[data-pair="hot-ch"] .node.pair .ph{box-shadow:0 0 0 2px #111,0 0 0 5px #FF9CCB,0 0 26px rgba(255,156,203,.7)}
 .stage[data-pair="hot-ml"] .node.pair .ph{box-shadow:0 0 0 2px #111,0 0 0 5px #FFE08A,0 0 26px rgba(255,224,138,.7)}
 .planet3d canvas{cursor:pointer}
-/* 2.5D：舞台往後倒，卡片站起來 */
-.space{perspective:1100px}
-.stage{transform-style:preserve-3d}
-.stage > *{transform-style:preserve-3d}
-svg.lines{transform:translateZ(0)}
-.lines .foot{fill:rgba(0,0,0,.45);stroke:none;filter:blur(2px);animation:none}
-.lines .foot.off{opacity:.1}
-.lines .ring{stroke:rgba(200,255,170,.22)}
-.node{transform:translateZ(92px) rotateZ(var(--rz)) rotateX(var(--rx));transform-origin:50% 50%}
-.node:hover,.node:focus-visible{transform:translateZ(92px) rotateZ(var(--rz)) rotateX(var(--rx)) scale(1.3)}
-.node.lift{transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx)) scale(1.15)}
-.planet3d{transform:translateZ(200px) rotateZ(var(--rz)) rotateX(var(--rx))}
-#cherryNode{transform:translateZ(215px) rotateZ(var(--rz)) rotateX(var(--rx))}
-.planet3d::before{display:none}
-.floorGlow{position:absolute;left:800px;top:650px;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(circle,rgba(155,209,75,.28),rgba(155,209,75,.08) 45%,transparent 70%);pointer-events:none}
-/* 星球縮小 */
-.planet3d{width:190px;height:225px;margin:-95px 0 0 -95px;transform:translateZ(165px) rotateZ(var(--rz)) rotateX(var(--rx))}
-.planet3d canvas{width:190px;height:190px}
-.planet3d .nm{top:186px;font-size:14px;padding:3px 12px}
-#cherryNode{width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
-#cherryNode canvas{width:140px;height:140px}
-#cherryNode .nm{top:136px;font-size:12px}
-#millyNode{width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
-#millyNode canvas{width:140px;height:140px}
-#millyNode .nm{top:136px;font-size:12px}
-.planet3d.grey{width:110px;height:140px;margin:-55px 0 0 -55px;transform:translateZ(110px) rotateZ(var(--rz)) rotateX(var(--rx))}
-.planet3d.grey canvas{width:110px;height:110px}
-.planet3d.grey .nm{top:106px;font-size:11px;padding:2px 10px}
-.floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
-.mHint{display:none}
-@media (max-width:820px){
-  .mHint{display:block;position:absolute;left:50%;top:128px;transform:translateX(-50%);z-index:10;width:max-content;max-width:90%;text-align:center;font-size:13px;line-height:1.6;padding:8px 16px;border-radius:14px;background:rgba(7,9,15,.8);border:1.5px solid rgba(200,242,122,.5);color:#e9f5dd;pointer-events:none;transition:opacity .6s}
-  .mHint.gone{opacity:0}
-  .node b{font-size:14px}
-}
-/* 效能：線不跑動、影子不用濾鏡、按鈕不模糊背景 */
-.lines path{animation:none}
-.lines .foot{filter:none;fill:url(#footG)}
-.node .ph{box-shadow:0 0 0 2px #111,0 6px 12px rgba(0,0,0,.45)}
-.node b{text-shadow:0 1px 2px #000}
-.sTools button{backdrop-filter:none;background:rgba(20,24,34,.75)}
-@media (pointer:coarse),(max-width:820px){
-  .node .ph{box-shadow:0 0 0 2px #111}
-  .node,.node .ph{transition:none}
-  .space .deco .tw,.space .deco .drift{animation:none}
-}
-
 </style>
+<!-- 流量統計 -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="cc39f021-8956-483a-baf5-bc1780db1e35"></script>
 </head>
 <body>
 <img src="https://matcha1642.goatcounter.com/count?p=%2F&amp;t=%E6%8A%B9%E8%8C%B6%E5%B1%8B" alt="" width="1" height="1" style="position:absolute;opacity:0;pointer-events:none" referrerpolicy="no-referrer-when-downgrade">
