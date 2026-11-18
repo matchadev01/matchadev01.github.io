@@ -263,6 +263,9 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
   .gal-v figure.tall{width:62%}
 }
 @media (prefers-reduced-motion:reduce){.gal img{transition:none}}
+.gal.gal-wide{flex-wrap:wrap}
+.gal.gal-wide figure{flex:0 1 calc((100% - 32px) / 3)}
+@media (max-width:720px){.gal.gal-wide{flex-direction:column;gap:14px}.gal.gal-wide figure{flex:none;width:100%}}
 /* langs */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
 .langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(243,234,255,.35);background:rgba(0,0,0,.5);color:#f3eaff;text-decoration:none}
@@ -279,7 +282,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.en.html" lang="en" aria-current="page">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.zh-hans.html" lang="zh-Hans">简中</a><a href="story.es.html" lang="es">ES</a></nav>
-                        <div class="stage" aria-hidden="true">
+                          <div class="stage" aria-hidden="true">
     <img class="h-banner" src="banner.webp" width="1920" height="1088" alt="">
   </div>
   <div class="hero-text">
@@ -467,7 +470,7 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
 
   <section class="wrap" id="gallery" aria-labelledby="t-gallery">
     <h2 id="t-gallery">Gallery</h2>
-    <p class="intro">Trailers, childhood photos, and the 2K celebration art.</p>
+    <p class="intro">Trailers, childhood photos, and the 2K and 6K celebration art.</p>
     <h3 class="gal-h">Trailers</h3>
     <div class="gal-v">
       <figure class="tall"><video controls playsinline preload="none" poster="pv_full.webp" width="1080" height="1920"><source src="pv_full.mp4" type="video/mp4"></video><figcaption>Full version</figcaption></figure>
@@ -483,6 +486,12 @@ footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:14px}
     <div class="gal">
       <figure><a href="kid_duo_2k.webp" target="_blank" rel="noopener"><img src="kid_duo_2k.webp" width="832" height="1216" alt="Botan &amp; Ren" loading="lazy"></a><figcaption>Botan &amp; Ren</figcaption></figure>
       <figure><a href="kid_mao_2k.webp" target="_blank" rel="noopener"><img src="kid_mao_2k.webp" width="832" height="1216" alt="Mao" loading="lazy"></a><figcaption>Mao</figcaption></figure>
+    </div>
+    <h3 class="gal-h">6K celebration</h3>
+    <div class="gal gal-wide">
+      <figure><a href="6k_botan.webp" target="_blank" rel="noopener"><img src="6k_botan.webp" width="1216" height="832" alt="Botan" loading="lazy"></a><figcaption>Botan</figcaption></figure>
+      <figure><a href="6k_ren.webp" target="_blank" rel="noopener"><img src="6k_ren.webp" width="1216" height="832" alt="Ren" loading="lazy"></a><figcaption>Ren</figcaption></figure>
+      <figure><a href="6k_mao.webp" target="_blank" rel="noopener"><img src="6k_mao.webp" width="1216" height="832" alt="Mao" loading="lazy"></a><figcaption>Mao</figcaption></figure>
     </div>
   </section>
 
