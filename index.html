@@ -308,6 +308,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 .sTop > *{pointer-events:auto}
 .sTop .ttl{font:900 26px/1 var(--cn);letter-spacing:.04em;white-space:nowrap}
 .sTop .ttl small{display:block;margin-top:5px;font:11px var(--mono);color:#9BD14B;letter-spacing:.08em}
+.sTop .ttl small.views{margin-top:4px;font:700 12px var(--cn);color:#cfd6c4;letter-spacing:.02em}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 .chips button{font-size:13px;font-weight:700;padding:6px 13px;border-radius:99px;color:#e9f5dd;border:1.5px solid rgba(233,245,221,.35);background:rgba(7,9,15,.5)}
 .chips button:hover{border-color:#C8F27A}
@@ -529,13 +530,13 @@ svg.lines{transform:translateZ(0)}
   <div class="stage" id="stage">
     <svg class="lines" id="lines" viewBox="0 0 1600 1300"></svg>
     <div class="planet3d" id="meNode" aria-label="抹茶星球，可以拖著轉"><canvas></canvas><span class="nm" id="meSay">抹茶 Matcha_</span></div>
-    <div class="planet3d grey" id="grey1Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘聯名</span></div>
-    <div class="planet3d grey" id="grey2Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘聯名</span></div>
+    <div class="planet3d grey" id="grey1Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘星球</span></div>
+    <div class="planet3d grey" id="grey2Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘星球</span></div>
     <div class="planet3d" id="cherryNode" title="點一下看櫻桃的聯名角色" aria-label="櫻桃星球，點一下看聯名角色，也可以拖著轉"><canvas></canvas><a class="nm" href="https://cherrienoir.neocities.org/" target="_blank" rel="noopener" title="去櫻桃的網站">櫻桃 Cherrie.dawn</a></div>
     <div class="planet3d" id="millyNode" title="點一下看米莉的聯名角色" aria-label="米莉星球，點一下看聯名角色，也可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉 Milly</a></div>
   </div>
   <div class="sTop">
-    <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small></div>
+    <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small><small class="views" id="views" hidden></small></div>
     <nav class="chips" id="chips" aria-label="篩選角色"></nav>
   </div>
   <span class="deco" style="left:6%;top:22%;width:30px;height:30px;--dl:0s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star" class="tw s-glow" style="--dl:0s"/></svg></span>
@@ -1105,7 +1106,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   function sayMilly(){ const n = $('millyNode').querySelector('.nm'); n.textContent = MLL[mi = (mi + 1) % MLL.length]; clearTimeout(sayMilly.t); sayMilly.t = setTimeout(() => n.textContent = '米莉 Milly', 2400); }
 
   const GL = ['還沒有人入住', '聯名朋友在路上', '先佔個位置']; let gi = 0;
-  function sayGrey(id){ const n = $(id).querySelector('.nm'); n.textContent = GL[gi = (gi + 1) % GL.length]; clearTimeout(n.t); n.t = setTimeout(() => n.textContent = '神秘聯名', 2400); }
+  function sayGrey(id){ const n = $(id).querySelector('.nm'); n.textContent = GL[gi = (gi + 1) % GL.length]; clearTimeout(n.t); n.t = setTimeout(() => n.textContent = '神秘星球', 2400); }
 
   /* ===== 3D 像素星球 ===== */
   const PL = {};
