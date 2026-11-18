@@ -454,6 +454,13 @@ svg.lines{transform:translateZ(0)}
 </head>
 <body>
 <img src="https://matcha1642.goatcounter.com/count?p=%2F&amp;t=%E6%8A%B9%E8%8C%B6%E5%B1%8B" alt="" width="1" height="1" style="position:absolute;opacity:0;pointer-events:none" referrerpolicy="no-referrer-when-downgrade">
+<script>
+/* 瀏覽人數：GoatCounter 全站累計，約 30 分鐘更新 */
+fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? r.json() : null).then(d => {
+  if (!d || d.count == null) return;
+  const v = document.getElementById('views'); v.textContent = '已有 ' + String(d.count).replace(/\s/g, ',') + ' 人次來過'; v.hidden = false;
+}).catch(() => {});
+</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-star" viewBox="0 0 40 40"><path d="M20 2c1.6 9.4 8.6 16.4 18 18-9.4 1.6-16.4 8.6-18 18-1.6-9.4-8.6-16.4-18-18 9.4-1.6 16.4-8.6 18-18z"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
