@@ -460,10 +460,7 @@ svg.lines{transform:translateZ(0)}
 }
 
 
-/* 小樣：標題下直接露出的入口 */
-.qlinks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;white-space:nowrap}
-.qlinks a{font:900 13px var(--cn);letter-spacing:0;text-decoration:none;color:#111;padding:6px 13px;border-radius:99px;background:var(--d);border:2px solid #111;box-shadow:2px 2px 0 rgba(255,255,255,.35)}
-.qlinks a:hover{background:#fff}
+
 /* 小樣：角色篩選收起來 */
 .fWrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:72%}
 .fTog{display:inline-flex;align-items:center;gap:7px;font:700 13px var(--cn);color:#e9f5dd;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(200,242,122,.55);background:rgba(7,9,15,.6);cursor:pointer}
@@ -477,8 +474,6 @@ svg.lines{transform:translateZ(0)}
 @media (max-width:820px){
   .fWrap{margin-left:0;width:100%;max-width:none;align-items:flex-start}
   .fWrap .chips{width:100%}
-  .mHint{top:170px}
-  .qlinks{margin-top:8px}.qlinks a{font-size:12px;padding:5px 11px}
 }
 /* 小樣：其他房間大卡片 */
 .rooms{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:24px}
@@ -598,12 +593,7 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
     <div class="planet3d" id="millyNode" title="點一下看米莉的聯名角色" aria-label="米莉星球，點一下看聯名角色，也可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉 Milly</a></div>
   </div>
   <div class="sTop">
-    <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small><small class="views" id="views" hidden></small>
-      <div class="qlinks">
-        <a href="/WORD/" style="--d:#9BD14B">世界觀總覽</a>
-        <a href="/pick.html" style="--d:#FF9CCB">繁中作者私心推薦</a>
-        <a href="/poll/" style="--d:#FFE08A">角色卡民調</a>
-      </div></div>
+    <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small><small class="views" id="views" hidden></small></div>
     <div class="fWrap" id="fWrap"><button type="button" class="fTog" id="fTog" aria-expanded="false" aria-controls="chips">篩選角色　<b id="fNow">全部</b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><nav class="chips" id="chips" aria-label="篩選角色"></nav></div>
   </div>
   <span class="deco" style="left:6%;top:22%;width:30px;height:30px;--dl:0s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star" class="tw s-glow" style="--dl:0s"/></svg></span>
