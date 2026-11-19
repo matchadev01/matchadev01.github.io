@@ -460,19 +460,26 @@ svg.lines{transform:translateZ(0)}
 }
 
 
-/* 小樣：其他頁面的入口 */
-.more{position:relative;margin-top:10px;white-space:normal}
-.more>button{display:inline-flex;align-items:center;gap:6px;font:700 12.5px var(--cn);letter-spacing:0;color:#e9f5dd;padding:5px 12px;border-radius:99px;border:1.5px solid rgba(200,242,122,.55);background:rgba(7,9,15,.55);cursor:pointer}
-.more>button:hover,.more.open>button{background:#9BD14B;color:#111;border-color:#9BD14B}
-.more>button svg{width:11px;height:11px;transition:transform .2s}
-.more.open>button svg{transform:rotate(180deg)}
-.more .menu{position:absolute;left:0;top:calc(100% + 8px);width:250px;padding:8px;border-radius:16px;background:rgba(7,9,15,.94);border:1.5px solid rgba(200,242,122,.45);box-shadow:0 12px 30px rgba(0,0,0,.5);display:none;z-index:30}
-.more.open .menu{display:grid;gap:4px}
-.more .menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;text-decoration:none;color:#e9f5dd;font:700 14px var(--cn);letter-spacing:0}
-.more .menu a:hover{background:rgba(155,209,75,.18)}
-.more .menu a i{width:10px;height:10px;border-radius:50%;flex:0 0 10px;background:var(--d,#9BD14B);border:1.5px solid #111;box-shadow:0 0 0 1.5px rgba(255,255,255,.25)}
-.more .menu a small{margin-left:auto;font:400 11px var(--cn);color:#9aa58f}
-.more .menu hr{border:0;border-top:1px solid rgba(233,245,221,.15);margin:4px 2px}
+/* 小樣：標題下直接露出的入口 */
+.qlinks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;white-space:nowrap}
+.qlinks a{font:900 13px var(--cn);letter-spacing:0;text-decoration:none;color:#111;padding:6px 13px;border-radius:99px;background:var(--d);border:2px solid #111;box-shadow:2px 2px 0 rgba(255,255,255,.35)}
+.qlinks a:hover{background:#fff}
+/* 小樣：角色篩選收起來 */
+.fWrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:72%}
+.fTog{display:inline-flex;align-items:center;gap:7px;font:700 13px var(--cn);color:#e9f5dd;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(200,242,122,.55);background:rgba(7,9,15,.6);cursor:pointer}
+.fTog b{color:#C8F27A}
+.fTog svg{width:11px;height:11px;transition:transform .2s}
+.fWrap.open .fTog{background:#9BD14B;color:#111;border-color:#9BD14B}
+.fWrap.open .fTog b{color:#111}
+.fWrap.open .fTog svg{transform:rotate(180deg)}
+.fWrap .chips{display:none;margin-left:0}
+.fWrap.open .chips{display:flex}
+@media (max-width:820px){
+  .fWrap{margin-left:0;width:100%;max-width:none;align-items:flex-start}
+  .fWrap .chips{width:100%}
+  .mHint{top:170px}
+  .qlinks{margin-top:8px}.qlinks a{font-size:12px;padding:5px 11px}
+}
 /* 小樣：其他房間大卡片 */
 .rooms{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:24px}
 .room{display:flex;flex-direction:column;text-decoration:none;background:var(--white);border:2.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:20px;overflow:hidden;transition:transform .15s,box-shadow .15s}
@@ -493,6 +500,7 @@ footer a{font-size:16px;padding:12px 22px;border-width:2.5px;box-shadow:4px 4px 
 footer a.big{color:#111;border-color:#111;box-shadow:4px 4px 0 var(--paper)}
 footer a.big.w{background:#9BD14B}
 footer a.big.p{background:#FF9CCB}
+footer a.big.y{background:#FFE08A}
 footer a.big:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--paper);background:#fff}
 </style>
 <!-- 流量統計 -->
@@ -591,18 +599,12 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
   </div>
   <div class="sTop">
     <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small><small class="views" id="views" hidden></small>
-      <div class="more" id="more"><button type="button" aria-expanded="false" aria-controls="moreMenu">其他頁面<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <nav class="menu" id="moreMenu" aria-label="其他頁面">
-          <a href="/WORD/" style="--d:#9BD14B"><i></i>世界觀總覽<small>四個大世界</small></a>
-          <a href="/pick.html" style="--d:#FF9CCB"><i></i>繁中作者私心推薦</a>
-          <a href="/poll/" style="--d:#FFE08A"><i></i>角色卡民調</a>
-          <a href="#games" style="--d:#C9B8FF"><i></i>小遊戲</a>
-          <hr>
-          <a href="https://caveduck.io/user/Matcha_?locale=zh-hant" target="_blank" rel="noopener" style="--d:#fff"><i></i>鴨答作者頁</a>
-          <a href="https://www.threads.com/@hgv1642" target="_blank" rel="noopener" style="--d:#fff"><i></i>Threads</a>
-        </nav>
+      <div class="qlinks">
+        <a href="/WORD/" style="--d:#9BD14B">世界觀總覽</a>
+        <a href="/pick.html" style="--d:#FF9CCB">繁中作者私心推薦</a>
+        <a href="/poll/" style="--d:#FFE08A">角色卡民調</a>
       </div></div>
-    <nav class="chips" id="chips" aria-label="篩選角色"></nav>
+    <div class="fWrap" id="fWrap"><button type="button" class="fTog" id="fTog" aria-expanded="false" aria-controls="chips">篩選角色　<b id="fNow">全部</b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><nav class="chips" id="chips" aria-label="篩選角色"></nav></div>
   </div>
   <span class="deco" style="left:6%;top:22%;width:30px;height:30px;--dl:0s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star" class="tw s-glow" style="--dl:0s"/></svg></span>
   <span class="deco" style="left:30%;top:16%;width:22px;height:22px;--dl:0.6s"><svg viewBox="0 0 40 40" style="rotate:10deg"><use href="#i-star5" class="tw s-glowg" style="--dl:0.6s"/></svg></span>
@@ -651,7 +653,7 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
   <p class="ftt">還想逛的話</p>
   <a class="big w" href="/WORD/">世界觀總覽</a>
   <a class="big p" href="/pick.html">繁中作者私心推薦</a>
-  <a href="/poll/">角色卡民調</a>
+  <a class="big y" href="/poll/">角色卡民調</a>
   <a href="https://caveduck.io/user/Matcha_?locale=zh-hant" target="_blank" rel="noopener">鴨答作者頁</a>
   <a href="https://www.threads.com/@hgv1642" target="_blank" rel="noopener">Threads @hgv1642</a>
   <div class="sign">MATCHA_ ON CAVEDUCK</div>
@@ -1049,10 +1051,11 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     .concat([['cherry', '和櫻桃聯名', c => c.cherry], ['milly', '和米莉聯名', c => c.milly], ['award', '得獎', c => (c.award || []).length], ['official', '官方合作', c => c.official]])
     .filter(f => CARDS.some(f[2]));
   const chips = $('chips');
+  $('fTog').addEventListener('click', () => { const o = $('fWrap').classList.toggle('open'); $('fTog').setAttribute('aria-expanded', o); });
   chips.innerHTML = '<button type="button" class="on" data-sf="all">全部</button>' + F.map(f => '<button type="button" data-sf="' + f[0] + '">' + esc(f[1]) + '</button>').join('');
   chips.addEventListener('click', e => {
     const b = e.target.closest('[data-sf]'); if (!b) return;
-    chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); $('fNow').textContent = b.textContent;
     const f = b.dataset.sf === 'all' ? null : F.find(x => x[0] === b.dataset.sf)[2];
     nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.sh.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); if (n.qm) n.qm.classList.toggle('off', !on); });
   });
@@ -1441,14 +1444,6 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   if (document.readyState === 'complete') close(); else addEventListener('load', close);
   setTimeout(close, 4000);
 })();
-})();
-</script>
-<script>
-/* 其他頁面選單：點開、點外面收起 */
-(function(){ const m = document.getElementById('more'), b = m.querySelector('button');
-  b.addEventListener('click', e => { e.stopPropagation(); const o = m.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
-  document.addEventListener('pointerdown', e => { if (!m.contains(e.target)){ m.classList.remove('open'); b.setAttribute('aria-expanded', false); } });
-  m.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => m.classList.remove('open')));
 })();
 </script>
 </body>
