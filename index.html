@@ -258,6 +258,10 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 .lines path.ml.hot{stroke:#FFE08A;filter:drop-shadow(0 0 6px #FFE08A)}
 .lines path.bond.ml{stroke:rgba(255,224,140,.25)}
 .lines path.bond.gr{stroke:rgba(200,203,210,.18)}
+.lines path.bond.xm{stroke:rgba(226,58,78,.5);stroke-dasharray:7 7;stroke-width:2}
+.lines path.bond.xm.g{stroke:rgba(80,180,96,.5);stroke-dashoffset:7}
+.lines.hot-xm path.bond.xm{stroke:#ff5a6e;stroke-width:2.8;filter:drop-shadow(0 0 5px #ff5a6e)}
+.lines.hot-xm path.bond.xm.g{stroke:#6fd77f;filter:drop-shadow(0 0 5px #6fd77f)}
 #grey1Node{left:180px;top:1060px}
 #grey2Node{left:1450px;top:1160px}
 .planet3d.grey .nm{background:#c4c6cb;color:#333;cursor:default}
@@ -399,7 +403,7 @@ svg.lines{position:absolute;left:0;top:0;width:1600px;height:1300px;overflow:vis
 @media (max-width:820px){.fd{margin:auto auto 0;width:100vw;max-width:100vw;max-height:66dvh;border-radius:18px 18px 0 0;border-bottom:0}.fd[open]{animation:fdUp .35s ease-out}@keyframes fdUp{from{transform:translateY(40px);opacity:0}}.fd{padding:18px}.fgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.fcard b{font-size:15px}}
 /* 滑過星球時亮起來的線和卡 */
 .lines.hot-me path.mp{stroke:#C8F27A;stroke-width:2.4;stroke-dasharray:none;opacity:.9}
-.lines.hot-ch path.ch,.lines.hot-ch path.bond:not(.ml):not(.gr){stroke:#FF9CCB;stroke-width:2.8;stroke-dasharray:none;filter:drop-shadow(0 0 6px #FF9CCB)}
+.lines.hot-ch path.ch,.lines.hot-ch path.bond:not(.ml):not(.gr):not(.xm){stroke:#FF9CCB;stroke-width:2.8;stroke-dasharray:none;filter:drop-shadow(0 0 6px #FF9CCB)}
 .lines.hot-ml path.ml{stroke:#FFE08A;stroke-width:2.8;stroke-dasharray:none;filter:drop-shadow(0 0 6px #FFE08A)}
 .stage[data-pair="hot-ch"] .node.pair .ph{box-shadow:0 0 0 2px #111,0 0 0 5px #FF9CCB,0 0 26px rgba(255,156,203,.7)}
 .stage[data-pair="hot-ml"] .node.pair .ph{box-shadow:0 0 0 2px #111,0 0 0 5px #FFE08A,0 0 26px rgba(255,224,138,.7)}
@@ -432,6 +436,9 @@ svg.lines{transform:translateZ(0)}
 .planet3d.grey{width:110px;height:140px;margin:-55px 0 0 -55px;transform:translateZ(110px) rotateZ(var(--rz)) rotateX(var(--rx))}
 .planet3d.grey canvas{width:110px;height:110px}
 .planet3d.grey .nm{top:106px;font-size:11px;padding:2px 10px}
+#xmasNode{left:1500px;top:660px;width:140px;height:172px;margin:-70px 0 0 -70px;transform:translateZ(120px) rotateZ(var(--rz)) rotateX(var(--rx))}
+#xmasNode canvas{width:140px;height:140px}
+#xmasNode .nm{top:136px;font-size:12px;background:#d8283c;color:#fff;cursor:pointer}
 .floorGlow{width:520px;height:520px;margin:-260px 0 0 -260px}
 .mHint{display:none}
 @media (max-width:820px){
@@ -543,6 +550,7 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
     <div class="planet3d" id="meNode" aria-label="抹茶星球，可以拖著轉"><canvas></canvas><span class="nm" id="meSay">抹茶 Matcha_</span></div>
     <div class="planet3d grey" id="grey1Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘星球</span></div>
     <div class="planet3d grey" id="grey2Node" title="還沒有人入住的星球" aria-label="空位星球，之後的聯名朋友"><canvas></canvas><span class="nm">神秘星球</span></div>
+    <div class="planet3d" id="xmasNode" title="還沒開放的星球" aria-label="還沒開放的星球"><canvas></canvas><span class="nm">尚未開放</span></div>
     <div class="planet3d" id="cherryNode" title="點一下看櫻桃的聯名角色" aria-label="櫻桃星球，點一下看聯名角色，也可以拖著轉"><canvas></canvas><a class="nm" href="https://cherrienoir.neocities.org/" target="_blank" rel="noopener" title="去櫻桃的網站">櫻桃 Cherrie.dawn</a></div>
     <div class="planet3d" id="millyNode" title="點一下看米莉的聯名角色" aria-label="米莉星球，點一下看聯名角色，也可以拖著轉"><canvas></canvas><a class="nm" href="https://milly-mi.neocities.org/" target="_blank" rel="noopener" title="去米莉的網站">米莉 Milly</a></div>
   </div>
@@ -906,7 +914,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 /* ===== 宇宙：3D 像素星球在中間，卡片可以直接拖 ===== */
 (function(){
   const sp = $('space'), stage = $('stage'), svg = $('lines');
-  const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150, MLX = 130, MLY = 160, G1X = 180, G1Y = 1060, G2X = 1450, G2Y = 1160;
+  const SW = 1600, SH = 1300, CX = 800, CY = 650, CHX = 1490, CHY = 150, MLX = 130, MLY = 160, G1X = 180, G1Y = 1060, G2X = 1450, G2Y = 1160, XMX = 1500, XMY = 660;
   const NS = 'http://www.w3.org/2000/svg';
   const LITE = matchMedia('(pointer:coarse)').matches || innerWidth < 820;
   const TH = id => 'room/img/t/' + id + '.webp', TV = {"esports": "room/img/t/esports.mp4", "raccoon": "room/img/t/raccoon.mp4"};
@@ -940,6 +948,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   const bond = mk('path', 'bond'); bond.setAttribute('d', 'M' + CX + ' ' + CY + ' Q 1200 300 ' + CHX + ' ' + CHY); svg.appendChild(bond);
   const bond2 = mk('path', 'bond ml'); bond2.setAttribute('d', 'M' + CX + ' ' + CY + ' Q 380 330 ' + MLX + ' ' + MLY); svg.appendChild(bond2);
   [[G1X, G1Y, 380, 1000], [G2X, G2Y, 1250, 1060]].forEach(([x, y, qx, qy]) => { const b = mk('path', 'bond gr'); b.setAttribute('d', 'M' + CX + ' ' + CY + ' Q ' + qx + ' ' + qy + ' ' + x + ' ' + y); svg.appendChild(b); });
+  ['bond xm', 'bond xm g'].forEach(c => { const b = mk('path', c); b.setAttribute('d', 'M' + CX + ' ' + CY + ' Q 1180 760 ' + XMX + ' ' + XMY); svg.appendChild(b); });
 
   /* 卡片 */
   const nodes = CARDS.map((c, i) => {
@@ -971,7 +980,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
   }
 
   /* 滑鼠移到星球上：連到它的線和卡片一起亮 */
-  [['meNode', 'hot-me', () => true], ['cherryNode', 'hot-ch', c => c.cherry], ['millyNode', 'hot-ml', c => c.milly]].forEach(([id, cls, f]) => {
+  [['meNode', 'hot-me', () => true], ['cherryNode', 'hot-ch', c => c.cherry], ['millyNode', 'hot-ml', c => c.milly], ['xmasNode', 'hot-xm', () => false]].forEach(([id, cls, f]) => {
     const el = $(id); if (!el) return;
     el.addEventListener('mouseenter', () => { svg.classList.add(cls); if (id !== 'meNode') nodes.forEach(n => n.el.classList.toggle('pair', !!f(n.c))); stage.dataset.pair = cls; });
     el.addEventListener('mouseleave', () => { svg.classList.remove(cls); nodes.forEach(n => n.el.classList.remove('pair')); delete stage.dataset.pair; });
@@ -1056,7 +1065,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       clearTimeout(holdT); holdT = setTimeout(() => { if (mode === 'wait' && moved < 8){ mode = 'card'; moved = 10; grab.el.classList.add('lift'); if (navigator.vibrate) navigator.vibrate(15); } }, 380);
     }
     else if (card){ mode = 'card'; grab = nodes[+card.dataset.i]; grab.el.classList.add('lift'); const f = toFloor(e.clientX, e.clientY); grab.off = [grab.x - f[0], grab.y - f[1]]; }
-    else if (planet){ mode = 'planet'; grab = {meNode:PL.me, cherryNode:PL.cherry, millyNode:PL.milly, grey1Node:PL.g1, grey2Node:PL.g2}[planet.id]; if (grab) grab.hold = true; }
+    else if (planet){ mode = 'planet'; grab = {meNode:PL.me, cherryNode:PL.cherry, millyNode:PL.milly, grey1Node:PL.g1, grey2Node:PL.g2, xmasNode:PL.xm}[planet.id]; if (grab) grab.hold = true; }
     else mode = (e.shiftKey || e.button === 2 || e.button === 1) ? 'pan' : 'orbit';
     sp.setPointerCapture(e.pointerId); sp.classList.add('drag');
   });
@@ -1082,7 +1091,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
       grab.el.classList.remove('lift');
       if (moved < 6) open(grab.i);
       else { mine[grab.c.id] = [Math.round(grab.x), Math.round(grab.y)]; try{ localStorage.setItem(LSK, JSON.stringify(mine)); }catch(e){} showBar(); }
-    } else if (mode === 'planet' && grab){ grab.hold = false; if (moved < 6){ if (grab === PL.me) sayMe(); else if (grab === PL.g1 || grab === PL.g2) sayGrey(grab === PL.g1 ? 'grey1Node' : 'grey2Node'); else flyTo(grab === PL.milly ? 'milly' : 'cherry'); } }
+    } else if (mode === 'planet' && grab){ grab.hold = false; if (moved < 6){ if (grab === PL.me) sayMe(); else if (grab === PL.xm) sayXmas(); else if (grab === PL.g1 || grab === PL.g2) sayGrey(grab === PL.g1 ? 'grey1Node' : 'grey2Node'); else flyTo(grab === PL.milly ? 'milly' : 'cherry'); } }
     mode = null; grab = null;
   };
   sp.addEventListener('contextmenu', e => e.preventDefault());
@@ -1118,6 +1127,9 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
 
   const GL = ['還沒有人入住', '聯名朋友在路上', '先佔個位置']; let gi = 0;
   function sayGrey(id){ const n = $(id).querySelector('.nm'); n.textContent = GL[gi = (gi + 1) % GL.length]; clearTimeout(n.t); n.t = setTimeout(() => n.textContent = '神秘星球', 2400); }
+
+  const XL = ['還在包裝中', '先別偷看', '拆開的日子保密']; let xi = 0;
+  function sayXmas(){ const n = $('xmasNode').querySelector('.nm'); n.textContent = XL[xi = (xi + 1) % XL.length]; clearTimeout(sayXmas.t); sayXmas.t = setTimeout(() => n.textContent = '尚未開放', 2400); }
 
   /* ===== 3D 像素星球 ===== */
   const PL = {};
@@ -1174,6 +1186,7 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
         if (!awake() || now - lastT < 33) return; lastT = now;
         if (!P.hold){ P.vy += ((reduce ? 0 : opt.speed * 2) - P.vy) * .06; P.vx *= .9; P.spin(P.vy, P.vx); pivot.rotation.x += (.18 - pivot.rotation.x) * .01; }
         if (clouds) clouds.rotation.y += .0032;
+        if (opt.tick) opt.tick(now);
         R.render(scene, cam);
       })(0);
       return P;
@@ -1274,6 +1287,49 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     });
     PL.g1 = makePlanet($('grey1Node'), {res:200, tex:greyTex(11), out:0x2a2c31, speed:.0025});
     PL.g2 = makePlanet($('grey2Node'), {res:200, tex:greyTex(37), out:0x2a2c31, speed:-.003});
+
+    /* 還沒開放的星球：紅色包裝紙、綠色十字緞帶、頂上蝴蝶結、一圈會閃的小燈 */
+    const XR = ['#9a1424','#b51c2e','#cf283a','#e44457'].map(hx), XG = ['#1d6431','#2c8640','#47a957','#7fcf7a'].map(hx), XGOLD = ['#d9a531','#f4cd5a'].map(hx), XW = ['#f3efe8','#ffffff'].map(hx);
+    const gift = pixTex(384, 192, (X, Y, Z, x, y) => {
+      const th = (B4[y & 3][x & 3] + .5) / 16;
+      const rb = Math.min(Math.abs(X), Math.abs(Z));
+      if (rb < .13) return rb < .035 ? XG[3] : XG[rb < .1 ? (th > .5 ? 2 : 1) : 0];
+      if (rb < .16) return XGOLD[th > .5 ? 1 : 0];
+      if (Y > .8 + (fbm(X * 6 + 2, 3, Z * 6 + 8) - .5) * .18) return XW[th > .3 ? 1 : 0];
+      const row = (y / 14) | 0, lx = (x + (row % 2) * 7) % 14, ly = y % 14;
+      if (lx === 7 && ly === 7) return XGOLD[1];
+      if ((lx === 7 && ly >= 5 && ly <= 9) || (ly === 7 && lx >= 5 && lx <= 9)) return XW[1];
+      if (hash(x * 3 + 7, y * 5 + 1) > .985) return XGOLD[0];
+      return XR[Math.max(0, Math.min(3, Math.floor(fbm(X * 2.8 + 6, Y * 2.8, Z * 2.8 + 4) * 4.4 + th - .9)))];
+    });
+    let bulbs = [], lastB = 0, bk = 0;
+    const BC = [0xff3b4f, 0x5be06b, 0xffd45a];
+    PL.xm = makePlanet($('xmasNode'), {res:280, tex:gift, out:0x3a0a12, speed:.0035, top(pv){
+      /* 蝴蝶結：四片圈，從哪個角度看都像 */
+      const g = new THREE.Group(); g.position.set(0, 1.02, 0); g.scale.setScalar(1.35);
+      const rib = toon({color:0x2f8a3e}), ribD = toon({color:0x1d6431});
+      const loopGeo = new THREE.TorusGeometry(.13, .05, 8, 18);
+      [0, 1, 2, 3].forEach(k => {
+        const arm = new THREE.Group(); arm.rotation.y = k * Math.PI / 2 + .4; g.add(arm);
+        const l = new THREE.Mesh(loopGeo, k % 2 ? ribD : rib); l.scale.set(1, .75, .55); l.position.set(.14, .1, 0); l.rotation.z = -.55; arm.add(l);
+        const o = outline(loopGeo, 1, 0x0f2a16); o.scale.set(1.12, .86, .65); o.position.copy(l.position); o.rotation.z = l.rotation.z; arm.add(o);
+      });
+      const knotGeo = new THREE.SphereGeometry(.08, 12, 10);
+      const knot = new THREE.Mesh(knotGeo, toon({color:0x47a957})); knot.position.y = .12; g.add(knot);
+      { const o = outline(knotGeo, 1.18, 0x0f2a16); o.position.y = .12; g.add(o); }
+      const gold = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), toon({color:0xf4cd5a})); gold.position.set(0, .2, 0); g.add(gold);
+      pv.add(g);
+      /* 燈串 */
+      const ring = new THREE.Group(); ring.rotation.x = .95; ring.rotation.z = .35;
+      const wire = new THREE.Mesh(new THREE.TorusGeometry(1.2, .012, 4, 64), new THREE.MeshBasicMaterial({color:0x1d4a26})); ring.add(wire);
+      const bg = new THREE.SphereGeometry(.058, 8, 6);
+      for (let k = 0; k < 16; k++){ const a = k / 16 * Math.PI * 2, b = new THREE.Mesh(bg, new THREE.MeshBasicMaterial({color:BC[k % 3]}));
+        b.position.set(Math.cos(a) * 1.2, Math.sin(a) * 1.2, 0); ring.add(b); bulbs.push(b); }
+      pv.add(ring);
+    }, tick(now){
+      if (now - lastB < 520) return; lastB = now; bk++;
+      bulbs.forEach((b, k) => { const on = (k + bk) % 3 !== 0; b.material.color.setHex(on ? BC[k % 3] : 0x3a2a2e); });
+    }});
   }).catch(e => console.warn('3D 星球載入失敗', e));
 
   /* 星空 */
