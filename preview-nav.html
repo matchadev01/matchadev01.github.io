@@ -461,6 +461,12 @@ svg.lines{transform:translateZ(0)}
 
 
 
+/* 小樣：篩選列右側換成三個入口 */
+.bar .in{max-width:1320px}
+.bar button{padding:6px 12px}
+.bar .ext{gap:8px;padding:0 4px 2px 12px}
+.bar .ext a{font-size:13px;font-weight:900;padding:5px 12px;border-radius:99px;background:var(--d);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.bar .ext a:hover{text-decoration:none;background:#fff}
 /* 小樣：角色篩選收起來 */
 .fWrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:72%}
 .fTog{display:inline-flex;align-items:center;gap:7px;font:700 13px var(--cn);color:#e9f5dd;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(200,242,122,.55);background:rgba(7,9,15,.6);cursor:pointer}
@@ -769,7 +775,7 @@ if ('IntersectionObserver' in window){
 /* 篩選 */
 const fb = $('filters');
 fb.insertAdjacentHTML('beforeend', '<button type="button" class="on" data-f="all">全部</button>' + groups.map(g => '<button type="button" data-f="' + g.k + '">' + esc(g.n) + '</button>').join('') +
-  '<span class="ext"><a href="#games">小遊戲</a><a href="https://www.threads.com/@hgv1642" target="_blank" rel="noopener">Threads</a></span>');
+  '<span class="ext"><a href="/WORD/" style="--d:#9BD14B">世界觀總覽</a><a href="/pick.html" style="--d:#FF9CCB">繁中作者私心推薦</a><a href="/poll/" style="--d:#FFE08A">角色卡民調</a></span>');
 fb.addEventListener('click', e => {
   const b = e.target.closest('[data-f]'); if (!b) return;
   fb.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b));
