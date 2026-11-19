@@ -458,6 +458,50 @@ svg.lines{transform:translateZ(0)}
   .space .deco .tw,.space .deco .drift{animation:none}
 }
 
+
+
+/* 篩選列右側換成三個入口 */
+.bar .in{max-width:1320px}
+.bar button{padding:6px 12px}
+.bar .ext{gap:8px;padding:0 4px 2px 12px}
+.bar .ext a{font-size:13px;font-weight:900;padding:5px 12px;border-radius:99px;background:var(--d);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.bar .ext a:hover{text-decoration:none;background:#fff}
+/* 角色篩選收起來 */
+.fWrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:72%}
+.fTog{display:inline-flex;align-items:center;gap:7px;font:700 13px var(--cn);color:#e9f5dd;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(200,242,122,.55);background:rgba(7,9,15,.6);cursor:pointer}
+.fTog b{color:#C8F27A}
+.fTog svg{width:11px;height:11px;transition:transform .2s}
+.fWrap.open .fTog{background:#9BD14B;color:#111;border-color:#9BD14B}
+.fWrap.open .fTog b{color:#111}
+.fWrap.open .fTog svg{transform:rotate(180deg)}
+.fWrap .chips{display:none;margin-left:0}
+.fWrap.open .chips{display:flex}
+@media (max-width:820px){
+  .fWrap{margin-left:0;width:100%;max-width:none;align-items:flex-start}
+  .fWrap .chips{width:100%}
+}
+/* 其他房間大卡片 */
+.rooms{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:24px}
+.room{display:flex;flex-direction:column;text-decoration:none;background:var(--white);border:2.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:20px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.room:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.room .cv{aspect-ratio:16/8;border-bottom:2.5px solid var(--ink);overflow:hidden;background:var(--c)}
+.room .cv img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.room .tx{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.room .tg{align-self:flex-start;font:700 11px var(--mono);letter-spacing:.06em;padding:3px 9px;border-radius:99px;background:var(--c);border:1.5px solid var(--ink)}
+.room b{font-size:22px;font-weight:900}
+.room p{margin:0;font-size:14px;line-height:1.6;color:var(--mid);flex:1}
+.room .go{align-self:flex-start;margin-top:6px;font-weight:700;font-size:14px;padding:6px 14px;border:2px solid var(--ink);border-radius:99px;background:var(--c)}
+@media (max-width:820px){.rooms{grid-template-columns:1fr;gap:18px}.room b{font-size:20px}}
+/* 頁尾醒目 */
+footer{padding:48px 32px 40px}
+footer .ftt{width:100%;margin:0 0 6px;font:900 22px var(--cn);color:var(--paper)}
+footer .in{gap:14px}
+footer a{font-size:16px;padding:12px 22px;border-width:2.5px;box-shadow:4px 4px 0 rgba(236,237,232,.25)}
+footer a.big{color:#111;border-color:#111;box-shadow:4px 4px 0 var(--paper)}
+footer a.big.w{background:#9BD14B}
+footer a.big.p{background:#FF9CCB}
+footer a.big.y{background:#FFE08A}
+footer a.big:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--paper);background:#fff}
 </style>
 <!-- 流量統計 -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="cc39f021-8956-483a-baf5-bc1780db1e35"></script>
@@ -556,7 +600,7 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
   </div>
   <div class="sTop">
     <div class="ttl">抹茶屋<small>MATCHA'S UNIVERSE</small><small class="views" id="views" hidden></small></div>
-    <nav class="chips" id="chips" aria-label="篩選角色"></nav>
+    <div class="fWrap" id="fWrap"><button type="button" class="fTog" id="fTog" aria-expanded="false" aria-controls="chips">篩選角色　<b id="fNow">全部</b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><nav class="chips" id="chips" aria-label="篩選角色"></nav></div>
   </div>
   <span class="deco" style="left:6%;top:22%;width:30px;height:30px;--dl:0s"><svg viewBox="0 0 40 40" style="rotate:0deg"><use href="#i-star" class="tw s-glow" style="--dl:0s"/></svg></span>
   <span class="deco" style="left:30%;top:16%;width:22px;height:22px;--dl:0.6s"><svg viewBox="0 0 40 40" style="rotate:10deg"><use href="#i-star5" class="tw s-glowg" style="--dl:0.6s"/></svg></span>
@@ -577,6 +621,17 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
 <main id="sections"></main>
 
 <section style="max-width:1180px;margin:0 auto;padding:0 32px" class="gwrap">
+  <div class="sec" id="rooms">
+    <div class="sh"><h2 style="--c:#FF9CCB">其他房間</h2><p>世界觀設定、私心推坑和民調都在這裡。</p></div>
+    <div class="rooms">
+      <a class="room" href="/WORD/" style="--c:#9BD14B"><span class="cv"><img src="room/img/p/worlds.webp" alt="" loading="lazy"></span><span class="tx"><span class="tg">WORLDS 04</span><b>世界觀總覽</b><p>NEXA、巴別塔學院、荊口、星際聯邦，四個大世界的完整設定和住在裡面的角色。</p><span class="go">進去看看</span></span></a>
+      <a class="room" href="/pick.html" style="--c:#FF9CCB"><span class="cv"><img src="room/img/p/pick.webp" alt="" loading="lazy" style="object-position:left top"></span><span class="tx"><span class="tg">PICK!</span><b>繁中作者私心推薦</b><p>私心推坑的作者圖鑑，點進主頁挖下一個本命。</p><span class="go">去挖寶</span></span></a>
+      <a class="room" href="/poll/" style="--c:#FFE08A"><span class="cv"><img src="room/img/p/poll.webp" alt="" loading="lazy"></span><span class="tx"><span class="tg">POLL</span><b>角色卡民調</b><p>六題、大概一分鐘，可以匿名。想參考大家想看什麼卡。</p><span class="go">填一下</span></span></a>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1180px;margin:0 auto;padding:0 32px" class="gwrap">
   <div class="sec" id="games">
     <div class="sh"><h2 style="--c:#C9B8FF">小遊戲</h2><p>小遊戲和小工具，純玩。</p></div>
     <div class="games">
@@ -591,11 +646,12 @@ fetch('https://matcha1642.goatcounter.com/counter/TOTAL.json').then(r => r.ok ? 
 </section>
 
 <footer><div class="in">
+  <p class="ftt">還想逛的話</p>
+  <a class="big w" href="/WORD/">世界觀總覽</a>
+  <a class="big p" href="/pick.html">繁中作者私心推薦</a>
+  <a class="big y" href="/poll/">角色卡民調</a>
   <a href="https://caveduck.io/user/Matcha_?locale=zh-hant" target="_blank" rel="noopener">鴨答作者頁</a>
   <a href="https://www.threads.com/@hgv1642" target="_blank" rel="noopener">Threads @hgv1642</a>
-  <a href="/WORD/">世界觀總覽</a>
-  <a href="/pick.html">繁中作者私心推薦</a>
-  <a href="/poll/">角色卡民調</a>
   <div class="sign">MATCHA_ ON CAVEDUCK</div>
 </div></footer>
 
@@ -719,7 +775,7 @@ if ('IntersectionObserver' in window){
 /* 篩選 */
 const fb = $('filters');
 fb.insertAdjacentHTML('beforeend', '<button type="button" class="on" data-f="all">全部</button>' + groups.map(g => '<button type="button" data-f="' + g.k + '">' + esc(g.n) + '</button>').join('') +
-  '<span class="ext"><a href="#games">小遊戲</a><a href="https://www.threads.com/@hgv1642" target="_blank" rel="noopener">Threads</a></span>');
+  '<span class="ext"><a href="/WORD/" style="--d:#9BD14B">世界觀總覽</a><a href="/pick.html" style="--d:#FF9CCB">繁中作者私心推薦</a><a href="/poll/" style="--d:#FFE08A">角色卡民調</a></span>');
 fb.addEventListener('click', e => {
   const b = e.target.closest('[data-f]'); if (!b) return;
   fb.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b));
@@ -991,10 +1047,11 @@ document.addEventListener('keydown', e => { if (!$('dlg').open) return; if (e.ke
     .concat([['cherry', '和櫻桃聯名', c => c.cherry], ['milly', '和米莉聯名', c => c.milly], ['award', '得獎', c => (c.award || []).length], ['official', '官方合作', c => c.official]])
     .filter(f => CARDS.some(f[2]));
   const chips = $('chips');
+  $('fTog').addEventListener('click', () => { const o = $('fWrap').classList.toggle('open'); $('fTog').setAttribute('aria-expanded', o); });
   chips.innerHTML = '<button type="button" class="on" data-sf="all">全部</button>' + F.map(f => '<button type="button" data-sf="' + f[0] + '">' + esc(f[1]) + '</button>').join('');
   chips.addEventListener('click', e => {
     const b = e.target.closest('[data-sf]'); if (!b) return;
-    chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); $('fNow').textContent = b.textContent;
     const f = b.dataset.sf === 'all' ? null : F.find(x => x[0] === b.dataset.sf)[2];
     nodes.forEach(n => { const on = !f || f(n.c); n.el.classList.toggle('off', !on); n.sh.classList.toggle('off', !on); n.p.classList.toggle('off', !on); if (n.q) n.q.classList.toggle('off', !on); if (n.qm) n.qm.classList.toggle('off', !on); });
   });
