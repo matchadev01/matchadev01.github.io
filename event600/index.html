@@ -170,8 +170,8 @@ footer a:hover{text-decoration:underline}
           <div class="msg" id="m-cid"></div>
         </div>
         <div class="fld">
-          <label for="th">Threads 帳號<span class="rq">*</span><span class="sub">要跟留言的帳號一樣，例如 @hgv1642</span></label>
-          <input class="inp" type="text" id="th" autocomplete="off" placeholder="@你的帳號">
+          <label for="th">Threads 帳號<span class="rq">*</span><span class="sub">要跟留言的帳號一樣，不用加 @，例如 hgv1642</span></label>
+          <input class="inp" type="text" id="th" autocomplete="off" placeholder="hgv1642">
           <div class="msg" id="m-th"></div>
         </div>
         <div class="fld">
@@ -343,7 +343,7 @@ $("f").addEventListener("submit", async e => {
   }
 
   const payload = {
-    cid, th: "@" + th,
+    cid, th,
     url: m.share ? "https://www.threads.com/share/" + m.share : "https://www.threads.com/@" + m[1] + "/post/" + m[2],
     post: m.share ? "share:" + m.share : m[2],
     chara, say: $("say").value.trim(), vid
@@ -353,13 +353,15 @@ $("f").addEventListener("submit", async e => {
   $("go").textContent = "送出中…";
   $("m-go").textContent = "";
 
+  let d = null;
   try {
     const r = await fetch(CONFIG.API, {
       method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
-    const d = await r.json();
+    const txt = await r.text();
+    try { d = JSON.parse(txt); }
+    catch (x) { $("m-go").textContent = "後端回傳錯誤，請截圖給 Matcha_"; console.log(txt.slice(0, 500)); throw "shown"; }
     if (d.ok) {
       if (typeof d.count === "number") showSeats(d.count);
       if (d.zone === "draw") {
@@ -378,7 +380,7 @@ $("f").addEventListener("submit", async e => {
     }[d.dup || d.err];
     if (why) setMsg(why[0], why[1]); else $("m-go").textContent = "送出失敗，請稍後再試一次";
   } catch (err) {
-    $("m-go").textContent = "連線失敗，請稍後再試一次";
+    if (err !== "shown") $("m-go").textContent = "連線失敗，請稍後再試一次";
   }
   $("go").disabled = false;
   $("go").textContent = "送出報名";
