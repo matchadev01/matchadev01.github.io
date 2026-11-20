@@ -85,6 +85,12 @@ textarea:focus,.inp:focus{background:var(--white);box-shadow:3px 3px 0 var(--g)}
 .agree{display:flex;gap:10px;align-items:flex-start;margin-top:22px;font-size:14px;font-weight:700;cursor:pointer;user-select:none;background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px}
 .agree input{width:20px;height:20px;margin-top:2px;accent-color:var(--g2);flex:none}
 
+.plat{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.pl{display:flex;align-items:center;gap:8px;border:2.5px solid var(--ink);border-radius:14px;padding:9px 16px;background:var(--paper);font-weight:900;cursor:pointer}
+.pl input{width:18px;height:18px;accent-color:var(--g2)}
+.pl:has(input:checked){background:var(--g)}
+.already{display:none;margin-top:14px;background:var(--g);border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;font-size:14px;font-weight:700}
+.go.small{font-size:16px;padding:10px 30px;margin-top:22px;box-shadow:4px 4px 0 var(--ink)}
 /* submit */
 .go{display:block;margin:38px auto 0;background:var(--g);border:3px solid var(--ink);border-radius:99px;padding:14px 56px;font-size:22px;font-weight:900;box-shadow:6px 6px 0 var(--ink);transition:transform .1s,box-shadow .1s}
 .go:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
@@ -172,12 +178,15 @@ footer a:hover{text-decoration:underline}
         <li><span data-t="r4"></span></li>
         <li><span data-t="r5"></span></li>
         <li><span data-t="r6"></span></li>
+        <li><span data-t="r8"></span></li>
         <li><span data-t="r7"></span></li>
       </ol>
     </section>
 
     <section class="sec">
       <div class="sec-h"><span class="num">04</span><h2 data-t="s4"></h2></div>
+      <p class="already" id="already" data-t="already"></p>
+      <p class="hint" data-t="editNote"></p>
       <form id="f" novalidate>
         <div class="fld">
           <label for="cid"><span data-t="cid"></span><span class="rq">*</span><span class="sub" data-t="cidSub"></span></label>
@@ -186,12 +195,19 @@ footer a:hover{text-decoration:underline}
           <div class="msg" id="m-cid"></div>
         </div>
         <div class="fld">
-          <label for="th"><span data-t="th"></span><span class="rq">*</span><span class="sub" data-t="thSub"></span></label>
+          <label><span data-t="plat"></span><span class="rq">*</span><span class="sub" data-t="platSub"></span></label>
+          <div class="plat">
+            <label class="pl"><input type="radio" name="plat" value="threads" checked><span>Threads</span></label>
+            <label class="pl"><input type="radio" name="plat" value="x"><span>X (Twitter)</span></label>
+          </div>
+        </div>
+        <div class="fld">
+          <label for="th"><span id="thLb"></span><span class="rq">*</span><span class="sub" id="thSub"></span></label>
           <input class="inp" type="text" id="th" autocomplete="off" placeholder="hgv1642">
           <div class="msg" id="m-th"></div>
         </div>
         <div class="fld">
-          <label for="url"><span data-t="url"></span><span class="rq">*</span><span class="sub" data-t="urlSub"></span></label>
+          <label for="url"><span id="urlLb"></span><span class="rq">*</span><span class="sub" id="urlSub"></span></label>
           <input class="inp" type="url" id="url" autocomplete="off" placeholder="https://www.threads.com/share/...">
           <div class="msg" id="m-url"></div>
         </div>
@@ -215,7 +231,7 @@ footer a:hover{text-decoration:underline}
 
   <main id="done">
     <section class="sec">
-      <div class="thanks"><div class="big">🦆</div><h2 data-t="doneH"></h2><p id="doneTxt" data-t="doneSeat"></p></div>
+      <div class="thanks"><div class="big">🦆</div><h2 id="doneH" data-t="doneH"></h2><p id="doneTxt" data-t="doneSeat"></p><button class="go small" id="editBtn" type="button" data-t="editBtn"></button></div>
     </section>
   </main>
 
@@ -260,7 +276,7 @@ zh: {
   nNowLb: "目前報名", nLeftLb: "參加獎剩餘名額", fullLb: "現在報名列入候補",
   now: n => n + " 人", left: n => n + " 名", fullTxt: "額滿",
   s1: "怎麼參加？",
-  st1: "到 Threads 活動貼文底下留言，貼上你和 Matcha_ 任一角色的遊玩片段",
+  st1: "到 Threads 或 X（推特）的活動貼文底下留言，貼上你和 Matcha_ 任一角色的遊玩片段",
   st2: "點留言的分享按鈕複製連結，填寫下面的報名表，記得填上你的鴨答 ID",
   s2: "有什麼獎？",
   p1: "參加獎", p1s: "前 50 名", p2: "最佳片段", p2s: "1 位", p3: "最有梗", p3s: "2 位",
@@ -268,7 +284,7 @@ zh: {
   hint1: "參加獎限前 50 名。額滿後還是可以報名，會先列入候補。特別獎從所有參加者裡選，不管有沒有額滿都有機會。",
   hint2: "單位是翅膀，發放方式依平台當時規定。",
   s3: "活動規則",
-  r1: "每個 Threads 帳號、每個鴨答 ID 各限領一次，留多則只算一則",
+  r1: "每個鴨答 ID 限領一次，Threads 和 X 合併計算；每個帳號也只能報名一次",
   r2: "遊玩片段可以是聊天室截圖或聊天卡片擷取，只截開場白的不算",
   r3: "使用 Huey（鴨答免費模型）產生的片段不算",
   r4: "同一張截圖出現在不同帳號的留言，我會私訊確認鴨答 ID，無法確認的不予發放",
@@ -290,13 +306,30 @@ zh: {
   doneWait: "參加獎名額已滿，你目前在候補名單。<br>特別獎照樣有機會！聖誕節還有第二波🎄",
   closedH: "活動截止囉", closedP: "謝謝大家的參與！聖誕節的第二波見🎄",
   e_cid: "請填鴨答 ID", e_cidSp: "ID 裡不能有空白",
-  e_th: "請填 Threads 帳號", e_thCh: "帳號只會有英文、數字、底線和點",
-  e_url: "請貼上留言連結", e_urlBad: "看起來不是 Threads 留言連結，請用分享按鈕的「複製連結」",
-  e_urlMis: h => "連結裡的帳號是 @" + h + "，跟上面填的 Threads 帳號不一樣", ok_url: "✓ 連結格式正確",
+  e_th: "請填帳號", e_thCh: "帳號只會有英文、數字、底線和點",
+  e_url: "請貼上留言連結", e_urlBad: "看起來不是留言連結，請用分享按鈕的「複製連結」",
+  e_urlMis: h => "連結裡的帳號是 @" + h + "，跟上面填的帳號不一樣", ok_url: "✓ 連結格式正確",
   e_chara: "請選擇遊玩的角色", e_agree: "請勾選確認事項",
-  d_cid: "這個鴨答 ID 已經報名過了", d_th: "這個 Threads 帳號已經報名過了", d_url: "這則留言已經被報名過了",
+  d_cid: "這個鴨答 ID 已經報名過了", d_th: "這個帳號已經報名過了", d_url: "這則留言已經被報名過了",
   d_closed: "活動已經截止囉", e_fail: "送出失敗，請稍後再試一次", e_net: "連線失敗，請稍後再試一次",
-  e_back: "後端回傳錯誤，請截圖給 Matcha_"
+  e_back: "後端回傳錯誤，請截圖給 Matcha_",
+  r8: "填錯資料或留言被平台刪掉，可以回報名頁修改，名額順序不變",
+  plat: "參加平台",
+  platSub: "你在哪個平台留言？",
+  th_threads: "Threads 帳號",
+  thSub_threads: "要跟留言的Threads帳號一樣，例如 hgv1642",
+  th_x: "X 帳號",
+  thSub_x: "要跟留言的X帳號一樣，@ 後面那串，例如 Matcha_",
+  url_threads: "Threads 留言連結",
+  urlSub_threads: "點留言的分享按鈕，選「複製連結」後貼上",
+  url_x: "X 留言連結",
+  urlSub_x: "點留言的分享按鈕，選「複製連結」後貼上",
+  editNote: "填錯了或留言被刪掉？用同一台裝置重新送出，就會更新你的報名，名額順序不變。換了裝置的話，鴨答 ID 和帳號要跟原本一樣才能修改。",
+  already: "你已經報名過囉！下面是你上次填的資料，要修改的話改完直接送出就好。",
+  editBtn: "修改報名",
+  doneEdit: "已經更新你的報名！",
+  d_cidTaken: "這個鴨答 ID 已經報名過了。要修改的話，請用原本報名的裝置，或填跟原本一樣的平台和帳號",
+  e_urlPlat: p => "這是 " + p + " 的連結，上面的參加平台要選 " + p
 },
 en: {
   h1: "THANK YOU 600",
@@ -307,7 +340,7 @@ en: {
   nNowLb: "Entries so far", nLeftLb: "Prize spots left", fullLb: "New entries join the waitlist",
   now: n => String(n), left: n => String(n), fullTxt: "FULL",
   s1: "How to join",
-  st1: "Comment on the event post on Threads with a clip of your chat with any of Matcha_'s characters",
+  st1: "Comment on the event post on Threads or X (Twitter) with a clip of your chat with any of Matcha_'s characters",
   st2: "Tap the share button on your comment, copy the link, and fill in the form below. Don't forget your CaveDuck ID",
   s2: "Prizes",
   p1: "Participation prize", p1s: "First 50", p2: "Best clip", p2s: "1 winner", p3: "Funniest clip", p3s: "2 winners",
@@ -315,7 +348,7 @@ en: {
   hint1: "The participation prize is for the first 50 entries. You can still enter after it fills up and you'll join the waitlist. Special prizes are picked from all entries, so everyone has a shot.",
   hint2: "Prizes are in Wings. Delivery follows the platform's rules at that time.",
   s3: "Rules",
-  r1: "One prize per Threads account and per CaveDuck ID. Multiple comments count as one",
+  r1: "One prize per CaveDuck ID, counting Threads and X together. Each account can only enter once",
   r2: "Your clip can be a chat screenshot or a chat card capture. Clips that only show the greeting message don't count",
   r3: "Clips generated with Huey (CaveDuck's free model) don't count",
   r4: "If the same screenshot shows up in comments from different accounts, I'll DM you to confirm your CaveDuck ID. Entries that can't be confirmed won't receive Wings",
@@ -337,13 +370,30 @@ en: {
   doneWait: "The participation prize is full, so you're on the waitlist.<br>You can still win a special prize! Wave 2 is coming at Christmas🎄",
   closedH: "The event has ended", closedP: "Thanks for joining! See you in the Christmas wave🎄",
   e_cid: "Please enter your CaveDuck ID", e_cidSp: "Your ID can't contain spaces",
-  e_th: "Please enter your Threads username", e_thCh: "Usernames only use letters, numbers, underscores and periods",
-  e_url: "Please paste your comment link", e_urlBad: "That doesn't look like a Threads comment link. Use Copy link from the share button",
-  e_urlMis: h => "This link belongs to @" + h + ", which doesn't match the Threads username above", ok_url: "✓ Link looks good",
+  e_th: "Please enter your username", e_thCh: "Usernames only use letters, numbers, underscores and periods",
+  e_url: "Please paste your comment link", e_urlBad: "That doesn't look like a comment link. Use Copy link from the share button",
+  e_urlMis: h => "This link belongs to @" + h + ", which doesn't match the username above", ok_url: "✓ Link looks good",
   e_chara: "Please choose the character you played", e_agree: "Please tick the confirmation box",
-  d_cid: "This CaveDuck ID has already entered", d_th: "This Threads account has already entered", d_url: "This comment has already been entered",
+  d_cid: "This CaveDuck ID has already entered", d_th: "This account has already entered", d_url: "This comment has already been entered",
   d_closed: "The event has ended", e_fail: "Couldn't submit. Please try again later", e_net: "Connection failed. Please try again later",
-  e_back: "Server error. Please screenshot this and send it to Matcha_"
+  e_back: "Server error. Please screenshot this and send it to Matcha_",
+  r8: "If you made a mistake or your comment got removed by the platform, you can edit your entry on this page. Your place in line stays the same",
+  plat: "Platform",
+  platSub: "Where did you comment?",
+  th_threads: "Threads username",
+  thSub_threads: "Must match the account you commented with, e.g. hgv1642",
+  th_x: "X username",
+  thSub_x: "Must match the account you replied with, the part after @, e.g. Matcha_",
+  url_threads: "Threads comment link",
+  urlSub_threads: "Tap the share button on your comment, choose Copy link, and paste it here",
+  url_x: "X reply link",
+  urlSub_x: "Tap the share button on your reply, choose Copy link, and paste it here",
+  editNote: "Made a mistake or your comment got removed? Submit again from the same device to update your entry, and you'll keep your place. On a different device, your CaveDuck ID and account must match your original entry.",
+  already: "You've already entered! Your last answers are filled in below. Change what you need and submit again.",
+  editBtn: "Edit my entry",
+  doneEdit: "Your entry has been updated!",
+  d_cidTaken: "This CaveDuck ID has already entered. To edit, use the device you entered with, or fill in the same platform and account as before",
+  e_urlPlat: p => "This is a " + p + " link. Please choose " + p + " as your platform above"
 },
 ko: {
   h1: "600 팔로워 감사",
@@ -354,7 +404,7 @@ ko: {
   nNowLb: "현재 신청", nLeftLb: "참가상 남은 자리", fullLb: "지금 신청하면 대기 명단",
   now: n => n + "명", left: n => n + "자리", fullTxt: "마감",
   s1: "참여 방법",
-  st1: "Threads 이벤트 게시물에 Matcha_의 캐릭터와 플레이한 장면을 댓글로 올려 주세요",
+  st1: "Threads 또는 X(트위터) 이벤트 게시물에 Matcha_의 캐릭터와 플레이한 장면을 댓글로 올려 주세요",
   st2: "댓글의 공유 버튼으로 링크를 복사해서 아래 신청서를 작성해 주세요. 케이브덕 ID도 꼭 적어 주세요",
   s2: "상품",
   p1: "참가상", p1s: "선착순 50명", p2: "베스트 장면상", p2s: "1명", p3: "최고 웃음상", p3s: "2명",
@@ -362,7 +412,7 @@ ko: {
   hint1: "참가상은 선착순 50명까지예요. 마감 후에도 신청할 수 있고 대기 명단에 올라가요. 특별상은 전체 참가자 중에서 뽑으니 누구에게나 기회가 있어요.",
   hint2: "단위는 날개이고, 지급 방식은 당시 플랫폼 규정을 따라요.",
   s3: "이벤트 규칙",
-  r1: "Threads 계정과 케이브덕 ID마다 한 번만 받을 수 있어요. 댓글을 여러 개 남겨도 하나만 인정돼요",
+  r1: "케이브덕 ID마다 한 번만 받을 수 있어요. Threads와 X는 합쳐서 계산하고, 계정마다 한 번만 신청할 수 있어요",
   r2: "플레이 장면은 채팅방 스크린샷이나 채팅 카드 캡처 모두 괜찮아요. 첫 메시지만 캡처한 건 인정되지 않아요",
   r3: "Huey(케이브덕 무료 모델)로 만든 장면은 인정되지 않아요",
   r4: "같은 스크린샷이 다른 계정의 댓글에 올라오면 DM으로 케이브덕 ID를 확인하고, 확인되지 않으면 지급하지 않아요",
@@ -384,13 +434,30 @@ ko: {
   doneWait: "참가상 자리가 마감되어 대기 명단에 올라갔어요.<br>특별상은 여전히 기회가 있어요! 크리스마스 2차 이벤트도 기대해 주세요🎄",
   closedH: "이벤트가 마감되었어요", closedP: "참여해 주셔서 고마워요! 크리스마스 2차 이벤트에서 만나요🎄",
   e_cid: "케이브덕 ID를 입력해 주세요", e_cidSp: "ID에는 공백이 들어갈 수 없어요",
-  e_th: "Threads 계정을 입력해 주세요", e_thCh: "계정은 영문, 숫자, 밑줄, 마침표만 쓸 수 있어요",
-  e_url: "댓글 링크를 붙여 넣어 주세요", e_urlBad: "Threads 댓글 링크가 아닌 것 같아요. 공유 버튼의 '링크 복사'를 이용해 주세요",
-  e_urlMis: h => "링크의 계정은 @" + h + "인데, 위에 적은 Threads 계정과 달라요", ok_url: "✓ 링크 형식이 맞아요",
+  e_th: "계정을 입력해 주세요", e_thCh: "계정은 영문, 숫자, 밑줄, 마침표만 쓸 수 있어요",
+  e_url: "댓글 링크를 붙여 넣어 주세요", e_urlBad: "댓글 링크가 아닌 것 같아요. 공유 버튼의 '링크 복사'를 이용해 주세요",
+  e_urlMis: h => "링크의 계정은 @" + h + "인데, 위에 적은 계정과 달라요", ok_url: "✓ 링크 형식이 맞아요",
   e_chara: "플레이한 캐릭터를 선택해 주세요", e_agree: "확인 사항에 체크해 주세요",
-  d_cid: "이미 신청한 케이브덕 ID예요", d_th: "이미 신청한 Threads 계정이에요", d_url: "이미 신청된 댓글이에요",
+  d_cid: "이미 신청한 케이브덕 ID예요", d_th: "이미 신청한 계정이에요", d_url: "이미 신청된 댓글이에요",
   d_closed: "이벤트가 마감되었어요", e_fail: "신청에 실패했어요. 잠시 후 다시 시도해 주세요", e_net: "연결에 실패했어요. 잠시 후 다시 시도해 주세요",
-  e_back: "서버 오류가 발생했어요. 화면을 캡처해서 Matcha_에게 보내 주세요"
+  e_back: "서버 오류가 발생했어요. 화면을 캡처해서 Matcha_에게 보내 주세요",
+  r8: "정보를 잘못 적었거나 플랫폼에서 댓글이 삭제됐다면 신청 페이지에서 수정할 수 있어요. 순서는 그대로 유지돼요",
+  plat: "참여 플랫폼",
+  platSub: "어디에 댓글을 남겼나요?",
+  th_threads: "Threads 계정",
+  thSub_threads: "댓글을 단 Threads 계정과 같아야 해요. 예: hgv1642",
+  th_x: "X 계정",
+  thSub_x: "답글을 단 X 계정과 같아야 해요. @ 뒤 부분, 예: Matcha_",
+  url_threads: "Threads 댓글 링크",
+  urlSub_threads: "댓글의 공유 버튼에서 '링크 복사'를 눌러 붙여 넣어 주세요",
+  url_x: "X 답글 링크",
+  urlSub_x: "답글의 공유 버튼에서 '링크 복사'를 눌러 붙여 넣어 주세요",
+  editNote: "잘못 적었거나 댓글이 삭제됐나요? 같은 기기에서 다시 신청하면 신청 내용이 업데이트되고 순서는 그대로예요. 다른 기기에서는 케이브덕 ID와 계정이 원래와 같아야 수정할 수 있어요.",
+  already: "이미 신청했어요! 지난번에 적은 내용이 아래에 들어 있으니, 고칠 부분만 바꾸고 다시 신청해 주세요.",
+  editBtn: "신청 수정하기",
+  doneEdit: "신청 내용이 업데이트됐어요!",
+  d_cidTaken: "이미 신청한 케이브덕 ID예요. 수정하려면 원래 신청한 기기를 쓰거나, 원래와 같은 플랫폼과 계정을 적어 주세요",
+  e_urlPlat: p => p + " 링크예요. 위에서 참여 플랫폼을 " + p + "(으)로 선택해 주세요"
 },
 ja: {
   h1: "600フォロー感謝",
@@ -401,7 +468,7 @@ ja: {
   nNowLb: "現在の応募数", nLeftLb: "参加賞の残り枠", fullLb: "今からの応募はキャンセル待ち",
   now: n => n + "人", left: n => n + "枠", fullTxt: "満員",
   s1: "参加方法",
-  st1: "Threadsのイベント投稿に、Matcha_のキャラとのプレイ画面をコメントで貼ってね",
+  st1: "ThreadsかX(Twitter)のイベント投稿に、Matcha_のキャラとのプレイ画面をコメントで貼ってね",
   st2: "コメントの共有ボタンからリンクをコピーして、下のフォームに記入してね。CaveDuck IDも忘れずに",
   s2: "賞品",
   p1: "参加賞", p1s: "先着50名", p2: "ベストシーン賞", p2s: "1名", p3: "おもしろ賞", p3s: "2名",
@@ -409,7 +476,7 @@ ja: {
   hint1: "参加賞は先着50名までです。満員になっても応募でき、キャンセル待ちになります。特別賞は応募者全員から選ぶので、誰にでもチャンスがあります。",
   hint2: "単位は翼です。配布方法はその時点のプラットフォームの規定に従います。",
   s3: "ルール",
-  r1: "Threadsアカウント・CaveDuck IDごとに1回まで。複数コメントしても1件として扱います",
+  r1: "CaveDuck IDごとに1回まで。ThreadsとXは合わせて数え、アカウントごとにも1回までです",
   r2: "プレイ画面はチャットのスクリーンショットでも、チャットカードのキャプチャでもOK。最初のメッセージだけのものは対象外です",
   r3: "Huey(CaveDuckの無料モデル)で生成したものは対象外です",
   r4: "同じスクリーンショットが別アカウントのコメントで使われていた場合、DMでCaveDuck IDを確認します。確認できない場合は配布しません",
@@ -431,13 +498,30 @@ ja: {
   doneWait: "参加賞の枠が埋まったため、キャンセル待ちになりました。<br>特別賞のチャンスはまだあります！クリスマスの第2弾もお楽しみに🎄",
   closedH: "イベントは終了しました", closedP: "参加ありがとう！クリスマスの第2弾で会おうね🎄",
   e_cid: "CaveDuck IDを入力してね", e_cidSp: "IDにスペースは入れられません",
-  e_th: "Threadsアカウントを入力してね", e_thCh: "アカウントは英数字・アンダーバー・ピリオドのみです",
-  e_url: "コメントのリンクを貼り付けてね", e_urlBad: "Threadsのコメントリンクではないようです。共有ボタンの「リンクをコピー」を使ってね",
-  e_urlMis: h => "リンクのアカウントは @" + h + " で、上に入力したThreadsアカウントと違います", ok_url: "✓ リンクの形式はOK",
+  e_th: "アカウントを入力してね", e_thCh: "アカウントは英数字・アンダーバー・ピリオドのみです",
+  e_url: "コメントのリンクを貼り付けてね", e_urlBad: "コメントのリンクではないようです。共有ボタンの「リンクをコピー」を使ってね",
+  e_urlMis: h => "リンクのアカウントは @" + h + " で、上に入力したアカウントと違います", ok_url: "✓ リンクの形式はOK",
   e_chara: "遊んだキャラを選んでね", e_agree: "確認事項にチェックしてね",
-  d_cid: "このCaveDuck IDはすでに応募済みです", d_th: "このThreadsアカウントはすでに応募済みです", d_url: "このコメントはすでに応募済みです",
+  d_cid: "このCaveDuck IDはすでに応募済みです", d_th: "このアカウントはすでに応募済みです", d_url: "このコメントはすでに応募済みです",
   d_closed: "イベントは終了しました", e_fail: "送信できませんでした。少し時間をおいてもう一度試してね", e_net: "接続できませんでした。少し時間をおいてもう一度試してね",
-  e_back: "サーバーでエラーが出ました。画面をスクショしてMatcha_に送ってね"
+  e_back: "サーバーでエラーが出ました。画面をスクショしてMatcha_に送ってね",
+  r8: "入力を間違えたり、プラットフォームにコメントを消されたりした場合は、応募ページで修正できます。順番はそのままです",
+  plat: "参加プラットフォーム",
+  platSub: "どこにコメントしましたか？",
+  th_threads: "Threadsアカウント",
+  thSub_threads: "コメントしたThreadsアカウントと同じにしてね。例：hgv1642",
+  th_x: "Xアカウント",
+  thSub_x: "リプライしたXアカウントと同じにしてね。@の後ろの部分、例：Matcha_",
+  url_threads: "Threadsコメントのリンク",
+  urlSub_threads: "コメントの共有ボタンから「リンクをコピー」を選んで貼り付けてね",
+  url_x: "Xリプライのリンク",
+  urlSub_x: "リプライの共有ボタンから「リンクをコピー」を選んで貼り付けてね",
+  editNote: "入力ミスやコメントが消されたときは、同じ端末からもう一度送信すると応募内容が更新され、順番はそのままです。別の端末からは、CaveDuck IDとアカウントが元の応募と同じなら修正できます。",
+  already: "応募済みです！前回の内容が下に入っているので、直したいところだけ変えてもう一度送信してね。",
+  editBtn: "応募を修正する",
+  doneEdit: "応募内容を更新しました！",
+  d_cidTaken: "このCaveDuck IDはすでに応募済みです。修正するには、応募したときの端末を使うか、元と同じプラットフォームとアカウントを入力してね",
+  e_urlPlat: p => p + "のリンクです。上の参加プラットフォームで" + p + "を選んでね"
 },
 es: {
   h1: "¡GRACIAS 600!",
@@ -448,7 +532,7 @@ es: {
   nNowLb: "Participantes", nLeftLb: "Lugares de premio restantes", fullLb: "Ahora entras en lista de espera",
   now: n => String(n), left: n => String(n), fullTxt: "LLENO",
   s1: "Cómo participar",
-  st1: "Comenta en la publicación del evento en Threads con un fragmento de tu chat con cualquier personaje de Matcha_",
+  st1: "Comenta en la publicación del evento en Threads o X (Twitter) con un fragmento de tu chat con cualquier personaje de Matcha_",
   st2: "Toca el botón de compartir de tu comentario, copia el enlace y llena el formulario de abajo. No olvides tu ID de CaveDuck",
   s2: "Premios",
   p1: "Premio de participación", p1s: "Primeros 50", p2: "Mejor fragmento", p2s: "1 ganador", p3: "Más gracioso", p3s: "2 ganadores",
@@ -456,7 +540,7 @@ es: {
   hint1: "El premio de participación es para los primeros 50. Después puedes seguir participando y quedarás en lista de espera. Los premios especiales se eligen entre todos los participantes, así que todos tienen oportunidad.",
   hint2: "Los premios son en Alas. La entrega sigue las reglas de la plataforma en ese momento.",
   s3: "Reglas",
-  r1: "Un premio por cuenta de Threads y por ID de CaveDuck. Si comentas varias veces, solo cuenta una",
+  r1: "Un premio por ID de CaveDuck, contando Threads y X juntos. Cada cuenta solo puede participar una vez",
   r2: "El fragmento puede ser una captura del chat o de la tarjeta de chat. No cuenta si solo muestra el mensaje de bienvenida",
   r3: "No cuentan los fragmentos generados con Huey (el modelo gratuito de CaveDuck)",
   r4: "Si la misma captura aparece en comentarios de cuentas distintas, te escribiré por mensaje privado para confirmar tu ID de CaveDuck. Si no se puede confirmar, no se entrega el premio",
@@ -478,13 +562,30 @@ es: {
   doneWait: "Los lugares del premio de participación ya se llenaron, así que estás en lista de espera.<br>¡Aún puedes ganar un premio especial! La segunda ronda llega en Navidad🎄",
   closedH: "El evento terminó", closedP: "¡Gracias por participar! Nos vemos en la ronda de Navidad🎄",
   e_cid: "Escribe tu ID de CaveDuck", e_cidSp: "El ID no puede tener espacios",
-  e_th: "Escribe tu usuario de Threads", e_thCh: "El usuario solo puede tener letras, números, guion bajo y punto",
-  e_url: "Pega el enlace de tu comentario", e_urlBad: "Eso no parece un enlace de comentario de Threads. Usa Copiar enlace en el botón de compartir",
-  e_urlMis: h => "El enlace es de @" + h + " y no coincide con el usuario de Threads que escribiste", ok_url: "✓ Formato de enlace correcto",
+  e_th: "Escribe tu usuario", e_thCh: "El usuario solo puede tener letras, números, guion bajo y punto",
+  e_url: "Pega el enlace de tu comentario", e_urlBad: "Eso no parece un enlace de comentario. Usa Copiar enlace en el botón de compartir",
+  e_urlMis: h => "El enlace es de @" + h + " y no coincide con el usuario que escribiste", ok_url: "✓ Formato de enlace correcto",
   e_chara: "Elige el personaje con el que jugaste", e_agree: "Marca la casilla de confirmación",
-  d_cid: "Este ID de CaveDuck ya participó", d_th: "Esta cuenta de Threads ya participó", d_url: "Este comentario ya fue registrado",
+  d_cid: "Este ID de CaveDuck ya participó", d_th: "Esta cuenta ya participó", d_url: "Este comentario ya fue registrado",
   d_closed: "El evento ya terminó", e_fail: "No se pudo enviar. Inténtalo de nuevo más tarde", e_net: "Error de conexión. Inténtalo de nuevo más tarde",
-  e_back: "Error del servidor. Toma una captura y envíasela a Matcha_"
+  e_back: "Error del servidor. Toma una captura y envíasela a Matcha_",
+  r8: "Si te equivocaste o la plataforma borró tu comentario, puedes editar tu participación en esta página. Conservas tu lugar",
+  plat: "Plataforma",
+  platSub: "¿Dónde comentaste?",
+  th_threads: "Usuario de Threads",
+  thSub_threads: "Debe ser la misma cuenta con la que comentaste, p. ej. hgv1642",
+  th_x: "Usuario de X",
+  thSub_x: "Debe ser la misma cuenta con la que respondiste, lo que va después de @, p. ej. Matcha_",
+  url_threads: "Enlace del comentario en Threads",
+  urlSub_threads: "Toca el botón de compartir de tu comentario, elige Copiar enlace y pégalo aquí",
+  url_x: "Enlace de tu respuesta en X",
+  urlSub_x: "Toca el botón de compartir de tu respuesta, elige Copiar enlace y pégalo aquí",
+  editNote: "¿Te equivocaste o borraron tu comentario? Envía de nuevo desde el mismo dispositivo para actualizar tu participación y conservarás tu lugar. Desde otro dispositivo, tu ID de CaveDuck y tu cuenta deben coincidir con los originales.",
+  already: "¡Ya participaste! Abajo están tus datos anteriores. Cambia lo que necesites y envía de nuevo.",
+  editBtn: "Editar mi participación",
+  doneEdit: "¡Tu participación se actualizó!",
+  d_cidTaken: "Este ID de CaveDuck ya participó. Para editar, usa el dispositivo con el que participaste o escribe la misma plataforma y cuenta que antes",
+  e_urlPlat: p => "Este es un enlace de " + p + ". Elige " + p + " como plataforma arriba"
 }
 };
 
@@ -516,7 +617,7 @@ function applyLang(l) {
   // 清掉舊語言的錯誤訊息
   document.querySelectorAll(".msg").forEach(m => { m.textContent = ""; });
   document.querySelectorAll(".bad").forEach(x => x.classList.remove("bad"));
-  if ($("url").value.trim()) checkUrl();
+  updPlat();
 }
 document.querySelectorAll("#langs button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.l)));
 
@@ -557,6 +658,21 @@ function showSeats(count) {
 const normHandle = s => s.trim().replace(/^@+/, "").toLowerCase();
 const URL_RE = /^https?:\/\/(?:www\.)?threads\.(?:net|com)\/@([A-Za-z0-9._]+)\/post\/([A-Za-z0-9_-]+)/i;
 const SHARE_RE = /^https?:\/\/(?:www\.)?threads\.(?:net|com)\/share\/([A-Za-z0-9_-]+)/i;
+const X_RE = /^https?:\/\/(?:www\.|mobile\.)?(?:x|twitter)\.com\/([A-Za-z0-9_]+)\/status(?:es)?\/(\d+)/i;
+const plat = () => document.querySelector('input[name="plat"]:checked').value;
+const PNAME = { threads: "Threads", x: "X" };
+
+function updPlat() {
+  const p = plat();
+  $("thLb").textContent = t("th_" + p);
+  $("thSub").textContent = t("thSub_" + p);
+  $("urlLb").textContent = t("url_" + p);
+  $("urlSub").textContent = t("urlSub_" + p);
+  $("th").placeholder = p === "x" ? "Matcha_" : "hgv1642";
+  $("url").placeholder = p === "x" ? "https://x.com/.../status/..." : "https://www.threads.com/share/...";
+  if ($("url").value.trim()) checkUrl();
+}
+document.querySelectorAll('input[name="plat"]').forEach(r => r.addEventListener("change", updPlat));
 
 function setMsg(id, text, ok) {
   const m = $("m-" + id);
@@ -566,21 +682,45 @@ function setMsg(id, text, ok) {
   if (input) input.classList.toggle("bad", !!text && !ok);
 }
 
-// 連結裡的帳號要跟填的 Threads 帳號一樣
+// 檢查連結，回傳 { key, url }
 function checkUrl() {
   const u = $("url").value.trim();
   if (!u) { setMsg("url", ""); return null; }
-  const sh = u.match(SHARE_RE);
-  if (sh) { setMsg("url", t("ok_url"), true); return { share: sh[1] }; }
-  const m = u.match(URL_RE);
-  if (!m) { setMsg("url", t("e_urlBad")); return false; }
+  const p = plat();
   const th = normHandle($("th").value);
-  if (th && m[1].toLowerCase() !== th) { setMsg("url", t("e_urlMis")(m[1])); return false; }
+  const sh = u.match(SHARE_RE), tm = u.match(URL_RE), xm = u.match(X_RE);
+  if (p === "threads") {
+    if (xm) { setMsg("url", t("e_urlPlat")("X")); return false; }
+    if (sh) { setMsg("url", t("ok_url"), true); return { key: "share:" + sh[1], url: "https://www.threads.com/share/" + sh[1] }; }
+    if (!tm) { setMsg("url", t("e_urlBad")); return false; }
+    if (th && tm[1].toLowerCase() !== th) { setMsg("url", t("e_urlMis")(tm[1])); return false; }
+    setMsg("url", t("ok_url"), true);
+    return { key: tm[2], url: "https://www.threads.com/@" + tm[1] + "/post/" + tm[2] };
+  }
+  if (sh || tm) { setMsg("url", t("e_urlPlat")("Threads")); return false; }
+  if (!xm) { setMsg("url", t("e_urlBad")); return false; }
+  if (th && xm[1].toLowerCase() !== th) { setMsg("url", t("e_urlMis")(xm[1])); return false; }
   setMsg("url", t("ok_url"), true);
-  return m;
+  return { key: "x:" + xm[2], url: "https://x.com/" + xm[1] + "/status/" + xm[2] };
 }
 $("url").addEventListener("input", checkUrl);
 $("th").addEventListener("input", () => { if ($("url").value.trim()) checkUrl(); });
+
+// 上次報名的資料
+let saved = null;
+try { saved = JSON.parse(localStorage.getItem("m600_data") || "null"); } catch (e) {}
+function fillSaved() {
+  if (!saved) return;
+  $("cid").value = saved.cid || "";
+  const r = document.querySelector('input[name="plat"][value="' + (saved.plat || "threads") + '"]');
+  if (r) r.checked = true;
+  $("th").value = saved.th || "";
+  $("url").value = saved.url || "";
+  sel.value = saved.chara || "";
+  $("say").value = saved.say || "";
+  $("already").style.display = "block";
+}
+fillSaved();
 
 applyLang(L);
 
@@ -589,6 +729,13 @@ if (CONFIG.API.startsWith("http")) {
     if (d && typeof d.count === "number") showSeats(d.count);
   }).catch(() => {});
 }
+
+$("editBtn").addEventListener("click", () => {
+  $("done").style.display = "none";
+  $("form").style.display = "block";
+  fillSaved();
+  window.scrollTo({ top: $("f").offsetTop - 160, behavior: "smooth" });
+});
 
 $("f").addEventListener("submit", async e => {
   e.preventDefault();
@@ -621,10 +768,9 @@ $("f").addEventListener("submit", async e => {
     return;
   }
 
+  const p = plat();
   const payload = {
-    cid, th,
-    url: m.share ? "https://www.threads.com/share/" + m.share : "https://www.threads.com/@" + m[1] + "/post/" + m[2],
-    post: m.share ? "share:" + m.share : m[2],
+    cid, plat: p, th, url: m.url, post: m.key,
     chara, say: $("say").value.trim(), vid, lang: L
   };
 
@@ -639,16 +785,21 @@ $("f").addEventListener("submit", async e => {
     try { d = JSON.parse(txt); }
     catch (x) { $("m-go").textContent = t("e_back"); console.log(txt.slice(0, 500)); throw "shown"; }
     if (d.ok) {
+      saved = { cid, plat: p, th, url: $("url").value.trim(), chara, say: $("say").value.trim() };
+      try { localStorage.setItem("m600_data", JSON.stringify(saved)); } catch (x) {}
       if (typeof d.count === "number") showSeats(d.count);
       zone = d.zone === "draw" ? "draw" : "seat";
+      $("doneH").innerHTML = d.edited ? t("doneEdit") : t("doneH");
       $("doneTxt").innerHTML = t(zone === "draw" ? "doneWait" : "doneSeat");
       $("form").style.display = "none";
       $("done").style.display = "block";
       window.scrollTo({ top: $("done").offsetTop - 20, behavior: "smooth" });
+      $("go").disabled = false;
+      $("go").textContent = t("go");
       return;
     }
     const why = {
-      cid: ["cid", "d_cid"], th: ["th", "d_th"], url: ["url", "d_url"], closed: ["go", "d_closed"]
+      cid: ["cid", "d_cid"], cidTaken: ["cid", "d_cidTaken"], th: ["th", "d_th"], url: ["url", "d_url"], closed: ["go", "d_closed"]
     }[d.dup || d.err];
     if (why) setMsg(why[0], t(why[1])); else $("m-go").textContent = t("e_fail");
   } catch (err) {
