@@ -176,7 +176,7 @@ footer a:hover{text-decoration:underline}
         </div>
         <div class="fld">
           <label for="url">Threads 留言連結<span class="rq">*</span><span class="sub">點留言的分享按鈕，選「複製連結」後貼上</span></label>
-          <input class="inp" type="url" id="url" autocomplete="off" placeholder="https://www.threads.com/@帳號/post/...">
+          <input class="inp" type="url" id="url" autocomplete="off" placeholder="https://www.threads.com/share/...">
           <div class="msg" id="m-url"></div>
         </div>
         <div class="fld">
@@ -282,6 +282,7 @@ if (CONFIG.API.startsWith("http")) {
 
 const normHandle = s => s.trim().replace(/^@+/, "").toLowerCase();
 const URL_RE = /^https?:\/\/(?:www\.)?threads\.(?:net|com)\/@([A-Za-z0-9._]+)\/post\/([A-Za-z0-9_-]+)/i;
+const SHARE_RE = /^https?:\/\/(?:www\.)?threads\.(?:net|com)\/share\/([A-Za-z0-9_-]+)/i;
 
 function setMsg(id, text, ok) {
   const m = $("m-" + id);
@@ -295,6 +296,8 @@ function setMsg(id, text, ok) {
 function checkUrl() {
   const u = $("url").value.trim();
   if (!u) { setMsg("url", ""); return null; }
+  const sh = u.match(SHARE_RE);
+  if (sh) { setMsg("url", "✓ 連結格式正確", true); return { share: sh[1] }; }
   const m = u.match(URL_RE);
   if (!m) { setMsg("url", "看起來不是 Threads 留言連結，請用分享按鈕的「複製連結」"); return false; }
   const th = normHandle($("th").value);
@@ -341,8 +344,8 @@ $("f").addEventListener("submit", async e => {
 
   const payload = {
     cid, th: "@" + th,
-    url: "https://www.threads.com/@" + m[1] + "/post/" + m[2],
-    post: m[2],
+    url: m.share ? "https://www.threads.com/share/" + m.share : "https://www.threads.com/@" + m[1] + "/post/" + m[2],
+    post: m.share ? "share:" + m.share : m[2],
     chara, say: $("say").value.trim(), vid
   };
 
