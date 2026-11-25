@@ -41,8 +41,20 @@ function renderSlots(){
   document.getElementById('passdone').style.display=n===chars.length?'block':'none';
 }
 
+// 預先載入並解碼回憶圖和卡片底圖，點物件時圖和框一起出現
+const CACHE={};
+function getImg(src){if(!CACHE[src]){const im=new Image();im.decoding='async';im.src=src;CACHE[src]={im,ready:(im.decode?im.decode():Promise.resolve()).catch(()=>{})}}return CACHE[src]}
+function preload(){getImg('assets/ui_panel.png');for(const k in MEMORIES){const m=MEMORIES[k];[m.img,...(m.imgs||[])].forEach(n=>n&&getImg(`assets/${n}.png`))}}
+let opening=0;
 function open(id){
   const m=MEMORIES[id];if(!m)return;
+  const cur0=Math.min(3,(seen[id]||0)+1),list0=(cur0===2&&m.imgs)?m.imgs:(m.imgs&&cur0===3?[m.imgs[2]]:(m.img?[m.img]:[]));
+  const need=['assets/ui_panel.png',...list0.map(n=>`assets/${n}.png`)].map(s=>getImg(s).ready),my=++opening;
+  // 圖還沒好就等一下（最多 0.6 秒），好了再一起打開
+  Promise.race([Promise.all(need),new Promise(r=>setTimeout(r,600))]).then(()=>{if(my===opening)show(id)});
+}
+function show(id){
+  const m=MEMORIES[id];
   const cur=Math.min(3,(seen[id]||0)+1);
   const firstTime=(seen[id]||0)<cur;
   seen[id]=Math.max(seen[id]||0,cur);save();
@@ -50,7 +62,7 @@ function open(id){
   const page=m.pages[cur-1];
   mTitle.textContent=m.title;mOwner.textContent=m.owner+'的回憶';
   const list=(cur===2&&m.imgs)?m.imgs:(m.imgs&&cur===3?[m.imgs[2]]:(m.img?[m.img]:[]));
-  mImgs.innerHTML=list.map(n=>`<img alt="" src="assets/${n}.png">`).join('');
+  mImgs.innerHTML='';list.forEach(n=>{const c=getImg(`assets/${n}.png`).im.cloneNode();c.alt='';mImgs.appendChild(c)});
   mImgs.style.display=list.length?'flex':'none';
   mBody.innerHTML=page.map(l=>l.length===2?`<p class="line"><b>${l[0]}</b>「${l[1]}」</p>`:`<p>${l[0]}</p>`).join('');
   mStep.innerHTML=[1,2,3].map(i=>`<i class="${i<=cur?'on':''}"></i>`).join('');
@@ -71,5 +83,6 @@ document.getElementById('memclose').onclick=close;
 modal.addEventListener('click',e=>{if(e.target===modal)close()});
 document.getElementById('passreset').onclick=()=>{seen={};save();renderSlots()};
 renderSlots();
+if(document.readyState==='complete')setTimeout(preload,300);else window.addEventListener('load',()=>setTimeout(preload,300));
 window.MEM={open,close,isOpen:()=>!!openId,state:()=>seen};
 })();
