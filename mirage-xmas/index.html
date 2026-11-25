@@ -347,16 +347,16 @@ body.mland #cgdiff [data-d]{padding:5px 0}
         <canvas id="cgcv" width="960" height="640"></canvas>
         <div id="cgtop"><button id="cgpausebtn" style="display:none"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span>暫停</span></button><button id="cgswap" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>換一個玩</span></button><button id="cgclose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>回到店裡</span></button></div>
         <button id="cgagain" style="display:none">再玩一次</button>
-        <div id="cgdiff"><div class="cgbox"><h3>香檳 call</h3><p class="khelp">選一個難度</p>
-          <button data-d="easy">簡單<small>每小節一兩顆，圈圈縮得比較慢</small><i></i></button>
-          <button data-d="normal">中等<small>多一些反拍，比較熱鬧</small><i></i></button>
-          <button data-d="hard">困難<small>跟著每一下鼓聲</small><i></i></button>
+        <div id="cgdiff"><div class="cgbox"><h3>香檳 call</h3>
+          <button data-d="easy">簡單<i></i></button>
+          <button data-d="normal">中等<i></i></button>
+          <button data-d="hard">困難<i></i></button>
           <button id="cgdiffback" class="ksub">回選單</button></div></div>
         <div id="cgkeys"><div class="cgbox"><h3>按鍵設定</h3><p class="khelp">點角色旁邊的按鈕，再按想用的鍵</p>
           <div class="krow"><span style="color:#d9a520">牡丹</span><button data-k="0"></button></div>
           <div class="krow"><span style="color:#6f8fd8">蓮</span><button data-k="1"></button></div>
           <div class="krow"><span style="color:#e0679a">真央</span><button data-k="2"></button></div>
-          <p class="khelp">有路的圈圈：按住同一個鍵到杯子跑完。滑鼠點圈圈、按住也可以。</p>
+          <p class="khelp">有路的圈圈：滑鼠按著沿路拖過去；用鍵盤就按住同一個鍵到杯子跑完。</p>
           <button id="cgkeyreset" class="ksub">恢復預設 D F J</button><button id="cgkeyok">好了</button></div></div>
         <div id="cgpause"><div class="cgbox"><h3>暫停中</h3><button id="cgresume">繼續</button><button id="cgrestart">重新開始</button><button id="cgquit">換一個玩</button><button class="cgkeysbtn pconly">按鍵設定</button><label class="vol">音樂音量<input type="range" class="musicvol" min="0" max="100" step="5"></label><p>電腦也可以按 Esc 或 P 暫停、繼續</p></div></div>
         <div id="cgmenu">
@@ -365,7 +365,7 @@ body.mland #cgdiff [data-d]{padding:5px 0}
           <div class="cgopts">
             <button class="cgopt" data-g="pour"><b>倒香檳</b><span>按住倒酒，酒到金線就放手。一共五層，倒得越準，香檳 call 越熱鬧。</span><i data-best="pour"></i></button>
             <button class="cgopt" data-g="stack"><b>疊香檳塔</b><span>杯子會左右跑，點一下放下去。沒疊到的會往下掉，卡進空位也算，掉出檯子才會碎。</span><i data-best="stack"></i></button>
-            <button class="cgopt" data-g="osu"><b>香檳 call</b><span>誰在喊，圈圈就出現在誰旁邊，金框縮到剛好就點。有路的圈圈：手機自己沿路滑，電腦按住到終點。會有聲音。</span><i data-best="osu"></i></button>
+            <button class="cgopt" data-g="osu"><b>香檳 call</b><span>誰在喊，圈圈就出現在誰旁邊，金框縮到剛好就點。有路的圈圈：按著沿路滑到終點。會有聲音。</span><i data-best="osu"></i></button>
           </div>
           <button class="cgkeysbtn pconly cglink">香檳 call 按鍵設定</button>
         </div>
@@ -384,12 +384,12 @@ body.mland #cgdiff [data-d]{padding:5px 0}
     </div>
   </section>
 </main>
-<script src="sfx.js?v=11260048"></script>
-<script src="looks.js?v=11260048"></script>
-<script src="memories.js?v=11260048"></script>
-<script src="memory_ui.js?v=11260048"></script>
-<script src="club.js?v=11260048"></script>
-<script src="champagne.js?v=11260048"></script>
+<script src="sfx.js?v=11260105"></script>
+<script src="looks.js?v=11260105"></script>
+<script src="memories.js?v=11260105"></script>
+<script src="memory_ui.js?v=11260105"></script>
+<script src="club.js?v=11260105"></script>
+<script src="champagne.js?v=11260105"></script>
 <script>
 (()=>{
   let cur=0;
