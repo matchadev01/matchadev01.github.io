@@ -13,11 +13,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>色戀營業中 聖誕公關店 試玩</title>
 <style>
-@font-face{font-family:"Cubic11";src:url("assets/cubic11.woff2?v=11260021") format("woff2");font-display:swap}
+/* 字型：jf open 粉圓（SIL OFL 1.1，授權見 assets/round-OFL.txt），子集化後依授權改名 MirageRound */
+@font-face{font-family:"MirageRound";src:url("assets/round.woff2") format("woff2");font-display:swap}
 :root{--ink:#5a3a46;--soft:#9b7380;--pink:#ff7aa8;--pinkd:#e0517f;--red:#d8344c;--wood:#e9b9a4;--woodd:#c98e7a;--paper:#fffaf6}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{color:var(--ink);font-family:"Cubic11","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;min-height:100vh;overflow-x:hidden}
+body{color:var(--ink);font-family:"MirageRound","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
 body.pick{background:#fff0f0 radial-gradient(#ffd9e3 1.5px,transparent 1.6px) 0 0/22px 22px}
 body.club{background:#2a1430 radial-gradient(#4a2352 1.5px,transparent 1.6px) 0 0/22px 22px}
 main{max-width:1180px;margin:0 auto;padding:22px 12px 30px}
@@ -125,7 +126,7 @@ body.pick #pick,body.club #clubscreen{display:block}
 #memgift.pop .ch{animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:scale(0) rotate(-20deg)}100%{transform:none}}
 #memgift .t{font-size:14px;color:#9a4a62}
-#membtn{font:inherit;font-size:14px;color:#fff;background:url("assets/ui_btn.png") center/100% 100%;border:0;padding:10px 26px;cursor:pointer;min-width:120px}
+#membtn{font:inherit;font-size:15px;color:#fff;background:linear-gradient(#ffc9d6,#f59ab4);border:3px solid #f6d08f;border-radius:999px;box-shadow:0 0 0 2px #5a2a36,inset 0 2px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(200,80,120,.35);text-shadow:0 1px 0 #c0496e,0 0 3px #c0496e;padding:8px 26px;cursor:pointer;min-width:120px}
 #memclose{position:absolute;right:3.5%;top:8%;width:30px;height:30px;background:url("assets/ui_icon_close.png") center/contain no-repeat;border:0;cursor:pointer}
 @media (max-width:640px){
   body:not(.mland) #mem{position:fixed;z-index:50;overflow-y:auto}
@@ -140,7 +141,8 @@ body.pick #pick,body.club #clubscreen{display:block}
 #cgpause.show{display:flex}
 .cgbox{background:#fff8f4;border-radius:18px;padding:22px 34px;box-shadow:0 0 0 4px #e9b2c2,0 8px 0 4px #c98ea0;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:220px}
 .cgbox h3{margin:0 0 4px;font-weight:400;font-size:24px;color:#b8304c;letter-spacing:.2em}
-.cgbox button{font:inherit;font-size:16px;width:100%;color:#fff;background:url("assets/ui_btn.png") center/100% 100%;border:0;padding:10px 0;cursor:pointer}
+.cgbox button{font:inherit;font-size:17px;width:100%;color:#fff;background:linear-gradient(#ffc9d6,#f59ab4);border:3px solid #f6d08f;border-radius:999px;box-shadow:0 0 0 2px #5a2a36,inset 0 2px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(200,80,120,.35);text-shadow:0 1px 0 #c0496e,0 0 3px #c0496e;padding:8px 0;cursor:pointer}
+.cgbox button:active,#membtn:active,#cgagain:active{transform:translateY(2px)}
 .cgbox p{margin:4px 0 0;font-size:12px;color:#c48a9c}
 .vol{display:flex;align-items:center;gap:8px}
 .vol input{width:110px;accent-color:#ff7aa8}
@@ -151,7 +153,8 @@ body.pick #pick,body.club #clubscreen{display:block}
 #cgcv{display:block;width:100%;height:100%;touch-action:none;cursor:pointer}
 #cgtop{position:absolute;top:2%;right:1.5%;display:flex;gap:8px;z-index:4}
 #cgtop button{font:inherit;font-size:14px;color:#5a3a46;background:#fff6f8;border:0;border-radius:999px;padding:6px 14px;box-shadow:0 0 0 2px #e9b2c2,0 3px 0 2px #c98ea0;cursor:pointer}
-#cgagain{position:absolute;left:50%;top:66%;transform:translateX(-50%);z-index:2;font:inherit;font-size:16px;color:#fff;background:url("assets/ui_btn.png") center/100% 100%;border:0;padding:12px 34px;cursor:pointer}
+#cgagain{position:absolute;left:50%;top:66%;transform:translateX(-50%);z-index:2;font:inherit;font-size:17px;color:#fff;background:linear-gradient(#ffc9d6,#f59ab4);border:3px solid #f6d08f;border-radius:999px;box-shadow:0 0 0 2px #5a2a36,inset 0 2px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(200,80,120,.35);text-shadow:0 1px 0 #c0496e,0 0 3px #c0496e;padding:9px 34px;cursor:pointer}
+#cgagain:active{transform:translate(-50%,2px)}
 #cgmenu{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:1;padding:4%}
 #cgmenu.show{display:flex}
 #cgmenu h2{margin:0;font-weight:400;font-size:clamp(20px,3vw,30px);color:#ffd0e2;letter-spacing:.15em;text-shadow:0 0 12px rgba(255,79,168,.7)}
@@ -363,12 +366,12 @@ body.gutter #me span{font-size:10px;letter-spacing:0}
     </div>
   </section>
 </main>
-<script src="sfx.js?v=11260021"></script>
-<script src="looks.js?v=11260021"></script>
-<script src="memories.js?v=11260021"></script>
-<script src="memory_ui.js?v=11260021"></script>
-<script src="club.js?v=11260021"></script>
-<script src="champagne.js?v=11260021"></script>
+<script src="sfx.js?v=11260036"></script>
+<script src="looks.js?v=11260036"></script>
+<script src="memories.js?v=11260036"></script>
+<script src="memory_ui.js?v=11260036"></script>
+<script src="club.js?v=11260036"></script>
+<script src="champagne.js?v=11260036"></script>
 <script>
 (()=>{
   let cur=0;

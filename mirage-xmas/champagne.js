@@ -1,7 +1,7 @@
 // 香檳塔小遊戲：倒香檳、疊香檳塔、香檳 call 三種玩法（試玩用，先全部放進來比較）
 (()=>{
 const W=960,H=640;
-const FONT='"Cubic11","Noto Sans TC",sans-serif';
+const FONT='"MirageRound","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif';
 const wrap=document.getElementById('cg'),cv=document.getElementById('cgcv'),ctx=cv.getContext('2d');
 const menu=document.getElementById('cgmenu'),again=document.getElementById('cgagain'),swap=document.getElementById('cgswap');
 const BEST_KEY='mirage_xmas_champagne_best_v1';
@@ -473,12 +473,12 @@ const Osu={
   trace(p){const n=this.drag.n,s=n.path;let best=-1,bd=1e9;
     for(let u=s.prog;u<=Math.min(1,s.prog+.35);u+=.01){const b=this.sp(s,u),dd=Math.hypot(p.x-b.x,p.y-b.y);if(dd<bd){bd=dd;best=u}}
     if(bd<this.R*1.5&&best>s.prog){const was=s.prog;s.prog=best;
-      if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95&&AC)jingle(.035,1+best*.2,1);
+      if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95&&AC)bell(false,.18,1+best*.15);
       const b=this.sp(s,best);if(Math.random()<.6)this.bubs.push({x:b.x+rnd(-12,12),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
       if(s.prog>=.95)this.dragDone()}},
   dragDone(){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.prog=1;this.cnt[3]++;
     this.pts+=3;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);this.comboPop=.18;
-    if(AC){jingle(.1,1.1,5);setTimeout(()=>jingle(.07,1.2,3),90)}
+    if(AC){bell(true,.55);[0,1,2].forEach(i=>chime(laneMidi(n.t+s.dur,i),.09,i*.06))}
     burst(s.x2,s.y2,22,['#ffd36e','#fff',LANES[n.owner].c]);this.rings.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',w:8});this.pop.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',p:3});
     this.fx.push({x:s.x2,y:s.y2,t:.9,s:'倒好了！',pts:3});if(navigator.vibrate)try{navigator.vibrate(18)}catch(e){}
     if(this.combo%10===0){this.big={s:this.combo+' 連擊！',t:1};cheer()}},
@@ -498,7 +498,7 @@ const Osu={
     this.pop.push({x:n.x,y:n.y,t:0,c:LANES[n.owner].c,p:pts});
     // 回饋：碰杯聲隨連擊升高、擴散光圈、完美時畫面輕震、每 10 連擊大字
     const up=Math.pow(2,Math.min(12,this.combo-1)/24);
-    if(AC){jingle(pts===3?.09:.065,Math.min(1.12,up),pts===3?4:3);tone(220,AC.currentTime,.07,'sine',.1,90)}
+    if(AC){const m=laneMidi(n.t,n.owner);bell(this.combo%10===0,pts===3?.5:.36);chime(m,pts===3?.13:.09);if(pts===3)chime(m+12,.035,.03)}
     burst(n.x,n.y,pts*8,[LANES[n.owner].c,'#fff','#ffe08a']);this.fx.push({x:n.x,y:n.y,t:.9,s,pts,el});
     for(let i=0;i<pts*3;i++)this.bubs.push({x:n.x+rnd(-30,30),y:n.y+rnd(-10,20),vy:-rnd(60,160),r:rnd(3,8),t:rnd(.6,1.1)});if(pts===3)this.stars=(this.stars||[]).concat([{x:n.x,y:n.y,t:.55}]);
     this.rings.push({x:n.x,y:n.y,t:0,c:pts===3?'#ffe08a':LANES[n.owner].c,w:pts===3?8:5});if(pts===3){this.rings.push({x:n.x,y:n.y,t:-.06,c:'#fff',w:3});this.shake=.12}
@@ -521,7 +521,7 @@ const Osu={
     for(let i=this.trail.length-1;i>=0;i--){this.trail[i].t-=dt;if(this.trail[i].t<=0)this.trail.splice(i,1)}
     if(this.drag){const n=this.drag.n,s=n.path;
       if(this.drag.hold){const was=s.prog;s.prog=Math.max(0,Math.min(1,(t-n.t)/s.dur));
-        if(Math.floor(was*4)!==Math.floor(s.prog*4)&&s.prog<1&&AC)jingle(.035,1+s.prog*.2,1);
+        if(Math.floor(was*4)!==Math.floor(s.prog*4)&&s.prog<1&&AC)bell(false,.18,1+s.prog*.15);
         const b=this.sp(s,s.prog);if(Math.random()<.5)this.bubs.push({x:b.x+rnd(-12,12),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
         if(s.prog>=1)this.dragDone()}
       else if(t>n.t+s.dur+.35)this.dragFail('太慢了')}
@@ -655,7 +655,18 @@ const CHART=[[0,7.413,'t',0,0],[0,8.098,'t',0,0],[0,8.394,'t',0,0],[0,8.9745,'t'
 const songVol=()=>.9*(window.BGM?BGM.vol():1);
 window.addEventListener('musicvol',()=>{if(G&&G.g)G.g.gain.value=songVol()});
 const SONG={src:'assets/bgm_ginza.mp3',beats:[0.2531, 0.8368, 1.4191, 1.992, 2.5594, 3.1308, 3.7023, 4.2712, 4.8433, 5.4251, 6.0069, 6.5893, 7.184, 7.7787, 8.3721, 8.9648, 9.5595, 10.1523, 10.7341, 11.3171, 11.8996, 12.482, 13.0632, 13.6456, 14.2274, 14.8105, 15.3929, 15.976, 16.5591, 17.1428, 17.7246, 18.3076, 18.8901, 19.4725, 20.0543, 20.6374, 21.2205, 21.8035, 22.384, 22.9671, 23.5495, 24.1204, 24.6925, 25.2652, 25.8367, 26.4075, 26.9887, 27.5724, 28.1542, 28.7366, 29.3307, 29.9241, 30.5162, 31.1102, 31.703, 32.2854, 32.8666, 33.449, 34.0308, 34.6139, 35.1963, 35.7794, 36.3599, 36.9423, 37.5241, 38.1065, 38.689, 39.2714, 39.8532, 40.4356, 41.018, 41.6018, 42.1836, 42.766, 43.3491, 43.9322, 44.5146, 45.0964, 45.6775, 46.2593, 46.8398, 47.4222, 48.004, 48.5852, 49.165, 49.7462, 50.3273, 50.9085, 51.4877, 52.0682, 52.648, 53.2285, 53.8077, 54.3895, 54.9687, 55.5486, 56.1278, 56.7083, 57.2881, 57.8686, 58.4485, 59.029, 59.6069, 60.1874, 60.7666, 61.3465, 61.9276, 62.5075, 63.086, 63.6659, 64.2406, 64.8191, 65.3977, 65.9769, 66.5555, 67.1328, 67.7113, 68.2905, 68.8678, 69.4515, 70.0314, 70.6106, 71.1892, 71.769, 72.3482, 72.9274, 73.506, 74.0858, 74.6651, 75.2443, 75.8228, 76.4027, 76.9806, 77.5598, 78.1384, 78.7182, 79.2968, 79.8754, 80.4539, 81.0331, 81.611, 82.1903, 82.7688, 83.3474, 83.9266, 84.5064, 85.085, 85.6649, 86.2434, 86.8233, 87.4018, 87.9811, 88.5603, 89.1375, 89.7148, 90.2934, 90.8713, 91.4505, 92.0278, 92.6063, 93.1849, 93.7635, 94.342, 94.9206, 95.4985, 96.0764, 96.6537, 97.2323, 97.8102, 98.3875, 98.9647, 99.542, 100.1193, 100.6972, 101.2745, 101.8518, 102.429, 103.0063, 103.5836, 104.1615, 104.7394, 105.316, 105.894, 106.4706, 107.0472, 107.6232, 108.1992, 108.7752, 109.3499, 109.9258, 110.5025, 111.0778, 111.6538, 112.2304, 112.8064, 113.383, 113.9584, 114.5357, 115.111, 115.6863, 116.2617, 116.8383, 117.4136, 117.9903, 118.5662, 119.1435, 119.7189, 120.2948, 120.8715, 121.4481, 122.0228, 122.5988, 123.1748],buf:null,p:null};
-function loadSong(){const a=audio();if(!a)return Promise.reject();if(!SONG.p)SONG.p=fetch(SONG.src).then(r=>r.arrayBuffer()).then(b=>new Promise((ok,ng)=>a.decodeAudioData(b,ok,ng))).then(buf=>{SONG.buf=buf;return buf});return SONG.p}
+// 聖誕鈴：預先合成好的雪橇鈴（一下搖晃好幾顆鈴鐺）；一般點擊用小的，連擊、倒好了用大的
+const BELL={};
+function loadBells(){const a=audio();if(!a||BELL.p)return BELL.p;BELL.p=Promise.all(['sleigh','sleigh_big'].map(n=>fetch(`assets/${n}.wav`).then(r=>r.arrayBuffer()).then(b=>new Promise((ok,ng)=>a.decodeAudioData(b,ok,ng))).then(buf=>BELL[n]=buf))).catch(()=>{});return BELL.p}
+function bell(big=false,vol=.5,rate=1){const a=AC,buf=BELL[big?'sleigh_big':'sleigh'];if(!a||!buf){jingle(vol*.18,rate,big?5:3);return}
+  const s=a.createBufferSource(),g=a.createGain();s.buffer=buf;s.playbackRate.value=rate*(0.97+Math.random()*.06);g.gain.value=vol;s.connect(g).connect(a.destination);s.start()}
+// 跟著歌的和弦：每兩拍一個和弦（librosa 從歌裡抓的），三個角色的鍵分別是和弦的根音、三音、五音，怎麼按都和音樂合得起來
+const CHORDS=[[7.184,8,0],[8.372,8,0],[9.559,0,0],[10.734,0,0],[11.900,4,1],[13.063,4,1],[14.227,9,1],[15.393,9,1],[16.559,4,1],[17.725,2,1],[18.890,5,0],[20.054,5,0],[21.221,7,0],[22.384,9,1],[23.549,2,1],[24.692,2,1],[25.837,8,0],[26.989,8,0],[28.154,7,0],[29.331,0,0],[30.516,4,1],[31.703,4,1],[32.867,4,0],[34.031,7,0],[35.196,9,1],[36.360,2,1],[37.524,5,0],[38.689,5,0],[39.853,4,1],[41.018,0,0],[42.184,2,1],[43.349,5,0],[44.515,7,0],[45.678,9,1],[46.840,7,0],[48.004,4,1],[49.165,7,0],[50.327,4,1],[51.488,9,1],[52.648,9,1],[53.808,7,0],[54.969,9,1],[56.128,9,0],[57.288,5,0],[58.449,5,0],[59.607,9,1],[60.767,2,1],[61.928,5,0],[63.086,8,0],[64.241,8,0],[65.398,8,0],[66.555,7,0],[67.711,0,0],[68.868,0,0],[70.031,0,0],[71.189,4,0],[72.348,9,0],[73.506,9,1],[74.665,8,0],[75.823,2,1],[76.981,5,0],[78.138,9,1],[79.297,4,1],[80.454,9,1],[81.611,2,1],[82.769,2,1],[83.927,5,1],[85.085,8,0],[86.243,8,0],[87.402,0,0],[88.560,10,0],[89.715,4,0],[90.871,9,1],[92.028,9,1],[93.185,7,1],[94.342,2,1],[95.499,5,0],[96.654,5,0],[97.810,4,1],[98.965,9,1],[100.119,4,1],[101.275,2,1],[102.429,9,1],[103.584,10,0],[104.739,10,1],[105.894,10,1],[107.047,7,1],[108.199,8,0],[109.350,8,0],[110.502,8,0],[111.654,5,1],[112.806,5,1],[113.958,10,1],[115.111,10,1],[116.262,10,1],[117.414,3,0],[118.566,8,0],[119.719,6,0],[120.871,5,1],[122.023,10,1]];
+function laneMidi(time,lane){let c=CHORDS[0];for(const x of CHORDS){if(x[0]<=time+.05)c=x;else break}
+  const iv=[0,c[2]?3:4,7][lane];let m=72+(c[1]+iv)%12;if(m<76)m+=12;return m}
+function chime(midi,vol=.12,when=0){const a=AC;if(!a)return;const f=440*Math.pow(2,(midi-69)/12),t=a.currentTime+when;
+  tone(f,t,.8,'sine',vol);tone(f*2.76,t,.22,'sine',vol*.28);tone(f*5.4,t,.09,'sine',vol*.1)}
+function loadSong(){loadBells();const a=audio();if(!a)return Promise.reject();if(!SONG.p)SONG.p=fetch(SONG.src).then(r=>r.arrayBuffer()).then(b=>new Promise((ok,ng)=>a.decodeAudioData(b,ok,ng))).then(buf=>{SONG.buf=buf;return buf});return SONG.p}
 const BUB=new Image();BUB.src='assets/ui_bubble_heart.png';
 
 // ---------- 外框 ----------
@@ -671,8 +682,11 @@ function setPause(v){
     if(isRhythm()&&G.state==='play')resumeT=1.5;else if(AC)AC.resume()}
 }
 function clearPause(){paused=false;resumeT=0;pauseEl.classList.remove('show');if(AC&&AC.state==='suspended')AC.resume()}
+// 畫布照實際顯示大小乘裝置像素比去畫，字和圖才不會糊（座標系統還是 960×640）
+function fitCanvas(){const s=Math.max(1,Math.min(2.5,(cv.clientWidth||W)*(window.devicePixelRatio||1)/W)),w=Math.round(W*s),h=Math.round(H*s);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}ctx.setTransform(w/W,0,0,h/H,0,0);ctx.imageSmoothingQuality='high'}
 function loop(now){
-  const dt=Math.min(.05,(now-(last||now))/1000);last=now;
+  fitCanvas();const dt=Math.min(.05,(now-(last||now))/1000);last=now;
   if(G){
     if(paused){G.draw(0);ctx.fillStyle='rgba(15,0,25,.5)';ctx.fillRect(0,0,W,H)}
     else if(resumeT>0){const n=Math.ceil(resumeT/.5);resumeT-=dt;G.draw(0);ctx.fillStyle='rgba(15,0,25,.35)';ctx.fillRect(0,0,W,H);
@@ -736,7 +750,7 @@ function fillBest(){
 }
 window.CG={
   open(){open=true;if(window.BGM)BGM.duck(true);wrap.classList.add('show');G=null;menu.classList.add('show');showAgain(false);swap.style.display='none';fillBest();
-    document.fonts&&document.fonts.load('20px Cubic11');last=0;bg();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)},
+    document.fonts&&document.fonts.load('20px MirageRound');fitCanvas();last=0;bg();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)},
   close(){stopG();clearPause();open=false;wrap.classList.remove('show');G=null;if(window.BGM){BGM.duck(false);BGM.resume()}cancelAnimationFrame(raf)},
   isOpen:()=>open,
   rhythm:()=>open&&G===Osu,
