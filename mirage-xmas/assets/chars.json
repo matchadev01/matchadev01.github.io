@@ -1,0 +1,62 @@
+{
+ "botan": {
+  "idle": {
+   "src": "assets/botan_idle.png",
+   "w": 95,
+   "h": 172,
+   "n": 4
+  },
+  "front": {
+   "src": "assets/botan_front.png",
+   "w": 97,
+   "h": 175,
+   "n": 4
+  },
+  "side": {
+   "src": "assets/botan_side.png",
+   "w": 100,
+   "h": 171,
+   "n": 4
+  }
+ },
+ "ren": {
+  "idle": {
+   "src": "assets/ren_idle.png",
+   "w": 106,
+   "h": 182,
+   "n": 4
+  },
+  "front": {
+   "src": "assets/ren_front.png",
+   "w": 108,
+   "h": 185,
+   "n": 4
+  },
+  "side": {
+   "src": "assets/ren_side.png",
+   "w": 109,
+   "h": 180,
+   "n": 4
+  }
+ },
+ "mao": {
+  "idle": {
+   "src": "assets/mao_idle.png",
+   "w": 117,
+   "h": 155,
+   "n": 4
+  },
+  "front": {
+   "src": "assets/mao_front.png",
+   "w": 121,
+   "h": 155,
+   "n": 4
+  },
+  "side": {
+   "src": "assets/mao_side.png",
+   "w": 104,
+   "h": 156,
+   "n": 4
+  }
+ }
+}
