@@ -287,9 +287,22 @@ body.gutter #me span{font-size:10px;letter-spacing:0}
 #cgkeys .krow button{width:auto;min-width:130px;background:#fff;color:#7a2048;border-radius:10px;box-shadow:0 0 0 2px #e9b2c2;font-size:18px;padding:8px 14px}
 #cgkeys .krow button.wait{background:#ffe08a;box-shadow:0 0 0 3px #e0a020}
 #cgkeys .khelp{font-size:12px;color:#9b7380;max-width:260px;text-align:center;line-height:1.5}
-#cgkeys .ksub{background:none;color:#b8304c;box-shadow:0 0 0 1.5px #e9b2c2;border-radius:999px;font-size:13px;padding:6px 0}
+#cgkeys .ksub{background:none;color:#b8304c;box-shadow:0 0 0 1.5px #e9b2c2;border:0;text-shadow:none;border-radius:999px;font-size:13px;padding:6px 0}
 .cglink{font:inherit;font-size:13px;color:#ffd0e2;background:none;border:1px solid rgba(255,208,226,.5);border-radius:999px;padding:6px 16px;cursor:pointer}
 @media (pointer:coarse){.pconly{display:none!important}}
+
+/* 香檳 call 難度選擇 */
+#cgdiff{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:5;background:rgba(20,4,24,.45)}
+#cgdiff.show{display:flex}
+#cgdiff .cgbox{min-width:300px}
+#cgdiff [data-d]{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 7px;line-height:1.2}
+#cgdiff [data-d] small{font-size:12px;opacity:.92;padding:0 14px}
+#cgdiff [data-d] i{font-style:normal;font-size:11px;opacity:.9}
+#cgdiff [data-d] i:empty{display:none}
+#cgdiff [data-d].last{box-shadow:0 0 0 2px #5a2a36,0 0 0 5px #ffe08a,inset 0 2px 0 rgba(255,255,255,.65)}
+#cgdiff .ksub{background:none;color:#b8304c;box-shadow:0 0 0 1.5px #e9b2c2;border:0;border-radius:999px;font-size:13px;padding:6px 0;text-shadow:none}
+body.mland #cgdiff .cgbox{padding:12px 22px;gap:6px}
+body.mland #cgdiff [data-d]{padding:5px 0}
 </style>
 </head>
 <body class="pick"><main>
@@ -334,6 +347,11 @@ body.gutter #me span{font-size:10px;letter-spacing:0}
         <canvas id="cgcv" width="960" height="640"></canvas>
         <div id="cgtop"><button id="cgpausebtn" style="display:none"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span>暫停</span></button><button id="cgswap" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>換一個玩</span></button><button id="cgclose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>回到店裡</span></button></div>
         <button id="cgagain" style="display:none">再玩一次</button>
+        <div id="cgdiff"><div class="cgbox"><h3>香檳 call</h3><p class="khelp">選一個難度</p>
+          <button data-d="easy">簡單<small>每小節一兩顆，圈圈縮得比較慢</small><i></i></button>
+          <button data-d="normal">中等<small>多一些反拍，比較熱鬧</small><i></i></button>
+          <button data-d="hard">困難<small>跟著每一下鼓聲</small><i></i></button>
+          <button id="cgdiffback" class="ksub">回選單</button></div></div>
         <div id="cgkeys"><div class="cgbox"><h3>按鍵設定</h3><p class="khelp">點角色旁邊的按鈕，再按想用的鍵</p>
           <div class="krow"><span style="color:#d9a520">牡丹</span><button data-k="0"></button></div>
           <div class="krow"><span style="color:#6f8fd8">蓮</span><button data-k="1"></button></div>
@@ -366,12 +384,12 @@ body.gutter #me span{font-size:10px;letter-spacing:0}
     </div>
   </section>
 </main>
-<script src="sfx.js?v=11260036"></script>
-<script src="looks.js?v=11260036"></script>
-<script src="memories.js?v=11260036"></script>
-<script src="memory_ui.js?v=11260036"></script>
-<script src="club.js?v=11260036"></script>
-<script src="champagne.js?v=11260036"></script>
+<script src="sfx.js?v=11260048"></script>
+<script src="looks.js?v=11260048"></script>
+<script src="memories.js?v=11260048"></script>
+<script src="memory_ui.js?v=11260048"></script>
+<script src="club.js?v=11260048"></script>
+<script src="champagne.js?v=11260048"></script>
 <script>
 (()=>{
   let cur=0;
