@@ -253,53 +253,52 @@ const Pour={
 // ---------- B. 疊香檳塔 ----------
 const Stack={
   name:'疊香檳塔',
-  // 每一層是一排固定間距的香檳杯（xs 是每杯中心），放歪時只會掉整杯，不會再有杯子數量對不上的情形
+  // 像俄羅斯方塊：畫面分成一格一格的直排，放下去時每個杯子各自往下掉，掉到那一排最上面就停
+  // 沒疊到上一層的杯子會繼續往下掉，剛好卡進下面的空位也算；只有掉出檯子範圍的才會摔碎
   G:50,TH:40,
+  cx(c){return W/2+(c-2.5)*this.G},          // 第 c 排的中心；檯子是第 0..5 排
   start(){
-    const G=this.G;this.base={xs:[0,1,2,3,4,5].map(i=>W/2+(i-2.5)*G)};
-    this.tiers=[];this.cam=0;this.state='talk';this.fall=[];this.splat=[];this.cutFx=null;this.combo=0;this.endT=0;
-    this.queue=[['蓮','……看好。對準了再放。'],['蓮','……杯子會左右跑，點一下放下去。'],['真央','放歪的杯子會掉下去喔！']];
+    this.h={};for(let c=0;c<6;c++)this.h[c]=0;
+    this.cups=[];this.drops=0;this.cam=0;this.state='talk';this.fall=[];this.splat=[];this.combo=0;this.endT=0;this.count=6;this.lands=[];
+    this.queue=[['蓮','……看好。對準了再放。'],['蓮','……杯子會左右跑，點一下放下去。'],['真央','沒疊到上面的杯子會往下掉，剛好卡進下面的空位也可以！'],['牡丹','掉出檯子外面的就碎了，小心喔。']];
     this.line=this.queue.shift();this.msg=null;this.msgT=0;
   },
-  spawn(){const p=this.top(),rel=p.xs.map(v=>v-p.xs[0]),span=rel[rel.length-1],dir=this.tiers.length%2?1:-1,G=this.G;
-    this.mov={rel,span,x:dir>0?30+G/2:W-30-G/2-span,dir,speed:170+this.tiers.length*12}},
-  top(){return this.tiers.length?this.tiers[this.tiers.length-1]:this.base},
+  top(){let m=0;for(const c in this.h)m=Math.max(m,this.h[c]);return m},
   yOf(i){return 520-(i+1)*this.TH},
+  spawn(){const G=this.G,n=this.count,span=(n-1)*G,dir=this.drops%2?1:-1;
+    this.mov={n,span,x:dir>0?30+G/2:W-30-G/2-span,dir,speed:170+this.drops*12}},
   down(){
     if(this.state==='talk'){this.line=this.queue.shift();if(!this.line)cdStart(this);return}
-    if(this.state==='count')return;
-    if(this.state==='play'){this.drop();return}
+    if(this.state==='play'&&this.mov&&!this.lands.length)this.drop();
   },
   up(){},
   say(n,l){this.msg=[n,l];this.msgT=1.8},
   drop(){
-    audio();const m=this.mov,p=this.top(),G=this.G,y=this.yOf(this.tiers.length);
-    const dx=m.x-p.xs[0];let kept=[],lost=[];
-    if(Math.abs(dx)<=14){ // 差 14px 以內算放準，直接對齊
-      kept=p.xs.slice();this.combo++;clink(.16);burst(W/2,y+this.cam,14,['#ffd36e','#fff']);
-      if(this.combo===2)this.say('真央','完美！');
-    }else{
-      this.combo=0;const k=Math.round(dx/G);
-      m.rel.forEach((r,j)=>{const lo=p.xs[j+k];if(lo!=null)kept.push(lo);else lost.push(m.x+r)});
-      if(lost.length){swish();const s=Math.sign(dx);
-        lost.forEach(x=>this.fall.push({x:x-G/2,w:G,y,vy:-260,vx:s*120+rnd(-30,30),r:0}));
-        const edge=s>0?kept[kept.length-1]+G/2:kept[0]-G/2;if(kept.length)this.cutFx={x:edge,y,t:.35}}
-      else clink(.08);
-    }
-    if(!kept.length){this.mov=null;this.endGame();return}
-    this.tiers.push({xs:kept});
-    const n=this.tiers.length;
-    if(n===5)this.say('牡丹','有模有樣嘛。');
-    if(n===10)this.say('真央','好高！要比蓮疊的高了！');
-    if(n===12)this.say('蓮','……');
-    if(n===15)this.say('牡丹','這座塔已經比店裡那座高了。');
-    this.spawn();
+    audio();const m=this.mov,G=this.G,prevTop=this.top(),y0=this.yOf(prevTop)-26;
+    // 對到最近的一排
+    const c0=Math.round((m.x-W/2)/G+2.5),snapDx=m.x-this.cx(c0);
+    let kept=0,lost=0,flat=true;const layers=[];
+    for(let k=0;k<m.n;k++){const c=c0+k,x=this.cx(c);
+      if(this.h[c]==null){lost++;this.fall.push({x:x-G/2,w:G,y:y0,vy:0,vx:(c<0?-1:1)*rnd(60,140),r:0});continue}
+      const L=this.h[c]++;layers.push(L);if(L!==prevTop)flat=false;kept++;
+      this.cups.push({c,L,y:y0,vy:0,land:false})}
+    this.lands=this.cups.filter(u=>!u.land);
+    this.mov=null;this.drops++;
+    if(lost)swish();
+    if(!kept){this.endGame();return}
+    this.count=kept;
+    // 完美：全部剛好疊在最上層，而且放的位置很準
+    if(flat&&!lost&&Math.abs(snapDx)<=14){this.combo++;this.perfect=true;if(this.combo===2)this.say('真央','完美！')}
+    else{this.combo=0;this.perfect=false;if(!flat&&!lost&&Math.random()<.5)this.say('蓮','……卡進去了。')}
+    const n=this.top();
+    if(n>=5&&prevTop<5)this.say('牡丹','有模有樣嘛。');
+    if(n>=10&&prevTop<10)this.say('真央','好高！要比蓮疊的高了！');
+    if(n>=15&&prevTop<15)this.say('牡丹','這座塔已經比店裡那座高了。');
   },
   endGame(){
     this.state='over';const G=this.G;
-    if(this.mov){}
-    this.tiers.forEach((t,i)=>t.xs.forEach(x=>this.fall.push({x:x-G/2,w:G,y:this.yOf(i),vy:-rnd(50,200),vx:rnd(-160,160),r:0,d:i*.04,quiet:1})));
-    this.tiersShown=this.tiers.length;this.tiers=[];shatter(true);
+    this.cups.forEach(u=>this.fall.push({x:this.cx(u.c)-G/2,w:G,y:this.yOf(u.L),vy:-rnd(50,200),vx:rnd(-160,160),r:0,d:u.L*.04,quiet:1}));
+    this.tiersShown=this.top();this.cups=[];shatter(true);
     setTimeout(()=>{if(G===this.G&&this.state==='over')this.finish()},1300);
   },
   finish(){
@@ -317,8 +316,13 @@ const Stack={
     const G=this.G;
     if(this.mov&&this.state==='play'){const m=this.mov;m.x+=m.dir*m.speed*dt;
       if(m.x-G/2<30){m.x=30+G/2;m.dir=1}if(m.x+m.span+G/2>W-30){m.x=W-30-G/2-m.span;m.dir=-1}}
-    const want=Math.max(0,(this.tiers.length-6)*this.TH);this.cam+=(want-this.cam)*Math.min(1,dt*4);
-    if(this.cutFx){this.cutFx.t-=dt;if(this.cutFx.t<=0)this.cutFx=null}
+    // 杯子往下掉到自己那一排的位置
+    if(this.lands.length){let any=false,clunk=0;
+      for(const u of this.lands){if(u.land)continue;const ty=this.yOf(u.L);u.vy+=1400*dt;u.y+=u.vy*dt;
+        if(u.y>=ty){u.y=ty;u.land=true;clunk++;burst(this.cx(u.c),ty+this.TH-6+this.cam,4,['#ffe08a','#fff'])}else any=true}
+      if(clunk)clink(this.perfect?.16:.1);
+      if(!any){this.lands=[];if(this.perfect)burst(W/2,this.yOf(this.top()-1)+this.cam,14,['#ffd36e','#fff']);if(this.state==='play')this.spawn()}}
+    const want=Math.max(0,(this.top()-6)*this.TH);this.cam+=(want-this.cam)*Math.min(1,dt*4);
     for(let i=this.fall.length-1;i>=0;i--){const f=this.fall[i];if(f.d>0){f.d-=dt;continue}f.vy+=650*dt;f.y+=f.vy*dt;f.x+=f.vx*dt;f.r+=f.vx*.0035*dt*10;
       if(f.y+this.TH+this.cam>=572){if(!f.quiet)shatter(false);const sx=f.x+f.w/2;burst(sx,566,f.quiet?6:16,['#ffffff','#ffe08a','#cfe8ff','#ffd0e2']);
         if(!f.quiet)this.splat.push({x:sx,t:.6});this.fall.splice(i,1)}}
@@ -326,32 +330,31 @@ const Stack={
     if(this.msgT>0)this.msgT-=dt;
     if(this.state==='end')this.endT+=dt;
   },
-  // 畫一排杯子：托盤跟著杯子的範圍走
-  row(xs,y,a=1){const G=this.G;ctx.save();ctx.globalAlpha=a;
-    ctx.fillStyle='#c89a3c';rr(xs[0]-G/2+3,y+this.TH-7,xs[xs.length-1]-xs[0]+G-6,6,3);ctx.fill();
-    for(const x of xs)coupe(x,y+this.TH-7,.66,.88);ctx.restore()},
+  // 一個杯子加底下一小段托盤
+  cup(x,y,a=1){const G=this.G;ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#c89a3c';rr(x-G/2+3,y+this.TH-7,G-6,6,3);ctx.fill();coupe(x,y+this.TH-7,.66,.88);ctx.restore()},
   draw(dt){
     bg();const G=this.G;
     ctx.save();ctx.translate(0,this.cam);
-    const bx0=this.base.xs[0]-G/2,bw=this.base.xs[5]-this.base.xs[0]+G;
+    const bx0=this.cx(0)-G/2,bw=6*G;
     ctx.fillStyle='#8a6420';ctx.fillRect(bx0-20,520,bw+40,14);ctx.fillStyle='#c89a3c';ctx.fillRect(bx0-20,516,bw+40,6);
-    this.tiers.forEach((t,i)=>this.row(t.xs,this.yOf(i)));
-    for(const f of this.fall){const cx=f.x+f.w/2;if(f.d>0){this.row([cx],f.y);continue}
-      ctx.save();ctx.translate(cx,f.y+this.TH/2);ctx.rotate(f.r);this.row([0],-this.TH/2);ctx.restore();
-      ctx.save();ctx.globalAlpha=.25;this.row([cx-f.vx*.04],f.y-f.vy*.04);ctx.restore()}
-    if(this.cutFx){const a=this.cutFx.t/.35;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.shadowColor='#ff7aa8';ctx.shadowBlur=14;
-      ctx.beginPath();ctx.moveTo(this.cutFx.x,this.cutFx.y-12);ctx.lineTo(this.cutFx.x,this.cutFx.y+this.TH+6);ctx.stroke();ctx.restore()}
-    if(this.mov&&this.state==='play'){const y=this.yOf(this.tiers.length),m=this.mov,xs=m.rel.map(r=>m.x+r);
-      const bob=-26-Math.sin(performance.now()/180)*3;ctx.fillStyle='rgba(0,0,0,.25)';ctx.fillRect(xs[0]-G/2+6,y+this.TH-4,m.span+G-12,4);
-      this.row(xs,y+bob)}
+    // 每一排的高度提示：最上面空位畫淡淡的框，方便看哪裡有洞
+    if(this.state==='play'){ctx.save();ctx.strokeStyle='rgba(255,224,138,.22)';ctx.setLineDash([4,5]);ctx.lineWidth=2;
+      for(let c=0;c<6;c++){if(this.h[c]>=this.top())continue;const y=this.yOf(this.h[c]);rr(this.cx(c)-G/2+5,y+4,G-10,this.TH-6,6);ctx.stroke()}ctx.restore()}
+    const cups=[...this.cups].sort((a,b)=>b.L-a.L);for(const u of cups)this.cup(this.cx(u.c),u.y);
+    for(const f of this.fall){const cx=f.x+f.w/2;if(f.d>0){this.cup(cx,f.y);continue}
+      ctx.save();ctx.translate(cx,f.y+this.TH/2);ctx.rotate(f.r);this.cup(0,-this.TH/2);ctx.restore();
+      ctx.save();ctx.globalAlpha=.25;this.cup(cx-f.vx*.04,f.y-f.vy*.04);ctx.restore()}
+    if(this.mov&&this.state==='play'){const m=this.mov,y=this.yOf(this.top()),bob=-26-Math.sin(performance.now()/180)*3;
+      ctx.fillStyle='rgba(0,0,0,.25)';ctx.fillRect(m.x-G/2+6,y+this.TH-4,m.span+G-12,4);
+      for(let k=0;k<m.n;k++)this.cup(m.x+k*G,y+bob)}
     ctx.restore();
     for(const s of this.splat){const a=Math.min(1,s.t*2.5);ctx.save();ctx.globalAlpha=a;text('碎了！',s.x,540-(0.6-s.t)*40,22,'#ffd0e2','center',5);ctx.restore()}
     drawSparks(dt);
-    const n=this.state==='over'||this.state==='end'?this.tiersShown:this.tiers.length;
+    const n=this.state==='over'||this.state==='end'?this.tiersShown:this.top();
     text(`${n} 層`,40,40,22,'#ffd0e2','left',4);
     if(this.combo>=2&&this.state==='play')text(`連續完美 ×${this.combo}`,40,72,18,'#ffe08a','left',4);
     if(this.state==='talk')talk(this.line[0],this.line[1],'點一下繼續');
-    else if(this.state==='play'&&this.tiers.length===0)talk('','點畫面或按空白鍵，把杯子放下去。');
+    else if(this.state==='play'&&this.drops===0)talk('','點畫面或按空白鍵，把杯子放下去。');
     else if(this.msgT>0&&this.state==='play')talk(this.msg[0],this.msg[1]);
     if(this.state==='count')cdDraw(this);
     drawConfetti(dt);
@@ -376,34 +379,31 @@ const Osu={
   BPM:112,R:64,AR:1.45,KEYS:['d','f','j'],
   start(){
     this.state='talk';this.pc=matchMedia('(pointer:fine)').matches;
-    this.queue=[['真央','香檳 call 要開始了！'],['真央','誰在喊，圈圈就會出現在誰旁邊。'],['牡丹','圈圈一出現就可以點，外面的金框縮到跟圈圈一樣大的時候點，分數最高。'],['蓮','……寫著「滑」的圈圈，點下去之後別放開，跟著杯子滑到終點。']];
-    if(this.pc)this.queue.push(['牡丹','用電腦的話，看圈圈上的字母按鍵盤就好，不用瞄準。'],['蓮','……牡丹是 D，我是 F，真央是 J。'],['真央','用滑鼠也可以喔！點在圈圈上面才算！'],['蓮','……滑的那種，按著字母不放就好。']);
+    this.queue=[['真央','香檳 call 要開始了！'],['真央','誰在喊，圈圈就會出現在誰旁邊。'],['牡丹','圈圈一出現就可以點，外面的金框縮到跟圈圈一樣大的時候點，分數最高。'],['真央','有箭頭的圈圈，金框縮好的時候往箭頭的方向滑一下！'],['蓮','……有一條路的，點下去別放開，自己沿著路滑到終點的杯子。']];
+    if(this.pc)this.queue.push(['牡丹','用電腦的話，看圈圈上的字母按鍵盤就好，不用瞄準。'],['蓮','……牡丹是 D，我是 F，真央是 J。'],['真央','用滑鼠也可以喔！點在圈圈上面才算！'],['真央','箭頭的圈圈按鍵盤的方向鍵！'],['蓮','……有路的那種，用滑鼠拖過去，或按著字母不放。']);
     this.line=this.queue.shift();this.notes=[];this.fx=[];this.combo=0;this.maxCombo=0;this.pts=0;this.max=0;this.endT=0;this.jump=[0,0,0];this.bub=[0,0,0];
-    this.ptr=null;this.slide=null;this.rings=[];this.shake=0;this.flash=0;this.big=null;this.comboPop=0;this.pop=[];this.bubs=[];this.lat=0;this.off=0;this.toast=null;
+    this.ptrs=new Map();this.drag=null;this.flk=null;this.trail=[];this.rings=[];this.shake=0;this.flash=0;this.big=null;this.comboPop=0;this.pop=[];this.bubs=[];this.lat=0;this.off=0;this.toast=null;
     // 拍點來自〈クリスマスの夜、銀座〉從頭剪到第 212 拍（約 2 分鐘）。0..7 拍倒數，第 12 拍起 48 小節有圈圈，第一顆在倒數結束後才出現
-    const B=SONG.beats,at=(i,half)=>half?(B[i]+B[i+1])/2:B[i];this.B=B;
-    // [半拍位置, 滑條長度（拍）]；滑條：點頭之後手指跟著香檳杯滑到終點
-    const P4=[[0,0],[2,0],[4,0],[6,0]],P3S=[[0,0],[2,0],[4,1]],P5=[[0,0],[2,0],[3,0],[4,0],[6,0]],PS1=[[0,0],[2,1],[6,0]],PS2=[[0,2],[6,0]];
-    // 第一段：4 顆和「2 顆加一條短滑條」交錯；第二段：每 4 小節有一條滑條；第三段：長滑條和 5 顆交錯
-    const patOf=k=>k<16?(k%2?P3S:P4):k<32?(k%4===3?PS1:P4):(k%4===1?PS2:k%4===3?P5:P4);
-    for(let k=0;k<48;k++){
-      const call=CALLS[k>>1],si=LANES.findIndex(l=>l.who===call[0]),pat=patOf(k),R=rng(k*97+13);
-      let px=null,py=null,qx=null,qy=null;
-      pat.forEach(([e,len],j)=>{
-        const owner=si>=0?si:(j%3);const cx=STAGE[owner].x;
-        let x,y,tries=0;
-        do{if(px==null||owner!==this.notes[this.notes.length-1]?.owner&&si<0){x=cx+(R()-.5)*240;y=150+R()*230}
-           else{const a=R()*6.28,d=150+R()*60;x=px+Math.cos(a)*d;y=py+Math.sin(a)*d}
-           x=Math.max(80,Math.min(W-80,Math.max(cx-200,Math.min(cx+200,x))));y=Math.max(130,Math.min(420,y));tries++}
-        while(px!=null&&(Math.hypot(x-px,y-py)<140||(qx!=null&&Math.hypot(x-qx,y-qy)<130))&&tries<24);
-        const bi=12+k*4+(e>>1),n={t:at(bi,e%2),x,y,owner,num:j+1,hit:null,bi};this.max+=3;qx=px;qy=py;px=x;py=y;
-        if(len){// 滑條：往畫面中間方向彎過去，長度看拍數
-          const dur=B[bi+len]-B[bi],dist=len>1?250:180,ang=Math.atan2(300-y,W/2-x)+(R()-.5)*1.6;
-          let x2=x+Math.cos(ang)*dist,y2=y+Math.sin(ang)*dist;x2=Math.max(90,Math.min(W-90,x2));y2=Math.max(140,Math.min(430,y2));
-          const mx=(x+x2)/2,my=(y+y2)/2,nx=-(y2-y),ny=x2-x,nl=Math.hypot(nx,ny)||1,bend=(R()<.5?-1:1)*(40+R()*50);
-          n.slider={dur,len,x0:x,y0:y,x2,y2,cx:mx+nx/nl*bend,cy:my+ny/nl*bend,ok:0,all:0,ticks:len>1?[B[bi+1]]:[]};this.max+=3;px=x2;py=y2}
-        this.notes.push(n);
-      });
+    const B=SONG.beats;this.B=B;
+    // 譜面：用 librosa 從歌的打擊樂聲部抓鼓點，每顆圈圈落在真正的鼓聲上（大多在正拍，強的反拍和切分也有）
+    // 每筆 [小節, 秒, 種類, 拖曳長度秒, 箭頭方向]；種類 t 點、f 往箭頭方向滑、d 自己沿路滑
+    const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];let px=null,py=null,qx=null,qy=null,lastK=-1,j=0;
+    for(const [k,tt,type,dur,dir] of CHART){
+      if(k!==lastK){lastK=k;j=0}j++;
+      const call=CALLS[k>>1],si=LANES.findIndex(l=>l.who===call[0]),R=rng(Math.round(tt*1000));
+      const owner=si>=0?si:(j%3),cx=STAGE[owner].x;let x,y,tries=0;
+      do{if(px==null||(si<0&&owner!==this.notes[this.notes.length-1].owner)){x=cx+(R()-.5)*240;y=150+R()*230}
+         else{const a=R()*6.28,d=150+R()*60;x=px+Math.cos(a)*d;y=py+Math.sin(a)*d}
+         x=Math.max(80,Math.min(W-80,Math.max(cx-200,Math.min(cx+200,x))));y=Math.max(130,Math.min(420,y));tries++}
+      while(px!=null&&(Math.hypot(x-px,y-py)<140||(qx!=null&&Math.hypot(x-qx,y-qy)<130))&&tries<24);
+      const n={t:tt,x,y,owner,num:j,hit:null,type};this.max+=3;qx=px;qy=py;px=x;py=y;
+      if(type==='f')n.dir=DIRS[dir];
+      if(type==='d'){// 自己滑的路：往畫面中間方向彎過去，越長越遠
+        const dist=Math.min(280,140+dur*130),ang=Math.atan2(300-y,W/2-x)+(R()-.5)*1.6;
+        let x2=x+Math.cos(ang)*dist,y2=y+Math.sin(ang)*dist;x2=Math.max(90,Math.min(W-90,x2));y2=Math.max(140,Math.min(430,y2));
+        const mx=(x+x2)/2,my=(y+y2)/2,nx=-(y2-y),ny=x2-x,nl=Math.hypot(nx,ny)||1,bend=(R()<.5?-1:1)*(40+R()*50);
+        n.path={dur,x0:x,y0:y,x2,y2,cx:mx+nx/nl*bend,cy:my+ny/nl*bend,prog:0};this.max+=3;px=x2;py=y2}
+      this.notes.push(n);
     }
     this.endAt=B[208];
   },
@@ -427,12 +427,46 @@ const Osu={
   down(p){
     if(this.state==='talk'){this.line=this.queue.shift();if(!this.line)this.begin();return}
     if(this.state!=='play')return;
-    this.ptr={x:p.x,y:p.y};const t=this.now();
+    const id=p.id??'k';if(p.x!=null)this.ptrs.set(id,{x:p.x,y:p.y});const t=this.now();
     for(const n of this.notes){if(n.hit)continue;const d=n.t-t;if(d>this.AR)break;
-      // 鍵盤看字母；滑鼠和手指要點在圈圈範圍內才算（手指稍微放寬）
-      if(p.key!=null?this.KEYS[n.owner]!==p.key:Math.hypot(p.x-n.x,p.y-n.y)>this.R*(p.mouse?1.15:1.4))continue;
-      if(this.judge(n,d,t))return}
+      // 方向鍵只對箭頭圈圈；字母只對點擊和拖曳；滑鼠和手指要點在圈圈範圍內才算
+      if(p.arrow){if(n.type!=='f'||n.dir[0]!==p.arrow[0]||n.dir[1]!==p.arrow[1])continue;this.judge(n,d,t);this.flickFx(n);return}
+      if(p.key!=null){if(n.type==='f'||this.KEYS[n.owner]!==p.key)continue}
+      else if(Math.hypot(p.x-n.x,p.y-n.y)>this.R*(p.mouse?1.15:1.4)*(n.type==='f'?1.2:1))continue;
+      if(n.type==='f'){if(d<-.16)continue;this.flk={n,id,x0:p.x,y0:p.y};return}// 箭頭圈圈：等手指滑出去才判定
+      if(this.judge(n,d,t)){if(n.type==='d')this.drag={n,id:p.key!=null?'key:'+p.key:id};return}}
   },
+  move(p){
+    const id=p.id??'k';if(!this.ptrs.has(id))return;this.ptrs.set(id,{x:p.x,y:p.y});
+    if(this.state!=='play')return;
+    if(this.flk&&this.flk.id===id){const f=this.flk,dx=p.x-f.x0,dy=p.y-f.y0,L=Math.hypot(dx,dy);
+      if(L>=45){this.flk=null;const n=f.n;if(n.hit)return;const t=this.now(),d=n.t-t;
+        if((dx*n.dir[0]+dy*n.dir[1])/L>=.55){if(this.judge(n,d,t))this.flickFx(n)}
+        else this.missNote(n,'滑錯方向')}}
+    if(this.drag&&this.drag.id===id)this.trace(p)},
+  up(p){
+    const id=p&&p.id!=null?p.id:null;
+    if(id==null){this.ptrs.clear();this.flk=null;if(this.drag)this.dragFail('放開了');return}
+    this.ptrs.delete(id);if(this.flk&&this.flk.id===id)this.flk=null;
+    if(this.drag&&this.drag.id===id)this.dragFail('放開了')},
+  keyUp(k){if(this.drag&&this.drag.id==='key:'+k)this.dragFail('放開了')},
+  // 自己沿路滑：手指在目前進度往前一小段的範圍內，就把進度推到最接近手指的位置
+  trace(p){const n=this.drag.n,s=n.path;let best=-1,bd=1e9;
+    for(let u=s.prog;u<=Math.min(1,s.prog+.35);u+=.01){const b=this.sp(s,u),dd=Math.hypot(p.x-b.x,p.y-b.y);if(dd<bd){bd=dd;best=u}}
+    if(bd<this.R*1.5&&best>s.prog){const was=s.prog;s.prog=best;
+      if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95&&AC)tone(1568+best*600,AC.currentTime,.08,'sine',.05);
+      const b=this.sp(s,best);if(Math.random()<.6)this.bubs.push({x:b.x+rnd(-12,12),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
+      if(s.prog>=.95)this.dragDone()}},
+  dragDone(){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.prog=1;
+    this.pts+=3;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);this.comboPop=.18;
+    if(AC){const a=AC.currentTime;tone(2637,a,.3,'sine',.12);tone(3951,a,.25,'sine',.07);noise(a,.06,.14,3000)}
+    burst(s.x2,s.y2,22,['#ffd36e','#fff',LANES[n.owner].c]);this.rings.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',w:8});this.pop.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',p:3});
+    this.fx.push({x:s.x2,y:s.y2,t:.9,s:'倒好了！',pts:3});if(navigator.vibrate)try{navigator.vibrate(18)}catch(e){}
+    if(this.combo%10===0){this.big={s:this.combo+' 連擊！',t:1};cheer()}},
+  dragFail(why){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.fail=true;
+    if(this.combo>=5)this.flash=.25;this.combo=0;const b=this.sp(s,s.prog);this.fx.push({x:b.x,y:b.y,t:.9,s:why==='放開了'?'灑了':'太慢了',pts:0});if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)},
+  missNote(n,s){n.hit='miss';n.ht=this.now();this.fx.push({x:n.x,y:n.y,t:.9,s,pts:0});if(this.combo>=5)this.flash=.25;this.combo=0;if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)},
+  flickFx(n){this.trail.push({x:n.x,y:n.y,dx:n.dir[0],dy:n.dir[1],t:.35});swish()},
   // 圈圈一出現就能點，點了一定算；越接近縮好的那一刻分數越高，只有太晚或沒點才是零分
   judge(n,d,t){
     let s,pts;
@@ -453,11 +487,8 @@ const Osu={
     this.comboPop=.18;
     if(this.combo%10===0){this.big={s:this.combo+' 連擊！',t:1};cheer();if(navigator.vibrate)try{navigator.vibrate([20,40,20])}catch(e){}}
     this.jump[n.owner]=.25;if(pts===3)this.bub[n.owner]=.8;
-    if(n.slider)this.slide=n;
     return true;
   },
-  move(p){if(this.ptr){this.ptr.x=p.x;this.ptr.y=p.y}},
-  up(){this.ptr=null},
   update(dt){
     for(let i=0;i<3;i++){this.jump[i]=Math.max(0,this.jump[i]-dt);this.bub[i]=Math.max(0,this.bub[i]-dt)}
     for(let i=this.fx.length-1;i>=0;i--){this.fx[i].t-=dt;if(this.fx[i].t<=0)this.fx.splice(i,1)}
@@ -469,20 +500,11 @@ const Osu={
     this.shake=Math.max(0,this.shake-dt);this.flash=Math.max(0,this.flash-dt);this.comboPop=Math.max(0,this.comboPop-dt);if(this.big){this.big.t-=dt;if(this.big.t<=0)this.big=null}
     if(this.state!=='play')return;
     const t=this.now();
-    if(this.slide){const n=this.slide,s=n.slider,u=Math.max(0,Math.min(1,(t-n.t)/s.dur)),b=this.sp(s,u);
-      // 跟著走：手指或滑鼠在杯子附近，或電腦一直按著那個字母
-      const on=(this.ptr&&Math.hypot(this.ptr.x-b.x,this.ptr.y-b.y)<this.R*2.2)||keysHeld.has(this.KEYS[n.owner]);
-      s.all++;if(on)s.ok++;s.on=on;
-      if(on&&Math.random()<.5)this.bubs.push({x:b.x+rnd(-14,14),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
-      while(s.ticks.length&&t>=s.ticks[0]){s.ticks.shift();if(on&&AC){tone(1760,AC.currentTime,.12,'sine',.07);burst(b.x,b.y,6,['#ffe08a','#fff'])}}
-      if(u>=1){s.done=true;this.slide=null;
-        if(s.ok/s.all>=.75){this.pts+=3;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);this.comboPop=.18;
-          if(AC){const a=AC.currentTime;tone(2637,a,.3,'sine',.12);tone(3951,a,.25,'sine',.07);noise(a,.06,.14,3000)}
-          burst(s.x2,s.y2,22,['#ffd36e','#fff',LANES[n.owner].c]);this.rings.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',w:8});this.pop.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',p:3});
-          this.fx.push({x:s.x2,y:s.y2,t:.9,s:'倒好了！',pts:3});if(navigator.vibrate)try{navigator.vibrate(18)}catch(e){}
-          if(this.combo%10===0){this.big={s:this.combo+' 連擊！',t:1};cheer()}}
-        else{if(this.combo>=5)this.flash=.25;this.combo=0;this.fx.push({x:s.x2,y:s.y2,t:.9,s:'灑了',pts:0});if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)}}}
-    for(const n of this.notes)if(!n.hit&&t-n.t>.16){n.hit='miss';this.fx.push({x:n.x,y:n.y,t:.9,s:'沒接到',pts:0});if(this.combo>=5)this.flash=.25;this.combo=0;if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)}
+    for(let i=this.trail.length-1;i>=0;i--){this.trail[i].t-=dt;if(this.trail[i].t<=0)this.trail.splice(i,1)}
+    if(this.drag){const n=this.drag.n,s=n.path;
+      if(String(this.drag.id).startsWith('key:')){s.prog=Math.min(1,s.prog+dt/Math.max(.3,s.dur*.8));if(s.prog>=.95)this.dragDone()}
+      else if(t>n.t+s.dur+.35)this.dragFail('太慢了')}
+    for(const n of this.notes)if(!n.hit&&t-n.t>.16){if(this.flk&&this.flk.n===n)this.flk=null;this.missNote(n,'沒接到')}
     if(t>this.endAt)this.finish();
   },
   finish(){
@@ -526,37 +548,42 @@ const Osu={
       if(call)text(call[0]+'：「'+call[1]+'」',W/2,62,28,NAME_COLOR[call[0]],'center',6);
     }
     // 圈圈：先畫後面的，越早的越上層
-    const vis=this.notes.filter(n=>{const d=n.t-t;const sEnd=n.slider?n.t+n.slider.dur:n.t;return d<this.AR&&t<sEnd+.25&&!(n.hit&&n.hit!=='miss'&&!n.slider&&t>n.ht+.2)});
+    const vis=this.notes.filter(n=>{const d=n.t-t;const sEnd=n.path?n.t+n.path.dur+.35:n.t;return d<this.AR&&t<sEnd+.25&&!(n.hit&&n.hit!=='miss'&&!n.path&&t>n.ht+.2)&&!(n.path&&n.path.done&&!n.path.fail)});
     for(let i=vis.length-1;i>=0;i--){const n=vis[i],d=n.t-t,c=LANES[n.owner].c;
-      const fade=Math.max(0,Math.min(1,(this.AR-d)/(this.AR*.3)));ctx.save();ctx.globalAlpha=n.hit==='miss'?Math.max(0,.4-(t-n.t)):fade;
-      if(n.slider){const s=n.slider,x0=n.x,y0=n.y,path=()=>{ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(s.cx,s.cy,s.x2,s.y2)};
-        if(s.done){ctx.restore();continue}
-        ctx.lineCap='round';ctx.strokeStyle='#fff';ctx.lineWidth=this.R*2+8;path();ctx.stroke();
-        const ga=ctx.globalAlpha;ctx.globalAlpha=ga*.85;ctx.strokeStyle=c;ctx.lineWidth=this.R*2;path();ctx.stroke();ctx.globalAlpha=ga;
-        ctx.strokeStyle='rgba(255,246,220,.95)';ctx.lineWidth=5;ctx.setLineDash([2,16]);path();ctx.stroke();ctx.setLineDash([]);
-        // 終點：小杯子
-        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x2,s.y2,this.R*.62,0,7);ctx.fill();ctx.strokeStyle=c;ctx.lineWidth=4;ctx.stroke();
-        coupe(s.x2,s.y2+16,.62,0,{});
-        if(t>=n.t&&n.hit&&n.hit!=='miss'){const u=Math.min(1,(t-n.t)/s.dur),b=this.sp({x0,y0,...s},u);
-          ctx.globalAlpha=1;
-          if(s.on){ctx.save();ctx.shadowColor='#ffe08a';ctx.shadowBlur=26;ctx.strokeStyle='#ffe08a';ctx.lineWidth=6;ctx.beginPath();ctx.arc(b.x,b.y,this.R*1.5+Math.sin(t*30)*3,0,7);ctx.stroke();ctx.restore()}
-          else{ctx.strokeStyle='rgba(255,255,255,.6)';ctx.lineWidth=3;ctx.setLineDash([8,8]);ctx.beginPath();ctx.arc(b.x,b.y,this.R*1.5,0,7);ctx.stroke();ctx.setLineDash([])}
-          ctx.fillStyle='#fffaf0';ctx.beginPath();ctx.arc(b.x,b.y,this.R*.8,0,7);ctx.fill();ctx.strokeStyle=c;ctx.lineWidth=5;ctx.stroke();
-          coupe(b.x,b.y+22,.8,.9,{liq:'#ffd36e',liq2:'#fff'});ctx.restore();continue}
-        if(n.hit&&n.hit!=='miss'){ctx.restore();continue}
+      const fade=Math.max(0,Math.min(1,(this.AR-d)/(this.AR*.3)));ctx.save();ctx.globalAlpha=n.hit==='miss'||(n.path&&n.path.fail)?Math.max(0,.4-(t-n.t)*.5):fade;
+      if(n.path){const s=n.path,path=(u1=1)=>{ctx.beginPath();ctx.moveTo(s.x0,s.y0);if(u1>=1){ctx.quadraticCurveTo(s.cx,s.cy,s.x2,s.y2);return}
+          for(let u=.02;u<=u1+.001;u+=.02){const b=this.sp(s,Math.min(u,u1));ctx.lineTo(b.x,b.y)}};
+        ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#fff';ctx.lineWidth=this.R*1.5+8;path();ctx.stroke();
+        const ga=ctx.globalAlpha;ctx.globalAlpha=ga*.55;ctx.strokeStyle=c;ctx.lineWidth=this.R*1.5;path();ctx.stroke();ctx.globalAlpha=ga;
+        // 路上的小箭頭指出方向
+        ctx.fillStyle='rgba(255,255,255,.9)';for(let u=.2;u<.9;u+=.2){const a=this.sp(s,u),b=this.sp(s,u+.02),an=Math.atan2(b.y-a.y,b.x-a.x);
+          ctx.save();ctx.translate(a.x,a.y);ctx.rotate(an);ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-6,-8);ctx.lineTo(-6,8);ctx.closePath();ctx.fill();ctx.restore()}
+        // 已經滑過的部分變金色
+        if(s.prog>0){ctx.save();ctx.globalAlpha=1;ctx.shadowColor='#ffe08a';ctx.shadowBlur=16;ctx.strokeStyle='#ffd36e';ctx.lineWidth=this.R*1.5;path(s.prog);ctx.stroke();ctx.restore()}
+        // 終點杯子
+        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x2,s.y2,this.R*.62,0,7);ctx.fill();ctx.strokeStyle=c;ctx.lineWidth=4;ctx.stroke();coupe(s.x2,s.y2+16,.62,s.prog*.9,{});
+        if(n.hit&&n.hit!=='miss'){if(this.drag&&this.drag.n===n){const b=this.sp(s,s.prog);ctx.globalAlpha=1;
+            ctx.save();ctx.shadowColor='#ffe08a';ctx.shadowBlur=22;ctx.strokeStyle='#ffe08a';ctx.lineWidth=5;ctx.beginPath();ctx.arc(b.x,b.y,this.R*.9+Math.sin(t*30)*2,0,7);ctx.stroke();ctx.restore();
+            // 時限：終點外圈慢慢縮
+            const left=Math.max(0,(n.t+s.dur+.35-t)/(s.dur+.35));ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(s.x2,s.y2,this.R*(.7+left*.9),0,7);ctx.stroke()}
+          ctx.restore();continue}
       }
-      if(n.hit&&n.hit!=='miss'){const a=Math.max(0,1-(t-n.ht)/.2);ctx.globalAlpha=a;ctx.strokeStyle=c;ctx.lineWidth=5;ctx.beginPath();ctx.arc(n.x,n.y,this.R*(1+(1-a)*.5),0,7);ctx.stroke();ctx.restore();continue}
       // 主圈
       const g=ctx.createRadialGradient(n.x,n.y-10,6,n.x,n.y,this.R);g.addColorStop(0,'#fffaf0');g.addColorStop(1,c);
       ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,this.R,0,7);ctx.fill();
       ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke();
-      text(this.pc?this.KEYS[n.owner].toUpperCase():String(n.num),n.x,n.y+2,this.pc?40:34,'#7a2048');
-      if(n.slider){ctx.fillStyle='#7a2048';ctx.beginPath();ctx.arc(n.x+this.R*.78,n.y-this.R*.78,17,0,7);ctx.fill();text('滑',n.x+this.R*.78,n.y-this.R*.78+1,19,'#fff','center',0)}
+      if(n.type==='f'){const an=Math.atan2(n.dir[1],n.dir[0]);ctx.save();ctx.translate(n.x,n.y);ctx.rotate(an);ctx.fillStyle='#7a2048';
+          ctx.beginPath();ctx.moveTo(34,0);ctx.lineTo(4,-26);ctx.lineTo(4,-11);ctx.lineTo(-28,-11);ctx.lineTo(-28,11);ctx.lineTo(4,11);ctx.lineTo(4,26);ctx.closePath();ctx.fill();
+          // 箭頭外面的提示：往外的小三角
+          ctx.fillStyle='#fff';ctx.globalAlpha*=.8+.2*Math.sin(t*12);ctx.beginPath();ctx.moveTo(this.R+26,0);ctx.lineTo(this.R+10,-12);ctx.lineTo(this.R+10,12);ctx.closePath();ctx.fill();ctx.restore()}
+      else text(this.pc?this.KEYS[n.owner].toUpperCase():String(n.num),n.x,n.y+2,this.pc?40:34,'#7a2048');
       // 縮小的金框
       if(d>0){const rr2=this.R*(1+2.2*d/this.AR),now=d<.14;ctx.strokeStyle=now?'#fff':'#ffd25a';ctx.lineWidth=now?7:4;
         if(now){ctx.shadowColor='#ffe08a';ctx.shadowBlur=18}ctx.beginPath();ctx.arc(n.x,n.y,rr2,0,7);ctx.stroke();ctx.shadowBlur=0}
       ctx.restore();
     }
+    for(const tr of this.trail){const u=1-tr.t/.35;ctx.save();ctx.globalAlpha=1-u;ctx.strokeStyle='#fff6c8';ctx.lineCap='round';ctx.lineWidth=this.R*.9*(1-u)+4;ctx.shadowColor='#ffe08a';ctx.shadowBlur=20;
+      ctx.beginPath();ctx.moveTo(tr.x,tr.y);ctx.lineTo(tr.x+tr.dx*(60+u*160),tr.y+tr.dy*(60+u*160));ctx.stroke();ctx.restore()}
     // 打中的圈圈放大淡出、香檳泡泡往上飄
     for(const q of this.pop){const u=q.t/.28;ctx.save();ctx.globalAlpha=(1-u)*.8;ctx.fillStyle=q.p===3?'#fff3c4':q.c;ctx.beginPath();ctx.arc(q.x,q.y,this.R*(1+u*.45),0,7);ctx.fill();ctx.restore()}
     ctx.save();for(const b of this.bubs){ctx.globalAlpha=Math.min(1,b.t*2)*.8;ctx.strokeStyle='#fff6d0';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,7);ctx.stroke();ctx.fillStyle='rgba(255,230,150,.35)';ctx.fill()}ctx.restore();
@@ -600,6 +627,7 @@ const Osu={
   },
 };
 const OFFKEY='mirage_xmas_call_offset_v1';
+const CHART=[[0,7.413,'t',0,0],[0,8.098,'t',0,0],[0,8.394,'t',0,0],[0,8.9745,'t',0,0],[1,10.1529,'t',0,0],[1,10.7276,'t',0,0],[1,11.0237,'t',0,0],[1,11.3139,'t',0,0],[2,11.8886,'t',0,0],[2,12.4749,'f',0,2],[2,13.0554,'t',0,0],[2,13.6417,'t',0,0],[3,14.8085,'t',0,0],[3,15.093,'t',0,0],[3,15.3716,'t',0,0],[3,15.9695,'t',0,0],[4,16.55,'f',0,1],[4,17.1363,'t',0,0],[4,17.711,'t',0,0],[4,18.3031,'t',0,0],[5,18.8894,'d',0.858,0],[5,20.0388,'t',0,0],[5,20.6309,'t',0,0],[5,20.927,'t',0,0],[6,21.2114,'f',0,3],[6,21.7919,'t',0,0],[6,22.088,'t',0,0],[6,22.3666,'t',0,0],[7,23.5508,'t',0,0],[7,24.1313,'t',0,0],[7,24.6944,'t',0,0],[7,25.2865,'t',0,0],[8,25.867,'t',0,0],[8,26.3488,'f',0,0],[8,26.9351,'d',0.586,0],[8,27.8117,'t',0,0],[9,29.3674,'t',0,0],[9,29.6577,'t',0,0],[9,29.9537,'t',0,0],[9,30.244,'t',0,0],[10,30.5226,'t',0,0],[10,30.8245,'t',0,0],[10,31.1147,'f',0,0],[10,31.6894,'d',0.87,0],[11,32.8562,'t',0,0],[11,33.1523,'t',0,0],[11,34.0114,'t',0,0],[11,34.6093,'t',0,0],[12,35.184,'f',0,0],[12,35.7703,'t',0,0],[12,36.0606,'t',0,0],[12,36.345,'d',1.068,0],[13,37.7034,'t',0,0],[13,38.0981,'t',0,0],[13,38.6786,'t',0,0],[13,39.2649,'t',0,0],[14,39.8396,'f',0,2],[14,40.4259,'t',0,0],[14,41.0122,'t',0,0],[14,41.5927,'t',0,0],[15,42.179,'t',0,0],[15,42.7595,'d',0.574,0],[15,43.6245,'t',0,0],[15,44.1063,'t',0,0],[16,44.4952,'t',0,0],[16,44.7913,'t',0,0],[16,45.0815,'f',0,0],[16,45.6737,'t',0,0],[17,46.8346,'t',0,0],[17,47.4151,'t',0,0],[17,47.9956,'d',0.864,0],[18,49.1508,'t',0,0],[18,49.4469,'t',0,0],[18,49.7371,'t',0,0],[18,50.3234,'t',0,0],[19,51.4728,'f',0,1],[19,52.0591,'t',0,0],[19,52.3494,'t',0,0],[19,52.6396,'d',0.865,0],[20,53.7948,'t',0,0],[20,54.3811,'t',0,0],[20,54.9616,'t',0,0],[21,56.1168,'d',0.871,0],[21,57.2778,'t',0,0],[21,57.5739,'t',0,0],[21,57.8641,'t',0,0],[22,58.4388,'f',0,0],[22,59.0193,'t',0,0],[22,59.594,'t',0,0],[22,60.1861,'t',0,0],[23,61.3413,'t',0,0],[23,61.916,'t',0,0],[23,62.4965,'t',0,0],[23,62.9667,'t',0,0],[24,63.3673,'t',0,0],[24,63.6575,'d',0.865,0],[24,64.8127,'t',0,0],[25,65.3874,'f',0,0],[25,66.2581,'t',0,0],[25,66.8386,'t',0,0],[25,67.1231,'t',0,0],[26,68.2841,'t',0,0],[26,68.8588,'t',0,0],[26,69.4451,'t',0,0],[26,69.9153,'t',0,0],[27,70.0256,'d',0.865,0],[27,71.1808,'f',0,3],[27,71.7613,'t',0,0],[27,72.0515,'t',0,0],[28,72.3302,'t',0,0],[28,72.9223,'t',0,0],[28,73.2125,'t',0,0],[28,73.4912,'t',0,0],[29,74.658,'f',0,3],[29,75.2385,'t',0,0],[29,75.8073,'t',0,0],[29,76.3995,'t',0,0],[30,76.9741,'t',0,0],[30,77.5546,'t',0,0],[30,78.1293,'t',0,0],[30,78.7156,'t',0,0],[31,79.2845,'f',0,0],[31,79.8708,'t',0,0],[31,80.1553,'t',0,0],[31,80.4397,'d',0.872,0],[32,81.6007,'t',0,0],[32,82.187,'t',0,0],[32,82.7559,'t',0,0],[32,83.3422,'t',0,0],[32,83.6383,'t',0,0],[33,83.9169,'t',0,0],[33,84.213,'t',0,0],[33,84.4974,'t',0,0],[33,85.0721,'f',0,1],[33,85.6526,'t',0,0],[34,86.2447,'t',0,0],[34,86.8252,'t',0,0],[34,87.3941,'t',0,0],[34,87.9804,'t',0,0],[35,88.5493,'f',0,0],[35,89.1298,'t',0,0],[35,89.6987,'t',0,0],[35,90.0005,'t',0,0],[35,90.2908,'t',0,0],[36,90.8597,'t',0,0],[36,91.4402,'t',0,0],[36,91.7362,'t',0,0],[36,92.0265,'t',0,0],[36,92.6012,'t',0,0],[37,93.1817,'t',0,0],[37,93.7564,'f',0,3],[37,94.3253,'t',0,0],[37,94.6271,'t',0,0],[37,94.9058,'t',0,0],[38,95.4921,'t',0,0],[38,96.0726,'t',0,0],[38,96.6415,'t',0,0],[38,96.9433,'t',0,0],[38,97.2278,'t',0,0],[39,97.8024,'t',0,0],[39,98.0985,'t',0,0],[39,98.3771,'t',0,0],[39,98.6674,'t',0,0],[39,98.9576,'d',0.867,0],[40,100.1128,'t',0,0],[40,100.6933,'t',0,0],[40,101.268,'t',0,0],[40,101.5525,'t',0,0],[40,101.8427,'t',0,0],[41,102.4174,'t',0,0],[41,102.7077,'t',0,0],[41,103.1779,'t',0,0],[41,103.5784,'t',0,0],[41,104.1531,'t',0,0],[42,104.7278,'t',0,0],[42,105.3083,'t',0,0],[42,105.883,'t',0,0],[42,106.4693,'t',0,0],[43,107.2181,'t',0,0],[43,107.6129,'d',0.861,0],[43,108.7623,'f',0,0],[44,109.337,'t',0,0],[44,109.9233,'t',0,0],[44,110.4922,'t',0,0],[44,110.9682,'t',0,0],[44,111.3571,'t',0,0],[45,111.6415,'t',0,0],[45,111.9434,'t',0,0],[45,112.222,'f',0,0],[45,112.8025,'t',0,0],[45,113.2727,'t',0,0],[46,113.9519,'t',0,0],[46,114.5266,'t',0,0],[46,114.8169,'t',0,0],[46,115.1013,'t',0,0],[46,115.3916,'d',0.571,0],[47,116.2507,'t',0,0],[47,116.5526,'t',0,0],[47,116.8312,'f',0,1],[47,117.4001,'t',0,0],[47,117.9922,'t',0,0]];
 const songVol=()=>.9*(window.BGM?BGM.vol():1);
 window.addEventListener('musicvol',()=>{if(G&&G.g)G.g.gain.value=songVol()});
 const SONG={src:'assets/bgm_ginza.mp3',beats:[0.2531, 0.8368, 1.4191, 1.992, 2.5594, 3.1308, 3.7023, 4.2712, 4.8433, 5.4251, 6.0069, 6.5893, 7.184, 7.7787, 8.3721, 8.9648, 9.5595, 10.1523, 10.7341, 11.3171, 11.8996, 12.482, 13.0632, 13.6456, 14.2274, 14.8105, 15.3929, 15.976, 16.5591, 17.1428, 17.7246, 18.3076, 18.8901, 19.4725, 20.0543, 20.6374, 21.2205, 21.8035, 22.384, 22.9671, 23.5495, 24.1204, 24.6925, 25.2652, 25.8367, 26.4075, 26.9887, 27.5724, 28.1542, 28.7366, 29.3307, 29.9241, 30.5162, 31.1102, 31.703, 32.2854, 32.8666, 33.449, 34.0308, 34.6139, 35.1963, 35.7794, 36.3599, 36.9423, 37.5241, 38.1065, 38.689, 39.2714, 39.8532, 40.4356, 41.018, 41.6018, 42.1836, 42.766, 43.3491, 43.9322, 44.5146, 45.0964, 45.6775, 46.2593, 46.8398, 47.4222, 48.004, 48.5852, 49.165, 49.7462, 50.3273, 50.9085, 51.4877, 52.0682, 52.648, 53.2285, 53.8077, 54.3895, 54.9687, 55.5486, 56.1278, 56.7083, 57.2881, 57.8686, 58.4485, 59.029, 59.6069, 60.1874, 60.7666, 61.3465, 61.9276, 62.5075, 63.086, 63.6659, 64.2406, 64.8191, 65.3977, 65.9769, 66.5555, 67.1328, 67.7113, 68.2905, 68.8678, 69.4515, 70.0314, 70.6106, 71.1892, 71.769, 72.3482, 72.9274, 73.506, 74.0858, 74.6651, 75.2443, 75.8228, 76.4027, 76.9806, 77.5598, 78.1384, 78.7182, 79.2968, 79.8754, 80.4539, 81.0331, 81.611, 82.1903, 82.7688, 83.3474, 83.9266, 84.5064, 85.085, 85.6649, 86.2434, 86.8233, 87.4018, 87.9811, 88.5603, 89.1375, 89.7148, 90.2934, 90.8713, 91.4505, 92.0278, 92.6063, 93.1849, 93.7635, 94.342, 94.9206, 95.4985, 96.0764, 96.6537, 97.2323, 97.8102, 98.3875, 98.9647, 99.542, 100.1193, 100.6972, 101.2745, 101.8518, 102.429, 103.0063, 103.5836, 104.1615, 104.7394, 105.316, 105.894, 106.4706, 107.0472, 107.6232, 108.1992, 108.7752, 109.3499, 109.9258, 110.5025, 111.0778, 111.6538, 112.2304, 112.8064, 113.383, 113.9584, 114.5357, 115.111, 115.6863, 116.2617, 116.8383, 117.4136, 117.9903, 118.5662, 119.1435, 119.7189, 120.2948, 120.8715, 121.4481, 122.0228, 122.5988, 123.1748],buf:null,p:null};
@@ -637,23 +665,24 @@ function play(k){
   stopG();clearPause();G=GAMES[k];if(window.BGM)(k==='osu'?BGM.pause():BGM.resume());if(k==='osu')loadSong().catch(()=>{});sparks.length=0;confetti.length=0;G.start();menu.classList.remove('show');showAgain(false);swap.style.display='';
 }
 function toPos(e){if(window.mapPt)return mapPt(cv,e,W,H);const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
-cv.addEventListener('pointerdown',e=>{if(!G||G.state==='end'||paused||resumeT>0)return;e.preventDefault();G.down({...toPos(e),mouse:e.pointerType==='mouse'})});
-const upH=()=>{if(keysHeld.size)return;G&&G.up()};
+cv.addEventListener('pointerdown',e=>{if(!G||G.state==='end'||paused||resumeT>0)return;e.preventDefault();G.down({...toPos(e),mouse:e.pointerType==='mouse',id:e.pointerId})});
+const upH=e=>{if(!G)return;if(G===Osu){G.up(e&&e.pointerId!=null?{id:e.pointerId}:null);return}if(keysHeld.size)return;G.up()};
 // 電腦版：滑鼠移到圈圈上，按 Z、X 打拍子（跟 osu 一樣）
 const keysHeld=new Set(),HITKEYS=['z','x','c','v'];let hover={x:W/2,y:H/2};
 cv.addEventListener('pointerup',upH);cv.addEventListener('pointercancel',upH);cv.addEventListener('pointerleave',upH);
-cv.addEventListener('pointermove',e=>{hover=toPos(e);if(G&&G.move)G.move(hover)});
+cv.addEventListener('pointermove',e=>{hover=toPos(e);if(G&&G.move)G.move({...hover,id:e.pointerId})});
 window.addEventListener('keydown',e=>{
   if(!open||e.repeat)return;const k=e.key.toLowerCase();
   if(k==='escape'||k==='p'){if(paused)setPause(false);else if(running())setPause(true);else if(k==='escape')CG.close();return}
   if(!G||paused||resumeT>0)return;
   if(G===Osu&&G.state!=='end'){
     if(G.state==='talk'&&(k===' '||k==='enter'||Osu.KEYS.includes(k))){e.preventDefault();G.down({x:0,y:0});return}
-    if(Osu.KEYS.includes(k)){e.preventDefault();keysHeld.add(k);G.down({key:k});return}}
+    if(Osu.KEYS.includes(k)){e.preventDefault();keysHeld.add(k);G.down({key:k});return}
+    const AR={arrowright:[1,0],arrowdown:[0,1],arrowleft:[-1,0],arrowup:[0,-1]}[k];if(AR&&G.state==='play'){e.preventDefault();G.down({arrow:AR});return}}
   if(k===' '||k==='enter'){e.preventDefault();if(G.state!=='end')G.down({x:W/2,y:H/2})}
 });
 window.addEventListener('keyup',e=>{if(!open)return;const k=e.key.toLowerCase();
-  if(keysHeld.has(k)){keysHeld.delete(k);if(!keysHeld.size&&G)G.up();return}
+  if(keysHeld.has(k)){keysHeld.delete(k);if(G===Osu){G.keyUp(k);return}if(!keysHeld.size&&G)G.up();return}
   if(k===' '||k==='enter')upH()});
 document.querySelectorAll('#cgmenu [data-g]').forEach(b=>b.onclick=()=>{audio();play(b.dataset.g)});
 again.onclick=()=>{if(G)play(Object.keys(GAMES).find(k=>GAMES[k]===G))};
