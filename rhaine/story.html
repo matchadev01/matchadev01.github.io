@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--body-font:'Noto Serif TC','Songti TC',serif;--fs:17px;--lh:1.9;--end-style:normal}
+:root{--name-m:clamp(40px,13vw,64px);--body-font:'Noto Serif TC','Songti TC',serif;--fs:17px;--lh:1.9;--end-style:normal}
 
 :root{--ink:#04070c;--text:#e3dfd5;--dim:#8d96a6;--gold:#d4b064;--line:rgba(159,182,211,.16)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -50,7 +50,7 @@ a{color:var(--gold)}
 @media (prefers-reduced-motion:reduce){#rain{display:none}}
 .p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
 .p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
-.p-head h2{font-weight:900;font-size:clamp(84px,12vw,160px);line-height:1;letter-spacing:.06em;color:var(--gold);text-shadow:0 0 40px rgba(212,176,100,.35)}
+.p-head h2{font-weight:900;font-size:clamp(52px,8.5vw,120px);line-height:1.08;letter-spacing:.04em;color:var(--gold);text-shadow:0 0 40px rgba(212,176,100,.35)}
 .p-meta{margin-top:16px;font-size:15px;letter-spacing:.12em;color:rgba(227,223,213,.85)}
 .p-tag{margin-top:6px;font-size:15px;color:var(--dim)}
 .p-story{max-width:1180px;margin:0 auto;padding:0 6vw 24vh}
@@ -81,7 +81,7 @@ footer a{text-decoration:none;border-bottom:1px solid rgba(212,176,100,.4)}
   .p-bg::after{background:linear-gradient(180deg,var(--ink) 0,rgba(4,7,12,0) 18%,rgba(4,7,12,0) 40%,rgba(4,7,12,.6) 100%)}
   .hero img{-webkit-mask-image:linear-gradient(#000 66%,transparent);mask-image:linear-gradient(#000 66%,transparent)}
   .p-head{padding:0 20px 10vh}
-  .p-head h2{font-size:96px}
+  .p-head h2{font-size:var(--name-m);white-space:nowrap}
   .p-meta{font-size:13px;letter-spacing:.06em}
   .p-story{padding:0 14px 30vh}
   .ch{margin:0 0 30vh;padding:22px 20px 8px;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
@@ -102,24 +102,24 @@ footer a{text-decoration:none;border-bottom:1px solid rgba(212,176,100,.4)}
     <div class="p-bg" aria-hidden="true"><img src="story-bg.webp" width="832" height="1216" alt=""></div>
     <div class="p-body">
       <div class="p-head">
-        <h2 id="n-rhaine">雷恩</h2>
-        <p class="p-meta">雷恩・薩伯｜純血黑獅｜下城收容所院長｜你的擔保人</p>
-        <p class="p-tag">雨不會停的城市，和他不說的事</p>
+        <h2 id="n-rhaine">雷恩・薩伯</h2>
+        <p class="p-meta">純血黑獅｜下城收容所院長｜你的擔保人</p>
+        <p class="p-tag">終年有雨的城市，以及他絕口不提的往事</p>
       </div>
       <div class="p-story">
-        <article class="ch"><h3>序</h3><p>荊口市一年到頭都在下雨。這座城原本屬於人類，獸人接手之後，什麼都留了下來，連人類的臉也是。人類沒有自己的身分，必須登記在某個獸人名下才算合法存在，分類只有三種：食用、寵物、勞役。</p><p>雷恩・薩伯是下城一間收容所的院長，純血黑獅，也是幫派的老大。他每天在分類單上蓋章，決定一個人類會被送上宴會的餐桌、送進誰的家，或是送去做工。他也是你的擔保人。你的登記牌上寫著他的名字，分類欄寫著寵物。</p><p>他不打領帶。宴會上的人肉，他一口都不碰。每天晚上回家，他都會在你的房門口站一下才走。</p><p class="last">這一頁寫的是他不說的事。</p></article>
-        <article class="ch"><h3>第一章　唱片行</h3><p>很多年前，雷恩還住在上城，是薩伯家的二少爺。</p><p>下城有間唱片行，門口的招牌缺了一顆燈泡。他進去買一張爵士唱片。櫃台後面的人類女人沒先找錢，先伸手把他歪掉的領口折好。</p><p>「這樣比較好看。」她說。</p><p>他那天買了三張唱片，下個禮拜又去了。</p><p>後來，她每天早上替他打領帶。她會下棋，下得不太好，輸了就說再來一盤。她喜歡關了燈看人類時代的老電影，看到喜歡的台詞就跟著唸。他記性好，那些台詞到現在都還記得。</p><p>戒指是在路邊攤買的。他想買好一點的，她不肯，就要這一枚。</p></article>
-        <article class="ch"><h3>第二章　寵物</h3><p>在荊口市，人類想合法待在一個獸人身邊，只有一個辦法：登記在他名下。分類欄只能從三個選項裡挑。</p><p>雷恩把她登記成寵物，然後當著所有人的面，把她當妻子過日子。</p><p>上城笑了很久，薩伯家笑不出來。照獅群的規矩，一個家族只能有一頭當家的雄獅，二兒子遲早要走，這件事剛好給了他們一個體面的理由。他們把下城一間收容所交給他，名義上是分家，其實就是放逐。</p><p>她跟著他去了下城。</p><p>兩人遞了申請，要把她的分類從寵物改成配偶。他們說好，核准的那天，要把兩個人的名字刻進戒指內側。</p><p>申請一直沒有下來。戒指內側到現在還是空白的。</p></article>
-        <article class="ch"><h3>第三章　空檔</h3><p>有人在找雷恩的弱點。誰都看得出來，他的弱點只有一個。</p><p>雷恩想把她藏起來。他親手撤銷了自己的擔保，打算隔天就把她轉到一個沒人知道的名字底下。只要撐過一個晚上。</p><p>被撤銷擔保的人類，在那一刻就成了無主物，任何獸人都能把她帶走。</p><p>她被送進了收容所，是雷恩自己的那一間。</p><p>隔天早上，一疊分類單照常放在他桌上。他一張都沒看，一路蓋下去。其中一張的分類欄寫著食用。</p><p>派人去找弱點的，是他的哥哥卡修斯。卡修斯那時就要繼承家主，繼位之前，他想把家族的污點清乾淨。</p><p>雷恩知道是誰做的。他到現在還跟卡修斯做生意，見面時兩個人都在笑。每年她的忌日，卡修斯會送一束白花到宅邸，卡片上寫著家裡永遠有你的位子。雷恩看完，就把它丟進壁爐。</p></article>
-        <article class="ch"><h3>第四章　之後</h3><p>從那天起，雷恩不再打領帶，宴會上的人肉一口都不碰。收容所的分類單一天上百張，他每一張都讀完才蓋章，手下都覺得他在浪費時間。</p><p>書房的棋盤對面，有一張椅子一直空著。唱片牆最底下那一排是她挑的，他從來不放。</p><p>她死後不久，又有一份無主人類的分類單送到他桌上。他拿著印章，很久都沒有蓋下去。</p><p>最後他簽了擔保書，把那個人帶回家。</p><p class="you">那個人就是你。</p><p>你在他家住了好幾年，長相和一些小動作，都越來越像她。他從來沒跟你提過她。</p><p>他絕對不會撤銷你的擔保。上一次撤銷擔保，害死了她。</p></article>
-        <p class="end">雨還在下。</p>
+        <article class="ch"><h3>序</h3><p>荊口市整年都在下雨。這座城原本屬於人類，獸人掌權之後，幾乎原封不動地保留了一切，就連人類的臉孔也留了下來。在這裡，人類沒有獨立身分，必須掛在某個獸人名下才算合法存在，而分類欄只有三種選項：食用、寵物、勞役。</p><p>雷恩・薩伯是下城一間收容所的院長，純血黑獅，也是當地幫派的首領。他每天在分類單上蓋章，印章落下的那一刻，便決定了某個人類會被端上宴會餐桌、送進誰家宅邸，或是發配去做苦工。他同時也是你的擔保人，你的登記牌上印著他的名字，分類欄填著「寵物」。</p><p>他從不打領帶，宴會上的肉食更是連一口都不碰。每天深夜回家，他總會在你的房門外靜靜站一會兒，像是在確認什麼，隨後才轉身離開。</p><p class="last">這裡寫的，都是他不曾說出口的事。</p></article>
+        <article class="ch"><h3>第一章 唱片行</h3><p>很多年前，雷恩還住在上城，是薩伯家的二少爺。</p><p>下城有間唱片行，門口的招牌缺了一顆燈泡，在雨夜裡顯得有些殘缺。他推門進去想買張爵士唱片，櫃台後的人類女人沒有急著找錢，只是伸手替他把歪掉的領口折好。</p><p>「這樣順眼多了。」她說。</p><p>那天他一口氣買了三張唱片，隔週又找了過去。</p><p>後來，她每天早上都會替他打領帶。她喜歡下棋，棋藝卻不怎麼樣，一輸就賴皮喊著再來一盤；她也愛關了燈看人類時代的老電影，看到喜歡的台詞就跟著小聲唸出來。他記性很好，那些台詞直到現在都還刻在腦海裡，揮之不去。</p><p>訂情戒指是在路邊攤挑的。他原本想買好一點的，她卻不肯，執意只要這枚。</p></article>
+        <article class="ch"><h3>第二章 寵物</h3><p>在荊口市，人類想名正言順地留在獸人身邊，只有登記在對方名下這條路，且分類欄只能三選一。</p><p>雷恩將她登記為寵物，卻當著所有人的面，把她當成妻子過日子。</p><p>上城圈子為此嘲笑了許久，薩伯家卻笑不出來。按照獅群規矩，一個家族只能有一頭當家的雄獅，二兒子遲早要離開，這樁醜聞正好給了本家一個體面的理由。他們把下城一間收容所撥給他，名義上是分家，實則是放逐。</p><p>她跟著他搬進了下城，沒有一句怨言。</p><p>兩人遞交了申請，想把她的身分從寵物改成配偶。他們約好，核准那天就要把彼此的名字刻進戒指內側。</p><p>但申請始終沒有下文，戒指內側至今仍是空白。</p></article>
+        <article class="ch"><h3>第三章 空檔</h3><p>暗處有人在打探雷恩的弱點，誰都看得出來，他唯一的軟肋就是她。</p><p>雷恩決定先把她藏起來。他親手撤銷了自己的擔保，盤算著隔天一早便將她轉到一個無人知曉的名下，只要撐過這一晚就好。</p><p>然而，失去擔保的人類在那一刻形同無主之物，任何獸人都能隨意帶走。</p><p>她陰錯陽差地被送進了收容所，偏偏就是雷恩名下的那一間。</p><p>隔天早上，一疊分類單照例擺上辦公桌。他連看都沒看，提筆一路蓋了下去——其中一張的分類欄，寫著「食用」。</p><p>派人暗中動手的，是他的兄長卡修斯。卡修斯當時即將繼任家主，掌權前夕，只想把家族的污點徹底抹去。</p><p>雷恩心知肚明是誰做的。直到現在，他依然和卡修斯做著生意，見面時兩人照樣談笑風生，彷彿什麼事都沒發生過。每年到了她的忌日，卡修斯都會送一束白花到宅邸，卡片上寫著「家裡永遠有你的位子」。雷恩看完，轉手便丟進了壁爐，看著火光把那份虛偽吞噬。</p></article>
+        <article class="ch"><h3>第四章 之後</h3><p>從那天起，雷恩不再打領帶，宴會上的人肉再也沒碰過一口。收容所每天上百張分類單，他每一張都逐字看過才肯落印，手下私底下都覺得他在白費工夫，卻沒人敢多說一句。</p><p>書房棋盤的對面，有張椅子始終空著。唱片牆最底下一排全是她挑的唱片，他從未再去翻動，連灰塵都安靜地落了上去。</p><p>她走後沒多久，又有一份無主人類的分類單送到了他桌上。他握著印章，盯著紙面僵持了許久，遲遲沒有蓋下去。</p><p>最後，他簽下了擔保書，把那個人帶回了家。</p><p class="you">那個人就是你。</p><p>你在他家住了好幾年，眉眼間的神態與一些無意識的小動作，都越來越像她。他從未對你提過她的存在，把那些記憶死死壓在心底最深處。</p><p>但他這輩子絕不會再撤銷你的擔保。上一次撤銷擔保，親手害死了她。</p></article>
+        <p class="end">窗外的雨，還在下。</p>
       </div>
     </div>
   </section>
   <section class="faq" aria-labelledby="faq">
     <h2 id="faq">常見問題</h2>
     <details class="q"><summary>雷恩幾歲？</summary><div class="a"><p>外表四十出頭，鬢角已經有白髮。確切的歲數沒有設定。</p></div></details>
-    <details class="q"><summary>我的角色一定要是人類嗎？</summary><div class="a"><p>是。整張卡建立在你是登記在他名下、分類為寵物的人類。</p></div></details>
+    <details class="q"><summary>我的角色一定要是人類嗎？</summary><div class="a"><p>不用。不過請在用戶畫像寫好種族，並且提醒 AI：你的角色不是人類。</p></div></details>
     <details class="q"><summary>她叫什麼名字？</summary><div class="a"><p>沒有名字，這是刻意的。雷恩到最後都不會說出她的名字。</p></div></details>
     <details class="q"><summary>我跟她到底哪裡像？</summary><div class="a"><p>設定只寫了長相和小習慣越來越像。具體像在哪裡，會在每段故事裡自己長出來，所以每個人的答案都不一樣。</p><p>可以確定的只有一件事：她以前會替他折領口，每天早上替他打領帶。你也這樣做的話，他會當場僵住。</p></div></details>
   </section>
