@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雷恩・薩伯｜抹茶的檔案室</title>
+<meta name="description" content="荊口市下城收容所院長，純血黑獅，你的擔保人。這一頁寫的是他不說的事。">
+<meta property="og:title" content="雷恩・薩伯 RHAINE SABLE">
+<meta property="og:description" content="荊口市下城收容所院長，純血黑獅，你的擔保人。這一頁寫的是他不說的事。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matchadev01.github.io/rhaine/story.html">
+<meta property="og:image" content="https://matchadev01.github.io/rhaine/banner.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="zh-Hant" href="https://matchadev01.github.io/rhaine/story.html">
+<link rel="alternate" hreflang="ko" href="https://matchadev01.github.io/rhaine/story.ko.html">
+<link rel="alternate" hreflang="en" href="https://matchadev01.github.io/rhaine/story.en.html">
+<link rel="alternate" hreflang="ja" href="https://matchadev01.github.io/rhaine/story.ja.html">
+<link rel="alternate" hreflang="es" href="https://matchadev01.github.io/rhaine/story.es.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--body-font:'Noto Serif TC','Songti TC',serif;--fs:17px;--lh:2}
+.label{letter-spacing:.2em}.end{font-style:normal}
+
+:root{
+  --ink:#05080e;
+  --rain:#9fb6d3;
+  --text:#e3dfd5;
+  --dim:#8d96a6;
+  --gold:#d4b064;
+  --line:rgba(159,182,211,.16);
+  --l1:#7f9cc0;
+  --l2:#d4b064;
+  --l3:#c0605a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--body-font);font-size:var(--fs);line-height:var(--lh);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--gold)}
+
+/* 底圖：黑獅坐在右側，往左漸暗 */
+.bg{position:fixed;inset:0;z-index:-2;
+  background:
+    linear-gradient(90deg,var(--ink) 0%,var(--ink) 34%,rgba(5,8,14,.78) 58%,rgba(5,8,14,.5) 100%),
+    url(story-bg.webp) right center/auto 100% no-repeat;
+  filter:saturate(.85)}
+/* 雨 */
+.rain,.rain::after{position:fixed;inset:-20% 0 0;z-index:-1;pointer-events:none;
+  background:repeating-linear-gradient(103deg,transparent 0 22px,rgba(159,182,211,.07) 22px 23px,transparent 23px 61px);
+  background-size:220px 520px;animation:fall 1.1s linear infinite}
+.rain::after{content:"";inset:0;background-size:160px 380px;opacity:.6;animation-duration:.8s}
+@keyframes fall{to{background-position:-60px 520px}}
+@media (prefers-reduced-motion:reduce){.rain,.rain::after{animation:none}}
+
+/* 語言 */
+.langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
+.langs a{font-family:system-ui,sans-serif;font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;border:1px solid rgba(227,223,213,.3);background:rgba(0,0,0,.55);color:var(--text);text-decoration:none}
+.langs a[aria-current]{background:var(--gold);border-color:var(--gold);color:#120d04}
+.langs a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* 封面 */
+.hero{position:relative;max-width:1400px;margin:0 auto}
+.hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
+  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.title{max-width:680px;margin:-3.5rem auto 0;padding:0 24px;position:relative;text-align:center}
+.title h1{font-size:clamp(1.9rem,5vw,2.6rem);font-weight:700;letter-spacing:.12em;line-height:1.3}
+.title .sub{margin-top:.5rem;font-family:'Cormorant Garamond',Georgia,serif;font-size:.85rem;letter-spacing:.5em;color:var(--gold);padding-left:.5em}
+.title .tag{margin-top:1.2rem;color:var(--dim);font-size:.95em}
+
+main{max-width:680px;margin:0 auto;padding:3rem 24px 5rem}
+section{margin-top:3.5rem}
+.label{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:.8rem;letter-spacing:.35em;color:var(--gold);margin-bottom:1.2rem}
+.label::after{content:"";display:inline-block;width:48px;height:1px;background:var(--gold);opacity:.5;vertical-align:middle;margin-left:14px}
+p+p{margin-top:1.1em}
+.prologue p:last-child{margin-top:1.8em;color:var(--gold)}
+
+.note{margin-top:3rem;padding:14px 18px;border:1px solid rgba(212,176,100,.35);border-radius:6px;background:rgba(212,176,100,.06);color:#d9cba6;font-size:.92em}
+
+/* 章節摺疊 */
+details.ch{margin-top:1.1rem;border:1px solid var(--line);border-radius:8px;background:rgba(5,8,14,.72);backdrop-filter:blur(2px)}
+details.ch>summary{list-style:none;cursor:pointer;padding:18px 20px;display:grid;grid-template-columns:1fr auto auto;align-items:center;column-gap:12px;row-gap:8px}
+.meta{display:flex;align-items:center;gap:10px}
+details.ch>summary::-webkit-details-marker{display:none}
+details.ch>summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+.ch h2{font-size:1.1em;font-weight:600;letter-spacing:.06em}
+.pill{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.05em;padding:4px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.lv1 .pill{color:var(--l1)}.lv2 .pill{color:var(--l2)}.lv3 .pill{color:var(--l3)}
+.hint{font-family:system-ui,sans-serif;font-size:11px;color:var(--dim);white-space:nowrap}
+.chev{width:9px;height:9px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:rotate(45deg);margin:-4px 4px 0;transition:transform .25s}
+details[open]>summary .chev{transform:rotate(225deg);margin-top:4px}
+details[open]>summary .hint{visibility:hidden}
+.body{padding:4px 22px 26px;border-top:1px solid var(--line)}
+.body p:first-child{margin-top:1.2em}
+details[open] .body{animation:in .5s ease}
+@keyframes in{from{opacity:0;transform:translateY(-4px)}}
+.lv3{border-color:rgba(192,96,90,.28)}
+
+.end{text-align:center;margin-top:3rem;color:var(--dim);font-style:italic;letter-spacing:.1em}
+
+/* 問答 */
+details.q{border-bottom:1px solid var(--line)}
+details.q>summary{list-style:none;cursor:pointer;padding:16px 28px 16px 0;position:relative;font-weight:600}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary::after{content:"+";position:absolute;right:4px;top:14px;color:var(--gold);font-family:system-ui,sans-serif;font-weight:400;font-size:1.2em}
+details.q[open]>summary::after{content:"\2212"}
+details.q>summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.a{padding:0 0 20px;color:#cfcabe}
+.a ul{list-style:none;margin-top:1em}
+.a li{padding:10px 14px;border-left:2px solid var(--gold);background:rgba(212,176,100,.05);margin-top:8px}
+.a li b{color:var(--gold);font-weight:600;margin-right:.6em}
+
+footer{max-width:680px;margin:0 auto;padding:0 24px 4rem;text-align:center;font-size:.85em;color:var(--dim)}
+footer a{text-decoration:none;border-bottom:1px solid rgba(212,176,100,.4)}
+
+@media (max-width:760px){
+  .bg{background:
+    linear-gradient(rgba(5,8,14,.8),rgba(5,8,14,.93)),
+    url(story-bg.webp) center top/cover no-repeat}
+  .title{margin-top:-1.5rem}
+  main{padding-top:2rem}
+  details.ch>summary{padding:16px;grid-template-columns:1fr auto}
+  .meta{grid-column:1;grid-row:2}
+  .chev{grid-column:2;grid-row:1}
+  .body{padding:2px 16px 22px}
+}
+
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="rain" aria-hidden="true"></div>
+<header class="hero">
+  <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant" aria-current="page">繁中</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.es.html" lang="es">ES</a></nav>
+  <img src="banner.webp" alt="雷恩・薩伯" width="1536" height="1024">
+</header>
+<div class="title">
+  <h1>雷恩・薩伯</h1>
+  <p class="sub">RHAINE SABLE</p>
+  <p class="tag">雨不會停的城市，和他不說的事</p>
+</div>
+<main>
+  <section class="prologue" aria-labelledby="pro">
+    <span class="label" id="pro">序</span>
+    <p>荊口市一年到頭都在下雨。這座城原本屬於人類，獸人接手之後，什麼都留了下來，連人類的臉也是。人類沒有自己的身分，必須登記在某個獸人名下才算合法存在，分類只有三種：食用、寵物、勞役。</p><p>雷恩・薩伯是下城一間收容所的院長，純血黑獅，也是幫派的老大。他每天在分類單上蓋章，決定一個人類會被送上宴會的餐桌、送進誰的家，或是送去做工。他也是你的擔保人。你的登記牌上寫著他的名字，分類欄寫著寵物。</p><p>他不打領帶。宴會上的人肉，他一口都不碰。每天晚上回家，他都會在你的房門口站一下才走。</p><p>這一頁寫的是他不說的事。</p>
+  </section>
+  <p class="note">越往下劇透越深。想在遊戲裡自己發現的話，看到這裡就好。</p>
+  <section aria-label="story">
+<details class="ch lv1"><summary><h2>第一章　唱片行</h2><span class="meta"><span class="pill">輕微劇透</span><span class="hint">點開閱讀</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>很多年前，雷恩還住在上城，是薩伯家的二少爺。</p><p>下城有間唱片行，門口的招牌缺了一顆燈泡。他進去買一張爵士唱片。櫃台後面的人類女人沒先找錢，先伸手把他歪掉的領口折好。</p><p>「這樣比較好看。」她說。</p><p>他那天買了三張唱片，下個禮拜又去了。</p><p>後來，她每天早上替他打領帶。她會下棋，下得不太好，輸了就說再來一盤。她喜歡關了燈看人類時代的老電影，看到喜歡的台詞就跟著唸。他記性好，那些台詞到現在都還記得。</p><p>戒指是在路邊攤買的。他想買好一點的，她不肯，就要這一枚。</p></div></details>
+<details class="ch lv2"><summary><h2>第二章　寵物</h2><span class="meta"><span class="pill">劇透</span><span class="hint">點開閱讀</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>在荊口市，人類想合法待在一個獸人身邊，只有一個辦法：登記在他名下。分類欄只能從三個選項裡挑。</p><p>雷恩把她登記成寵物，然後當著所有人的面，把她當妻子過日子。</p><p>上城笑了很久，薩伯家笑不出來。照獅群的規矩，一個家族只能有一頭當家的雄獅，二兒子遲早要走，這件事剛好給了他們一個體面的理由。他們把下城一間收容所交給他，名義上是分家，其實就是放逐。</p><p>她跟著他去了下城。</p><p>兩人遞了申請，要把她的分類從寵物改成配偶。他們說好，核准的那天，要把兩個人的名字刻進戒指內側。</p><p>申請一直沒有下來。戒指內側到現在還是空白的。</p></div></details>
+<details class="ch lv3"><summary><h2>第三章　空檔</h2><span class="meta"><span class="pill">重大劇透</span><span class="hint">點開閱讀</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>有人在找雷恩的弱點。誰都看得出來，他的弱點只有一個。</p><p>雷恩想把她藏起來。他親手撤銷了自己的擔保，打算隔天就把她轉到一個沒人知道的名字底下。只要撐過一個晚上。</p><p>被撤銷擔保的人類，在那一刻就成了無主物，任何獸人都能把她帶走。</p><p>她被送進了收容所，是雷恩自己的那一間。</p><p>隔天早上，一疊分類單照常放在他桌上。他一張都沒看，一路蓋下去。其中一張的分類欄寫著食用。</p><p>派人去找弱點的，是他的哥哥卡修斯。卡修斯那時就要繼承家主，繼位之前，他想把家族的污點清乾淨。</p><p>雷恩知道是誰做的。他到現在還跟卡修斯做生意，見面時兩個人都在笑。每年她的忌日，卡修斯會送一束白花到宅邸，卡片上寫著家裡永遠有你的位子。雷恩看完，就把它丟進壁爐。</p></div></details>
+<details class="ch lv3"><summary><h2>第四章　之後</h2><span class="meta"><span class="pill">重大劇透</span><span class="hint">點開閱讀</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>從那天起，雷恩不再打領帶，宴會上的人肉一口都不碰。收容所的分類單一天上百張，他每一張都讀完才蓋章，手下都覺得他在浪費時間。</p><p>書房的棋盤對面，有一張椅子一直空著。唱片牆最底下那一排是她挑的，他從來不放。</p><p>她死後不久，又有一份無主人類的分類單送到他桌上。他拿著印章，很久都沒有蓋下去。</p><p>最後他簽了擔保書，把那個人帶回家。</p><p>那個人就是你。</p><p>你在他家住了好幾年，長相和一些小動作，都越來越像她。他從來沒跟你提過她。</p><p>他絕對不會撤銷你的擔保。上一次撤銷擔保，害死了她。</p></div></details>
+  </section>
+  <p class="end">雨還在下。</p>
+  <section aria-labelledby="faq">
+    <span class="label" id="faq">常見問題</span>
+<details class="q"><summary>雷恩幾歲？</summary><div class="a"><p>外表四十出頭，鬢角已經有白髮。確切的歲數沒有設定。</p></div></details>
+<details class="q"><summary>我的角色一定要是人類嗎？</summary><div class="a"><p>是。整張卡建立在你是登記在他名下、分類為寵物的人類。</p></div></details>
+<details class="q"><summary>回憶場景每次說法都不一樣？</summary><div class="a"><p>舊版會這樣，現在已經修好了。他的過去會隨著他的心境分三個階段解鎖，還沒解鎖的部分只會出現模糊的片段，演過的細節之後也不會再變。</p></div></details>
+<details class="q"><summary>秘密要怎麼解鎖？</summary><div class="a"><p>讓他的心慢慢動起來。關心他、等他回家、說真心話、讓他吃醋、第一次叫他雷恩，或是做出她以前會做的事，像是替他整理領口。</p><p>身體的距離也要跟上：碰觸、讓你身上有他的味道、睡在同一個房間。這件事急不來，一個場景最多推進一步。</p></div></details>
+<details class="q"><summary>她叫什麼名字？</summary><div class="a"><p>沒有名字，這是刻意的。雷恩到最後都不會說出她的名字。</p></div></details>
+<details class="q"><summary>我跟她到底哪裡像？</summary><div class="a"><p>設定只寫了長相和小習慣越來越像。具體像在哪裡，會在每段故事裡自己長出來，所以每個人的答案都不一樣。</p><p>可以確定的只有一件事：她以前會替他折領口，每天早上替他打領帶。你也這樣做的話，他會當場僵住。</p></div></details>
+<details class="q"><summary>發情期太激烈，想拉回日常或走虐？</summary><div class="a"><p>每年雨停的那幾天乾季，就是他的發情期。前兆出現時，他會把自己鎖進書房，把鑰匙留在門外，進不進去由你決定。也可以用這三個快捷指令：</p><ul><li><b>門外</b>不開門，他會一個人撐過整個發情期。想走虐可以用這個。</li><li><b>喘息</b>中間停下來休息，插進一段平常的相處，要等你主動伸手才會繼續。</li><li><b>雨落</b>直接跳到雨重新落下之後的餘波。</li></ul><p style="margin-top:1em">發情期間叫他停，他就會停下來，坐在床沿等你。</p></div></details>
+<details class="q"><summary>還有哪些快捷指令？</summary><div class="a"><ul style="margin-top:0"><li><b>提示</b>卡住的時候用，會給你三個選項。</li><li><b>逗貓棒、貓草</b>引出他獅子的那一面。</li><li><b>Milk</b>成人向。你中了某種牛奶詭計。</li></ul></div></details>
+  </section>
+</main>
+<footer><a href="../index.html">抹茶的檔案室</a></footer>
+</body>
+</html>
