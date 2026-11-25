@@ -92,6 +92,14 @@ function spotlight(a){
 // 結算畫面
 function result(r,dt){
   ctx.fillStyle='rgba(20,4,24,.45)';ctx.fillRect(0,0,W,H);
+  if(r.stats){// 香檳 call：總分、各判定次數
+    ctx.save();rr(150,52,660,340,20);ctx.fillStyle='rgba(255,248,244,.96)';ctx.fill();ctx.lineWidth=5;ctx.strokeStyle='#ffb3cb';ctx.stroke();ctx.restore();
+    text(r.title,W/2,94,32,'#b8304c');text(r.big,W/2,140,30,'#d08a10','center',0);
+    r.stats.forEach((s,i)=>{const x=W/2+(i-1.5)*150;ctx.fillStyle='rgba(255,224,232,.7)';rr(x-66,166,132,62,12);ctx.fill();
+      text(s[0],x,186,16,s[2]);text(String(s[1]),x,212,24,'#5a3a46')});
+    text(r.score,W/2,254,17,'#9b7380');
+    r.lines.forEach((l,i)=>{text((l[0]?l[0]+'：':'')+l[1],W/2,294+i*36,19,'#5a3a46')});
+    return}
   ctx.save();rr(170,92,620,300,20);ctx.fillStyle='rgba(255,248,244,.96)';ctx.fill();ctx.lineWidth=5;ctx.strokeStyle='#ffb3cb';ctx.stroke();ctx.restore();
   text(r.title,W/2,140,34,'#b8304c');
   text(r.score,W/2,190,20,'#9b7380');
@@ -99,6 +107,11 @@ function result(r,dt){
   text(r.best,W/2,360,15,'#c48a9c');
 }
 
+// ---------- 香檳 call 按鍵（電腦可自訂，存在瀏覽器）----------
+const KEYKEY='mirage_xmas_call_keys_v1',DEFKEYS=['d','f','j'];
+function loadKeys(){try{const v=JSON.parse(localStorage.getItem(KEYKEY));if(Array.isArray(v)&&v.length===3&&v.every(x=>typeof x==='string'&&x))return v}catch(e){}return [...DEFKEYS]}
+function saveKeys(k){try{localStorage.setItem(KEYKEY,JSON.stringify(k))}catch(e){}}
+function keyName(k){return {' ':'空白','arrowleft':'←','arrowright':'→','arrowup':'↑','arrowdown':'↓','enter':'Enter','shift':'Shift','control':'Ctrl','alt':'Alt'}[k]||k.toUpperCase()}
 // ---------- 音效（只用合成音，不用音檔）----------
 let AC=null;
 function audio(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){AC=null}}if(AC&&AC.state==='suspended')AC.resume();return AC}
@@ -107,6 +120,10 @@ function tone(f,t,d,type='sine',vol=.15,f2){const a=AC;if(!a)return;const o=a.cr
 let noiseBuf=null;
 function noise(t,d,vol=.12,hp=6000){const a=AC;if(!a)return;if(!noiseBuf){noiseBuf=a.createBuffer(1,a.sampleRate*.5,a.sampleRate);const c=noiseBuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}
   const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();s.buffer=noiseBuf;f.type='highpass';f.frequency.value=hp;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f).connect(g).connect(a.destination);s.start(t);s.stop(t+d+.02)}
+function jingle(v=.1,pitch=1,n=3){const a=AC;if(!a)return;const t0=a.currentTime;
+  for(let b=0;b<n;b++){const t=t0+b*.011+Math.random()*.006,f0=(2900+Math.random()*700)*pitch;
+    [[1,1],[1.48,.6],[2.13,.45],[2.71,.3],[3.4,.18]].forEach(([m,g])=>tone(f0*m,t,.16+Math.random()*.14,'sine',v*g*(b?0.7:1)));
+    noise(t,.05,v*.5,7000)}}
 const clink=(v=.12)=>{if(!AC)return;const t=AC.currentTime;tone(2350,t,.25,'sine',v);tone(3520,t,.18,'sine',v*.6)};
 const cheer=()=>{if(!AC)return;const t=AC.currentTime;[523,659,784,1047].forEach((f,i)=>tone(f,t+i*.09,.35,'triangle',.08))};
 const boo=()=>{if(!AC)return;const t=AC.currentTime;tone(330,t,.25,'triangle',.08,220);tone(262,t+.2,.4,'triangle',.08,180)};
@@ -376,13 +393,13 @@ function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(see
 const STAGE=[{x:230,id:'botan'},{x:480,id:'ren'},{x:730,id:'mao'}];
 const Osu={
   name:'香檳 call',
-  BPM:112,R:64,AR:1.45,KEYS:['d','f','j'],
+  BPM:112,R:64,AR:1.45,KEYS:loadKeys(),
   start(){
     this.state='talk';this.pc=matchMedia('(pointer:fine)').matches;
-    this.queue=[['真央','香檳 call 要開始了！'],['真央','誰在喊，圈圈就會出現在誰旁邊。'],['牡丹','圈圈一出現就可以點，外面的金框縮到跟圈圈一樣大的時候點，分數最高。'],['真央','有箭頭的圈圈，金框縮好的時候往箭頭的方向滑一下！'],['蓮','……有一條路的，點下去別放開，自己沿著路滑到終點的杯子。']];
-    if(this.pc)this.queue.push(['牡丹','用電腦的話，看圈圈上的字母按鍵盤就好，不用瞄準。'],['蓮','……牡丹是 D，我是 F，真央是 J。'],['真央','用滑鼠也可以喔！點在圈圈上面才算！'],['真央','箭頭的圈圈按鍵盤的方向鍵！'],['蓮','……有路的那種，用滑鼠拖過去，或按著字母不放。']);
+    this.queue=[['真央','香檳 call 要開始了！'],['真央','誰在喊，圈圈就會出現在誰旁邊。'],['牡丹','圈圈一出現就可以點，外面的金框縮到跟圈圈一樣大的時候點，分數最高。'],['蓮','……有一條路的，點下去別放開，自己沿著路滑到終點的杯子。']];
+    if(this.pc)this.queue.push(['牡丹','用電腦的話，看圈圈上的字母按鍵盤就好，不用瞄準。'],['蓮','……牡丹是 D，我是 F，真央是 J。'],['真央','用滑鼠也可以喔！點在圈圈上面才算！'],['蓮','……電腦上，有路的那種按住不要放，等杯子跑到終點再放開。'],['牡丹','按鍵可以在選單或暫停裡面自己換。']);
     this.line=this.queue.shift();this.notes=[];this.fx=[];this.combo=0;this.maxCombo=0;this.pts=0;this.max=0;this.endT=0;this.jump=[0,0,0];this.bub=[0,0,0];
-    this.ptrs=new Map();this.drag=null;this.flk=null;this.trail=[];this.rings=[];this.shake=0;this.flash=0;this.big=null;this.comboPop=0;this.pop=[];this.bubs=[];this.lat=0;this.off=0;this.toast=null;
+    this.ptrs=new Map();this.drag=null;this.cnt={3:0,2:0,1:0,0:0};this.flk=null;this.trail=[];this.rings=[];this.shake=0;this.flash=0;this.big=null;this.comboPop=0;this.pop=[];this.bubs=[];this.lat=0;this.off=0;this.toast=null;
     // 拍點來自〈クリスマスの夜、銀座〉從頭剪到第 212 拍（約 2 分鐘）。0..7 拍倒數，第 12 拍起 48 小節有圈圈，第一顆在倒數結束後才出現
     const B=SONG.beats;this.B=B;
     // 譜面：用 librosa 從歌的打擊樂聲部抓鼓點，每顆圈圈落在真正的鼓聲上（大多在正拍，強的反拍和切分也有）
@@ -434,7 +451,7 @@ const Osu={
       if(p.key!=null){if(n.type==='f'||this.KEYS[n.owner]!==p.key)continue}
       else if(Math.hypot(p.x-n.x,p.y-n.y)>this.R*(p.mouse?1.15:1.4)*(n.type==='f'?1.2:1))continue;
       if(n.type==='f'){if(d<-.16)continue;this.flk={n,id,x0:p.x,y0:p.y};return}// 箭頭圈圈：等手指滑出去才判定
-      if(this.judge(n,d,t)){if(n.type==='d')this.drag={n,id:p.key!=null?'key:'+p.key:id};return}}
+      if(this.judge(n,d,t)){if(n.type==='d')this.drag={n,id:p.key!=null?'key:'+p.key:id,hold:this.pc||p.key!=null};return}}
   },
   move(p){
     const id=p.id??'k';if(!this.ptrs.has(id))return;this.ptrs.set(id,{x:p.x,y:p.y});
@@ -443,44 +460,45 @@ const Osu={
       if(L>=45){this.flk=null;const n=f.n;if(n.hit)return;const t=this.now(),d=n.t-t;
         if((dx*n.dir[0]+dy*n.dir[1])/L>=.55){if(this.judge(n,d,t))this.flickFx(n)}
         else this.missNote(n,'滑錯方向')}}
-    if(this.drag&&this.drag.id===id)this.trace(p)},
+    if(this.drag&&this.drag.id===id&&!this.drag.hold)this.trace(p)},
   up(p){
     const id=p&&p.id!=null?p.id:null;
     if(id==null){this.ptrs.clear();this.flk=null;if(this.drag)this.dragFail('放開了');return}
     this.ptrs.delete(id);if(this.flk&&this.flk.id===id)this.flk=null;
-    if(this.drag&&this.drag.id===id)this.dragFail('放開了')},
-  keyUp(k){if(this.drag&&this.drag.id==='key:'+k)this.dragFail('放開了')},
+    if(this.drag&&this.drag.id===id)this.release()},
+  keyUp(k){if(this.drag&&this.drag.id==='key:'+k)this.release()},
+  // 按住型：快到終點（85% 以上）放開也算成功
+  release(){if(this.drag.hold&&this.drag.n.path.prog>=.85)this.dragDone();else this.dragFail('放開了')},
   // 自己沿路滑：手指在目前進度往前一小段的範圍內，就把進度推到最接近手指的位置
   trace(p){const n=this.drag.n,s=n.path;let best=-1,bd=1e9;
     for(let u=s.prog;u<=Math.min(1,s.prog+.35);u+=.01){const b=this.sp(s,u),dd=Math.hypot(p.x-b.x,p.y-b.y);if(dd<bd){bd=dd;best=u}}
     if(bd<this.R*1.5&&best>s.prog){const was=s.prog;s.prog=best;
-      if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95&&AC)tone(1568+best*600,AC.currentTime,.08,'sine',.05);
+      if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95&&AC)jingle(.035,1+best*.2,1);
       const b=this.sp(s,best);if(Math.random()<.6)this.bubs.push({x:b.x+rnd(-12,12),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
       if(s.prog>=.95)this.dragDone()}},
-  dragDone(){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.prog=1;
+  dragDone(){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.prog=1;this.cnt[3]++;
     this.pts+=3;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);this.comboPop=.18;
-    if(AC){const a=AC.currentTime;tone(2637,a,.3,'sine',.12);tone(3951,a,.25,'sine',.07);noise(a,.06,.14,3000)}
+    if(AC){jingle(.1,1.1,5);setTimeout(()=>jingle(.07,1.2,3),90)}
     burst(s.x2,s.y2,22,['#ffd36e','#fff',LANES[n.owner].c]);this.rings.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',w:8});this.pop.push({x:s.x2,y:s.y2,t:0,c:'#ffe08a',p:3});
     this.fx.push({x:s.x2,y:s.y2,t:.9,s:'倒好了！',pts:3});if(navigator.vibrate)try{navigator.vibrate(18)}catch(e){}
     if(this.combo%10===0){this.big={s:this.combo+' 連擊！',t:1};cheer()}},
-  dragFail(why){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.fail=true;
+  dragFail(why){const n=this.drag.n,s=n.path;this.drag=null;s.done=true;s.fail=true;this.cnt[0]++;
     if(this.combo>=5)this.flash=.25;this.combo=0;const b=this.sp(s,s.prog);this.fx.push({x:b.x,y:b.y,t:.9,s:why==='放開了'?'灑了':'太慢了',pts:0});if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)},
-  missNote(n,s){n.hit='miss';n.ht=this.now();this.fx.push({x:n.x,y:n.y,t:.9,s,pts:0});if(this.combo>=5)this.flash=.25;this.combo=0;if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)},
+  missNote(n,s){n.hit='miss';this.cnt[0]++;n.ht=this.now();this.fx.push({x:n.x,y:n.y,t:.9,s,pts:0});if(this.combo>=5)this.flash=.25;this.combo=0;if(AC)tone(160,AC.currentTime,.18,'triangle',.07,90)},
   flickFx(n){this.trail.push({x:n.x,y:n.y,dx:n.dir[0],dy:n.dir[1],t:.35});swish()},
   // 圈圈一出現就能點，點了一定算；越接近縮好的那一刻分數越高，只有太晚或沒點才是零分
   judge(n,d,t){
     let s,pts;
     if(Math.abs(d)<=.1){s='完美';pts=3}else if(d>.1&&d<=.35){s='很好';pts=2}else if(d>.35&&d<=this.AR){s='早了點';pts=1}
     else if(d<-.1&&d>=-.16){s='晚了點';pts=2}else return false;
-    n.hit=pts===3?'perfect':'good';n.ht=t;this.pts+=pts;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);
+    n.hit=pts===3?'perfect':'good';n.ht=t;this.pts+=pts;this.cnt[pts]++;this.combo++;this.maxCombo=Math.max(this.maxCombo,this.combo);
     if(Math.abs(d)<=.25)this.calib(d);
     const el=pts===2?(d>0?'早':'晚'):'';
     if(navigator.vibrate)try{navigator.vibrate(pts===3?18:8)}catch(e){}
     this.pop.push({x:n.x,y:n.y,t:0,c:LANES[n.owner].c,p:pts});
     // 回饋：碰杯聲隨連擊升高、擴散光圈、完美時畫面輕震、每 10 連擊大字
     const up=Math.pow(2,Math.min(12,this.combo-1)/24);
-    if(AC){const a=AC.currentTime;tone(2350*up,a,.25,'sine',pts===3?.13:.09);tone(3520*up,a,.18,'sine',pts===3?.08:.05);if(pts===3)tone(1175*up,a,.3,'triangle',.06);
-      noise(a,.05,pts===3?.16:.1,2500);tone(220,a,.07,'sine',.12,90)}
+    if(AC){jingle(pts===3?.09:.065,Math.min(1.12,up),pts===3?4:3);tone(220,AC.currentTime,.07,'sine',.1,90)}
     burst(n.x,n.y,pts*8,[LANES[n.owner].c,'#fff','#ffe08a']);this.fx.push({x:n.x,y:n.y,t:.9,s,pts,el});
     for(let i=0;i<pts*3;i++)this.bubs.push({x:n.x+rnd(-30,30),y:n.y+rnd(-10,20),vy:-rnd(60,160),r:rnd(3,8),t:rnd(.6,1.1)});if(pts===3)this.stars=(this.stars||[]).concat([{x:n.x,y:n.y,t:.55}]);
     this.rings.push({x:n.x,y:n.y,t:0,c:pts===3?'#ffe08a':LANES[n.owner].c,w:pts===3?8:5});if(pts===3){this.rings.push({x:n.x,y:n.y,t:-.06,c:'#fff',w:3});this.shake=.12}
@@ -502,7 +520,10 @@ const Osu={
     const t=this.now();
     for(let i=this.trail.length-1;i>=0;i--){this.trail[i].t-=dt;if(this.trail[i].t<=0)this.trail.splice(i,1)}
     if(this.drag){const n=this.drag.n,s=n.path;
-      if(String(this.drag.id).startsWith('key:')){s.prog=Math.min(1,s.prog+dt/Math.max(.3,s.dur*.8));if(s.prog>=.95)this.dragDone()}
+      if(this.drag.hold){const was=s.prog;s.prog=Math.max(0,Math.min(1,(t-n.t)/s.dur));
+        if(Math.floor(was*4)!==Math.floor(s.prog*4)&&s.prog<1&&AC)jingle(.035,1+s.prog*.2,1);
+        const b=this.sp(s,s.prog);if(Math.random()<.5)this.bubs.push({x:b.x+rnd(-12,12),y:b.y,vy:-rnd(40,110),r:rnd(2,5),t:rnd(.4,.8)});
+        if(s.prog>=1)this.dragDone()}
       else if(t>n.t+s.dur+.35)this.dragFail('太慢了')}
     for(const n of this.notes)if(!n.hit&&t-n.t>.16){if(this.flk&&this.flk.n===n)this.flk=null;this.missNote(n,'沒接到')}
     if(t>this.endAt)this.finish();
@@ -513,7 +534,9 @@ const Osu={
     else if(p>=55)r={tier:2,title:'熱鬧的香檳 call',lines:[['真央','節奏感不錯耶！'],['蓮','……有跟上。']]};
     else r={tier:1,title:'各喊各的',lines:[['牡丹','沒關係，喊得最大聲的就是贏家。'],['蓮','……剛剛那是什麼拍子。']]};
     if(!best.osu||p>best.osu)best.osu=p;saveBest();
-    r.score=`準確度 ${p}%　最高連擊 ${this.maxCombo}`;r.best=`最高紀錄 ${best.osu}%`;this.res=r;this.state='end';this.endT=0;
+    const c=this.cnt,total=this.pts*100;
+    r.big=`總分 ${total.toLocaleString('en-US')}`;r.stats=[['完美',c[3],'#e0a020'],['很好',c[2],'#e0679a'],['普通',c[1],'#9b7aa8'],['沒接到',c[0],'#8a8a9a']];
+    r.score=`準確度 ${p}%　最高連擊 ${this.maxCombo}　最高紀錄 ${best.osu}%`;r.best='';this.res=r;this.state='end';this.endT=0;
     if(r.tier===3){rain(140);cheer()}else if(r.tier===2){rain(50);cheer()}
     showAgain(true);
   },
@@ -576,7 +599,8 @@ const Osu={
           ctx.beginPath();ctx.moveTo(34,0);ctx.lineTo(4,-26);ctx.lineTo(4,-11);ctx.lineTo(-28,-11);ctx.lineTo(-28,11);ctx.lineTo(4,11);ctx.lineTo(4,26);ctx.closePath();ctx.fill();
           // 箭頭外面的提示：往外的小三角
           ctx.fillStyle='#fff';ctx.globalAlpha*=.8+.2*Math.sin(t*12);ctx.beginPath();ctx.moveTo(this.R+26,0);ctx.lineTo(this.R+10,-12);ctx.lineTo(this.R+10,12);ctx.closePath();ctx.fill();ctx.restore()}
-      else text(this.pc?this.KEYS[n.owner].toUpperCase():String(n.num),n.x,n.y+2,this.pc?40:34,'#7a2048');
+      else text(this.pc?keyName(this.KEYS[n.owner]):String(n.num),n.x,n.y+2,this.pc?(keyName(this.KEYS[n.owner]).length>1?24:40):34,'#7a2048');
+      if(n.path&&!n.hit){const lb=this.pc?'按住':'滑',bx=n.x+this.R*.8,by=n.y-this.R*.8;ctx.fillStyle='#7a2048';rr(bx-(lb.length*11+8),by-15,lb.length*22+16,30,15);ctx.fill();text(lb,bx,by+1,18,'#fff','center',0)}
       // 縮小的金框
       if(d>0){const rr2=this.R*(1+2.2*d/this.AR),now=d<.14;ctx.strokeStyle=now?'#fff':'#ffd25a';ctx.lineWidth=now?7:4;
         if(now){ctx.shadowColor='#ffe08a';ctx.shadowBlur=18}ctx.beginPath();ctx.arc(n.x,n.y,rr2,0,7);ctx.stroke();ctx.shadowBlur=0}
@@ -627,7 +651,7 @@ const Osu={
   },
 };
 const OFFKEY='mirage_xmas_call_offset_v1';
-const CHART=[[0,7.413,'t',0,0],[0,8.098,'t',0,0],[0,8.394,'t',0,0],[0,8.9745,'t',0,0],[1,10.1529,'t',0,0],[1,10.7276,'t',0,0],[1,11.0237,'t',0,0],[1,11.3139,'t',0,0],[2,11.8886,'t',0,0],[2,12.4749,'f',0,2],[2,13.0554,'t',0,0],[2,13.6417,'t',0,0],[3,14.8085,'t',0,0],[3,15.093,'t',0,0],[3,15.3716,'t',0,0],[3,15.9695,'t',0,0],[4,16.55,'f',0,1],[4,17.1363,'t',0,0],[4,17.711,'t',0,0],[4,18.3031,'t',0,0],[5,18.8894,'d',0.858,0],[5,20.0388,'t',0,0],[5,20.6309,'t',0,0],[5,20.927,'t',0,0],[6,21.2114,'f',0,3],[6,21.7919,'t',0,0],[6,22.088,'t',0,0],[6,22.3666,'t',0,0],[7,23.5508,'t',0,0],[7,24.1313,'t',0,0],[7,24.6944,'t',0,0],[7,25.2865,'t',0,0],[8,25.867,'t',0,0],[8,26.3488,'f',0,0],[8,26.9351,'d',0.586,0],[8,27.8117,'t',0,0],[9,29.3674,'t',0,0],[9,29.6577,'t',0,0],[9,29.9537,'t',0,0],[9,30.244,'t',0,0],[10,30.5226,'t',0,0],[10,30.8245,'t',0,0],[10,31.1147,'f',0,0],[10,31.6894,'d',0.87,0],[11,32.8562,'t',0,0],[11,33.1523,'t',0,0],[11,34.0114,'t',0,0],[11,34.6093,'t',0,0],[12,35.184,'f',0,0],[12,35.7703,'t',0,0],[12,36.0606,'t',0,0],[12,36.345,'d',1.068,0],[13,37.7034,'t',0,0],[13,38.0981,'t',0,0],[13,38.6786,'t',0,0],[13,39.2649,'t',0,0],[14,39.8396,'f',0,2],[14,40.4259,'t',0,0],[14,41.0122,'t',0,0],[14,41.5927,'t',0,0],[15,42.179,'t',0,0],[15,42.7595,'d',0.574,0],[15,43.6245,'t',0,0],[15,44.1063,'t',0,0],[16,44.4952,'t',0,0],[16,44.7913,'t',0,0],[16,45.0815,'f',0,0],[16,45.6737,'t',0,0],[17,46.8346,'t',0,0],[17,47.4151,'t',0,0],[17,47.9956,'d',0.864,0],[18,49.1508,'t',0,0],[18,49.4469,'t',0,0],[18,49.7371,'t',0,0],[18,50.3234,'t',0,0],[19,51.4728,'f',0,1],[19,52.0591,'t',0,0],[19,52.3494,'t',0,0],[19,52.6396,'d',0.865,0],[20,53.7948,'t',0,0],[20,54.3811,'t',0,0],[20,54.9616,'t',0,0],[21,56.1168,'d',0.871,0],[21,57.2778,'t',0,0],[21,57.5739,'t',0,0],[21,57.8641,'t',0,0],[22,58.4388,'f',0,0],[22,59.0193,'t',0,0],[22,59.594,'t',0,0],[22,60.1861,'t',0,0],[23,61.3413,'t',0,0],[23,61.916,'t',0,0],[23,62.4965,'t',0,0],[23,62.9667,'t',0,0],[24,63.3673,'t',0,0],[24,63.6575,'d',0.865,0],[24,64.8127,'t',0,0],[25,65.3874,'f',0,0],[25,66.2581,'t',0,0],[25,66.8386,'t',0,0],[25,67.1231,'t',0,0],[26,68.2841,'t',0,0],[26,68.8588,'t',0,0],[26,69.4451,'t',0,0],[26,69.9153,'t',0,0],[27,70.0256,'d',0.865,0],[27,71.1808,'f',0,3],[27,71.7613,'t',0,0],[27,72.0515,'t',0,0],[28,72.3302,'t',0,0],[28,72.9223,'t',0,0],[28,73.2125,'t',0,0],[28,73.4912,'t',0,0],[29,74.658,'f',0,3],[29,75.2385,'t',0,0],[29,75.8073,'t',0,0],[29,76.3995,'t',0,0],[30,76.9741,'t',0,0],[30,77.5546,'t',0,0],[30,78.1293,'t',0,0],[30,78.7156,'t',0,0],[31,79.2845,'f',0,0],[31,79.8708,'t',0,0],[31,80.1553,'t',0,0],[31,80.4397,'d',0.872,0],[32,81.6007,'t',0,0],[32,82.187,'t',0,0],[32,82.7559,'t',0,0],[32,83.3422,'t',0,0],[32,83.6383,'t',0,0],[33,83.9169,'t',0,0],[33,84.213,'t',0,0],[33,84.4974,'t',0,0],[33,85.0721,'f',0,1],[33,85.6526,'t',0,0],[34,86.2447,'t',0,0],[34,86.8252,'t',0,0],[34,87.3941,'t',0,0],[34,87.9804,'t',0,0],[35,88.5493,'f',0,0],[35,89.1298,'t',0,0],[35,89.6987,'t',0,0],[35,90.0005,'t',0,0],[35,90.2908,'t',0,0],[36,90.8597,'t',0,0],[36,91.4402,'t',0,0],[36,91.7362,'t',0,0],[36,92.0265,'t',0,0],[36,92.6012,'t',0,0],[37,93.1817,'t',0,0],[37,93.7564,'f',0,3],[37,94.3253,'t',0,0],[37,94.6271,'t',0,0],[37,94.9058,'t',0,0],[38,95.4921,'t',0,0],[38,96.0726,'t',0,0],[38,96.6415,'t',0,0],[38,96.9433,'t',0,0],[38,97.2278,'t',0,0],[39,97.8024,'t',0,0],[39,98.0985,'t',0,0],[39,98.3771,'t',0,0],[39,98.6674,'t',0,0],[39,98.9576,'d',0.867,0],[40,100.1128,'t',0,0],[40,100.6933,'t',0,0],[40,101.268,'t',0,0],[40,101.5525,'t',0,0],[40,101.8427,'t',0,0],[41,102.4174,'t',0,0],[41,102.7077,'t',0,0],[41,103.1779,'t',0,0],[41,103.5784,'t',0,0],[41,104.1531,'t',0,0],[42,104.7278,'t',0,0],[42,105.3083,'t',0,0],[42,105.883,'t',0,0],[42,106.4693,'t',0,0],[43,107.2181,'t',0,0],[43,107.6129,'d',0.861,0],[43,108.7623,'f',0,0],[44,109.337,'t',0,0],[44,109.9233,'t',0,0],[44,110.4922,'t',0,0],[44,110.9682,'t',0,0],[44,111.3571,'t',0,0],[45,111.6415,'t',0,0],[45,111.9434,'t',0,0],[45,112.222,'f',0,0],[45,112.8025,'t',0,0],[45,113.2727,'t',0,0],[46,113.9519,'t',0,0],[46,114.5266,'t',0,0],[46,114.8169,'t',0,0],[46,115.1013,'t',0,0],[46,115.3916,'d',0.571,0],[47,116.2507,'t',0,0],[47,116.5526,'t',0,0],[47,116.8312,'f',0,1],[47,117.4001,'t',0,0],[47,117.9922,'t',0,0]];
+const CHART=[[0,7.413,'t',0,0],[0,8.098,'t',0,0],[0,8.394,'t',0,0],[0,8.9745,'t',0,0],[1,10.1529,'t',0,0],[1,10.7276,'t',0,0],[1,11.0237,'t',0,0],[1,11.3139,'t',0,0],[2,11.8886,'t',0,0],[2,12.4749,'t',0,2],[2,13.0554,'t',0,0],[2,13.6417,'t',0,0],[3,14.8085,'t',0,0],[3,15.093,'t',0,0],[3,15.3716,'t',0,0],[3,15.9695,'t',0,0],[4,16.55,'t',0,1],[4,17.1363,'t',0,0],[4,17.711,'t',0,0],[4,18.3031,'t',0,0],[5,18.8894,'d',0.858,0],[5,20.0388,'t',0,0],[5,20.6309,'t',0,0],[5,20.927,'t',0,0],[6,21.2114,'t',0,3],[6,21.7919,'t',0,0],[6,22.088,'t',0,0],[6,22.3666,'t',0,0],[7,23.5508,'t',0,0],[7,24.1313,'t',0,0],[7,24.6944,'t',0,0],[7,25.2865,'t',0,0],[8,25.867,'t',0,0],[8,26.3488,'t',0,0],[8,26.9351,'d',0.586,0],[8,27.8117,'t',0,0],[9,29.3674,'t',0,0],[9,29.6577,'t',0,0],[9,29.9537,'t',0,0],[9,30.244,'t',0,0],[10,30.5226,'t',0,0],[10,30.8245,'t',0,0],[10,31.1147,'t',0,0],[10,31.6894,'d',0.87,0],[11,32.8562,'t',0,0],[11,33.1523,'t',0,0],[11,34.0114,'t',0,0],[11,34.6093,'t',0,0],[12,35.184,'t',0,0],[12,35.7703,'t',0,0],[12,36.0606,'t',0,0],[12,36.345,'d',1.068,0],[13,37.7034,'t',0,0],[13,38.0981,'t',0,0],[13,38.6786,'t',0,0],[13,39.2649,'t',0,0],[14,39.8396,'t',0,2],[14,40.4259,'t',0,0],[14,41.0122,'t',0,0],[14,41.5927,'t',0,0],[15,42.179,'t',0,0],[15,42.7595,'d',0.574,0],[15,43.6245,'t',0,0],[15,44.1063,'t',0,0],[16,44.4952,'t',0,0],[16,44.7913,'t',0,0],[16,45.0815,'t',0,0],[16,45.6737,'t',0,0],[17,46.8346,'t',0,0],[17,47.4151,'t',0,0],[17,47.9956,'d',0.864,0],[18,49.1508,'t',0,0],[18,49.4469,'t',0,0],[18,49.7371,'t',0,0],[18,50.3234,'t',0,0],[19,51.4728,'t',0,1],[19,52.0591,'t',0,0],[19,52.3494,'t',0,0],[19,52.6396,'d',0.865,0],[20,53.7948,'t',0,0],[20,54.3811,'t',0,0],[20,54.9616,'t',0,0],[21,56.1168,'d',0.871,0],[21,57.2778,'t',0,0],[21,57.5739,'t',0,0],[21,57.8641,'t',0,0],[22,58.4388,'t',0,0],[22,59.0193,'t',0,0],[22,59.594,'t',0,0],[22,60.1861,'t',0,0],[23,61.3413,'t',0,0],[23,61.916,'t',0,0],[23,62.4965,'t',0,0],[23,62.9667,'t',0,0],[24,63.3673,'t',0,0],[24,63.6575,'d',0.865,0],[24,64.8127,'t',0,0],[25,65.3874,'t',0,0],[25,66.2581,'t',0,0],[25,66.8386,'t',0,0],[25,67.1231,'t',0,0],[26,68.2841,'t',0,0],[26,68.8588,'t',0,0],[26,69.4451,'t',0,0],[26,69.9153,'t',0,0],[27,70.0256,'d',0.865,0],[27,71.1808,'t',0,3],[27,71.7613,'t',0,0],[27,72.0515,'t',0,0],[28,72.3302,'t',0,0],[28,72.9223,'t',0,0],[28,73.2125,'t',0,0],[28,73.4912,'t',0,0],[29,74.658,'t',0,3],[29,75.2385,'t',0,0],[29,75.8073,'t',0,0],[29,76.3995,'t',0,0],[30,76.9741,'t',0,0],[30,77.5546,'t',0,0],[30,78.1293,'t',0,0],[30,78.7156,'t',0,0],[31,79.2845,'t',0,0],[31,79.8708,'t',0,0],[31,80.1553,'t',0,0],[31,80.4397,'d',0.872,0],[32,81.6007,'t',0,0],[32,82.187,'t',0,0],[32,82.7559,'t',0,0],[32,83.3422,'t',0,0],[32,83.6383,'t',0,0],[33,83.9169,'t',0,0],[33,84.213,'t',0,0],[33,84.4974,'t',0,0],[33,85.0721,'t',0,1],[33,85.6526,'t',0,0],[34,86.2447,'t',0,0],[34,86.8252,'t',0,0],[34,87.3941,'t',0,0],[34,87.9804,'t',0,0],[35,88.5493,'t',0,0],[35,89.1298,'t',0,0],[35,89.6987,'t',0,0],[35,90.0005,'t',0,0],[35,90.2908,'t',0,0],[36,90.8597,'t',0,0],[36,91.4402,'t',0,0],[36,91.7362,'t',0,0],[36,92.0265,'t',0,0],[36,92.6012,'t',0,0],[37,93.1817,'t',0,0],[37,93.7564,'t',0,3],[37,94.3253,'t',0,0],[37,94.6271,'t',0,0],[37,94.9058,'t',0,0],[38,95.4921,'t',0,0],[38,96.0726,'t',0,0],[38,96.6415,'t',0,0],[38,96.9433,'t',0,0],[38,97.2278,'t',0,0],[39,97.8024,'t',0,0],[39,98.0985,'t',0,0],[39,98.3771,'t',0,0],[39,98.6674,'t',0,0],[39,98.9576,'d',0.867,0],[40,100.1128,'t',0,0],[40,100.6933,'t',0,0],[40,101.268,'t',0,0],[40,101.5525,'t',0,0],[40,101.8427,'t',0,0],[41,102.4174,'t',0,0],[41,102.7077,'t',0,0],[41,103.1779,'t',0,0],[41,103.5784,'t',0,0],[41,104.1531,'t',0,0],[42,104.7278,'t',0,0],[42,105.3083,'t',0,0],[42,105.883,'t',0,0],[42,106.4693,'t',0,0],[43,107.2181,'t',0,0],[43,107.6129,'d',0.861,0],[43,108.7623,'t',0,0],[44,109.337,'t',0,0],[44,109.9233,'t',0,0],[44,110.4922,'t',0,0],[44,110.9682,'t',0,0],[44,111.3571,'t',0,0],[45,111.6415,'t',0,0],[45,111.9434,'t',0,0],[45,112.222,'t',0,0],[45,112.8025,'t',0,0],[45,113.2727,'t',0,0],[46,113.9519,'t',0,0],[46,114.5266,'t',0,0],[46,114.8169,'t',0,0],[46,115.1013,'t',0,0],[46,115.3916,'d',0.571,0],[47,116.2507,'t',0,0],[47,116.5526,'t',0,0],[47,116.8312,'t',0,1],[47,117.4001,'t',0,0],[47,117.9922,'t',0,0]];
 const songVol=()=>.9*(window.BGM?BGM.vol():1);
 window.addEventListener('musicvol',()=>{if(G&&G.g)G.g.gain.value=songVol()});
 const SONG={src:'assets/bgm_ginza.mp3',beats:[0.2531, 0.8368, 1.4191, 1.992, 2.5594, 3.1308, 3.7023, 4.2712, 4.8433, 5.4251, 6.0069, 6.5893, 7.184, 7.7787, 8.3721, 8.9648, 9.5595, 10.1523, 10.7341, 11.3171, 11.8996, 12.482, 13.0632, 13.6456, 14.2274, 14.8105, 15.3929, 15.976, 16.5591, 17.1428, 17.7246, 18.3076, 18.8901, 19.4725, 20.0543, 20.6374, 21.2205, 21.8035, 22.384, 22.9671, 23.5495, 24.1204, 24.6925, 25.2652, 25.8367, 26.4075, 26.9887, 27.5724, 28.1542, 28.7366, 29.3307, 29.9241, 30.5162, 31.1102, 31.703, 32.2854, 32.8666, 33.449, 34.0308, 34.6139, 35.1963, 35.7794, 36.3599, 36.9423, 37.5241, 38.1065, 38.689, 39.2714, 39.8532, 40.4356, 41.018, 41.6018, 42.1836, 42.766, 43.3491, 43.9322, 44.5146, 45.0964, 45.6775, 46.2593, 46.8398, 47.4222, 48.004, 48.5852, 49.165, 49.7462, 50.3273, 50.9085, 51.4877, 52.0682, 52.648, 53.2285, 53.8077, 54.3895, 54.9687, 55.5486, 56.1278, 56.7083, 57.2881, 57.8686, 58.4485, 59.029, 59.6069, 60.1874, 60.7666, 61.3465, 61.9276, 62.5075, 63.086, 63.6659, 64.2406, 64.8191, 65.3977, 65.9769, 66.5555, 67.1328, 67.7113, 68.2905, 68.8678, 69.4515, 70.0314, 70.6106, 71.1892, 71.769, 72.3482, 72.9274, 73.506, 74.0858, 74.6651, 75.2443, 75.8228, 76.4027, 76.9806, 77.5598, 78.1384, 78.7182, 79.2968, 79.8754, 80.4539, 81.0331, 81.611, 82.1903, 82.7688, 83.3474, 83.9266, 84.5064, 85.085, 85.6649, 86.2434, 86.8233, 87.4018, 87.9811, 88.5603, 89.1375, 89.7148, 90.2934, 90.8713, 91.4505, 92.0278, 92.6063, 93.1849, 93.7635, 94.342, 94.9206, 95.4985, 96.0764, 96.6537, 97.2323, 97.8102, 98.3875, 98.9647, 99.542, 100.1193, 100.6972, 101.2745, 101.8518, 102.429, 103.0063, 103.5836, 104.1615, 104.7394, 105.316, 105.894, 106.4706, 107.0472, 107.6232, 108.1992, 108.7752, 109.3499, 109.9258, 110.5025, 111.0778, 111.6538, 112.2304, 112.8064, 113.383, 113.9584, 114.5357, 115.111, 115.6863, 116.2617, 116.8383, 117.4136, 117.9903, 118.5662, 119.1435, 119.7189, 120.2948, 120.8715, 121.4481, 122.0228, 122.5988, 123.1748],buf:null,p:null};
@@ -678,7 +702,7 @@ window.addEventListener('keydown',e=>{
   if(G===Osu&&G.state!=='end'){
     if(G.state==='talk'&&(k===' '||k==='enter'||Osu.KEYS.includes(k))){e.preventDefault();G.down({x:0,y:0});return}
     if(Osu.KEYS.includes(k)){e.preventDefault();keysHeld.add(k);G.down({key:k});return}
-    const AR={arrowright:[1,0],arrowdown:[0,1],arrowleft:[-1,0],arrowup:[0,-1]}[k];if(AR&&G.state==='play'){e.preventDefault();G.down({arrow:AR});return}}
+  }
   if(k===' '||k==='enter'){e.preventDefault();if(G.state!=='end')G.down({x:W/2,y:H/2})}
 });
 window.addEventListener('keyup',e=>{if(!open)return;const k=e.key.toLowerCase();
@@ -692,6 +716,20 @@ pauseBtn.onclick=()=>setPause(true);
 document.getElementById('cgresume').onclick=()=>setPause(false);
 document.getElementById('cgrestart').onclick=()=>{const k=Object.keys(GAMES).find(k=>GAMES[k]===G);if(k)play(k)};
 document.getElementById('cgquit').onclick=()=>swap.onclick();
+// 按鍵設定面板：點一個角色的按鈕，再按想用的鍵；重複的會互換
+const kp=document.getElementById('cgkeys');let waitKey=-1;
+const LANE_NAMES=['牡丹','蓮','真央'];
+function drawKeys(){kp.querySelectorAll('[data-k]').forEach(b=>{const i=+b.dataset.k;b.textContent=waitKey===i?'請按一個鍵…':keyName(Osu.KEYS[i]);b.classList.toggle('wait',waitKey===i)})}
+function openKeys(){waitKey=-1;drawKeys();kp.classList.add('show')}
+kp.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{waitKey=+b.dataset.k;drawKeys()});
+document.getElementById('cgkeyreset').onclick=()=>{Osu.KEYS.splice(0,3,...DEFKEYS);saveKeys(Osu.KEYS);waitKey=-1;drawKeys()};
+document.getElementById('cgkeyok').onclick=()=>{waitKey=-1;kp.classList.remove('show')};
+document.querySelectorAll('.cgkeysbtn').forEach(b=>b.onclick=openKeys);
+window.addEventListener('keydown',e=>{if(!kp.classList.contains('show'))return;e.preventDefault();e.stopImmediatePropagation();
+  if(waitKey<0){if(e.key==='Escape')kp.classList.remove('show');return}
+  const k=e.key.toLowerCase();if(k==='escape'){waitKey=-1;drawKeys();return}
+  if(k==='p'||k==='tab'||k==='meta'){return}
+  const j=Osu.KEYS.indexOf(k);if(j>=0&&j!==waitKey)Osu.KEYS[j]=Osu.KEYS[waitKey];Osu.KEYS[waitKey]=k;saveKeys(Osu.KEYS);waitKey=-1;drawKeys()},true);
 function fillBest(){
   const s={pour:best.pour!=null?`最高 ${best.pour} 分`:'',stack:best.stack!=null?`最高 ${best.stack} 層`:'',osu:best.osu!=null?`最高 ${best.osu}%`:''};
   document.querySelectorAll('#cgmenu [data-best]').forEach(el=>el.textContent=s[el.dataset.best]);
