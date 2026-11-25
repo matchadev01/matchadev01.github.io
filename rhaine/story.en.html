@@ -18,40 +18,14 @@
 <link rel="alternate" hreflang="es" href="https://matchadev01.github.io/rhaine/story.es.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--body-font:'EB Garamond',Georgia,serif;--fs:19px;--lh:1.75}
+:root{--body-font:'EB Garamond',Georgia,serif;--fs:19px;--lh:1.75;--end-style:italic}
 
-
-:root{
-  --ink:#05080e;
-  --rain:#9fb6d3;
-  --text:#e3dfd5;
-  --dim:#8d96a6;
-  --gold:#d4b064;
-  --line:rgba(159,182,211,.16);
-  --l1:#7f9cc0;
-  --l2:#d4b064;
-  --l3:#c0605a;
-}
+:root{--ink:#04070c;--text:#e3dfd5;--dim:#8d96a6;--gold:#d4b064;--line:rgba(159,182,211,.16)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--text);font-family:var(--body-font);font-size:var(--fs);line-height:var(--lh);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:var(--gold)}
-
-/* 底圖：黑獅坐在右側，往左漸暗 */
-.bg{position:fixed;inset:0;z-index:-2;
-  background:
-    linear-gradient(90deg,var(--ink) 0%,var(--ink) 34%,rgba(5,8,14,.78) 58%,rgba(5,8,14,.5) 100%),
-    url(story-bg.webp) right center/auto 100% no-repeat;
-  filter:saturate(.85)}
-/* 雨 */
-.rain,.rain::after{position:fixed;inset:-20% 0 0;z-index:-1;pointer-events:none;
-  background:repeating-linear-gradient(103deg,transparent 0 22px,rgba(159,182,211,.07) 22px 23px,transparent 23px 61px);
-  background-size:220px 520px;animation:fall 1.1s linear infinite}
-.rain::after{content:"";inset:0;background-size:160px 380px;opacity:.6;animation-duration:.8s}
-@keyframes fall{to{background-position:-60px 520px}}
-@media (prefers-reduced-motion:reduce){.rain,.rain::after{animation:none}}
 
 /* 語言 */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
@@ -61,107 +35,93 @@ a{color:var(--gold)}
 
 /* 封面 */
 .hero{position:relative;max-width:1400px;margin:0 auto}
-.hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
-  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
-.title{max-width:680px;margin:-3.5rem auto 0;padding:0 24px;position:relative;text-align:center}
-.title h1{font-size:clamp(1.9rem,5vw,2.6rem);font-weight:700;letter-spacing:.12em;line-height:1.3}
-.title .sub{margin-top:.5rem;font-family:'Cormorant Garamond',Georgia,serif;font-size:.85rem;letter-spacing:.5em;color:var(--gold);padding-left:.5em}
-.title .tag{margin-top:1.2rem;color:var(--dim);font-size:.95em}
+.hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
 
-main{max-width:680px;margin:0 auto;padding:3rem 24px 5rem}
-section{margin-top:3.5rem}
-.label{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:.8rem;letter-spacing:.35em;color:var(--gold);margin-bottom:1.2rem}
-.label::after{content:"";display:inline-block;width:48px;height:1px;background:var(--gold);opacity:.5;vertical-align:middle;margin-left:14px}
-p+p{margin-top:1.1em}
-.prologue p:last-child{margin-top:1.8em;color:var(--gold)}
-
-.note{margin-top:3rem;padding:14px 18px;border:1px solid rgba(212,176,100,.35);border-radius:6px;background:rgba(212,176,100,.06);color:#d9cba6;font-size:.92em}
-
-/* 章節摺疊 */
-details.ch{margin-top:1.1rem;border:1px solid var(--line);border-radius:8px;background:rgba(5,8,14,.72);backdrop-filter:blur(2px)}
-details.ch>summary{list-style:none;cursor:pointer;padding:18px 20px;display:grid;grid-template-columns:1fr auto auto;align-items:center;column-gap:12px;row-gap:8px}
-.meta{display:flex;align-items:center;gap:10px}
-details.ch>summary::-webkit-details-marker{display:none}
-details.ch>summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
-.ch h2{font-size:1.1em;font-weight:600;letter-spacing:.06em}
-.pill{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.05em;padding:4px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
-.lv1 .pill{color:var(--l1)}.lv2 .pill{color:var(--l2)}.lv3 .pill{color:var(--l3)}
-.hint{font-family:system-ui,sans-serif;font-size:11px;color:var(--dim);white-space:nowrap}
-.chev{width:9px;height:9px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:rotate(45deg);margin:-4px 4px 0;transition:transform .25s}
-details[open]>summary .chev{transform:rotate(225deg);margin-top:4px}
-details[open]>summary .hint{visibility:hidden}
-.body{padding:4px 22px 26px;border-top:1px solid var(--line)}
-.body p:first-child{margin-top:1.2em}
-details[open] .body{animation:in .5s ease}
-@keyframes in{from{opacity:0;transform:translateY(-4px)}}
-.lv3{border-color:rgba(192,96,90,.28)}
-
-.end{text-align:center;margin-top:3rem;color:var(--dim);font-style:italic;letter-spacing:.1em}
+/* 黑獅底圖：釘在畫面上，文字從前面捲過 */
+.person{position:relative}
+.p-bg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:0}
+.p-bg img{position:absolute;top:0;right:0;width:64%;height:100%;object-fit:cover;object-position:50% 18%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.p-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 34%,rgba(4,7,12,.55) 56%,rgba(4,7,12,.05) 80%)}
+.p-bg::before{content:"";position:absolute;inset:-20% 0 0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(103deg,transparent 0 22px,rgba(159,182,211,.08) 22px 23px,transparent 23px 61px);
+  background-size:220px 520px;animation:fall 1.1s linear infinite}
+@keyframes fall{to{background-position:-60px 520px}}
+@media (prefers-reduced-motion:reduce){.p-bg::before{animation:none}}
+.p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
+.p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
+.p-head h2{font-weight:900;font-size:clamp(84px,12vw,160px);line-height:1;letter-spacing:.06em;color:var(--gold);text-shadow:0 0 40px rgba(212,176,100,.35)}
+.p-meta{margin-top:16px;font-size:15px;letter-spacing:.12em;color:rgba(227,223,213,.85)}
+.p-tag{margin-top:6px;font-size:15px;color:var(--dim)}
+.p-story{max-width:1180px;margin:0 auto;padding:0 6vw 24vh}
+.ch{max-width:31em;margin:0 0 72px}
+.ch h3{margin:0 0 14px;font-weight:700;font-size:22px;letter-spacing:.08em;color:#b9cde6}
+.ch p{margin:0 0 16px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.ch .last{color:var(--gold);margin-top:26px}
+.ch .you{font-weight:700;font-size:1.15em;color:#fff;margin:26px 0}
+.end{max-width:31em;color:var(--dim);letter-spacing:.1em;font-style:var(--end-style)}
 
 /* 問答 */
+.faq{max-width:680px;margin:0 auto;padding:6rem 24px 4rem}
+.faq h2{font-size:22px;letter-spacing:.1em;color:var(--gold);margin-bottom:1.2rem;font-weight:700}
 details.q{border-bottom:1px solid var(--line)}
-details.q>summary{list-style:none;cursor:pointer;padding:16px 28px 16px 0;position:relative;font-weight:600}
+details.q>summary{list-style:none;cursor:pointer;padding:16px 28px 16px 0;position:relative;font-weight:700}
 details.q>summary::-webkit-details-marker{display:none}
 details.q>summary::after{content:"+";position:absolute;right:4px;top:14px;color:var(--gold);font-family:system-ui,sans-serif;font-weight:400;font-size:1.2em}
 details.q[open]>summary::after{content:"\2212"}
 details.q>summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .a{padding:0 0 20px;color:#cfcabe}
-.a ul{list-style:none;margin-top:1em}
-.a li{padding:10px 14px;border-left:2px solid var(--gold);background:rgba(212,176,100,.05);margin-top:8px}
-.a li b{color:var(--gold);font-weight:600;margin-right:.6em}
+.a p+p{margin-top:.9em}
 
 footer{max-width:680px;margin:0 auto;padding:0 24px 4rem;text-align:center;font-size:.85em;color:var(--dim)}
 footer a{text-decoration:none;border-bottom:1px solid rgba(212,176,100,.4)}
 
-@media (max-width:760px){
-  .bg{background:
-    linear-gradient(rgba(5,8,14,.8),rgba(5,8,14,.93)),
-    url(story-bg.webp) center top/cover no-repeat}
-  .title{margin-top:-1.5rem}
-  main{padding-top:2rem}
-  details.ch>summary{padding:16px;grid-template-columns:1fr auto}
-  .meta{grid-column:1;grid-row:2}
-  .chev{grid-column:2;grid-row:1}
-  .body{padding:2px 16px 22px}
+@media (max-width:720px){
+  .p-bg img{width:100%;-webkit-mask-image:none;mask-image:none;object-position:55% 14%}
+  .p-bg::after{background:linear-gradient(180deg,rgba(4,7,12,0) 40%,rgba(4,7,12,.6) 100%)}
+  .p-head{padding:0 20px 10vh}
+  .p-head h2{font-size:96px}
+  .p-meta{font-size:13px;letter-spacing:.06em}
+  .p-story{padding:0 14px 30vh}
+  .ch{margin:0 0 30vh;padding:22px 20px 8px;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
+  .ch h3{font-size:20px}
+  .end{padding:0 6px}
 }
 
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true"></div>
-<div class="rain" aria-hidden="true"></div>
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.en.html" lang="en" aria-current="page">EN</a><a href="story.ja.html" lang="ja">日本語</a><a href="story.es.html" lang="es">ES</a></nav>
   <img src="banner.webp" alt="Rhaine Sable" width="1536" height="1024">
 </header>
-<div class="title">
-  <h1>Rhaine Sable</h1>
-  <p class="sub">RHAINE SABLE</p>
-  <p class="tag">The city where the rain never stops, and what he never says</p>
-</div>
 <main>
-  <section class="prologue" aria-labelledby="pro">
-    <span class="label" id="pro">Prologue</span>
-    <p>It rains almost all year in Thornmouth. The city once belonged to humans. When the beastfolk took over, they kept everything, even the human face. Humans have no identity of their own. They only exist legally once registered under a beastfolk, and there are only three classifications: Food, Pet, Labour.</p><p>Rhaine Sable is the warden of a shelter in the Lower City, a pureblood black lion and a gang boss. Every day he stamps the classification forms that decide whether a human ends up on a banquet table, in someone's home, or on a work gang. He is also your guarantor. Your registration tag carries his name, and under classification it says Pet.</p><p>He never wears a tie. He never touches the human meat at banquets. Every night when he comes home, he stops at your door for a moment before he goes on.</p><p>This page is about what he never says.</p>
+  <section class="person" aria-labelledby="n-rhaine">
+    <div class="p-bg" aria-hidden="true"><img src="story-bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-rhaine">Rhaine</h2>
+        <p class="p-meta">Rhaine Sable | Pureblood black lion | Warden of a Lower City shelter | Your guarantor</p>
+        <p class="p-tag">The city where the rain never stops, and what he never says</p>
+      </div>
+      <div class="p-story">
+        <article class="ch"><h3>Prologue</h3><p>It rains almost all year in Thornmouth. The city once belonged to humans. When the beastfolk took over, they kept everything, even the human face. Humans have no identity of their own. They only exist legally once registered under a beastfolk, and there are only three classifications: Food, Pet, Labour.</p><p>Rhaine Sable is the warden of a shelter in the Lower City, a pureblood black lion and a gang boss. Every day he stamps the classification forms that decide whether a human ends up on a banquet table, in someone's home, or on a work gang. He is also your guarantor. Your registration tag carries his name, and under classification it says Pet.</p><p>He never wears a tie. He never touches the human meat at banquets. Every night when he comes home, he stops at your door for a moment before he goes on.</p><p class="last">This page is about what he never says.</p></article>
+        <article class="ch"><h3>I. The Record Shop</h3><p>Years ago, Rhaine still lived in the Upper City, the second son of the House of Sable.</p><p>Down in the Lower City there was a record shop with one bulb dead in its sign. He went in to buy a jazz record. The human woman behind the counter didn't count out his change first. She reached over and straightened his crooked collar.</p><p>“That looks better,” she said.</p><p>He bought three records that day. He came back the next week.</p><p>Later she tied his tie for him every morning. She played chess, not very well, and whenever she lost she said, one more. She liked watching old human era films with the lights off and saying her favourite lines along with the actors. He has a good memory. He still knows every one of those lines.</p><p>The ring came from a street stall. He wanted to buy her a better one. She refused. That was the one she wanted.</p></article>
+        <article class="ch"><h3>II. Pet</h3><p>In Thornmouth there is only one legal way for a human to stay at a beastfolk's side: be registered under his name. The classification can only be one of three.</p><p>Rhaine registered her as a Pet. Then, in front of everyone, he lived with her as his wife.</p><p>The Upper City laughed for a long time. The House of Sable could not. Under pride law a house has only one ruling male, and a second son has to leave sooner or later. This handed them a respectable reason. They gave him a shelter in the Lower City and called it a branch house. It was exile.</p><p>She went down to the Lower City with him.</p><p>Together they filed an application to change her classification from Pet to Spouse. They agreed that on the day it was approved, they would engrave both their names inside the ring.</p><p>The approval never came. The inside of the ring is still blank.</p></article>
+        <article class="ch"><h3>III. The Gap</h3><p>Someone was looking for Rhaine's weak spot. Anyone could see he had only one.</p><p>Rhaine wanted to hide her. He revoked his own guarantee, meaning to move her the next day under a name no one knew. It only had to hold for one night.</p><p>A human whose guarantee is revoked becomes ownerless property that very moment. Any beastfolk may take them.</p><p>She was taken to a shelter. Rhaine's own.</p><p>The next morning the usual stack of classification forms sat on his desk. He didn't read a single one. He stamped them all. On one of them, the classification said Food.</p><p>The one who had sent people looking for his weak spot was his elder brother, Cassius. Cassius was about to become head of the family, and before he did, he wanted the family's stain wiped clean.</p><p>Rhaine knows who did it. He still does business with Cassius, and when they meet, both of them smile. Every year on the day she died, Cassius sends white flowers to the house, with a card that says there will always be a place for him at home. Rhaine reads it and throws it into the fire.</p></article>
+        <article class="ch"><h3>IV. After</h3><p>Since that day Rhaine has never worn a tie, and he never touches the human meat at banquets. The shelter sends him over a hundred classification forms a day, and he reads every one to the end before he stamps it. His men think it's a waste of time.</p><p>In the study, the chair across the chessboard is always empty. The bottom row of the record wall holds the records she chose. He never plays them.</p><p>Not long after she died, another form for an ownerless human landed on his desk. He held the stamp above it for a long time and couldn't bring it down.</p><p>In the end he signed a guarantee and took that person home.</p><p class="you">That person is you.</p><p>You have lived in his house for years. Your face and some of your small habits grow more like hers every year. He has never once told you about her.</p><p>He will never revoke your guarantee. The last time he revoked one, it killed her.</p></article>
+        <p class="end">It is still raining.</p>
+      </div>
+    </div>
   </section>
-  <p class="note">The spoilers get heavier the further down you go. If you'd rather find out in play, stop here.</p>
-  <section aria-label="story">
-<details class="ch lv1"><summary><h2>I. The Record Shop</h2><span class="meta"><span class="pill">Light spoilers</span><span class="hint">Tap to read</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>Years ago, Rhaine still lived in the Upper City, the second son of the House of Sable.</p><p>Down in the Lower City there was a record shop with one bulb dead in its sign. He went in to buy a jazz record. The human woman behind the counter didn't count out his change first. She reached over and straightened his crooked collar.</p><p>“That looks better,” she said.</p><p>He bought three records that day. He came back the next week.</p><p>Later she tied his tie for him every morning. She played chess, not very well, and whenever she lost she said, one more. She liked watching old human era films with the lights off and saying her favourite lines along with the actors. He has a good memory. He still knows every one of those lines.</p><p>The ring came from a street stall. He wanted to buy her a better one. She refused. That was the one she wanted.</p></div></details>
-<details class="ch lv2"><summary><h2>II. Pet</h2><span class="meta"><span class="pill">Spoilers</span><span class="hint">Tap to read</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>In Thornmouth there is only one legal way for a human to stay at a beastfolk's side: be registered under his name. The classification can only be one of three.</p><p>Rhaine registered her as a Pet. Then, in front of everyone, he lived with her as his wife.</p><p>The Upper City laughed for a long time. The House of Sable could not. Under pride law a house has only one ruling male, and a second son has to leave sooner or later. This handed them a respectable reason. They gave him a shelter in the Lower City and called it a branch house. It was exile.</p><p>She went down to the Lower City with him.</p><p>Together they filed an application to change her classification from Pet to Spouse. They agreed that on the day it was approved, they would engrave both their names inside the ring.</p><p>The approval never came. The inside of the ring is still blank.</p></div></details>
-<details class="ch lv3"><summary><h2>III. The Gap</h2><span class="meta"><span class="pill">Major spoilers</span><span class="hint">Tap to read</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>Someone was looking for Rhaine's weak spot. Anyone could see he had only one.</p><p>Rhaine wanted to hide her. He revoked his own guarantee, meaning to move her the next day under a name no one knew. It only had to hold for one night.</p><p>A human whose guarantee is revoked becomes ownerless property that very moment. Any beastfolk may take them.</p><p>She was taken to a shelter. Rhaine's own.</p><p>The next morning the usual stack of classification forms sat on his desk. He didn't read a single one. He stamped them all. On one of them, the classification said Food.</p><p>The one who had sent people looking for his weak spot was his elder brother, Cassius. Cassius was about to become head of the family, and before he did, he wanted the family's stain wiped clean.</p><p>Rhaine knows who did it. He still does business with Cassius, and when they meet, both of them smile. Every year on the day she died, Cassius sends white flowers to the house, with a card that says there will always be a place for him at home. Rhaine reads it and throws it into the fire.</p></div></details>
-<details class="ch lv3"><summary><h2>IV. After</h2><span class="meta"><span class="pill">Major spoilers</span><span class="hint">Tap to read</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>Since that day Rhaine has never worn a tie, and he never touches the human meat at banquets. The shelter sends him over a hundred classification forms a day, and he reads every one to the end before he stamps it. His men think it's a waste of time.</p><p>In the study, the chair across the chessboard is always empty. The bottom row of the record wall holds the records she chose. He never plays them.</p><p>Not long after she died, another form for an ownerless human landed on his desk. He held the stamp above it for a long time and couldn't bring it down.</p><p>In the end he signed a guarantee and took that person home.</p><p>That person is you.</p><p>You have lived in his house for years. Your face and some of your small habits grow more like hers every year. He has never once told you about her.</p><p>He will never revoke your guarantee. The last time he revoked one, it killed her.</p></div></details>
-  </section>
-  <p class="end">It is still raining.</p>
-  <section aria-labelledby="faq">
-    <span class="label" id="faq">FAQ</span>
-<details class="q"><summary>How old is Rhaine?</summary><div class="a"><p>He looks to be in his early forties, already grey at the temples. His exact age isn't set.</p></div></details>
-<details class="q"><summary>Does my character have to be human?</summary><div class="a"><p>Yes. The whole card is built on you being a human registered under him as a Pet.</p></div></details>
-<details class="q"><summary>Why do the flashbacks keep changing?</summary><div class="a"><p>That happened in the old version, and it's fixed now. His past unlocks in three stages as his heart moves. Parts that aren't unlocked yet only appear as blurred fragments, and details shown once stay the same afterwards.</p></div></details>
-<details class="q"><summary>How do I unlock the secret?</summary><div class="a"><p>Let his heart move, slowly. Look after him, wait up for him, say what you really mean, make him jealous, call him Rhaine for the first time, or do something she used to do, like straightening his collar.</p><p>Physical closeness has to keep pace too: touch, carrying his scent, sleeping in the same room. It can't be rushed. Each scene moves it one step at most.</p></div></details>
-<details class="q"><summary>What was her name?</summary><div class="a"><p>She has none, on purpose. Rhaine never says it, right to the end.</p></div></details>
-<details class="q"><summary>Where exactly do I look like her?</summary><div class="a"><p>The setting only says your face and small habits grow more like hers. Exactly where grows on its own inside each story, so everyone gets a different answer.</p><p>One thing is certain: she used to straighten his collar and tie his tie every morning. If you do the same, he will freeze on the spot.</p></div></details>
-<details class="q"><summary>The heat got too intense. How do I steer back to daily life, or toward something more painful?</summary><div class="a"><p>The few dry days each year when the rain stops are his heat. When the omen shows, he locks himself in the study and leaves the key outside the door. Whether you go in is up to you. You can also use these three shortcuts:</p><ul><li><b>Outside the Door</b>You don't open the door, and he sits out the whole heat alone. Use it for a more painful route.</li><li><b>Breather</b>A pause between rounds with an ordinary moment slipped in. It only goes on once you reach for him.</li><li><b>Rain</b>Skip straight to the aftermath, when the rain comes back.</li></ul><p style="margin-top:1em">During the heat, if you tell him to stop, he stops and waits on the edge of the bed.</p></div></details>
-<details class="q"><summary>What other shortcuts are there?</summary><div class="a"><ul style="margin-top:0"><li><b>提示 (Hint)</b>Use it when you're stuck. It gives you three options.</li><li><b>逗貓棒 (Cat teaser), 貓草 (Catnip)</b>Bring out the lion in him.</li><li><b>Milk</b>Adult content. You've fallen for some kind of milk scheme.</li></ul></div></details>
+  <section class="faq" aria-labelledby="faq">
+    <h2 id="faq">FAQ</h2>
+    <details class="q"><summary>How old is Rhaine?</summary><div class="a"><p>He looks to be in his early forties, already grey at the temples. His exact age isn't set.</p></div></details>
+    <details class="q"><summary>Does my character have to be human?</summary><div class="a"><p>Yes. The whole card is built on you being a human registered under him as a Pet.</p></div></details>
+    <details class="q"><summary>Why do the flashbacks keep changing?</summary><div class="a"><p>That happened in the old version, and it's fixed now. His past unlocks in three stages as his heart moves. Parts that aren't unlocked yet only appear as blurred fragments, and details shown once stay the same afterwards.</p></div></details>
+    <details class="q"><summary>How do I unlock the secret?</summary><div class="a"><p>Let his heart move, slowly. Look after him, wait up for him, say what you really mean, make him jealous, call him Rhaine for the first time, or do something she used to do, like straightening his collar.</p><p>Physical closeness has to keep pace too: touch, carrying his scent, sleeping in the same room. It can't be rushed. Each scene moves it one step at most.</p></div></details>
+    <details class="q"><summary>What was her name?</summary><div class="a"><p>She has none, on purpose. Rhaine never says it, right to the end.</p></div></details>
+    <details class="q"><summary>Where exactly do I look like her?</summary><div class="a"><p>The setting only says your face and small habits grow more like hers. Exactly where grows on its own inside each story, so everyone gets a different answer.</p><p>One thing is certain: she used to straighten his collar and tie his tie every morning. If you do the same, he will freeze on the spot.</p></div></details>
+    <details class="q"><summary>When is his heat?</summary><div class="a"><p>The few dry days each year when the rain stops are his heat. When the omen shows, he locks himself in the study and leaves the key outside the door. Whether you go in is up to you.</p><p>During the heat, if you tell him to stop, he stops and waits on the edge of the bed.</p></div></details>
   </section>
 </main>
 <footer><a href="../index.html">Matcha's Archive</a></footer>

@@ -18,40 +18,14 @@
 <link rel="alternate" hreflang="es" href="https://matchadev01.github.io/rhaine/story.es.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--body-font:'Noto Serif JP','Hiragino Mincho ProN',serif;--fs:17px;--lh:2}
-.label{letter-spacing:.2em}.end{font-style:normal}
+:root{--body-font:'Noto Serif JP','Hiragino Mincho ProN',serif;--fs:17px;--lh:1.9;--end-style:normal}
 
-:root{
-  --ink:#05080e;
-  --rain:#9fb6d3;
-  --text:#e3dfd5;
-  --dim:#8d96a6;
-  --gold:#d4b064;
-  --line:rgba(159,182,211,.16);
-  --l1:#7f9cc0;
-  --l2:#d4b064;
-  --l3:#c0605a;
-}
+:root{--ink:#04070c;--text:#e3dfd5;--dim:#8d96a6;--gold:#d4b064;--line:rgba(159,182,211,.16)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--text);font-family:var(--body-font);font-size:var(--fs);line-height:var(--lh);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:var(--gold)}
-
-/* 底圖：黑獅坐在右側，往左漸暗 */
-.bg{position:fixed;inset:0;z-index:-2;
-  background:
-    linear-gradient(90deg,var(--ink) 0%,var(--ink) 34%,rgba(5,8,14,.78) 58%,rgba(5,8,14,.5) 100%),
-    url(story-bg.webp) right center/auto 100% no-repeat;
-  filter:saturate(.85)}
-/* 雨 */
-.rain,.rain::after{position:fixed;inset:-20% 0 0;z-index:-1;pointer-events:none;
-  background:repeating-linear-gradient(103deg,transparent 0 22px,rgba(159,182,211,.07) 22px 23px,transparent 23px 61px);
-  background-size:220px 520px;animation:fall 1.1s linear infinite}
-.rain::after{content:"";inset:0;background-size:160px 380px;opacity:.6;animation-duration:.8s}
-@keyframes fall{to{background-position:-60px 520px}}
-@media (prefers-reduced-motion:reduce){.rain,.rain::after{animation:none}}
 
 /* 語言 */
 .langs{position:absolute;top:12px;right:12px;z-index:20;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:calc(100% - 24px)}
@@ -61,107 +35,93 @@ a{color:var(--gold)}
 
 /* 封面 */
 .hero{position:relative;max-width:1400px;margin:0 auto}
-.hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
-  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
-.title{max-width:680px;margin:-3.5rem auto 0;padding:0 24px;position:relative;text-align:center}
-.title h1{font-size:clamp(1.9rem,5vw,2.6rem);font-weight:700;letter-spacing:.12em;line-height:1.3}
-.title .sub{margin-top:.5rem;font-family:'Cormorant Garamond',Georgia,serif;font-size:.85rem;letter-spacing:.5em;color:var(--gold);padding-left:.5em}
-.title .tag{margin-top:1.2rem;color:var(--dim);font-size:.95em}
+.hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
 
-main{max-width:680px;margin:0 auto;padding:3rem 24px 5rem}
-section{margin-top:3.5rem}
-.label{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:.8rem;letter-spacing:.35em;color:var(--gold);margin-bottom:1.2rem}
-.label::after{content:"";display:inline-block;width:48px;height:1px;background:var(--gold);opacity:.5;vertical-align:middle;margin-left:14px}
-p+p{margin-top:1.1em}
-.prologue p:last-child{margin-top:1.8em;color:var(--gold)}
-
-.note{margin-top:3rem;padding:14px 18px;border:1px solid rgba(212,176,100,.35);border-radius:6px;background:rgba(212,176,100,.06);color:#d9cba6;font-size:.92em}
-
-/* 章節摺疊 */
-details.ch{margin-top:1.1rem;border:1px solid var(--line);border-radius:8px;background:rgba(5,8,14,.72);backdrop-filter:blur(2px)}
-details.ch>summary{list-style:none;cursor:pointer;padding:18px 20px;display:grid;grid-template-columns:1fr auto auto;align-items:center;column-gap:12px;row-gap:8px}
-.meta{display:flex;align-items:center;gap:10px}
-details.ch>summary::-webkit-details-marker{display:none}
-details.ch>summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
-.ch h2{font-size:1.1em;font-weight:600;letter-spacing:.06em}
-.pill{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.05em;padding:4px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
-.lv1 .pill{color:var(--l1)}.lv2 .pill{color:var(--l2)}.lv3 .pill{color:var(--l3)}
-.hint{font-family:system-ui,sans-serif;font-size:11px;color:var(--dim);white-space:nowrap}
-.chev{width:9px;height:9px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:rotate(45deg);margin:-4px 4px 0;transition:transform .25s}
-details[open]>summary .chev{transform:rotate(225deg);margin-top:4px}
-details[open]>summary .hint{visibility:hidden}
-.body{padding:4px 22px 26px;border-top:1px solid var(--line)}
-.body p:first-child{margin-top:1.2em}
-details[open] .body{animation:in .5s ease}
-@keyframes in{from{opacity:0;transform:translateY(-4px)}}
-.lv3{border-color:rgba(192,96,90,.28)}
-
-.end{text-align:center;margin-top:3rem;color:var(--dim);font-style:italic;letter-spacing:.1em}
+/* 黑獅底圖：釘在畫面上，文字從前面捲過 */
+.person{position:relative}
+.p-bg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:0}
+.p-bg img{position:absolute;top:0;right:0;width:64%;height:100%;object-fit:cover;object-position:50% 18%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.p-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 34%,rgba(4,7,12,.55) 56%,rgba(4,7,12,.05) 80%)}
+.p-bg::before{content:"";position:absolute;inset:-20% 0 0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(103deg,transparent 0 22px,rgba(159,182,211,.08) 22px 23px,transparent 23px 61px);
+  background-size:220px 520px;animation:fall 1.1s linear infinite}
+@keyframes fall{to{background-position:-60px 520px}}
+@media (prefers-reduced-motion:reduce){.p-bg::before{animation:none}}
+.p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
+.p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
+.p-head h2{font-weight:900;font-size:clamp(84px,12vw,160px);line-height:1;letter-spacing:.06em;color:var(--gold);text-shadow:0 0 40px rgba(212,176,100,.35)}
+.p-meta{margin-top:16px;font-size:15px;letter-spacing:.12em;color:rgba(227,223,213,.85)}
+.p-tag{margin-top:6px;font-size:15px;color:var(--dim)}
+.p-story{max-width:1180px;margin:0 auto;padding:0 6vw 24vh}
+.ch{max-width:31em;margin:0 0 72px}
+.ch h3{margin:0 0 14px;font-weight:700;font-size:22px;letter-spacing:.08em;color:#b9cde6}
+.ch p{margin:0 0 16px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.ch .last{color:var(--gold);margin-top:26px}
+.ch .you{font-weight:700;font-size:1.15em;color:#fff;margin:26px 0}
+.end{max-width:31em;color:var(--dim);letter-spacing:.1em;font-style:var(--end-style)}
 
 /* 問答 */
+.faq{max-width:680px;margin:0 auto;padding:6rem 24px 4rem}
+.faq h2{font-size:22px;letter-spacing:.1em;color:var(--gold);margin-bottom:1.2rem;font-weight:700}
 details.q{border-bottom:1px solid var(--line)}
-details.q>summary{list-style:none;cursor:pointer;padding:16px 28px 16px 0;position:relative;font-weight:600}
+details.q>summary{list-style:none;cursor:pointer;padding:16px 28px 16px 0;position:relative;font-weight:700}
 details.q>summary::-webkit-details-marker{display:none}
 details.q>summary::after{content:"+";position:absolute;right:4px;top:14px;color:var(--gold);font-family:system-ui,sans-serif;font-weight:400;font-size:1.2em}
 details.q[open]>summary::after{content:"\2212"}
 details.q>summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .a{padding:0 0 20px;color:#cfcabe}
-.a ul{list-style:none;margin-top:1em}
-.a li{padding:10px 14px;border-left:2px solid var(--gold);background:rgba(212,176,100,.05);margin-top:8px}
-.a li b{color:var(--gold);font-weight:600;margin-right:.6em}
+.a p+p{margin-top:.9em}
 
 footer{max-width:680px;margin:0 auto;padding:0 24px 4rem;text-align:center;font-size:.85em;color:var(--dim)}
 footer a{text-decoration:none;border-bottom:1px solid rgba(212,176,100,.4)}
 
-@media (max-width:760px){
-  .bg{background:
-    linear-gradient(rgba(5,8,14,.8),rgba(5,8,14,.93)),
-    url(story-bg.webp) center top/cover no-repeat}
-  .title{margin-top:-1.5rem}
-  main{padding-top:2rem}
-  details.ch>summary{padding:16px;grid-template-columns:1fr auto}
-  .meta{grid-column:1;grid-row:2}
-  .chev{grid-column:2;grid-row:1}
-  .body{padding:2px 16px 22px}
+@media (max-width:720px){
+  .p-bg img{width:100%;-webkit-mask-image:none;mask-image:none;object-position:55% 14%}
+  .p-bg::after{background:linear-gradient(180deg,rgba(4,7,12,0) 40%,rgba(4,7,12,.6) 100%)}
+  .p-head{padding:0 20px 10vh}
+  .p-head h2{font-size:96px}
+  .p-meta{font-size:13px;letter-spacing:.06em}
+  .p-story{padding:0 14px 30vh}
+  .ch{margin:0 0 30vh;padding:22px 20px 8px;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
+  .ch h3{font-size:20px}
+  .end{padding:0 6px}
 }
 
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true"></div>
-<div class="rain" aria-hidden="true"></div>
 <header class="hero">
   <nav class="langs" aria-label="Language"><a href="story.html" lang="zh-Hant">繁中</a><a href="story.ko.html" lang="ko">한국어</a><a href="story.en.html" lang="en">EN</a><a href="story.ja.html" lang="ja" aria-current="page">日本語</a><a href="story.es.html" lang="es">ES</a></nav>
   <img src="banner.webp" alt="レイン・セーブル" width="1536" height="1024">
 </header>
-<div class="title">
-  <h1>レイン・セーブル</h1>
-  <p class="sub">RHAINE SABLE</p>
-  <p class="tag">雨のやまない街と、彼が口にしないこと</p>
-</div>
 <main>
-  <section class="prologue" aria-labelledby="pro">
-    <span class="label" id="pro">序章</span>
-    <p>ソーンマスでは一年中雨が降っている。この街はもともと人間のものだった。獣人は街を手に入れたあと、何もかもをそのまま残した。人間の顔さえも。人間には自分自身の身分がない。獣人の名義で登録されて初めて合法的に存在でき、分類は食用、ペット、労役の三つしかない。</p><p>レイン・セーブルは下層にある保護所の所長だ。純血の黒獅子で、組織のボスでもある。彼は毎日分類票に判を押し、一人の人間が宴のテーブルに上るのか、誰かの家へ行くのか、労役に回されるのかを決めている。そして彼はあなたの保証人だ。あなたの登録タグには彼の名前があり、分類欄にはペットと書かれている。</p><p>彼はネクタイを締めない。宴で出される人肉には決して手をつけない。毎晩帰宅すると、あなたの部屋の前で少しだけ立ち止まってから去っていく。</p><p>このページに書いてあるのは、彼が口にしないことだ。</p>
+  <section class="person" aria-labelledby="n-rhaine">
+    <div class="p-bg" aria-hidden="true"><img src="story-bg.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-rhaine">レイン</h2>
+        <p class="p-meta">レイン・セーブル｜純血の黒獅子｜下層保護所の所長｜あなたの保証人</p>
+        <p class="p-tag">雨のやまない街と、彼が口にしないこと</p>
+      </div>
+      <div class="p-story">
+        <article class="ch"><h3>序章</h3><p>ソーンマスでは一年中雨が降っている。この街はもともと人間のものだった。獣人は街を手に入れたあと、何もかもをそのまま残した。人間の顔さえも。人間には自分自身の身分がない。獣人の名義で登録されて初めて合法的に存在でき、分類は食用、ペット、労役の三つしかない。</p><p>レイン・セーブルは下層にある保護所の所長だ。純血の黒獅子で、組織のボスでもある。彼は毎日分類票に判を押し、一人の人間が宴のテーブルに上るのか、誰かの家へ行くのか、労役に回されるのかを決めている。そして彼はあなたの保証人だ。あなたの登録タグには彼の名前があり、分類欄にはペットと書かれている。</p><p>彼はネクタイを締めない。宴で出される人肉には決して手をつけない。毎晩帰宅すると、あなたの部屋の前で少しだけ立ち止まってから去っていく。</p><p class="last">このページに書いてあるのは、彼が口にしないことだ。</p></article>
+        <article class="ch"><h3>第一章　レコード店</h3><p>何年も前、レインはまだ上層に住んでいた。セーブル家の次男だった。</p><p>下層に、看板の電球がひとつ切れたレコード店があった。彼はジャズのレコードを買いに入った。カウンターの奥にいた人間の女は、お釣りより先に手を伸ばして、曲がった彼の襟を直した。</p><p>「こっちのほうがいいですよ」と彼女は言った。</p><p>その日、彼はレコードを三枚買った。翌週もまた行った。</p><p>やがて彼女は、毎朝彼のネクタイを結ぶようになった。チェスは指せたがあまり上手くはなく、負けるともう一局と言った。明かりを消して人間時代の古い映画を観るのが好きで、好きな台詞が来ると一緒に口にした。彼は記憶力がいい。その台詞を今も全部覚えている。</p><p>指輪は露店で買ったものだ。彼はもっといいものを買いたかったが、彼女は断った。欲しいのはその一つだけだった。</p></article>
+        <article class="ch"><h3>第二章　ペット</h3><p>ソーンマスで人間が獣人のそばに合法的にいる方法は、一つしかない。彼の名義で登録されることだ。分類欄は三つの中から選ぶしかない。</p><p>レインは彼女をペットとして登録した。そして皆の前で、彼女と夫婦として暮らした。</p><p>上層は長いこと笑った。セーブル家は笑えなかった。獅子の群れの掟では、一つの家に主の雄は一頭だけで、次男はいずれ出ていかなければならない。この件は彼らに、もっともらしい理由を与えた。彼らは下層の保護所を一つ彼に渡し、分家と呼んだ。実際には追放だった。</p><p>彼女は彼について下層へ行った。</p><p>二人は、彼女の分類をペットから配偶者に変える申請を出した。認められた日には、指輪の内側に二人の名前を刻もうと約束した。</p><p>認可は最後まで下りなかった。指輪の内側は今も空白のままだ。</p></article>
+        <article class="ch"><h3>第三章　空白の一夜</h3><p>誰かがレインの弱みを探していた。誰が見ても、彼の弱みは一つしかなかった。</p><p>レインは彼女を隠そうとした。自分の保証を自ら取り消し、翌日には誰も知らない名義の下へ移すつもりだった。一晩だけ持ちこたえればよかった。</p><p>保証を取り消された人間は、その瞬間に無主物になる。どの獣人でも連れていける。</p><p>彼女は保護所へ連れていかれた。レイン自身の保護所だった。</p><p>翌朝、いつものように分類票の束が彼の机に置かれていた。彼は一枚も読まずに、すべてに判を押した。そのうちの一枚の分類欄には、食用と書かれていた。</p><p>弱みを探させたのは、彼の兄カシウスだった。カシウスは当主の座を継ぐ直前で、その前に家の汚点をきれいに消しておきたかった。</p><p>レインは誰の仕業か知っている。それでも今もカシウスと取引を続け、会えば二人とも笑っている。毎年彼女の命日になると、カシウスは屋敷に白い花束を送ってくる。カードには、家にはいつでもお前の席があると書かれている。レインはそれを読み、暖炉に放り込む。</p></article>
+        <article class="ch"><h3>第四章　それから</h3><p>あの日から、レインはネクタイを締めない。宴の人肉にも手をつけない。保護所の分類票は一日に百枚を超えるが、彼は一枚ずつ最後まで読んでから判を押す。部下たちは時間の無駄だと思っている。</p><p>書斎のチェス盤の向かいの椅子は、いつも空いている。レコードの壁のいちばん下の段は、彼女が選んだレコードだ。彼は一度もそれをかけない。</p><p>彼女が死んで間もなく、また一枚、無主の人間の分類票が彼の机に届いた。彼は判を持ったまま、長いあいだ押せなかった。</p><p>結局、彼は保証書に署名し、その人を家に連れて帰った。</p><p class="you">それがあなただ。</p><p>あなたは彼の家で何年も暮らしてきた。年を追うごとに、顔も小さな癖も彼女に似てきている。彼はあなたに、彼女の話を一度もしたことがない。</p><p>彼はあなたの保証だけは決して取り消さない。前に取り消したとき、それが彼女を殺したからだ。</p></article>
+        <p class="end">雨はまだ降っている。</p>
+      </div>
+    </div>
   </section>
-  <p class="note">下に進むほどネタバレが深くなります。ゲームの中で自分で知りたい方は、ここまでにしておいてください。</p>
-  <section aria-label="story">
-<details class="ch lv1"><summary><h2>第一章　レコード店</h2><span class="meta"><span class="pill">軽いネタバレ</span><span class="hint">タップして読む</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>何年も前、レインはまだ上層に住んでいた。セーブル家の次男だった。</p><p>下層に、看板の電球がひとつ切れたレコード店があった。彼はジャズのレコードを買いに入った。カウンターの奥にいた人間の女は、お釣りより先に手を伸ばして、曲がった彼の襟を直した。</p><p>「こっちのほうがいいですよ」と彼女は言った。</p><p>その日、彼はレコードを三枚買った。翌週もまた行った。</p><p>やがて彼女は、毎朝彼のネクタイを結ぶようになった。チェスは指せたがあまり上手くはなく、負けるともう一局と言った。明かりを消して人間時代の古い映画を観るのが好きで、好きな台詞が来ると一緒に口にした。彼は記憶力がいい。その台詞を今も全部覚えている。</p><p>指輪は露店で買ったものだ。彼はもっといいものを買いたかったが、彼女は断った。欲しいのはその一つだけだった。</p></div></details>
-<details class="ch lv2"><summary><h2>第二章　ペット</h2><span class="meta"><span class="pill">ネタバレ</span><span class="hint">タップして読む</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>ソーンマスで人間が獣人のそばに合法的にいる方法は、一つしかない。彼の名義で登録されることだ。分類欄は三つの中から選ぶしかない。</p><p>レインは彼女をペットとして登録した。そして皆の前で、彼女と夫婦として暮らした。</p><p>上層は長いこと笑った。セーブル家は笑えなかった。獅子の群れの掟では、一つの家に主の雄は一頭だけで、次男はいずれ出ていかなければならない。この件は彼らに、もっともらしい理由を与えた。彼らは下層の保護所を一つ彼に渡し、分家と呼んだ。実際には追放だった。</p><p>彼女は彼について下層へ行った。</p><p>二人は、彼女の分類をペットから配偶者に変える申請を出した。認められた日には、指輪の内側に二人の名前を刻もうと約束した。</p><p>認可は最後まで下りなかった。指輪の内側は今も空白のままだ。</p></div></details>
-<details class="ch lv3"><summary><h2>第三章　空白の一夜</h2><span class="meta"><span class="pill">重大なネタバレ</span><span class="hint">タップして読む</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>誰かがレインの弱みを探していた。誰が見ても、彼の弱みは一つしかなかった。</p><p>レインは彼女を隠そうとした。自分の保証を自ら取り消し、翌日には誰も知らない名義の下へ移すつもりだった。一晩だけ持ちこたえればよかった。</p><p>保証を取り消された人間は、その瞬間に無主物になる。どの獣人でも連れていける。</p><p>彼女は保護所へ連れていかれた。レイン自身の保護所だった。</p><p>翌朝、いつものように分類票の束が彼の机に置かれていた。彼は一枚も読まずに、すべてに判を押した。そのうちの一枚の分類欄には、食用と書かれていた。</p><p>弱みを探させたのは、彼の兄カシウスだった。カシウスは当主の座を継ぐ直前で、その前に家の汚点をきれいに消しておきたかった。</p><p>レインは誰の仕業か知っている。それでも今もカシウスと取引を続け、会えば二人とも笑っている。毎年彼女の命日になると、カシウスは屋敷に白い花束を送ってくる。カードには、家にはいつでもお前の席があると書かれている。レインはそれを読み、暖炉に放り込む。</p></div></details>
-<details class="ch lv3"><summary><h2>第四章　それから</h2><span class="meta"><span class="pill">重大なネタバレ</span><span class="hint">タップして読む</span></span><span class="chev" aria-hidden="true"></span></summary><div class="body"><p>あの日から、レインはネクタイを締めない。宴の人肉にも手をつけない。保護所の分類票は一日に百枚を超えるが、彼は一枚ずつ最後まで読んでから判を押す。部下たちは時間の無駄だと思っている。</p><p>書斎のチェス盤の向かいの椅子は、いつも空いている。レコードの壁のいちばん下の段は、彼女が選んだレコードだ。彼は一度もそれをかけない。</p><p>彼女が死んで間もなく、また一枚、無主の人間の分類票が彼の机に届いた。彼は判を持ったまま、長いあいだ押せなかった。</p><p>結局、彼は保証書に署名し、その人を家に連れて帰った。</p><p>それがあなただ。</p><p>あなたは彼の家で何年も暮らしてきた。年を追うごとに、顔も小さな癖も彼女に似てきている。彼はあなたに、彼女の話を一度もしたことがない。</p><p>彼はあなたの保証だけは決して取り消さない。前に取り消したとき、それが彼女を殺したからだ。</p></div></details>
-  </section>
-  <p class="end">雨はまだ降っている。</p>
-  <section aria-labelledby="faq">
-    <span class="label" id="faq">よくある質問</span>
-<details class="q"><summary>レインは何歳ですか？</summary><div class="a"><p>見た目は四十代前半で、こめかみにはもう白髪が混じっています。正確な年齢は決めていません。</p></div></details>
-<details class="q"><summary>自分のキャラは人間でないとだめですか？</summary><div class="a"><p>はい。このカード全体が、あなたは彼の名義でペットとして登録された人間、という前提でできています。</p></div></details>
-<details class="q"><summary>回想シーンの内容が毎回変わります</summary><div class="a"><p>旧バージョンで起きていた問題で、今は直っています。彼の過去は心の動きに合わせて三段階で解放され、まだ解放されていない部分はぼやけた断片としてしか出てきません。一度出た内容が、あとで変わることもありません。</p></div></details>
-<details class="q"><summary>秘密はどうやって解放されますか？</summary><div class="a"><p>彼の心をゆっくり動かしてください。彼を気遣う、帰りを待つ、本音を言う、嫉妬させる、初めてレインと呼ぶ、彼女が昔していたことをする。たとえば、彼の襟を直すように。</p><p>体の距離も一緒に縮める必要があります。触れること、あなたに彼の匂いがつくこと、同じ部屋で眠ること。急ぐことはできず、一つの場面で進むのは最大一段階です。</p></div></details>
-<details class="q"><summary>彼女の名前は？</summary><div class="a"><p>ありません。わざと決めていません。レインは最後まで彼女の名前を口にしません。</p></div></details>
-<details class="q"><summary>自分と彼女は、どこが似ているんですか？</summary><div class="a"><p>設定には、顔と小さな癖がだんだん似てくるとしか書いていません。どこが似ているかはそれぞれの物語の中で育っていくので、人によって答えが違います。</p><p>確かなのは一つだけ。彼女は昔、彼の襟を直し、毎朝ネクタイを結んでいました。あなたが同じことをすれば、彼はその場で固まります。</p></div></details>
-<details class="q"><summary>発情期の展開が激しすぎます。日常に戻したい、もっと切ない方向に行きたい</summary><div class="a"><p>雨がやむ年に数日の乾季が、彼の発情期です。前兆が出ると、彼は自分を書斎に閉じ込め、鍵を扉の外に置きます。入るかどうかはあなた次第です。次の三つのショートカットも使えます。</p><ul><li><b>扉の外</b>扉を開けなければ、彼は発情期を一人で耐え抜きます。切ない展開にしたいときに。</li><li><b>ひと息</b>合間に休憩が入り、何気ない日常のひとときが挟まります。あなたから手を伸ばすまで続きません。</li><li><b>雨</b>雨が戻ったあとの余波まで一気に飛びます。</li></ul><p style="margin-top:1em">発情期の最中に「やめて」と言えば、彼は止まって、ベッドの端に座って待ちます。</p></div></details>
-<details class="q"><summary>ほかにどんなショートカットがありますか？</summary><div class="a"><ul style="margin-top:0"><li><b>提示（ヒント）</b>行き詰まったときに使うと、選択肢を三つくれます。</li><li><b>逗貓棒（猫じゃらし）、貓草（キャットニップ）</b>彼の獅子の一面を引き出します。</li><li><b>Milk</b>成人向け。あなたは何かのミルクの罠にかかります。</li></ul></div></details>
+  <section class="faq" aria-labelledby="faq">
+    <h2 id="faq">よくある質問</h2>
+    <details class="q"><summary>レインは何歳ですか？</summary><div class="a"><p>見た目は四十代前半で、こめかみにはもう白髪が混じっています。正確な年齢は決めていません。</p></div></details>
+    <details class="q"><summary>自分のキャラは人間でないとだめですか？</summary><div class="a"><p>はい。このカード全体が、あなたは彼の名義でペットとして登録された人間、という前提でできています。</p></div></details>
+    <details class="q"><summary>回想シーンの内容が毎回変わります</summary><div class="a"><p>旧バージョンで起きていた問題で、今は直っています。彼の過去は心の動きに合わせて三段階で解放され、まだ解放されていない部分はぼやけた断片としてしか出てきません。一度出た内容が、あとで変わることもありません。</p></div></details>
+    <details class="q"><summary>秘密はどうやって解放されますか？</summary><div class="a"><p>彼の心をゆっくり動かしてください。彼を気遣う、帰りを待つ、本音を言う、嫉妬させる、初めてレインと呼ぶ、彼女が昔していたことをする。たとえば、彼の襟を直すように。</p><p>体の距離も一緒に縮める必要があります。触れること、あなたに彼の匂いがつくこと、同じ部屋で眠ること。急ぐことはできず、一つの場面で進むのは最大一段階です。</p></div></details>
+    <details class="q"><summary>彼女の名前は？</summary><div class="a"><p>ありません。わざと決めていません。レインは最後まで彼女の名前を口にしません。</p></div></details>
+    <details class="q"><summary>自分と彼女は、どこが似ているんですか？</summary><div class="a"><p>設定には、顔と小さな癖がだんだん似てくるとしか書いていません。どこが似ているかはそれぞれの物語の中で育っていくので、人によって答えが違います。</p><p>確かなのは一つだけ。彼女は昔、彼の襟を直し、毎朝ネクタイを結んでいました。あなたが同じことをすれば、彼はその場で固まります。</p></div></details>
+    <details class="q"><summary>発情期はいつですか？</summary><div class="a"><p>雨がやむ年に数日の乾季が、彼の発情期です。前兆が出ると、彼は自分を書斎に閉じ込め、鍵を扉の外に置きます。入るかどうかはあなた次第です。</p><p>発情期の最中に「やめて」と言えば、彼は止まって、ベッドの端に座って待ちます。</p></div></details>
   </section>
 </main>
 <footer><a href="../index.html">抹茶の資料室</a></footer>
