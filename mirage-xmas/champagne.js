@@ -677,7 +677,118 @@ function loadSong(){loadBells();const a=audio();if(!a)return Promise.reject();if
 const BUB=new Image();BUB.src='assets/ui_bubble_heart.png';
 
 // ---------- 外框 ----------
-const GAMES={pour:Pour,stack:Stack,osu:Osu};
+
+// ---------- 香檳 call 練習：用示範動畫教「點」和「滑」，少用文字 ----------
+// 三關：① 點（看示範再自己點 3 下）② 滑（看示範再自己滑 2 次）③ 連續（跟著節拍打一小段）
+// 沒有分數、不會失敗，點太早或太晚就再來一次
+const Drill={
+  R:64,BEAT:.6,
+  start(){audio();loadBells();this.pc=matchMedia('(pointer:fine)').matches;this.step=0;this.tries=0;this.state='play';this.fx=[];this.ptrs=new Map();this.drag=null;this.doneT=0;this.setup()},
+  stop(){},
+  now(){return this.clock},
+  setup(){this.clock=0;this.lastTick=-1;this.notes=[];this.ok=0;this.fx.length=0;this.drag=null;this.phase='demo';this.ghost=null;this.mkDemo()},
+  // 一顆圈圈：t 是該點的時間；tick 從 t-4 拍開始響
+  note(t,x,y,owner,path){const n={t,x,y,owner,hit:null};if(path){const[x2,y2,bend,beats]=path,mx=(x+x2)/2,my=(y+y2)/2,nx=-(y2-y),ny=x2-x,nl=Math.hypot(nx,ny)||1;
+      n.path={dur:beats*this.BEAT,x0:x,y0:y,x2,y2,cx:mx+nx/nl*bend,cy:my+ny/nl*bend,prog:0}}return n},
+  mkDemo(){const B=this.BEAT,s=this.step;
+    if(s===0)this.notes=[this.note(4*B,W/2,300,1)];
+    else if(s===1)this.notes=[this.note(4*B,W/2-170,250,0,[W/2+170,330,70,2])];
+    else{// 連續：七顆，第 9 拍是一條滑
+      const L=[[4,250,250,0],[5,480,200,1],[6,710,250,2],[7,480,330,1],[9,230,330,0,[520,240,-60,2]],[13,730,260,2],[14,480,330,1]];
+      this.notes=L.map(([b,x,y,o,pa])=>this.note(b*B,x,y,o,pa));this.phase='try'}
+    this.endT=this.notes[this.notes.length-1].t+(this.notes[this.notes.length-1].path?this.notes[this.notes.length-1].path.dur:0)+.9},
+  need(){return this.step===0?3:this.step===1?2:0},
+  next(){// 下一顆（練習階段重新出一顆在不同位置）
+    const B=this.BEAT,s=this.step,k=this.ok+this.tries;this.clock=0;this.lastTick=-1;this.drag=null;
+    const xs=[W/2-200,W/2+40,W/2+220,W/2-60];const x=xs[k%4],y=[260,320,230,300][k%4];
+    this.notes=s===0?[this.note(4*B,x,y,k%3)]:[this.note(4*B,k%2?W/2+180:W/2-180,k%2?320:240,k%3,[k%2?W/2-160:W/2+160,k%2?230:330,(k%2?-1:1)*70,2])];
+    this.endT=this.notes[0].t+(this.notes[0].path?this.notes[0].path.dur:0)+1.2},
+  down(p){
+    if(this.state!=='play'||this.phase==='demo'||this.phase==='wait')return;const t=this.clock;
+    const id=p.id??'k';if(p.x!=null)this.ptrs.set(id,{x:p.x,y:p.y});
+    for(const n of this.notes){if(n.hit)continue;const d=n.t-t;if(d>2.4*this.BEAT/1)break;
+      if(p.key==null&&Math.hypot(p.x-n.x,p.y-n.y)>this.R*(p.mouse?1.15:1.4))continue;
+      if(d>.22){this.say(n,'太早了','#9fd8ff');return}
+      n.hit=Math.abs(d)<=.115?'perfect':'good';this.hitFx(n);
+      if(n.path){this.drag={n,id:p.key!=null?'key:'+p.key:id,hold:p.key!=null}}
+      else this.success(n);return}},
+  move(p){const id=p.id??'k';if(!this.ptrs.has(id))return;this.ptrs.set(id,{x:p.x,y:p.y});
+    if(this.drag&&!this.drag.hold&&this.drag.id===id){const s=this.drag.n.path;let best=-1,bd=1e9;
+      for(let u=s.prog;u<=Math.min(1,s.prog+.35);u+=.01){const b=Osu.sp(s,u),dd=Math.hypot(p.x-b.x,p.y-b.y);if(dd<bd){bd=dd;best=u}}
+      if(bd<this.R*1.5&&best>s.prog){const was=s.prog;s.prog=best;if(Math.floor(was*4)!==Math.floor(best*4)&&best<.95)bell(false,.16,1+best*.15);if(s.prog>=.95)this.dragEnd(true)}}},
+  up(p){const id=p&&p.id!=null?p.id:null;if(id==null){this.ptrs.clear();if(this.drag)this.dragEnd(false);return}
+    this.ptrs.delete(id);if(this.drag&&this.drag.id===id)this.dragEnd(false)},
+  keyUp(k){if(this.drag&&this.drag.id==='key:'+k)this.dragEnd(this.drag.n.path.prog>=.85)},
+  dragEnd(ok){const n=this.drag.n,s=n.path;this.drag=null;
+    if(ok){s.prog=1;s.done=true;bell(true,.5);[0,1,2].forEach(i=>chime(laneMidi(10,i),.09,i*.06));burst(s.x2,s.y2,22,['#ffd36e','#fff']);this.fx.push({x:s.x2,y:s.y2,t:1,s:'倒好了！',c:'#ffe08a'});this.success(n,true)}
+    else{s.fail=true;const b=Osu.sp(s,s.prog);this.fx.push({x:b.x,y:b.y,t:1,s:'放開了',c:'#c9b0ff'});this.miss(n,true)}},
+  hitFx(n){const c=LANES[n.owner].c;bell(false,n.hit==='perfect'?.5:.36);chime(laneMidi(10,n.owner),.12);burst(n.x,n.y,n.hit==='perfect'?24:14,[c,'#fff','#ffe08a']);
+    this.fx.push({x:n.x,y:n.y,t:1,s:n.hit==='perfect'?'完美':'很好',c:n.hit==='perfect'?'#ffe08a':'#ffd0e2'});if(navigator.vibrate)try{navigator.vibrate(15)}catch(e){}},
+  say(n,s,c){this.fx.push({x:n.x,y:n.y-this.R-30,t:.9,s,c,small:1})},
+  success(n,path){if(this.phase!=='try')return;if(this.step===2)return;this.ok++;
+    if(this.ok>=this.need()){this.phase='wait';setTimeout(()=>{if(G===this&&this.state==='play'){this.step++;this.tries=0;this.setup();if(this.step>=3)this.finish()}},900)}
+    else{this.phase='wait';setTimeout(()=>{if(G===this&&this.state==='play'&&this.phase==='wait'){this.phase='try';this.next()}},650)}},
+  miss(n){if(this.phase!=='try'||this.step===2)return;this.tries++;this.phase='wait';setTimeout(()=>{if(G===this&&this.state==='play'&&this.phase==='wait'){this.phase='try';this.next()}},800)},
+  finish(){this.state='end';this.step=3;cheer();rain(80);setTimeout(()=>{if(G===this&&this.state==='end'){fillDiff();document.getElementById('cgdiff').classList.add('show')}},1400)},
+  update(dt){if(this.state!=='play')return;this.clock+=dt;const t=this.clock,B=this.BEAT;
+    // 節拍器：每拍一下，圈圈要點的那拍不響（讓鈴聲出來）
+    const k=Math.floor(t/B);if(k!==this.lastTick&&t<this.endT-.6){this.lastTick=k;if(AC&&!this.notes.some(n=>Math.abs(n.t-k*B)<.01))tone(k%4===0?1568:1175,AC.currentTime,.05,'sine',.06)}
+    // 示範：手指自己點、自己滑
+    if(this.phase==='demo'){const n=this.notes[0];
+      if(!n.hit&&t>=n.t){n.hit='perfect';this.hitFx(n);if(n.path)this.drag={n,id:'ghost',hold:true}}
+      if(this.drag&&this.drag.id==='ghost'){const s=n.path;s.prog=Math.min(1,(t-n.t)/s.dur);if(s.prog>=1){this.drag=null;s.done=true;bell(true,.5);burst(s.x2,s.y2,22,['#ffd36e','#fff']);this.fx.push({x:s.x2,y:s.y2,t:1,s:'倒好了！',c:'#ffe08a'})}}
+      if(t>this.endT){this.phase='try';this.tries=0;this.next();return}}
+    else if(this.drag&&this.drag.hold&&this.drag.id!=='ghost'){const s=this.drag.n.path;s.prog=Math.min(1,s.prog+dt/s.dur);if(s.prog>=1)this.dragEnd(true)}
+    // 沒點到
+    for(const n of this.notes)if(!n.hit&&t-n.t>.22){n.hit='miss';this.fx.push({x:n.x,y:n.y-this.R-30,t:.9,s:'太晚了',c:'#ffb38a',small:1});this.miss(n)}
+    if(this.step===2&&t>this.endT){this.step=3;this.finish()}
+    for(let i=this.fx.length-1;i>=0;i--){this.fx[i].t-=dt;if(this.fx[i].t<=0)this.fx.splice(i,1)}},
+  // 示範用的手：白色手指加深色外框，指尖在 (x,y)
+  hand(x,y,press){ctx.save();ctx.translate(x,y);ctx.rotate(-.35);const s=press?.9:1;ctx.scale(s,s);ctx.lineWidth=4;ctx.strokeStyle='#5a2a36';ctx.fillStyle='#fff';
+    rr(-11,-6,22,58,11);ctx.fill();ctx.stroke();rr(-24,34,58,52,18);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(11,44);ctx.lineTo(11,58);ctx.moveTo(22,44);ctx.lineTo(22,58);ctx.stroke();ctx.restore()},
+  drawNote(n,t){const d=n.t-t,c=LANES[n.owner].c,R=this.R;if(n.hit&&!n.path&&t-n.t>.25)return;if(n.path&&n.path.done&&t-n.t-n.path.dur>.3)return;
+    ctx.save();if(n.hit==='miss'||(n.path&&n.path.fail))ctx.globalAlpha=.35;
+    if(n.path){const s=n.path,path=(u1=1)=>{ctx.beginPath();ctx.moveTo(s.x0,s.y0);if(u1>=1){ctx.quadraticCurveTo(s.cx,s.cy,s.x2,s.y2);return}for(let u=.02;u<=u1+.001;u+=.02){const b=Osu.sp(s,Math.min(u,u1));ctx.lineTo(b.x,b.y)}};
+      ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#fff';ctx.lineWidth=R*1.5+8;path();ctx.stroke();
+      const ga=ctx.globalAlpha;ctx.globalAlpha=ga*.55;ctx.strokeStyle=c;ctx.lineWidth=R*1.5;path();ctx.stroke();ctx.globalAlpha=ga;
+      ctx.fillStyle='rgba(255,255,255,.9)';for(let u=.2;u<.9;u+=.2){const a=Osu.sp(s,u),b=Osu.sp(s,u+.02),an=Math.atan2(b.y-a.y,b.x-a.x);ctx.save();ctx.translate(a.x,a.y);ctx.rotate(an);ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-6,-8);ctx.lineTo(-6,8);ctx.closePath();ctx.fill();ctx.restore()}
+      if(s.prog>0){ctx.save();ctx.shadowColor='#ffe08a';ctx.shadowBlur=16;ctx.strokeStyle='#ffd36e';ctx.lineWidth=R*1.5;path(s.prog);ctx.stroke();ctx.restore()}
+      ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x2,s.y2,R*.62,0,7);ctx.fill();ctx.strokeStyle=c;ctx.lineWidth=4;ctx.stroke();coupe(s.x2,s.y2+16,.62,s.prog*.9,{});
+      if(n.hit&&n.hit!=='miss'){const b=Osu.sp(s,s.prog);ctx.save();ctx.shadowColor='#ffe08a';ctx.shadowBlur=22;ctx.strokeStyle='#ffe08a';ctx.lineWidth=5;ctx.beginPath();ctx.arc(b.x,b.y,R*.9,0,7);ctx.stroke();ctx.restore();ctx.restore();return}}
+    if(n.hit&&n.hit!=='miss'){ctx.restore();return}
+    const g=ctx.createRadialGradient(n.x,n.y-10,6,n.x,n.y,R);g.addColorStop(0,'#fffaf0');g.addColorStop(1,c);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,R,0,7);ctx.fill();ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke();
+    if(this.pc)text(keyName(Osu.KEYS[n.owner]),n.x,n.y+2,keyName(Osu.KEYS[n.owner]).length>1?24:40,'#7a2048');
+    if(n.path){const bx=n.x+R*.8,by=n.y-R*.8;ctx.fillStyle='#7a2048';rr(bx-19,by-15,38,30,15);ctx.fill();text('滑',bx,by+1,18,'#fff','center',0)}
+    if(d>0&&d<2.4*this.BEAT){const r2=R*(1+2.2*d/(2.4*this.BEAT)),now=d<.14;ctx.strokeStyle=now?'#fff':'#ffd25a';ctx.lineWidth=now?7:4;if(now){ctx.shadowColor='#ffe08a';ctx.shadowBlur=18}ctx.beginPath();ctx.arc(n.x,n.y,r2,0,7);ctx.stroke()}
+    ctx.restore()},
+  draw(dt){bg();const t=this.clock;
+    // 上方三關進度：① 點 ② 滑 ③ 連續
+    const ST=['點','滑','連續'];ST.forEach((s,i)=>{const x=W/2+(i-1)*150,on=i===this.step,done=i<this.step;
+      ctx.fillStyle=done?'#ffd36e':on?'#ffb3cb':'rgba(255,255,255,.18)';ctx.beginPath();ctx.arc(x-34,46,17,0,7);ctx.fill();
+      text(done?'★':String(i+1),x-34,47,18,done||on?'#5a2a36':'#fff','center',0);text(s,x-8,47,22,on?'#fff':done?'#ffd36e':'rgba(255,255,255,.5)','left',on?4:0)});
+    if(this.state==='play'){
+      for(let i=this.notes.length-1;i>=0;i--)this.drawNote(this.notes[i],t);
+      // 示範中的手
+      if(this.phase==='demo'){const n=this.notes[0];let hx=n.x,hy=n.y,press=false,a=1;
+        if(n.path&&n.hit){const b=Osu.sp(n.path,n.path.prog);hx=b.x;hy=b.y;press=true}
+        else if(!n.hit){const d=n.t-t;hy+=Math.min(1,Math.max(0,d-.15)/.6)*50;press=d<.12;a=Math.min(1,t/.4)}
+        else press=t-n.t<.15;
+        if(press&&!n.path){ctx.save();ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(n.x,n.y,this.R*(1.1+(t-n.t)*2),0,7);ctx.stroke();ctx.restore()}
+        ctx.save();ctx.globalAlpha=a;this.hand(hx+10,hy+14,press);ctx.restore()}
+      // 練習階段的進度點
+      if(this.step<2&&this.phase!=='demo'){const N=this.need();for(let i=0;i<N;i++){ctx.fillStyle=i<this.ok?'#ffd36e':'rgba(255,255,255,.25)';ctx.beginPath();ctx.arc(W/2+(i-(N-1)/2)*30,560,9,0,7);ctx.fill()}}
+      // 一行提示：示範時寫「看」，自己來時一句動作
+      const tip=this.phase==='demo'?'看一次示範':this.step===0?'金框縮到圈圈上 → 點':this.step===1?'點下去不放 → 沿路滑到杯子':'跟著節拍打打看';
+      ctx.fillStyle='rgba(20,4,24,.55)';rr(W/2-230,590,460,40,20);ctx.fill();text(tip,W/2,611,20,'#fff','center',0);
+      if(this.pc&&this.phase!=='demo'&&this.step<2)text('滑鼠點或按圈圈上的字母',W/2,532,14,'rgba(255,255,255,.6)','center',0)}
+    for(const f of this.fx){const u=1-f.t;ctx.save();ctx.globalAlpha=Math.min(1,f.t*2);text(f.s,f.x,f.y-u*30,f.small?20:30,f.c,'center',5);ctx.restore()}
+    drawSparks(dt);
+    if(this.state==='end'){text('練習完成！',W/2,H/2-20,56,'#ffe08a','center',8);text('來選難度吧',W/2,H/2+40,22,'#fff','center',4)}
+    drawConfetti(dt)},
+};
+const GAMES={pour:Pour,stack:Stack,osu:Osu,drill:Drill};
 let G=null,raf=0,last=0,open=false,paused=false,resumeT=0;
 const pauseEl=document.getElementById('cgpause'),pauseBtn=document.getElementById('cgpausebtn');
 const isRhythm=()=>G===Osu;
@@ -707,11 +818,11 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&open&&isRh
 function showAgain(v){again.style.display=v?'':'none'}
 function stopG(){pourOff();if(G&&G.stop)G.stop()}
 function play(k){
-  stopG();clearPause();G=GAMES[k];if(window.BGM)(k==='osu'?BGM.pause():BGM.resume());if(k==='osu')loadSong().catch(()=>{});sparks.length=0;confetti.length=0;G.start();menu.classList.remove('show');showAgain(false);swap.style.display='';
+  stopG();clearPause();G=GAMES[k];if(window.BGM)(k==='osu'||k==='drill'?BGM.pause():BGM.resume());if(k==='osu')loadSong().catch(()=>{});sparks.length=0;confetti.length=0;G.start();menu.classList.remove('show');showAgain(false);swap.style.display='';
 }
 function toPos(e){if(window.mapPt)return mapPt(cv,e,W,H);const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
 cv.addEventListener('pointerdown',e=>{if(!G||G.state==='end'||paused||resumeT>0)return;e.preventDefault();G.down({...toPos(e),mouse:e.pointerType==='mouse',id:e.pointerId})});
-const upH=e=>{if(!G)return;if(G===Osu){G.up(e&&e.pointerId!=null?{id:e.pointerId}:null);return}if(keysHeld.size)return;G.up()};
+const upH=e=>{if(!G)return;if(G===Osu||G===Drill){G.up(e&&e.pointerId!=null?{id:e.pointerId}:null);return}if(keysHeld.size)return;G.up()};
 // 電腦版：滑鼠移到圈圈上，按 Z、X 打拍子（跟 osu 一樣）
 const keysHeld=new Set(),HITKEYS=['z','x','c','v'];let hover={x:W/2,y:H/2};
 cv.addEventListener('pointerup',upH);cv.addEventListener('pointercancel',upH);cv.addEventListener('pointerleave',upH);
@@ -720,6 +831,7 @@ window.addEventListener('keydown',e=>{
   if(!open||e.repeat)return;const k=e.key.toLowerCase();
   if(k==='escape'||k==='p'){if(paused)setPause(false);else if(running())setPause(true);else if(k==='escape')CG.close();return}
   if(!G||paused||resumeT>0)return;
+  if(G===Drill&&G.state==='play'&&(Osu.KEYS.includes(k)||k===' ')){e.preventDefault();keysHeld.add(k);G.down({key:k});return}
   if(G===Osu&&G.state!=='end'){
     if(G.state==='talk'&&(k===' '||k==='enter'||Osu.KEYS.includes(k))){e.preventDefault();G.down({x:0,y:0});return}
     if(Osu.KEYS.includes(k)){e.preventDefault();keysHeld.add(k);G.down({key:k});return}
@@ -727,13 +839,14 @@ window.addEventListener('keydown',e=>{
   if(k===' '||k==='enter'){e.preventDefault();if(G.state!=='end')G.down({x:W/2,y:H/2})}
 });
 window.addEventListener('keyup',e=>{if(!open)return;const k=e.key.toLowerCase();
-  if(keysHeld.has(k)){keysHeld.delete(k);if(G===Osu){G.keyUp(k);return}if(!keysHeld.size&&G)G.up();return}
+  if(keysHeld.has(k)){keysHeld.delete(k);if(G===Osu||G===Drill){G.keyUp(k);return}if(!keysHeld.size&&G)G.up();return}
   if(k===' '||k==='enter')upH()});
 const diffEl=document.getElementById('cgdiff');
 document.querySelectorAll('#cgmenu [data-g]').forEach(b=>b.onclick=()=>{audio();if(b.dataset.g==='osu'){fillDiff();diffEl.classList.add('show');return}play(b.dataset.g)});
 function fillDiff(){diffEl.querySelectorAll('[data-d]').forEach(b=>{const d=b.dataset.d,v=best[d==='hard'?'osu':'osu_'+d];b.classList.toggle('last',d===Osu.diff);b.querySelector('i').textContent=v!=null?`最高 ${v}%`:''})}
 diffEl.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{Osu.diff=b.dataset.d;try{localStorage.setItem(DIFFKEY,Osu.diff)}catch(e){}diffEl.classList.remove('show');play('osu')});
 document.getElementById('cgdiffback').onclick=()=>diffEl.classList.remove('show');
+document.getElementById('cgdrill').onclick=()=>{diffEl.classList.remove('show');play('drill')};
 again.onclick=()=>{if(G)play(Object.keys(GAMES).find(k=>GAMES[k]===G))};
 swap.onclick=()=>{stopG();clearPause();G=null;if(window.BGM)BGM.resume();menu.classList.add('show');showAgain(false);swap.style.display='none';fillBest();bg();};
 document.getElementById('cgclose').onclick=()=>CG.close();
