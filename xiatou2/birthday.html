@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生日作戰｜色戀營業中</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE 跟劇透頁同一套夜店黑底，換成生日的亮色
+IDEA 每個壽星都有一個他不在裡面的群組
+PICTURE 三人並排的開頭，加上每區一支手機群組畫面
+COLOUR 黑底，牡丹金、蓮淺藍、真央粉
+TYPE Noto Serif JP 標題，Noto Serif TC 內文，群組用系統字
+*/
+:root{--ink:#000;--paper:#f3eaff;--muted:#a493b4;--line:rgba(243,234,255,.14);--gold:#e8c27a;--blue:#93cdfc;--pink:#f47aa5}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:'Noto Serif TC','Noto Serif JP',serif;font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* 開頭 */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:min(78vh,760px);min-height:460px}
+.trio a{position:relative;display:block;overflow:hidden;text-decoration:none}
+.trio img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transition:transform .6s}
+.trio a:hover img{transform:scale(1.03)}
+.trio a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.92) 92%)}
+.trio .tag{position:absolute;left:0;right:0;bottom:150px;z-index:2;text-align:center;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(22px,3vw,34px);letter-spacing:.1em;line-height:1.2}
+.trio .tag small{display:block;margin-top:6px;font-family:'Noto Serif TC',serif;font-weight:600;font-size:14px;letter-spacing:.08em;color:rgba(243,234,255,.82)}
+.tb .tag{color:var(--gold)}.tr .tag{color:var(--blue)}.tm .tag{color:var(--pink)}
+.hero-text{position:relative;z-index:3;text-align:center;margin:-120px auto 0;padding:0 20px 60px;max-width:640px}
+.hero h1{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(46px,7vw,80px);letter-spacing:.14em;line-height:1.15;text-shadow:0 0 30px rgba(244,122,165,.6),0 0 2px #fff}
+.hero .sub{margin:8px 0 0;color:#ffc2dc;font-size:15px;letter-spacing:.3em}
+.hero .lede{margin:22px auto 0;max-width:24em;font-size:16px;color:rgba(243,234,255,.86)}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:980px;margin:0 auto;padding:40px 20px 8px}
+.chips a{text-decoration:none;font-size:15px;padding:6px 16px;border:1px solid var(--line);border-radius:999px}
+.chips a span{color:var(--muted);font-size:13px;margin-left:6px}
+.chips .cb:hover{border-color:var(--gold)}.chips .cr:hover{border-color:var(--blue)}.chips .cm:hover{border-color:var(--pink)}
+
+/* 一人一區，底圖不動、內容往上蓋 */
+section.person{position:relative;margin-top:56px}
+.p-bg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;z-index:0}
+.p-bg img{position:absolute;top:0;right:0;width:62%;height:100%;object-fit:cover;object-position:50% 18%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.p-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 36%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.06) 82%)}
+.p-body{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh}
+.p-head{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 6vw 14vh}
+.p-head h2{margin:0;font-family:'Noto Serif JP',serif;font-weight:900;font-size:clamp(84px,12vw,150px);line-height:1;letter-spacing:.06em}
+.p-meta{margin:16px 0 0;font-size:15px;letter-spacing:.12em;color:rgba(243,234,255,.85)}
+.p-story{max-width:1180px;margin:0 auto;padding:0 6vw 22vh}
+.ch{max-width:31em;margin:0 0 72px}
+.ch h3{margin:0 0 14px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;letter-spacing:.08em}
+.ch p{margin:0 0 16px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+
+.botan h2,.botan .ch h3{color:var(--gold)}
+.botan h2{text-shadow:0 0 40px rgba(232,194,122,.45)}
+.botan .ren h2,.ren .ch h3{color:var(--blue)}
+.ren h2{text-shadow:0 0 40px rgba(147,205,252,.45)}
+.ren .mao h2,.mao .ch h3{color:var(--pink)}
+.mao h2{text-shadow:0 0 40px rgba(244,122,165,.5)}
+.mao .botan .p-bg img{object-position:50% 12%}
+.ren .p-bg img{width:68%;object-position:50% 38%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
+.ren .p-bg::after{background:linear-gradient(90deg,#000 30%,rgba(0,0,0,.45) 46%,rgba(0,0,0,0) 62%)}
+.mao .p-bg img{object-position:50% 14%}
+
+/* 群組畫面 */
+.chat{max-width:380px;border-radius:26px;background:#111014;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden;font-family:-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;font-size:14px;line-height:1.55}
+.chat-top{display:flex;align-items:center;gap:8px;padding:14px 16px 12px;background:#1b1a20;border-bottom:1px solid rgba(255,255,255,.06)}
+.chat-top .back{font-size:22px;line-height:1;color:rgba(255,255,255,.55)}
+.chat-top b{font-size:15px;color:#fff}
+.chat-top .n{color:rgba(255,255,255,.45);font-size:13px}
+.chat-body{padding:12px 12px 16px}
+.day{display:block;width:max-content;margin:2px auto 12px;padding:2px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:12px}
+.msg{display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:8px;margin-top:6px}
+.ln{display:flex;align-items:flex-end;gap:6px}
+.msg .av{grid-row:1 / 3;align-self:start;width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:50% 16%}
+.msg .nm{grid-column:2;font-size:12px;color:rgba(255,255,255,.55);margin:0 0 2px 2px}
+.msg.cont{margin-top:3px}
+.msg.cont .av{visibility:hidden;height:0}
+.msg.cont .nm{display:none}
+.chat .bb{margin:0;padding:7px 12px;border-radius:4px 16px 16px 16px;background:#2a2930;color:#f2f0f5;max-width:236px;overflow-wrap:anywhere}
+.msg.cont .bb{border-radius:16px}
+.msg time{font-size:10px;color:rgba(255,255,255,.38);white-space:nowrap;padding-bottom:2px}
+.bb.s-b{background:#3a2f1a;color:#fbe7bd}
+.bb.s-r{background:#1f3344;color:#d9eeff}
+.bb.s-m{background:#4a2233;color:#ffe0ec}
+.msg .nm{grid-row:1}
+.msg .ln{grid-row:2;grid-column:2}
+.photo{width:180px;height:132px;border-radius:12px;background:radial-gradient(120% 90% at 50% 100%,#3b2a12,#0c0906 70%);display:flex;align-items:flex-end;justify-content:center;gap:10px;padding-bottom:14px}
+.photo span{position:relative;font-family:'Noto Serif JP',serif;font-weight:900;font-size:62px;line-height:.9;color:#ffd77a;text-shadow:0 0 14px rgba(255,190,80,.55)}
+.photo span::before{content:"";position:absolute;left:50%;top:-24px;width:10px;height:16px;margin-left:-5px;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:radial-gradient(circle at 50% 70%,#fff6c8,#ffb52e 60%,rgba(255,120,0,0) 72%);animation:flick 1.4s ease-in-out infinite alternate}
+.photo span::after{content:"";position:absolute;left:50%;top:-9px;width:2px;height:8px;margin-left:-1px;background:#2b2116}
+@keyframes flick{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.12,1.2) rotate(3deg)}}
+.chat-in{display:flex;align-items:center;gap:8px;padding:10px 12px 14px;border-top:1px solid rgba(255,255,255,.06)}
+.chat-in span{flex:1;padding:7px 14px;border-radius:999px;background:#222127;color:rgba(255,255,255,.32);font-size:13px}
+
+/* 當天流程 */
+.flow{list-style:none;margin:0;padding:0;counter-reset:f}
+.flow li{counter-increment:f;position:relative;padding:0 0 22px 44px}
+.flow li::before{content:counter(f);position:absolute;left:0;top:4px;width:28px;height:28px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-weight:700;font-size:14px}
+.flow li::after{content:"";position:absolute;left:14px;top:36px;bottom:4px;width:1px;background:var(--line)}
+.flow li:last-child::after{display:none}
+.botan .flow li::before{color:var(--gold)}.ren .flow li::before{color:var(--blue)}.mao .flow li::before{color:var(--pink)}
+.flow b{display:block;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px;color:#fff}
+.flow span{display:block;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+
+/* 指令 */
+.cmd{max-width:380px;padding:18px;border-radius:16px;background:rgba(10,8,12,.82);border:1.5px solid currentColor}
+.botan .cmd{color:var(--gold)}.ren .cmd{color:var(--blue)}.mao .cmd{color:var(--pink)}
+.cmd .lab{margin:0 0 8px;font-size:14px;color:rgba(243,234,255,.75)}
+.cmd .row{display:flex;gap:10px;align-items:center}
+.cmd code{flex:1;padding:8px 14px;border-radius:10px;background:currentColor;font-family:system-ui,-apple-system,sans-serif;font-weight:900;font-size:20px;letter-spacing:.04em;text-align:center}
+.cmd code i{font-style:normal;color:#111}
+.cmd button{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid currentColor;background:transparent;color:inherit;font:600 14px/1 'Noto Serif TC',serif;cursor:pointer}
+.cmd .wid{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;border-radius:10px;border:1px solid currentColor;font-weight:600;font-size:15px;text-decoration:none}
+.cmd .wid:hover,.cmd button:hover{background:rgba(255,255,255,.06)}
+
+/* 玩法 */
+.how{max-width:680px;margin:0 auto;padding:72px 20px 24px;text-align:center}
+.how h2{margin:0 0 18px;font-family:'Noto Serif JP',serif;font-weight:900;font-size:30px;letter-spacing:.08em;color:#ffc2dc}
+.how p{margin:0 0 12px}
+.how .note{color:var(--muted);font-size:15px}
+.how .to-story{display:inline-block;margin-top:18px;padding:8px 22px;border-radius:999px;border:1px solid #ffc2dc;color:#ffc2dc;text-decoration:none;font-weight:600}
+footer{padding:40px 0 64px;text-align:center;color:var(--muted);font-size:14px}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .trio{height:auto;min-height:0;aspect-ratio:1 / 1}
+  .trio .tag{bottom:80px;font-size:22px}
+  .trio .tag small{font-size:12px;letter-spacing:0}
+  .hero-text{margin-top:-60px;padding-bottom:44px}
+  .chips{padding-top:28px}
+  .p-bg img{width:100%;-webkit-mask-image:none;mask-image:none;object-position:62% 12%}
+  .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
+  .botan .p-bg img{object-position:62% 20%}
+  .ren .p-bg img{width:100%;object-position:42% 40%;-webkit-mask-image:none;mask-image:none}
+  .ren .p-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%)}
+  .mao .p-bg img{object-position:56% 20%}
+  .p-head{padding:0 20px 10vh}
+  .p-head h2{font-size:96px}
+  .p-meta{font-size:13px;letter-spacing:.06em}
+  .p-story{padding:0 14px 30vh}
+  .ch{margin:0 0 30vh;padding:22px 18px 10px;background:rgba(0,0,0,.76);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:6px}
+  .ch.bare{padding:0;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .ch:last-child{margin-bottom:0}
+  .chat,.cmd{margin:0 auto}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .trio img{transition:none}
+  .photo span::before{animation:none}
+}
+</style>
+<!-- 流量統計 -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="cc39f021-8956-483a-baf5-bc1780db1e35"></script>
+<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","zfe9jh09al");</script>
+<script data-goatcounter="https://matcha1642.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="trio">
+    <a class="tb" href="#botan"><img src="botan3.webp" width="616" height="900" alt="牡丹"><span class="tag">牡丹<small>5月22日</small></span></a>
+    <a class="tr" href="#ren"><img src="ren2.webp" width="616" height="900" alt="蓮"><span class="tag">蓮<small>12月22日</small></span></a>
+    <a class="tm" href="#mao"><img src="mao2.webp" width="616" height="900" alt="真央"><span class="tag">真央<small>3月3日</small></span></a>
+  </div>
+  <div class="hero-text">
+    <h1>生日作戰</h1>
+    <p class="sub">HAPPY BIRTHDAY</p>
+    <p class="lede">三個人的生日各有一個祕密群組，壽星本人不在裡面。群組裡的計畫，要靠妳一起完成。</p>
+  </div>
+</header>
+
+<main>
+  <nav class="chips" aria-label="跳到">
+    <a class="cb" href="#botan">牡丹<span>5/22</span></a>
+    <a class="cr" href="#ren">蓮<span>12/22</span></a>
+    <a class="cm" href="#mao">真央<span>3/3</span></a>
+  </nav>
+
+  <!-- 牡丹 -->
+  <section class="person botan" id="botan" aria-labelledby="n-botan">
+    <div class="p-bg" aria-hidden="true"><img src="hb_botan.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-botan">牡丹</h2>
+        <p class="p-meta">5月22日｜雙子座｜Club MIRAGE No.1</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>願望拍賣會</h3>
+          <p>五月二十二日是牡丹的生日，Club MIRAGE 照例會為這位頭牌舉辦生誕祭。今年蓮與真央私下商量，把整晚的香檳塔改成一場願望拍賣會，誰疊得最高，誰就能替壽星實現一個願望。</p>
+          <p>然而蓮另有盤算。去年冬天他的生日蠟燭被牡丹偷換成六十二歲，這筆帳他一直記著。開店前三個小時，群組裡已經開始分配今晚的任務。</p>
+        </article>
+        <article class="ch bare">
+          <div class="chat cb-m" role="img" aria-label="群組對話：牡丹生日作戰">
+            <div class="chat-top"><span class="back">‹</span><b>牡丹生日作戰</b><span class="n">(3)</span></div>
+            <div class="chat-body">
+              <span class="day">5月22日</span>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">大家都在嗎～今晚生誕祭的企劃定案了喔！</p><time>17:42</time></div></div>
+              <div class="msg cont"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">是願望拍賣會！誰疊的香檳塔最高，誰就可以幫牡丹實現一個生日願望</p><time>17:42</time></div></div>
+              <div class="msg cont"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">第一名一定是我的啦，誰都不准跟我搶嘛</p><time>17:43</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">……我不搶。</p><time>17:51</time></div></div>
+              <div class="msg cont"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">我有別的事要辦。</p><time>17:51</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">什麼事？</p><time>17:52</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><div class="photo" aria-label="數字蠟燭 92"><span>9</span><span>2</span></div><time>17:55</time></div></div>
+              <div class="msg cont"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">去年他把我的蠟燭換成62。</p><time>17:55</time></div></div>
+              <div class="msg cont"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">還有唐揚便當。一疊。</p><time>17:56</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">一疊是幾個啦www</p><time>17:56</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">他吃不完的量。</p><time>17:58</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">妳今晚一定要來喔！少一個人香檳塔就疊不高了啦</p><time>18:03</time></div></div>
+            </div>
+            <div class="chat-in"><span>輸入訊息</span></div>
+          </div>
+        </article>
+        <article class="ch">
+          <h3>今晚的流程</h3>
+          <ol class="flow">
+            <li><b>願望拍賣會</b><span>香檳塔疊得最高的人，可以替他實現第一個願望。</span></li>
+            <li><b>蓮的復仇</b><span>九十二歲的數字蠟燭，以及一整疊唐揚便當。</span></li>
+            <li><b>生日賭局</b><span>骰子賭局先贏兩局才能收班，贏家拿走第二個願望。</span></li>
+            <li><b>拉麵攤</b><span>收班後只剩妳陪著他，最後一個願望要在這裡說出口。</span></li>
+          </ol>
+        </article>
+        <article class="ch bare">
+          <div class="cmd">
+            <p class="lab">在對話裡輸入</p>
+            <div class="row"><code><i>@BOTANHB</i></code><button type="button" data-copy="@BOTANHB">複製</button></div>
+            <a class="wid" href="https://caveduck.io/zh-hant/widgets/share/35b180ed-a888-4cde-9dd8-05b1f15b6307">牡丹的生日小工具</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 蓮 -->
+  <section class="person ren" id="ren" aria-labelledby="n-ren">
+    <div class="p-bg" aria-hidden="true"><img src="hb_ren.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-ren">蓮</h2>
+        <p class="p-meta">12月22日｜冬至｜魔羯座｜Club MIRAGE No.2</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>冬至</h3>
+          <p>十二月二十二日正逢冬至，也是蓮的生日。店裡的生誕祭向來熱鬧，他也照常冷著臉收下每一杯酒，然而每年收班之後，壽星總會一聲不吭地消失，隔天再若無其事地出現。</p>
+          <p>今年牡丹不打算讓他溜走。店裡的燈還沒熄，他便把真央和妳拉進了群組，連備份鑰匙都準備好了。</p>
+        </article>
+        <article class="ch bare">
+          <div class="chat cb-r" role="img" aria-label="群組對話：蓮生日作戰">
+            <div class="chat-top"><span class="back">‹</span><b>蓮生日作戰</b><span class="n">(3)</span></div>
+            <div class="chat-body">
+              <span class="day">12月22日</span>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">凌晨兩點，蓮家門口集合。</p><time>23:12</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">一人帶一份禮物，再加一顆柚子。冬至要泡柚子澡，這是規矩。</p><time>23:12</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">蛋糕訂好了！布置交給我～氣球要粉紅色的對吧？</p><time>23:14</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">越粉越好。他會裝作沒看到，然後偷偷拍照。</p><time>23:15</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">備份鑰匙在我這。</p><time>23:15</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">重點是妳。那傢伙收班後一定會先溜，每年都這樣。</p><time>23:17</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">去把他找回來，兩點前帶回家，別讓他發現我們在幹嘛。</p><time>23:17</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">蓮很難找欸……要去哪裡找啦</p><time>23:18</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">找有貓的地方。</p><time>23:20</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">還有蠟燭你不准再亂換喔！</p><time>23:21</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">我哪次亂換過。</p><time>23:21</time></div></div>
+              <div class="msg"><img class="av" src="mao2.webp" alt=""><span class="nm">真央</span><div class="ln"><p class="bb s-m">每次都有！</p><time>23:21</time></div></div>
+            </div>
+            <div class="chat-in"><span>輸入訊息</span></div>
+          </div>
+        </article>
+        <article class="ch">
+          <h3>今晚的流程</h3>
+          <ol class="flow">
+            <li><b>店內生誕祭</b><span>他依然冷著臉收下每一杯酒，完全看不出今天是他的生日。</span></li>
+            <li><b>找人</b><span>收班後壽星不見了，妳得在兩點前把他找回來。</span></li>
+            <li><b>驚喜派對</b><span>滿屋子的粉紅氣球，以及牡丹親手準備的蠟燭。</span></li>
+            <li><b>柚子澡</b><span>冬至夜裡的最後一件事。</span></li>
+          </ol>
+        </article>
+        <article class="ch bare">
+          <div class="cmd">
+            <p class="lab">在對話裡輸入</p>
+            <div class="row"><code><i>@RENHB</i></code><button type="button" data-copy="@RENHB">複製</button></div>
+            <a class="wid" href="https://caveduck.io/zh-hant/widgets/share/38655399-21d9-4349-aa65-920a5e71fcc9">蓮的生日小工具</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 真央 -->
+  <section class="person mao" id="mao" aria-labelledby="n-mao">
+    <div class="p-bg" aria-hidden="true"><img src="hb_mao.webp" width="832" height="1216" alt=""></div>
+    <div class="p-body">
+      <div class="p-head">
+        <h2 id="n-mao">真央</h2>
+        <p class="p-meta">3月3日｜女兒節｜雙魚座</p>
+      </div>
+      <div class="p-story">
+        <article class="ch">
+          <h3>女兒節</h3>
+          <p>三月三日是女兒節，也是真央的生日。她從小辦過的生日會總是冷清收場，這件事牡丹和蓮都知道，因此兩人提早一週訂好了千葉海邊的遊樂園與園區飯店，打算讓她從早到晚都當主角。</p>
+          <p>出發前一晚，牡丹在群組裡把行程從頭交代了一遍，蓮則負責那些需要搬的東西。</p>
+        </article>
+        <article class="ch bare">
+          <div class="chat cb-p" role="img" aria-label="群組對話：三月三日作戰">
+            <div class="chat-top"><span class="back">‹</span><b>三月三日作戰</b><span class="n">(3)</span></div>
+            <div class="chat-body">
+              <span class="day">3月2日</span>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">明天的行程最後確認一次。</p><time>22:30</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">千葉的星海樂園，四個人住園區飯店一晚。</p><time>22:30</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">白天妳陪她照「生日想做的事」清單玩。她寫了好幾天，一項都別漏。</p><time>22:31</time></div></div>
+              <div class="msg cont"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">傍晚想辦法拖住她，我跟蓮先回飯店布置女兒節派對。</p><time>22:33</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">……雛人形送到了。</p><time>22:34</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">還有，這趟誰都不准讓她刷卡。這次不算營業。</p><time>22:35</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">嗯。</p><time>22:35</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">房間訂好了，妳跟真央同一間。</p><time>22:36</time></div></div>
+              <div class="msg"><img class="av" src="ren2.webp" alt=""><span class="nm">蓮</span><div class="ln"><p class="bb s-r">蠟燭。</p><time>22:38</time></div></div>
+              <div class="msg"><img class="av" src="botan3.webp" alt=""><span class="nm">牡丹</span><div class="ln"><p class="bb s-b">24，這次照實插。</p><time>22:38</time></div></div>
+            </div>
+            <div class="chat-in"><span>輸入訊息</span></div>
+          </div>
+        </article>
+        <article class="ch">
+          <h3>當天的流程</h3>
+          <ol class="flow">
+            <li><b>生日清單</b><span>同款髮箍、摩天輪、合照，每一項她都想了很久。</span></li>
+            <li><b>拖住她</b><span>傍晚的任務，飯店那邊還需要一點時間。</span></li>
+            <li><b>女兒節派對</b><span>雛人形、散壽司、蛤蜊湯，還有二十四歲的蠟燭。</span></li>
+            <li><b>夜聊</b><span>熄燈之後，同一間房裡的悄悄話。</span></li>
+          </ol>
+        </article>
+        <article class="ch bare">
+          <div class="cmd">
+            <p class="lab">在對話裡輸入</p>
+            <div class="row"><code><i>@MAOHB</i></code><button type="button" data-copy="@MAOHB">複製</button></div>
+            <a class="wid" href="https://caveduck.io/zh-hant/widgets/share/ed541e6d-dafb-4262-b76a-315c5036d5d7">真央的生日小工具</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="t-how">
+    <h2 id="t-how">怎麼開始</h2>
+    <p>在色戀營業中的對話裡輸入壽星的指令，就會從群組訊息開場。</p>
+    <p>指令輸入一次就好，有掛小工具的話，活動期間會自動接下去。如果第二回合劇情沒接上，再輸入一次指令。</p>
+    <p class="note">小工具目前只有繁體中文，需要其他語言請到留言區留言。</p>
+    <a class="to-story" href="story.html">還不認識他們？先看劇透頁</a>
+  </section>
+</main>
+
+<footer>色戀營業中｜by Matcha_</footer>
+
+<script>
+{
+  for (const b of document.querySelectorAll('[data-copy]')) {
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = '已複製'; }
+      catch (e) { b.textContent = '請長按複製'; }
+      setTimeout(() => { b.textContent = '複製'; }, 1600);
+    });
+  }
+}
+</script>
+
+<!--matcha-home--><a id="matchaHome" href="/" aria-label="回抹茶屋首頁" style="position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:6px 12px 6px 9px;border-radius:999px;background:#9BD14B;color:#111;border:2px solid #111;box-shadow:2px 2px 0 #111;font:700 13px/1.2 system-ui,-apple-system,'Noto Sans TC',sans-serif;text-decoration:none;letter-spacing:0;opacity:.92"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" style="display:block"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="#111"/></svg>抹茶屋</a><style>@media print{#matchaHome{display:none!important}}#matchaHome:hover{opacity:1}</style>
+</body>
+</html>
